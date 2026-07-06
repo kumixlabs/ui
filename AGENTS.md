@@ -4,18 +4,17 @@
 
 - **Always use `bun`, never `npm`/`yarn`.** `packageManager` is `bun@1.3.14`.
 - Engines: `node >= 24`, `bun >= 1.3.0`.
-- Workspaces: `packages/**`, `apps/**`, `examples/**` (defined in `package.json`).
+- Workspaces: `packages/**`, `apps/**` (defined in `package.json`).
 - Internal deps use workspace protocol: `"@kumix/other": "workspace:*"`.
 - `bun install` runs `prepare` → installs Husky hooks (v9, `.husky/_/`).
 
 ## Workspace Layout
 
-- `packages/*` — libs: `@kumix/core`, `@kumix/main`, `@kumix/mcp`. `scripts/publish.sh` only scans `packages/**` and skips any package with `"private": true`.
-- All three packages are currently `"private": true` (template placeholders) — nothing publishes until you remove that flag.
+- `packages/*` — libs: `@kumix/ui`, `@kumix/mcp`. `scripts/publish.sh` only scans `packages/**` and skips any package with `"private": true`.
+- `@kumix/ui` is the publishable React component package.
 - `@kumix/mcp` is in changeset `ignore` (`.changeset/config.json`) — excluded from versioning even if made public.
-- `apps/*` — `docs`, `web` (empty `.gitkeep` placeholders).
-- `examples/*` — `next`, `vite` (empty `.gitkeep` placeholders).
-- Packages build with `tsc` (`build: "tsc"`), extending external `@kumix/tsconfig/node`. Output goes to `dist/`.
+- `apps/*` — application placeholders.
+- `@kumix/ui` builds with `tsdown`, extending external `@kumix/tsconfig/react`. Output goes to `dist/`.
 
 ## Commands
 
@@ -40,10 +39,10 @@ bun run release             # bash scripts/publish.sh (publishes only packages/*
 Filter to a single workspace:
 
 ```bash
-bun run build --filter=@kumix/core
-bun run types:check --filter=@kumix/main
-bun run test --filter=@kumix/core
-bun add <pkg> --filter=@kumix/core
+bun run build --filter=@kumix/ui
+bun run types:check --filter=@kumix/ui
+bun run test --filter=@kumix/ui
+bun add <pkg> --filter=@kumix/ui
 ```
 
 ## Pipeline (turbo.json)
@@ -73,7 +72,7 @@ Commitlint enforces types: `feat`, `feature`, `fix`, `refactor`, `docs`, `build`
 
 ## Changesets
 
-- Repo: `kumixlabs/template`
+- Repo: `kumixlabs/ui`
 - `commit: false` — changeset PRs are auto-committed by CI, not locally.
 - `access: public`, `baseBranch: main`
 - `bumpVersionsWithWorkspaceProtocolOnly: true`

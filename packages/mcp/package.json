@@ -2,13 +2,13 @@
   "name": "@kumix/mcp",
   "version": "0.0.0",
   "private": true,
-  "description": "MCP server for Kumix Template documentation and code assistance",
+  "description": "MCP server for Kumix UI documentation and code assistance",
   "author": "Kumix Labs <hai@kumix.io>",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "kumix-mcp-template": "dist/index.js"
+    "kumix-mcp-ui": "dist/index.js"
   },
   "scripts": {
     "clean": "rimraf dist",

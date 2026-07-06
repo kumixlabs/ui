@@ -1,0 +1,110 @@
+{
+  "name": "@kumix/ui",
+  "version": "0.0.1",
+  "description": "Headless, accessible React component library built on Radix UI, Tailwind, and more.",
+  "author": "Kumix Labs <hai@kumix.io>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    "./css": {
+      "types": "./dist/style.css.d.ts",
+      "default": "./dist/style.css"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./hooks": {
+      "types": "./dist/hooks.d.ts",
+      "default": "./dist/hooks.js"
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "clean:all": "rimraf .turbo coverage dist node_modules",
+    "dev": "tsdown --watch",
+    "build": "rimraf dist && mkdir -p dist && cp src/style.css.d.ts dist/style.css.d.ts && tsdown && publint",
+    "types:check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "homepage": "https://github.com/kumixlabs/ui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kumixlabs/ui.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/kumixlabs/ui/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "kumix",
+    "radix",
+    "tailwind",
+    "react",
+    "ui"
+  ],
+  "devDependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/modifiers": "^9.0.0",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@headless-tree/core": "^1.7.0",
+    "@kumix/tsconfig": "^0.1.0",
+    "@kumix/utils": "^0.1.1",
+    "@tanstack/react-table": "^8.21.3",
+    "@types/react": "^19.2.17",
+    "class-variance-authority": "^0.7.1",
+    "cmdk": "^1.1.1",
+    "embla-carousel-react": "^8.6.0",
+    "input-otp": "^1.4.2",
+    "lucide-react": "^1.23.0",
+    "motion": "^12.42.2",
+    "next-themes": "^0.4.6",
+    "radix-ui": "^1.6.1",
+    "react": "^19.2.7",
+    "react-aria-components": "^1.19.0",
+    "react-day-picker": "^10.0.1",
+    "react-hook-form": "^7.81.0",
+    "react-resizable-panels": "^4.12.1",
+    "sonner": "^2.0.7",
+    "tsdown": "^0.22.3",
+    "typescript": "^6.0.3",
+    "vaul": "^1.1.2"
+  },
+  "peerDependencies": {
+    "@dnd-kit/core": ">=6.3.0",
+    "@dnd-kit/modifiers": ">=9.0.0",
+    "@dnd-kit/sortable": ">=10.0.0",
+    "@dnd-kit/utilities": ">=3.2.0",
+    "@headless-tree/core": ">=1.7.0",
+    "@kumix/utils": ">=0.1.0",
+    "@tanstack/react-table": ">=8.20.0",
+    "class-variance-authority": ">=0.7.0",
+    "cmdk": ">=1.1.0",
+    "embla-carousel-react": ">=8.6.0",
+    "input-otp": ">=1.4.0",
+    "lucide-react": ">=1.20.0",
+    "motion": ">=12.40.0",
+    "next-themes": ">=0.4.5",
+    "radix-ui": ">=1.6.0",
+    "react": ">=18.0.0 || >=19.0.0-rc.0",
+    "react-aria-components": ">=1.16.0",
+    "react-day-picker": ">=10.0.0",
+    "react-hook-form": ">=7.80.0",
+    "react-resizable-panels": ">=4.10.0",
+    "sonner": ">=2.0.5",
+    "vaul": ">=1.1.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}

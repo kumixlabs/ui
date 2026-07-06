@@ -20,10 +20,10 @@ if (isTestMode) {
 // Get current directory for ESM modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-// Repo root (two levels up from packages/mcp/dist|src). Used as the `cwd` for
+// Repo root (three levels up from packages/mcp/dist|src). Used as the `cwd` for
 // glob so that ignore patterns are matched against project-relative paths
 // (glob does not match ignore patterns against absolute paths reliably).
-const PACKAGES_ROOT = resolve(__dirname, "..", "..");
+const REPO_ROOT = resolve(__dirname, "..", "..", "..");
 
 // Directories to never scan when looking for package.json or source files.
 const SCAN_IGNORE = ["**/node_modules/**", "**/dist/**"];
@@ -47,7 +47,7 @@ interface PackageInfo {
   componentFiles: string[];
 }
 
-class KumixTemplateMCPServer {
+class KumixUiMCPServer {
   private async loadPackageInfo(): Promise<void> {
     try {
       // Scan the repo's packages/ directory. Using a relative pattern with
@@ -55,13 +55,13 @@ class KumixTemplateMCPServer {
       // project-relative paths, so absolute patterns would let node_modules
       // and dist sneak back in.
       const packageDirs = await glob("packages/**/package.json", {
-        cwd: PACKAGES_ROOT,
+        cwd: REPO_ROOT,
         windowsPathsNoEscape: true,
         ignore: SCAN_IGNORE,
       });
 
       for (const relativePackageDir of packageDirs.map((p) => dirname(p))) {
-        const packageDir = resolve(PACKAGES_ROOT, relativePackageDir);
+        const packageDir = resolve(REPO_ROOT, relativePackageDir);
         const packageJsonPath = join(packageDir, "package.json");
 
         try {
@@ -81,13 +81,13 @@ class KumixTemplateMCPServer {
 
               // Get all TypeScript/TSX files in src directory.
               // Use a relative pattern + cwd so the ignore patterns apply.
-              const relativeSrc = relative(PACKAGES_ROOT, srcDir).replace(/\\/g, "/");
+              const relativeSrc = relative(REPO_ROOT, srcDir).replace(/\\/g, "/");
               const componentFileRel = await glob(`${relativeSrc}/**/*.{ts,tsx}`, {
-                cwd: PACKAGES_ROOT,
+                cwd: REPO_ROOT,
                 windowsPathsNoEscape: true,
                 ignore: ["**/*.test.ts", "**/*.test.tsx", ...SCAN_IGNORE],
               });
-              componentFiles = componentFileRel.map((p) => resolve(PACKAGES_ROOT, p));
+              componentFiles = componentFileRel.map((p) => resolve(REPO_ROOT, p));
             } catch (error) {
               // Package doesn't have a src directory — expected for some packages.
               console.error(`[mcp] no src/ in ${packageJson.name}:`, error);
@@ -257,21 +257,21 @@ class KumixTemplateMCPServer {
       };
     }
 
-    // Resolve the requested path and ensure it stays inside the package directory.
+    // Resolve the requested path and ensure it stays inside the source directory.
     // Without this, a caller could request "../../.env" or similar to read files
     // outside the intended scope (path traversal).
     const baseDir = pkg.srcDir ?? pkg.packageDir;
-    const packageRoot = resolve(pkg.packageDir);
+    const baseRoot = resolve(baseDir);
     const resolvedPath = resolve(baseDir, componentPath);
 
-    if (resolvedPath !== packageRoot && !resolvedPath.startsWith(`${packageRoot}${sep}`)) {
+    if (resolvedPath !== baseRoot && !resolvedPath.startsWith(`${baseRoot}${sep}`)) {
       return {
         content: [
           {
             type: "text" as const,
             text: JSON.stringify(
               {
-                error: `Component path escapes package directory: ${componentPath}`,
+                error: `Component path escapes source directory: ${componentPath}`,
                 package: packageName,
               },
               null,
@@ -409,18 +409,18 @@ import ${importTarget} from "${packageName}";
 
 // Create server instance
 const server = new McpServer({
-  name: "Kumix Template",
+  name: "Kumix UI",
   version: "0.0.0",
 });
 
 // Instance of our business logic
-const kumixServer = new KumixTemplateMCPServer();
+const kumixServer = new KumixUiMCPServer();
 
 // Register tools using the new API
 server.registerTool(
   "list_packages",
   {
-    description: "List all available Kumix template packages",
+    description: "List all available Kumix packages",
     inputSchema: {},
   },
   async () => {
@@ -437,7 +437,7 @@ server.registerTool(
       package_name: z
         .string()
         .min(1, "Package name is required")
-        .describe("The name of the package (e.g., @kumix/core)"),
+        .describe("The name of the package (e.g., @kumix/ui)"),
     },
   },
   async ({ package_name }) => {
@@ -507,15 +507,15 @@ server.registerTool(
 );
 
 /**
- * Main entry point for the Kumix Template MCP Server
+ * Main entry point for the Kumix UI MCP Server
  *
  * This script initializes the MCP server using the official MCP SDK and
- * provides tools and resources for exploring the template packages.
+ * provides tools and resources for exploring the UI package.
  */
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("Kumix Template MCP server running on stdio");
+  console.error("Kumix UI MCP server running on stdio");
 }
 
 main().catch((error) => {

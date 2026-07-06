@@ -1,6 +1,6 @@
-# Contributing to Bun Package Template
+# Contributing to Kumix UI
 
-Thank you for your interest in contributing! This template aims to provide a clean, production-ready Bun monorepo setup for building and publishing TypeScript/Node packages.
+Thank you for your interest in contributing! This repository contains the Kumix React UI component package.
 
 ## Code of Conduct
 
@@ -8,7 +8,7 @@ This project and everyone participating in it is governed by our [Code of Conduc
 
 ## Why Contribute?
 
-This template is community-driven. Your contributions help:
+This package is community-driven. Your contributions help:
 
 - Improve developer experience and documentation
 - Fix issues and enhance reliability
@@ -119,7 +119,7 @@ Use descriptive branch names:
 Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-feat(template): add package scaffolding script
+feat(ui): add component
 fix(ci): correct bun run command in workflow
 docs(readme): clarify release process
 refactor(workspace): simplify outputs in turbo.json
@@ -266,7 +266,7 @@ This project uses [Changesets](https://github.com/changesets/changesets) for ver
 
 ## Security
 
-If you discover a security vulnerability, please report it privately as described in [SECURITY.md](./SECURITY.md). Replace the contact email with your own when using this template.
+If you discover a security vulnerability, please report it privately as described in [SECURITY.md](./SECURITY.md).
 
 **Do not report security issues through public GitHub issues.**
 
@@ -280,4 +280,4 @@ If you have questions or need help:
 
 ## License
 
-By contributing to this template, you agree that your contributions will be licensed under the MIT License.
+By contributing to this project, you agree that your contributions will be licensed under the MIT License.

@@ -24,27 +24,30 @@ updates:
     labels:
       - "dependencies"
 
-  # Per-package dependencies
+  # UI package dependencies
   - package-ecosystem: "npm"
-    directory: "/packages/core"
+    directory: "/packages/ui"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 5
+    groups:
+      ui-runtime:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      ui-dev:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
     commit-message:
       prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
     labels:
       - "dependencies"
 
-  - package-ecosystem: "npm"
-    directory: "/packages/main"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 3
-    commit-message:
-      prefix: "build(deps)"
-    labels:
-      - "dependencies"
-
+  # Internal MCP helper package
   - package-ecosystem: "npm"
     directory: "/packages/mcp"
     schedule:
