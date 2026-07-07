@@ -56,6 +56,12 @@ const cursorVariants: Variants = {
   },
 };
 
+const CONTAINER_VARIANTS: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { staggerChildren: 0.02 } },
+  exit: { opacity: 0 },
+};
+
 export function TypingText({
   text,
   texts,
@@ -135,20 +141,12 @@ export function TypingText({
     }
   }, [currentIndex, currentText, isTyping, speed, loop, texts, pauseDuration, onComplete]);
 
-  // Animation variants for container (fadeIn by default, extendable)
-  const finalVariants = {
-    container: {
-      hidden: { opacity: 0, y: 10 },
-      show: { opacity: 1, y: 0, transition: { staggerChildren: 0.02 } },
-      exit: { opacity: 0 },
-    },
-  };
   const MotionComponent = motion.span;
 
   return (
     <MotionComponent
       ref={ref}
-      variants={finalVariants.container as Variants}
+      variants={CONTAINER_VARIANTS}
       initial="hidden"
       whileInView={startOnView ? "show" : undefined}
       animate={startOnView ? undefined : "show"}

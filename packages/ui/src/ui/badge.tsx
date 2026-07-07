@@ -2,25 +2,9 @@
 
 import type * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { Slot as SlotPrimitive } from "radix-ui";
+import { Slot } from "radix-ui";
 
 import { cn } from "@kumix/utils";
-
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {
-  asChild?: boolean;
-  dotClassName?: string;
-  disabled?: boolean;
-}
-
-export interface BadgeButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof badgeButtonVariants> {
-  asChild?: boolean;
-}
-
-export type BadgeDotProps = React.HTMLAttributes<HTMLSpanElement>;
 
 const badgeVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap border border-transparent font-medium focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 [&_svg]:-ms-px [&_svg]:shrink-0",
@@ -170,19 +154,8 @@ const badgeVariants = cva(
   },
 );
 
-const badgeButtonVariants = cva(
-  "-me-0.5 inline-flex size-3.5 cursor-pointer items-center justify-center rounded-md p-0 leading-none opacity-60 transition-all hover:opacity-100 [&>svg]:size-3.5! [&>svg]:opacity-100!",
-  {
-    variants: {
-      variant: {
-        default: "",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  },
-);
+const badgeButtonClassNames =
+  "-me-0.5 inline-flex size-3.5 cursor-pointer items-center justify-center rounded-md p-0 leading-none opacity-60 transition-all hover:opacity-100 [&>svg]:size-3.5! [&>svg]:opacity-100!";
 
 function Badge({
   className,
@@ -194,7 +167,7 @@ function Badge({
   disabled,
   ...props
 }: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? SlotPrimitive.Slot : "span";
+  const Comp = asChild ? Slot.Root : "span";
 
   return (
     <Comp
@@ -207,16 +180,14 @@ function Badge({
 
 function BadgeButton({
   className,
-  variant,
   asChild = false,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof badgeButtonVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? SlotPrimitive.Slot : "button";
+}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot.Root : "button";
   return (
     <Comp
       data-slot="badge-button"
-      className={cn(badgeButtonVariants({ variant, className }))}
+      className={cn(badgeButtonClassNames, className)}
       {...(!asChild ? { type: "button" } : {})}
       {...props}
     />

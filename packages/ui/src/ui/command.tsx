@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import type * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import { CheckIcon, type LucideIcon, SearchIcon } from "lucide-react";
 import type { Dialog as DialogPrimitive } from "radix-ui";

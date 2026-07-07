@@ -3,7 +3,7 @@
 import type * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { CheckIcon, CopyIcon } from "lucide-react";
-import { Slot as SlotPrimitive } from "radix-ui";
+import { Slot } from "radix-ui";
 
 import { cn } from "@kumix/utils";
 import { useCopyToClipboard } from "../hooks/use-copy-to-clipboard";
@@ -47,7 +47,7 @@ function Code({
   ...props
 }: CodeProps) {
   const { copy, copied } = useCopyToClipboard();
-  const Comp = asChild ? SlotPrimitive.Slot : "code";
+  const Comp = asChild ? Slot.Root : "code";
   const textToCopy = copyText || (typeof children === "string" ? children : "");
 
   return (

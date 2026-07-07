@@ -27,8 +27,8 @@ This package is community-driven. Your contributions help:
 1. Fork the repository on GitHub
 2. Clone your fork locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-   cd YOUR_REPOSITORY
+   git clone https://github.com/kumixlabs/ui.git
+   cd ui
    ```
 3. Install dependencies:
    ```bash
@@ -218,9 +218,9 @@ Make sure:
 ### Adding a New Package
 
 1. Create a new directory in `packages/`
-2. Copy the structure from an existing package (e.g., `packages/core`)
+2. Copy the structure from an existing package (e.g., `packages/ui`)
 3. Update `package.json` with appropriate metadata
-4. Add a `tsconfig.json` extending `@kumix/tsconfig/node`
+4. Add a `tsconfig.json` extending `@kumix/tsconfig/react`
 5. Ensure the package is included in the workspace
 
 ### Package Structure

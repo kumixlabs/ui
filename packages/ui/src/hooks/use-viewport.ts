@@ -71,7 +71,7 @@ type ViewportDimensions = [number, number];
  * }
  * ```
  */
-const useViewport = (): ViewportDimensions => {
+export const useViewport = (): ViewportDimensions => {
   /**
    * State to track viewport dimensions
    * Initialized with current window dimensions or fallback for SSR
@@ -101,5 +101,3 @@ const useViewport = (): ViewportDimensions => {
 
   return dimensions;
 };
-
-export { useViewport };

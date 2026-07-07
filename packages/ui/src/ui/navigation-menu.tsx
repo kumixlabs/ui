@@ -1,7 +1,6 @@
 "use client";
 
 import type * as React from "react";
-import { cva } from "class-variance-authority";
 import { ChevronDownIcon } from "lucide-react";
 import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui";
 
@@ -57,9 +56,8 @@ function NavigationMenuItem({
   );
 }
 
-const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-9 w-max cursor-pointer items-center justify-center rounded-md bg-background px-4 py-2 font-medium text-sm outline-ring/50 ring-ring/10 transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:outline-1 focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-accent/50 data-[state=open]:bg-accent/50 data-[active=true]:text-accent-foreground dark:outline-ring/40 dark:ring-ring/20",
-);
+const navigationMenuTriggerStyle =
+  "group inline-flex h-9 w-max cursor-pointer items-center justify-center rounded-md bg-background px-4 py-2 font-medium text-sm outline-ring/50 ring-ring/10 transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:outline-1 focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-accent/50 data-[state=open]:bg-accent/50 data-[active=true]:text-accent-foreground dark:outline-ring/40 dark:ring-ring/20";
 
 function NavigationMenuTrigger({
   className,
@@ -69,7 +67,7 @@ function NavigationMenuTrigger({
   return (
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
-      className={cn(navigationMenuTriggerStyle(), "group", className)}
+      className={cn(navigationMenuTriggerStyle, "group", className)}
       {...props}
     >
       {children}{" "}

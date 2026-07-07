@@ -2,7 +2,7 @@
 
 import type * as React from "react";
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
-import { Slot as SlotPrimitive } from "radix-ui";
+import { Slot } from "radix-ui";
 
 import { cn } from "@kumix/utils";
 
@@ -40,7 +40,7 @@ function BreadcrumbLink({
 }: React.ComponentProps<"a"> & {
   asChild?: boolean;
 }) {
-  const Comp = asChild ? SlotPrimitive.Slot : "a";
+  const Comp = asChild ? Slot.Root : "a";
 
   return (
     <Comp

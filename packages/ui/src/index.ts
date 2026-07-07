@@ -49,6 +49,7 @@ export * from "./ui/dialog";
 export * from "./ui/drawer";
 export * from "./ui/dropdown-menu";
 export * from "./ui/empty";
+export * from "./ui/error-boundary";
 export * from "./ui/field";
 export * from "./ui/filters";
 export * from "./ui/form";

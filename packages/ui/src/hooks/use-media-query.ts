@@ -6,23 +6,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
-
-/**
- * Helper function to safely check media query matches
- * Prevents SSR hydration issues by checking for window availability
- *
- * @param query - CSS media query string to evaluate
- * @returns Boolean indicating if the media query matches
- */
-const getMatches = (query: string): boolean => {
-  // Prevents SSR issues by checking for window availability
-  if (typeof window !== "undefined") {
-    return window.matchMedia(query).matches;
-  }
-  // Return false during SSR to prevent hydration mismatches
-  return false;
-};
+import { useCallback, useSyncExternalStore } from "react";
 
 /**
  * Hook for tracking CSS media query matches in React components
@@ -58,34 +42,24 @@ const getMatches = (query: string): boolean => {
  * );
  * ```
  */
-const useMediaQuery = (query: string): boolean => {
-  /** State to track current media query match status */
-  const [matches, setMatches] = useState<boolean>(false);
+export const useMediaQuery = (query: string): boolean => {
+  // Subscribe to media query changes and clean up automatically
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const matchMedia = window.matchMedia(query);
+      matchMedia.addEventListener("change", onChange);
+      return () => {
+        matchMedia.removeEventListener("change", onChange);
+      };
+    },
+    [query],
+  );
 
-  useEffect(() => {
-    /**
-     * Handler function to update matches state when media query changes
-     */
-    function handleChange() {
-      setMatches(getMatches(query));
-    }
+  // Read the current match status on the client
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
 
-    // Create MediaQueryList object for the given query
-    const matchMedia = window.matchMedia(query);
+  // Always report false during SSR to avoid hydration mismatches
+  const getServerSnapshot = () => false;
 
-    // Set initial state on client-side mount and when query changes
-    handleChange();
-
-    // Add event listener for media query changes
-    matchMedia.addEventListener("change", handleChange);
-
-    // Cleanup function to remove event listener
-    return () => {
-      matchMedia.removeEventListener("change", handleChange);
-    };
-  }, [query]); // Re-run effect when query changes
-
-  return matches;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };
-
-export { useMediaQuery };

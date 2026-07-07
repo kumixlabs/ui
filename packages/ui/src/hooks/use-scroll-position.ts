@@ -79,7 +79,7 @@ interface UseScrollPositionProps {
  * }
  * ```
  */
-const useScrollPosition = ({ targetRef }: UseScrollPositionProps = {}): number => {
+export const useScrollPosition = ({ targetRef }: UseScrollPositionProps = {}): number => {
   /** State to track current scroll position */
   const [scrollPosition, setScrollPosition] = useState<number>(0);
 
@@ -118,5 +118,3 @@ const useScrollPosition = ({ targetRef }: UseScrollPositionProps = {}): number =
 
   return scrollPosition;
 };
-
-export { useScrollPosition };

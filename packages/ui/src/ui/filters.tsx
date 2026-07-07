@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import type * as React from "react";
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { AlertCircleIcon, CheckIcon, PlusIcon, XIcon } from "lucide-react";
@@ -1006,7 +1006,6 @@ function renderOptionCommandItems<T>({
   onSelectSelected,
   onSelectAvailable,
   isMultiSelect,
-  maxSelections,
   onClose,
 }: {
   selectedOptions: OptionWithIcon<T>[];
@@ -1014,7 +1013,6 @@ function renderOptionCommandItems<T>({
   onSelectSelected: (value: T) => void;
   onSelectAvailable: (value: T) => void;
   isMultiSelect: boolean;
-  maxSelections?: number;
   onClose?: () => void;
 }) {
   return (
@@ -1125,7 +1123,6 @@ function SelectOptionsPopover<T = unknown>({
                 }
               },
               isMultiSelect,
-              maxSelections: field.maxSelections,
               onClose,
             })}
           </CommandList>
@@ -1207,7 +1204,6 @@ function SelectOptionsPopover<T = unknown>({
                 }
               },
               isMultiSelect,
-              maxSelections: field.maxSelections,
               onClose: () => {
                 setOpen(false);
                 handleClose();
@@ -1606,7 +1602,6 @@ function FilterValueSelector<T = unknown>({
                 }
               },
               isMultiSelect,
-              maxSelections: field.maxSelections,
               onClose: () => setOpen(false),
             })}
           </CommandList>
@@ -1856,10 +1851,6 @@ export function Filters<T = unknown>({
           defaultValues = [field.min || 0, field.max || 100] as unknown[];
         } else if (field.type === "boolean") {
           defaultValues = [false] as unknown[];
-        } else if (field.type === "time") {
-          defaultValues = [""] as unknown[];
-        } else if (field.type === "datetime") {
-          defaultValues = [""] as unknown[];
         }
 
         const newFilter = createFilter<T>(fieldKey, defaultOperator, defaultValues as T[]);

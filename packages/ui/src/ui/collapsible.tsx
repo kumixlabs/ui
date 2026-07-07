@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import type * as React from "react";
 import { Collapsible as CollapsiblePrimitive } from "radix-ui";
 
 import { cn } from "@kumix/utils";

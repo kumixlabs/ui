@@ -31,9 +31,9 @@ const alertVariants = cva("flex w-full items-stretch gap-2 group-[.toaster]:w-(-
       stroke: "text-foreground",
     },
     size: {
-      lg: "gap-3 rounded-lg p-4 text-base *:data-slot=alert-icon:mt-0.5 [&>[data-slot=alert-icon]>svg]:size-6 [&_[data-slot=alert-close]]:mt-1",
-      md: "gap-2.5 rounded-lg p-3.5 text-sm *:data-slot=alert-icon:mt-0 [&>[data-slot=alert-icon]>svg]:size-5 [&_[data-slot=alert-close]]:mt-0.5",
-      sm: "gap-2 rounded-md px-3 py-2.5 text-xs *:data-alert-icon:mt-0.5 [&>[data-slot=alert-icon]>svg]:size-4 [&_[data-slot=alert-close]]:mt-0.25 [&_[data-slot=alert-close]_svg]:size-3.5",
+      lg: "gap-3 rounded-lg p-4 text-base *:data-[slot=alert-icon]:mt-0.5 [&>[data-slot=alert-icon]>svg]:size-6 [&_[data-slot=alert-close]]:mt-1",
+      md: "gap-2.5 rounded-lg p-3.5 text-sm *:data-[slot=alert-icon]:mt-0 [&>[data-slot=alert-icon]>svg]:size-5 [&_[data-slot=alert-close]]:mt-0.5",
+      sm: "gap-2 rounded-md px-3 py-2.5 text-xs *:data-[slot=alert-icon]:mt-0.5 [&>[data-slot=alert-icon]>svg]:size-4 [&_[data-slot=alert-close]]:mt-0.25 [&_[data-slot=alert-close]_svg]:size-3.5",
     },
   },
   compoundVariants: [
@@ -75,7 +75,7 @@ const alertVariants = cva("flex w-full items-stretch gap-2 group-[.toaster]:w-(-
       variant: "mono",
       appearance: "solid",
       className:
-        "bg-zinc-950 text-white *:data-slot-[alert=close]:text-white dark:bg-zinc-300 dark:text-black",
+        "bg-zinc-950 text-white dark:bg-zinc-300 dark:text-black [&_[data-slot=alert-close]]:text-white",
     },
 
     /* Outline */
@@ -255,7 +255,7 @@ function AlertIcon({ children, className, ...props }: AlertIconProps) {
   );
 }
 
-function AlertToolbar({ children, className, ...props }: AlertIconProps) {
+function AlertToolbar({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div data-slot="alert-toolbar" className={cn(className)} {...props}>
       {children}

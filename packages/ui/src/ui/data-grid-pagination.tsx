@@ -25,25 +25,25 @@ interface DataGridPaginationProps {
   nextPagesLabel?: string;
 }
 
+const DATA_GRID_PAGINATION_DEFAULT_PROPS: DataGridPaginationProps = {
+  sizes: [5, 10, 25, 50, 100],
+  sizesLabel: "Show",
+  sizesSkeleton: <Skeleton className="h-8 w-44" />,
+  moreLimit: 5,
+  info: "{from} - {to} of {count}",
+  infoSkeleton: <Skeleton className="h-8 w-60" />,
+  rowsPerPageLabel: "Rows per page",
+  previousPageLabel: "Go to previous page",
+  nextPageLabel: "Go to next page",
+  ellipsisText: "...",
+  previousPagesLabel: "Jump to previous pages",
+  nextPagesLabel: "Jump to next pages",
+};
+
 function DataGridPagination(props: DataGridPaginationProps) {
   const { table, recordCount, isLoading } = useDataGrid();
 
-  const defaultProps: Partial<DataGridPaginationProps> = {
-    sizes: [5, 10, 25, 50, 100],
-    sizesLabel: "Show",
-    sizesSkeleton: <Skeleton className="h-8 w-44" />,
-    moreLimit: 5,
-    info: "{from} - {to} of {count}",
-    infoSkeleton: <Skeleton className="h-8 w-60" />,
-    rowsPerPageLabel: "Rows per page",
-    previousPageLabel: "Go to previous page",
-    nextPageLabel: "Go to next page",
-    ellipsisText: "...",
-    previousPagesLabel: "Jump to previous pages",
-    nextPagesLabel: "Jump to next pages",
-  };
-
-  const mergedProps: DataGridPaginationProps = { ...defaultProps, ...props };
+  const mergedProps: DataGridPaginationProps = { ...DATA_GRID_PAGINATION_DEFAULT_PROPS, ...props };
 
   const btnBaseClasses = "size-7 p-0 text-sm";
   const btnArrowClasses = `${btnBaseClasses} rtl:transform rtl:rotate-180`;

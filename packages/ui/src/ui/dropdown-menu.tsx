@@ -43,7 +43,6 @@ function DropdownMenuSubTrigger({
         "flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-hidden",
         "focus:bg-accent focus:text-foreground",
         "data-[state=open]:bg-accent data-[state=open]:text-foreground",
-        "data-[here=true]:bg-accent data-[here=true]:text-foreground",
         "[&>svg]:pointer-events-none [&>svg]:size-4 [&>svg]:shrink-0 [&_svg:not([role=img]):not([class*=text-])]:opacity-60",
         inset && "ps-8",
         className,

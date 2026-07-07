@@ -70,7 +70,7 @@ function Rating({
      */
     showValue?: boolean;
     /**
-     * Class name for the value span
+     * Class name applied to the numeric value span
      */
     starClassName?: string;
     /**
@@ -85,9 +85,26 @@ function Rating({
   const [hoveredRating, setHoveredRating] = React.useState<number | null>(null);
   const displayRating = editable && hoveredRating !== null ? hoveredRating : rating;
 
-  const handleStarClick = (starRating: number) => {
+  const handleRatingChange = (value: number) => {
     if (editable && onRatingChange) {
-      onRatingChange(starRating);
+      onRatingChange(value);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!editable) return;
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      e.preventDefault();
+      handleRatingChange(Math.min(maxRating, Math.round(displayRating) + 1));
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      e.preventDefault();
+      handleRatingChange(Math.max(1, Math.round(displayRating) - 1));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      handleRatingChange(1);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      handleRatingChange(maxRating);
     }
   };
 
@@ -116,11 +133,12 @@ function Rating({
           key={i}
           type="button"
           className={cn("relative border-0 bg-transparent p-0", editable && "cursor-pointer")}
-          onClick={() => handleStarClick(i)}
+          onClick={() => handleRatingChange(i)}
           onMouseEnter={() => handleStarMouseEnter(i)}
           onMouseLeave={handleStarMouseLeave}
-          aria-label={`Rate ${i} star${i > 1 ? "s" : ""}`}
-          tabIndex={editable ? 0 : -1}
+          aria-label={`${i} star${i > 1 ? "s" : ""}`}
+          disabled={!editable}
+          tabIndex={-1}
         >
           <StarIcon
             data-slot="rating-star-empty"
@@ -146,7 +164,18 @@ function Rating({
   };
 
   return (
-    <div data-slot="rating" className={cn(ratingVariants({ size }), className)} {...props}>
+    <div
+      data-slot="rating"
+      className={cn(ratingVariants({ size }), className)}
+      role={editable ? "slider" : undefined}
+      tabIndex={editable ? 0 : undefined}
+      aria-valuenow={editable ? displayRating : undefined}
+      aria-valuemin={editable ? 1 : undefined}
+      aria-valuemax={editable ? maxRating : undefined}
+      aria-label={editable ? "Rating" : undefined}
+      onKeyDown={handleKeyDown}
+      {...props}
+    >
       <div className="flex items-center">{renderStars()}</div>
       {showValue && (
         <span data-slot="rating-value" className={cn(valueVariants({ size }), starClassName)}>

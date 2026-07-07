@@ -115,47 +115,47 @@ function DataGridProvider<TData extends object>({
   );
 }
 
-function DataGrid<TData extends object>({ children, table, ...props }: DataGridProps<TData>) {
-  const defaultProps: Partial<DataGridProps<TData>> = {
-    loadingMode: "skeleton",
-    tableLayout: {
-      dense: false,
-      cellBorder: false,
-      rowBorder: true,
-      rowRounded: false,
-      stripped: false,
-      headerSticky: false,
-      headerBackground: true,
-      headerBorder: true,
-      width: "fixed",
-      columnsVisibility: false,
-      columnsResizable: false,
-      columnsPinnable: false,
-      columnsMovable: false,
-      columnsDraggable: false,
-      rowsDraggable: false,
-    },
-    tableClassNames: {
-      base: "",
-      header: "",
-      headerRow: "",
-      headerSticky: "sticky top-0 z-10 bg-background/90 backdrop-blur-xs",
-      body: "",
-      bodyRow: "",
-      footer: "",
-      edgeCell: "",
-    },
-  };
+const DATA_GRID_DEFAULT_PROPS = {
+  loadingMode: "skeleton" as const,
+  tableLayout: {
+    dense: false,
+    cellBorder: false,
+    rowBorder: true,
+    rowRounded: false,
+    stripped: false,
+    headerSticky: false,
+    headerBackground: true,
+    headerBorder: true,
+    width: "fixed" as const,
+    columnsVisibility: false,
+    columnsResizable: false,
+    columnsPinnable: false,
+    columnsMovable: false,
+    columnsDraggable: false,
+    rowsDraggable: false,
+  },
+  tableClassNames: {
+    base: "",
+    header: "",
+    headerRow: "",
+    headerSticky: "sticky top-0 z-10 bg-background/90 backdrop-blur-xs",
+    body: "",
+    bodyRow: "",
+    footer: "",
+    edgeCell: "",
+  },
+};
 
+function DataGrid<TData extends object>({ children, table, ...props }: DataGridProps<TData>) {
   const mergedProps: DataGridProps<TData> = {
-    ...defaultProps,
+    ...DATA_GRID_DEFAULT_PROPS,
     ...props,
     tableLayout: {
-      ...defaultProps.tableLayout,
+      ...DATA_GRID_DEFAULT_PROPS.tableLayout,
       ...(props.tableLayout || {}),
     },
     tableClassNames: {
-      ...defaultProps.tableClassNames,
+      ...DATA_GRID_DEFAULT_PROPS.tableClassNames,
       ...(props.tableClassNames || {}),
     },
   };

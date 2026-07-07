@@ -3,7 +3,7 @@
 import type * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronDownIcon, type LucideIcon } from "lucide-react";
-import { Slot as SlotPrimitive } from "radix-ui";
+import { Slot } from "radix-ui";
 
 import { cn } from "@kumix/utils";
 
@@ -395,7 +395,7 @@ function Button({
     selected?: boolean;
     asChild?: boolean;
   }) {
-  const Comp = asChild ? SlotPrimitive.Slot : "button";
+  const Comp = asChild ? Slot.Root : "button";
   return (
     <Comp
       data-slot="button"

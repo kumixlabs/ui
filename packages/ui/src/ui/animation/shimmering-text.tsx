@@ -1,7 +1,7 @@
 "use client";
 
-import type React from "react";
-import { useMemo, useRef } from "react";
+import type * as React from "react";
+import { useRef } from "react";
 import { motion, type UseInViewOptions, useInView, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
@@ -52,9 +52,7 @@ export function ShimmeringText({
   const shouldReduceMotion = useReducedMotion();
 
   // Calculate dynamic spread based on text length
-  const dynamicSpread = useMemo(() => {
-    return text.length * spread;
-  }, [text, spread]);
+  const dynamicSpread = text.length * spread;
 
   // Determine if we should start animation
   const shouldAnimate = !startOnView || isInView;
