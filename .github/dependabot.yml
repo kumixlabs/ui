@@ -24,12 +24,12 @@ updates:
     labels:
       - "dependencies"
 
-  # UI package dependencies
+  # Per-package dependencies
   - package-ecosystem: "npm"
     directory: "/packages/ui"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     groups:
       ui-runtime:
         dependency-type: "production"
