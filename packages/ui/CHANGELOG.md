@@ -1,5 +1,13 @@
 # @kumix/ui
 
+## 0.1.2
+
+### Patch Changes
+
+- [`50f4508`](https://github.com/kumixlabs/ui/commit/50f4508963dd51167080066e6d5c321384f44bb0) Thanks [@kumixio](https://github.com/kumixio)! - Add new components: `Attachment`, `Bubble`, `Chart` (Recharts-based), `Combobox`, `DirectionProvider` (RTL/LTR), `InputGroup`, `Marker`, `Message`, `MessageScroller`, and `NativeSelect`.
+
+  Adds `@base-ui/react` and `recharts` as peer dependencies for the new components.
+
 ## 0.1.1
 
 ### Patch Changes
