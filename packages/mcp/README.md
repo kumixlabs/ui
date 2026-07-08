@@ -13,7 +13,7 @@ The server scans `packages/**` at runtime and indexes every workspace package wh
 ```bash
 cd packages/mcp
 bun run build
-bun run smoke
+bun run test
 ```
 
 ## MCP Client Configuration

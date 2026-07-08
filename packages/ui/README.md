@@ -4,7 +4,10 @@ Headless, accessible React component library for Kumix products. Built on Radix 
 
 ## What's Inside
 
-- 80+ UI components: form controls, overlays, navigation, data display, DataGrid, Kanban, Sortable, and more.
+- 90+ UI components: form controls, overlays, navigation, data display, DataGrid, Kanban, Sortable, and more.
+- Charts: `Chart` components built on Recharts, with theme-aware colors, tooltips, and legends.
+- Messaging: `Message`, `Bubble`, `Attachment`, and `MessageScroller` primitives for chat and AI interfaces.
+- Input building blocks: `Combobox`, `InputGroup`, `NativeSelect`, and `Marker`, plus a `DirectionProvider` for RTL/LTR support.
 - Hooks entry: viewport, media query, copy-to-clipboard, file upload, intersection observer, mutation observer, and related utilities.
 - Animation components: marquee, text effects, counting/sliding numbers, animated backgrounds, avatar groups, and more.
 - Tailwind-friendly styling via utility classes, semantic CSS variables, and `data-slot` attributes.
@@ -22,7 +25,7 @@ Install peer dependencies required by the components you use. Common peers inclu
 bun add @kumix/utils class-variance-authority lucide-react radix-ui react
 ```
 
-Feature-specific components may also require `@tanstack/react-table`, `@dnd-kit/*`, `cmdk`, `motion`, `react-day-picker`, `react-aria-components`, `react-hook-form`, `react-resizable-panels`, `sonner`, `vaul`, `input-otp`, `embla-carousel-react`, `next-themes`, or `@headless-tree/core`.
+Feature-specific components may also require `@base-ui/react`, `recharts`, `@tanstack/react-table`, `@dnd-kit/*`, `cmdk`, `motion`, `react-day-picker`, `react-aria-components`, `react-hook-form`, `react-resizable-panels`, `sonner`, `vaul`, `input-otp`, `embla-carousel-react`, `next-themes`, or `@headless-tree/core`.
 
 See `package.json` for exact peer dependency ranges.
 
