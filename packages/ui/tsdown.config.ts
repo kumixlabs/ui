@@ -9,7 +9,7 @@ export default defineConfig({
   deps: {
     neverBundle: [...Object.keys(pkg.peerDependencies || {})],
   },
-  entry: ["./src/index.ts", "./src/hooks.ts", "./src/style.css"],
+  entry: ["./src/index.ts", "./src/hooks.ts"],
   format: "esm",
   target: "ES2022",
   outExtensions: () => ({ js: ".js", dts: ".d.ts" }),

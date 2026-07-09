@@ -57,17 +57,27 @@ import { useMediaQuery, useViewport } from "@kumix/ui/hooks";
 
 ## Package Entries
 
-| Entry             | Description                           |
-| ----------------- | ------------------------------------- |
-| `@kumix/ui`       | React components                      |
-| `@kumix/ui/hooks` | Standalone hooks                      |
-| `@kumix/ui/css`   | CSS entry emitted as `dist/style.css` |
+| Entry                  | Description                                                     |
+| ---------------------- | --------------------------------------------------------------- |
+| `@kumix/ui`            | React components                                                |
+| `@kumix/ui/hooks`      | Standalone hooks                                                |
+| `@kumix/ui/css`        | Full stylesheet (theme + tokens), emitted as `dist/style.css`   |
+| `@kumix/ui/css/source` | Tailwind `@source` directive only, emitted as `dist/source.css` |
 
 ## Styling
 
 Components use Tailwind utility classes and semantic CSS variables, such as `--color-background`, `--color-foreground`, `--color-primary`, `--color-border`, and related tokens.
 
-The CSS entry currently emits the package stylesheet from `src/style.css`, which contains the Tailwind source directive for this package. Consumers should include `@kumix/ui/css` once in their app and ensure their Tailwind setup scans the package source/classes as needed.
+There are two CSS entries depending on your setup:
+
+- `@kumix/ui/css` emits the full package stylesheet from `src/style.css`. It bundles the theme tokens (`:root`/`.dark` variables), the `@theme inline` mappings, animations, and base styles. Import it once in your app if you want the complete Kumix theme out of the box.
+- `@kumix/ui/css/source` emits `src/source.css`, which contains only the Tailwind `@source "."` directive. Import it in your own Tailwind v4 stylesheet when you already define your own theme and just need Tailwind to scan the compiled component classes shipped in `dist`.
+
+```css
+/* Your app stylesheet, Tailwind v4 */
+@import "tailwindcss";
+@import "@kumix/ui/css/source";
+```
 
 Every component exposes `data-slot` attributes for targeted styling, for example `data-slot="button"` and `data-slot="card"`.
 
