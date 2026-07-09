@@ -1,5 +1,13 @@
 # @kumix/ui
 
+## 0.1.3
+
+### Patch Changes
+
+- [`366ad09`](https://github.com/kumixlabs/ui/commit/366ad09db13a71ab5826e59584ab7cb8d6761ddf) Thanks [@kumixio](https://github.com/kumixio)! - Add a new `@kumix/ui/css/source` export.
+
+  The package now ships a dedicated `source.css` entry (emitted as `dist/source.css`) containing the Tailwind `@source` directive for the package. Consumers on Tailwind v4 can import `@kumix/ui/css/source` to make their build scan the compiled component classes without pulling in the full theme stylesheet from `@kumix/ui/css`.
+
 ## 0.1.2
 
 ### Patch Changes
