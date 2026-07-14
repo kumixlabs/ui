@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { Label, Switch } from "@kumix/ui";
+import { Logo } from "./logo";
 import { pages } from "./registry";
 
 import "./App.css";
-import { Logo } from "./logo";
 
 function useHashRoute() {
   const [hash, setHash] = useState(() => window.location.hash.slice(1) || pages[0].slug);
