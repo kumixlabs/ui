@@ -1,6 +1,6 @@
 {
   "name": "@kumix/shadcn",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Headless, accessible React component library built on Base UI, Tailwind, and more.",
   "author": "Kumix Labs <hai@kumix.io>",
   "license": "MIT",

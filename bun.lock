@@ -88,7 +88,7 @@
     },
     "packages/shadcn": {
       "name": "@kumix/shadcn",
-      "version": "0.0.1",
+      "version": "0.1.0",
       "devDependencies": {
         "@base-ui/react": "^1.6.0",
         "@kumix/tsconfig": "^0.1.0",
