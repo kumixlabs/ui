@@ -10,11 +10,12 @@
 
 ## Workspace Layout
 
-- `packages/*` — libs: `@kumix/ui`, `@kumix/mcp`. `scripts/publish.sh` only scans `packages/**` and skips any package with `"private": true`.
-- `@kumix/ui` is the publishable React component package.
+- `packages/*` — libs: `@kumix/ui`, `@kumix/shadcn`, `@kumix/mcp`. `scripts/publish.sh` only scans `packages/**` and skips any package with `"private": true`.
+- `@kumix/ui` is the publishable React component package (Radix-based, Tailwind).
+- `@kumix/shadcn` is the publishable React component package (Base UI + shadcn registry, per-component exports).
 - `@kumix/mcp` is in changeset `ignore` (`.changeset/config.json`) — excluded from versioning even if made public.
 - `apps/*` — application placeholders.
-- `@kumix/ui` builds with `tsdown`, extending external `@kumix/tsconfig/react`. Output goes to `dist/`.
+- `@kumix/ui` and `@kumix/shadcn` build with `tsdown`, extending external `@kumix/tsconfig/react`. Output goes to `dist/`.
 
 ## Commands
 

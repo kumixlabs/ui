@@ -1,6 +1,6 @@
 # Kumix UI
 
-React component package for Kumix products. The publishable package in this repository is `@kumix/ui`.
+React component packages for Kumix products. The publishable packages in this repository are `@kumix/ui` (Radix-based) and `@kumix/shadcn` (Base UI + shadcn registry).
 
 The package is built with Bun, TypeScript, tsdown, Radix UI primitives, Tailwind utility classes, and related headless UI libraries.
 
@@ -60,7 +60,8 @@ The `@kumix/ui/css` entry currently emits the package CSS source directive from 
 
 ## Repository Layout
 
-- `packages/ui` - publishable React component package.
+- `packages/ui` - publishable Radix-based React component package (`@kumix/ui`).
+- `packages/shadcn` - publishable Base UI + shadcn registry React component package (`@kumix/shadcn`).
 - `packages/mcp` - private MCP helper package, ignored by Changesets.
 - `apps` - application workspace placeholders.
 
