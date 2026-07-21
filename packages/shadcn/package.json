@@ -59,9 +59,9 @@
     "react": "^19.2.7",
     "react-day-picker": "^10.0.1",
     "react-resizable-panels": "^4.12.2",
-    "recharts": "^3.9.2",
+    "recharts": "^3.10.0",
     "sonner": "^2.0.7",
-    "tsdown": "^0.22.9",
+    "tsdown": "^0.22.12",
     "typescript": "catalog:"
   },
   "peerDependencies": {
