@@ -91,7 +91,7 @@ export function Marquee({
                   !vertical && "animate-marquee flex-row",
                   vertical && "animate-marquee-vertical flex-col",
                   pauseOnHover && "group-hover:paused",
-                  reverse && "[flex-direction:row-reverse]",
+                  reverse && "flex-row-reverse",
                 )}
               >
                 {children}
