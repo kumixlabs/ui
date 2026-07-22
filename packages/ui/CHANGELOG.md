@@ -1,5 +1,16 @@
 # @kumix/ui
 
+## 0.2.0
+
+### Minor Changes
+
+- [`1ffb990`](https://github.com/kumixlabs/ui/commit/1ffb990b5bad9f16eff9db7c954940f6bfcdef33) Thanks [@kumixio](https://github.com/kumixio)! - Rebuild `@kumix/ui` around **shadcn/ui** (Base UI, base-nova) and **ReUI** components.
+
+  - Ship shadcn primitives under `components/ui` and ReUI under `components/reui` (data-grid, event-calendar, gantt, filters, kanban, and more).
+  - Per-file ESM exports (no barrel); CSS via `@kumix/ui/css` and `@kumix/ui/theme`.
+  - Internal imports use relative paths and `@kumix/utils` (no `@/` aliases in published source).
+  - Drop the separate shadcn package layout; single `@kumix/ui` package for consumers.
+
 ## 0.1.3
 
 ### Patch Changes
