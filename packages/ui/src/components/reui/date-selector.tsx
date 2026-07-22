@@ -21,7 +21,7 @@ import {
 import type { DateRange, DayButton } from "react-day-picker";
 
 import { cn } from "@kumix/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "../../hooks/use-mobile";
 import { Button } from "../ui/button";
 import { Calendar, CalendarDayButton } from "../ui/calendar";
 import { Input } from "../ui/input";

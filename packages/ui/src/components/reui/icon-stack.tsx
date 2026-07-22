@@ -1,5 +1,7 @@
 "use client";
 
+import type * as React from "react";
+
 import { cn } from "@kumix/utils";
 
 type IconStackProps = React.ComponentProps<"div">;
@@ -45,7 +47,7 @@ function IconStack({ className, children, style, ...props }: IconStackProps) {
       {children ? (
         <div
           data-slot="icon-stack-content"
-          className="pointer-events-none absolute top-[var(--icon-stack-content-y)] left-[var(--icon-stack-content-x)] flex -translate-x-1/2 -translate-y-1/2 -skew-y-26 scale-x-90 items-center justify-center text-muted-foreground"
+          className="pointer-events-none absolute top-(--icon-stack-content-y) left-(--icon-stack-content-x) flex -translate-x-1/2 -translate-y-1/2 -skew-y-26 scale-x-90 items-center justify-center text-muted-foreground"
         >
           {children}
         </div>

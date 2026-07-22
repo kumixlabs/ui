@@ -1,11 +1,13 @@
 {
   "name": "@kumix/ui",
   "version": "0.1.3",
-  "description": "Headless, accessible React component library built on Base UI, Tailwind, and more.",
+  "description": "Kumix React UI kit: shadcn/ui (Base UI, base-nova) + ReUI components, Tailwind tokens, and hooks. Per-file ESM exports.",
   "author": "Kumix Labs <hai@kumix.io>",
   "license": "MIT",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     "./css": {
       "types": "./dist/style.css.d.ts",
@@ -26,14 +28,11 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "clean:all": "rimraf .turbo coverage dist node_modules",
+    "clean:all": "rimraf .turbo dist node_modules",
     "dev": "tsdown --watch",
     "build:css": "cp src/style.css dist/style.css && cp src/theme.css dist/theme.css && cp src/style.css.d.ts dist/style.css.d.ts && cp src/theme.css.d.ts dist/theme.css.d.ts",
     "build": "rimraf dist && mkdir -p dist && bun run build:css && tsdown && publint",
     "types:check": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
     "add:shadcn": "shadcn add --all --overwrite",
     "add:reui": "shadcn add @reui/alert @reui/autocomplete @reui/badge @reui/data-grid @reui/date-selector @reui/event-calendar @reui/use-file-upload @reui/filters @reui/frame @reui/gantt @reui/icon-stack @reui/kanban @reui/number-field @reui/phone-input @reui/rating @reui/scrollspy @reui/sortable @reui/stepper @reui/timeline @reui/tree --overwrite"
   },
@@ -51,16 +50,22 @@
   ],
   "keywords": [
     "kumix",
-    "baseui",
-    "tailwind",
     "react",
-    "ui"
+    "ui",
+    "components",
+    "shadcn",
+    "reui",
+    "base-ui",
+    "tailwind",
+    "tailwindcss",
+    "hooks"
   ],
   "dependencies": {
     "tw-animate-css": "^1.4.0"
   },
   "devDependencies": {
     "@base-ui/react": "^1.6.0",
+    "@date-fns/tz": "^1.5.0",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
@@ -90,6 +95,7 @@
   },
   "peerDependencies": {
     "@base-ui/react": ">=1.6.0",
+    "@date-fns/tz": ">=1.5.0",
     "@dnd-kit/core": ">=6.3.0",
     "@dnd-kit/modifiers": ">=9.0.0",
     "@dnd-kit/sortable": ">=10.0.0",
@@ -117,7 +123,58 @@
     "@date-fns/tz": {
       "optional": true
     },
+    "@dnd-kit/core": {
+      "optional": true
+    },
+    "@dnd-kit/modifiers": {
+      "optional": true
+    },
+    "@dnd-kit/sortable": {
+      "optional": true
+    },
+    "@dnd-kit/utilities": {
+      "optional": true
+    },
+    "@headless-tree/core": {
+      "optional": true
+    },
+    "@shadcn/react": {
+      "optional": true
+    },
+    "@tanstack/react-table": {
+      "optional": true
+    },
+    "@tanstack/react-virtual": {
+      "optional": true
+    },
+    "cmdk": {
+      "optional": true
+    },
     "date-fns": {
+      "optional": true
+    },
+    "embla-carousel-react": {
+      "optional": true
+    },
+    "input-otp": {
+      "optional": true
+    },
+    "next-themes": {
+      "optional": true
+    },
+    "react-day-picker": {
+      "optional": true
+    },
+    "react-phone-number-input": {
+      "optional": true
+    },
+    "react-resizable-panels": {
+      "optional": true
+    },
+    "recharts": {
+      "optional": true
+    },
+    "sonner": {
       "optional": true
     }
   },

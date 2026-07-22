@@ -147,21 +147,14 @@ test(package): add basic type check script
 4. **Add comments**: Only where the code isn't self-explanatory
 5. **Export cleanly**: Follow the existing export patterns in each package
 
-### Testing
+### Checks
 
-**All changes must pass the following checks** before submitting:
+**All changes must pass the following** before submitting (no unit test suite):
 
 ```bash
-# Type-check all workspaces
-bun run types:check
-
-# Build to ensure no build errors
 bun run build
-
-# Lint (check)
 bun run lint
-
-# Format code
+bun run types:check
 bun run format
 ```
 
@@ -192,7 +185,7 @@ Make sure:
 3. **Create a Pull Request** on GitHub targeting the `main` branch
 
 4. **Fill in the PR template** with:
-   - **Clear title**: Use conventional commit format (e.g., "feat(animation): add text reveal component")
+   - **Clear title**: Use conventional commit format (e.g., "feat(ui): add stepper variants")
    - **Description**: Explain what changed and why
    - **Breaking changes**: Clearly document any breaking changes
    - **Related issues**: Reference issues (e.g., "Fixes #123", "Closes #456")
@@ -225,16 +218,24 @@ Make sure:
 
 ### Package Structure
 
+`@kumix/ui` uses **per-file exports** (no barrel). Layout:
+
 ```
-packages/your-package/
+packages/ui/
 ├── src/
-│   ├── index.ts          # Main exports
-│   ├── types.ts          # Type definitions
-│   └── ...
-├── package.json          # Package metadata
-├── tsconfig.json         # TypeScript configuration (builds with tsc)
-└── README.md             # Package documentation
+│   ├── components/ui/     # shadcn (Base UI, base-nova)
+│   ├── components/reui/   # ReUI (data-grid, gantt, …)
+│   ├── hooks/
+│   ├── style.css
+│   └── theme.css
+├── scripts/fix-imports.mjs
+├── package.json
+├── tsconfig.json
+├── tsdown.config.ts
+└── README.md
 ```
+
+Import examples: `@kumix/ui/ui/button`, `@kumix/ui/reui/kanban`, `@kumix/ui/hooks/use-mobile`.
 
 ### Publishing Packages (Maintainers Only)
 

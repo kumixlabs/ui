@@ -61,13 +61,8 @@ jobs:
         continue-on-error: false
         run: bun run types:check
 
-      - name: Test
-        id: test
-        continue-on-error: false
-        run: bun run test
-
       - name: Create Release Pull Request or Publish to npm
-        if: steps.build.outcome == 'success' && steps.lint.outcome == 'success' && steps.types.outcome == 'success' && steps.test.outcome == 'success'
+        if: steps.build.outcome == 'success' && steps.lint.outcome == 'success' && steps.types.outcome == 'success'
         id: changesets
         uses: changesets/action@v1
         with:

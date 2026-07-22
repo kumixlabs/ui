@@ -1,3 +1,3 @@
-declare const stylelesheet: string;
+declare const stylesheet: string;
 
-export default stylelesheet;
+export default stylesheet;
