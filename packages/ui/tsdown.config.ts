@@ -7,9 +7,15 @@ export default defineConfig({
   dts: true,
   publint: true,
   deps: {
-    neverBundle: [...Object.keys(pkg.peerDependencies || {})],
+    neverBundle: [
+      ...Object.keys(pkg.dependencies || {}),
+      ...Object.keys(pkg.peerDependencies || {}),
+      "lucide-react",
+      "react",
+      "react-dom",
+    ],
   },
-  entry: ["./src/index.ts", "./src/hooks.ts"],
+  entry: ["./src/hooks/**/*.ts", "./src/components/**/*.tsx"],
   format: "esm",
   target: "ES2022",
   outExtensions: () => ({ js: ".js", dts: ".d.ts" }),

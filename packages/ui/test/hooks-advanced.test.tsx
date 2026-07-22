@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useHydrated } from "../src/hooks/use-hydrated";
 import { useIsMac } from "../src/hooks/use-is-mac";
-import { useIsMobile } from "../src/hooks/use-is-mobile";
+import { useIsMobile } from "../src/hooks/use-mobile";
 import { useMutationObserver } from "../src/hooks/use-mutation-observer";
 import { useScrollPosition } from "../src/hooks/use-scroll-position";
 
@@ -24,7 +24,7 @@ describe("useIsMobile", () => {
     mockWindowInnerWidth(500);
     mockMatchMedia(true);
 
-    const { result } = renderHook(() => useIsMobile(1024));
+    const { result } = renderHook(() => useIsMobile());
 
     expect(result.current).toBe(true);
   });
@@ -33,7 +33,7 @@ describe("useIsMobile", () => {
     mockWindowInnerWidth(1280);
     mockMatchMedia(false);
 
-    const { result } = renderHook(() => useIsMobile(1024));
+    const { result } = renderHook(() => useIsMobile());
 
     expect(result.current).toBe(false);
   });
@@ -42,7 +42,7 @@ describe("useIsMobile", () => {
     mockWindowInnerWidth(700);
     mockMatchMedia(false);
 
-    const { result } = renderHook(() => useIsMobile(640));
+    const { result } = renderHook(() => useIsMobile());
 
     expect(result.current).toBe(false);
   });

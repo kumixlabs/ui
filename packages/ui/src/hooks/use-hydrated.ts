@@ -8,6 +8,7 @@
  * The external store does not emit updates because the hydration state is static
  * for the lifetime of the component.
  */
+
 "use client";
 
 import { useSyncExternalStore } from "react";

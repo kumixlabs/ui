@@ -4,85 +4,89 @@
 
 - **Always use `bun`, never `npm`/`yarn`.** `packageManager` is `bun@1.3.14`.
 - Engines: `node >= 24`, `bun >= 1.3.0`.
-- Workspaces: `packages/**`, `apps/**` (defined in `package.json`).
-- Internal deps use workspace protocol: `"@kumix/other": "workspace:*"`.
-- `bun install` runs `prepare` → installs Husky hooks (v9, `.husky/_/`).
+- Workspaces: `packages/*`, `apps/*`.
+- Internal deps: `"@kumix/other": "workspace:*"`.
+- TypeScript via bun catalog: `"typescript": "catalog:"` → `6.0.3`.
 
 ## Workspace Layout
 
-- `packages/*` — libs: `@kumix/ui`, `@kumix/shadcn`, `@kumix/mcp`. `scripts/publish.sh` only scans `packages/**` and skips any package with `"private": true`.
-- `@kumix/ui` is the publishable React component package (Radix-based, Tailwind).
-- `@kumix/shadcn` is the publishable React component package (Base UI + shadcn registry, per-component exports).
-- `@kumix/mcp` is in changeset `ignore` (`.changeset/config.json`) — excluded from versioning even if made public.
-- `apps/*` — application placeholders.
-- `@kumix/ui` and `@kumix/shadcn` build with `tsdown`, extending external `@kumix/tsconfig/react`. Output goes to `dist/`.
+| Path           | Package      | Published    | Build  | Tests              |
+| -------------- | ------------ | ------------ | ------ | ------------------ |
+| `packages/ui`  | `@kumix/ui`  | yes          | tsdown | vitest (jsdom)     |
+| `packages/mcp` | `@kumix/mcp` | no (private) | tsc    | `node dist --test` |
+
+- **No `@kumix/shadcn` package** — shadcn/reui sources live inside `@kumix/ui`.
+- `@kumix/mcp`: MCP server. Changeset `ignore`.
+
+## @kumix/ui structure
+
+```
+src/
+  components/ui/      # shadcn base-nova components
+  components/reui/    # reui registry (incl. data-grid/, event-calendar/, gantt/)
+  hooks/
+  style.css + style.css.d.ts
+  theme.css + theme.css.d.ts
+```
+
+- **Per-file exports** (no barrel `index.ts`). Consumers:
+  - `@kumix/ui/components/ui/button`
+  - `@kumix/ui/components/reui/kanban`
+  - `@kumix/ui/hooks/use-mobile`
+  - `@kumix/ui/css`, `@kumix/ui/theme`
+- tsdown entry: `src/hooks/**/*.ts`, `src/components/**/*.tsx`.
+- `build:css` copies CSS + `.d.ts` to `dist/` (hand-written, not generated).
+- tsdown `clean: false`. ESM only. deps externalized via `neverBundle`.
+
+### shadcn / reui CLI
+
+```bash
+# from packages/ui
+bun run add:shadcn   # shadcn add --all --overwrite
+bun run add:reui     # shadcn add @reui/...
+node scripts/fix-imports.mjs   # REQUIRED after CLI adds
+```
+
+`fix-imports.mjs` must:
+
+1. Walk `src/components/ui`, `src/components/reui` (recursive), `src/hooks`.
+2. Prepend `"use client"` if missing.
+3. Rewrite `@/lib/utils` → `@kumix/utils`.
+4. Rewrite `@/components/*` and `@/hooks/*` to **relative** paths with `./` prefix.
+5. **Never** rewrite real package names that collide with local filenames (`input-otp`, `sonner`, `cmdk`, …).
+
+`components.json` aliases: `ui` → `@/components/ui`, registry `@reui`.
 
 ## Commands
 
 ```bash
-bun install                 # also installs husky hooks
-bun run build               # turbo build (dependsOn: ^build)
-bun run types:check         # turbo types:check (dependsOn: ^build)
-bun run lint                # biome check
-bun run lint:fix            # biome check --write --unsafe
-bun run format              # biome format --write
-bun run dev                 # turbo dev (persistent)
-bun run clean               # turbo clean
-bun run clean:all           # turbo clean:all + rm .turbo bun.lock coverage node_modules
-bun run test                # turbo test (vitest run per package)
-bun run test:watch          # turbo test:watch (vitest watch per package)
-bun run test:coverage       # turbo test:coverage (vitest run --coverage)
-bunx changeset              # create a changeset
-bun run version             # changeset version + bun update
-bun run release             # bash scripts/publish.sh (publishes only packages/**, not apps/ or examples/)
-```
-
-Filter to a single workspace:
-
-```bash
+bun install
+bun run build               # turbo (dependsOn: ^build)
+bun run types:check
+bun run lint                # biome at root, NOT turbo
+bun run lint:fix
+bun run test
 bun run build --filter=@kumix/ui
-bun run types:check --filter=@kumix/ui
 bun run test --filter=@kumix/ui
-bun add <pkg> --filter=@kumix/ui
+cd packages/ui && bunx vitest run <pattern>
 ```
 
-## Pipeline (turbo.json)
+## Testing
 
-| Task            | dependsOn | Persistent | Cached |
-| --------------- | --------- | ---------- | ------ |
-| build           | ^build    | no         | yes    |
-| types:check     | ^build    | no         | yes    |
-| dev             | -         | yes        | no     |
-| start           | ^build    | yes        | no     |
-| test            | ^build    | no         | yes    |
-| test:coverage   | ^build    | no         | yes    |
-| test:watch      | ^build    | yes        | no     |
-| clean/clean:all | -         | no         | no     |
+- Only `@kumix/ui` has vitest (`test/**/*.test.{ts,tsx}`, jsdom).
+- Coverage V8, 10% floor. `@kumix/mcp`: `test` = `node dist --test` (build first).
 
-> Note: `lint`/`format`/`lint:fix` run Biome directly at the root (not via turbo).
+## Pipeline / CI
 
-## Lint-staged (pre-commit)
+- turbo: `build`/`types:check`/`test` depend on `^build`.
+- Lint PR: build → lint → types:check → test.
+- Release on main (`.changeset/**` or `packages/**`): same checks → changesets/action.
+- Changesets: `ignore` = `@kumix/mcp`, `playground`. `commit: false`. publish via `scripts/publish.sh` (scans `packages/**`, skips private).
 
-- `*.{js,ts,cjs,mjs,...}` → `biome check --write --no-errors-on-unmatched`
-- `*.{md,yml,yaml}` → `prettier --write`
-- `*.{json,jsonc,html}` → `biome format --write --no-errors-on-unmatched`
+## Commits
 
-## Commit Convention
+Commitlint types: `feat`, `feature`, `fix`, `refactor`, `docs`, `build`, `test`, `ci`, `chore`. Format: `type(scope?): message`.
 
-Commitlint enforces types: `feat`, `feature`, `fix`, `refactor`, `docs`, `build`, `test`, `ci`, `chore`. Configured in `.commitlintrc.cjs`. Format: `type(scope?): message`.
+## Biome
 
-## Changesets
-
-- Repo: `kumixlabs/ui`
-- `commit: false` — changeset PRs are auto-committed by CI, not locally.
-- `access: public`, `baseBranch: main`
-- `bumpVersionsWithWorkspaceProtocolOnly: true`
-
-## CI
-
-- **Lint** (`.github/workflows/lint.yml`): PRs to `main` → build → lint → types:check → test
-- **Release** (`.github/workflows/release.yml`): push to `main` with `.changeset/**` or `packages/**` changes → build → lint → types:check → test → changesets/action (version PR or publish). Uses `GH_PAT || GITHUB_TOKEN` and `NPM_TOKEN`.
-
-## Biomes
-
-Extends `@kumix/biome-config/base` (`biome.jsonc`).
+Extends `@kumix/biome-config/base`. 2-space, 100 width, double quotes, semicolons.

@@ -5,7 +5,10 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["dist", "node_modules", ".turbo", "test"]
