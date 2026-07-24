@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.2.1
+
+### Patch Changes
+
+- [`303d104`](https://github.com/kumixlabs/ui/commit/303d1049308ac12bcf8fa4c4fafb0acce577c215) Thanks [@kumixio](https://github.com/kumixio)! - Remove `peerDependenciesMeta` so all declared peers are required; update install docs accordingly.
+
 ## 0.2.0
 
 ### Minor Changes
