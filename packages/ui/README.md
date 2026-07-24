@@ -24,15 +24,15 @@ This package is a maintained distribution: imports rewritten for monorepo (`@kum
 bun add @kumix/ui @kumix/utils
 ```
 
-Install peers for the components you use (see `package.json` → `peerDependencies`). Common set:
+Install peers (see `package.json` → `peerDependencies`). All listed peers are **required** by the package (no `peerDependenciesMeta`); install what your app needs for the components you import.
 
 ```bash
 bun add @base-ui/react class-variance-authority lucide-react react
 ```
 
-**Required peers (core):** `react`, `@base-ui/react`, `class-variance-authority`, `lucide-react`, `@kumix/utils`.
+**Core (almost every app):** `react`, `@base-ui/react`, `class-variance-authority`, `lucide-react`, `@kumix/utils`.
 
-All other peers are **optional** — install only what you import:
+**Feature peers** (required in `package.json`; needed at runtime only if you import those components):
 
 | Peer                                                | Used by                                        |
 | --------------------------------------------------- | ---------------------------------------------- |

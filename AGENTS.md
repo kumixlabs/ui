@@ -62,7 +62,7 @@ node scripts/fix-imports.mjs   # REQUIRED after CLI adds
 Package notes:
 
 - `sideEffects: ["**/*.css"]` so CSS is not tree-shaken.
-- Feature peers optional (`peerDependenciesMeta`); core peers required: react, `@base-ui/react`, cva, lucide, `@kumix/utils`.
+- Peers all required (no `peerDependenciesMeta`): react, `@base-ui/react`, cva, lucide, `@kumix/utils`, plus feature libs for components used.
 - Dual mobile hooks intentional: `useIsMobile` (fixed 768, used by sidebar) vs `useMediaQuery` (arbitrary, SSR-safe).
 
 `components.json` aliases: `ui` → `@/components/ui`, registry `@reui` (CLI only; source stays relative after fix script).
