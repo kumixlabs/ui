@@ -1,5 +1,14 @@
 # @kumix/ui
 
+## 0.2.2
+
+### Patch Changes
+
+- [`b0d2053`](https://github.com/kumixlabs/ui/commit/b0d205346b001cb554b051e94edc8f34ff8c7278) Thanks [@kumixio](https://github.com/kumixio)! - Update event calendar agenda view styles
+
+  - Adjust styles to remove the bottom border from the last agenda item to prevent double borders with the calendar container.
+  - Enhance the sticky header to account for custom scrollbar visibility, ensuring it does not overlap with the header background.
+
 ## 0.2.1
 
 ### Patch Changes
