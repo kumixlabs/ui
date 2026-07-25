@@ -83,7 +83,11 @@ function EventCalendarAgendaView({ className, render, ...props }: EventCalendarA
           )}
         </div>
       ) : (
-        <div className="flex flex-col">
+        // Drop the very last row's bottom border so it does not double up with
+        // the calendar container's own bottom border. Targets the last day
+        // group's last child (its last agenda item); per-item `border-b` is
+        // kept everywhere else, including each day's internal rows.
+        <div className="flex flex-col [&>*:last-child>*:last-child]:border-b-0">
           {groups.map(({ day, bucket }) => {
             const items = [...(bucket?.allDay ?? []), ...(bucket?.timed ?? [])];
             const zoned = toZoned(day, settings.timeZone);
@@ -98,6 +102,14 @@ function EventCalendarAgendaView({ className, render, ...props }: EventCalendarA
                   data-slot="event-calendar-agenda-day-header"
                   className={cn(
                     "sticky top-0 z-10 flex items-baseline justify-between gap-4 border-b bg-muted/60 px-4 py-2",
+                    // The custom ScrollArea's overlay scrollbar (w-2.5 = 10px)
+                    // is painted UNDER this sticky, z-10, opaque header, so the
+                    // thumb vanishes behind the day bar at the top of the view.
+                    // Inset the header by the scrollbar lane so its background
+                    // stops before the scrollbar instead of covering it. Native
+                    // scrollbars already sit outside the content box, so this
+                    // only applies to the custom-scrollbar path.
+                    !native && "me-2.5",
                     viewConfig.classNames?.agendaDayHeader,
                   )}
                 >
