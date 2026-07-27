@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.2.3
+
+### Patch Changes
+
+- [`924544a`](https://github.com/kumixlabs/ui/commit/924544a557e33b6efdbc29326a8f7314e40a47b3) Thanks [@kumixio](https://github.com/kumixio)! - Sync ReUI registry upstream: data-grid `scrollToRowIndex` API, event-calendar RFC 5545 recurrence LIMIT filters and DnD pointer-scoping fixes, gantt ctrl/cmd wheel-zoom, kanban and sortable concurrent-safe mounted gate, new `icon-tile` component, and type-import housekeeping across components.
+
 ## 0.2.2
 
 ### Patch Changes
