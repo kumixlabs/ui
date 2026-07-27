@@ -1,37 +1,37 @@
 "use client";
 
 import type * as React from "react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 import {
   Children,
-  type CSSProperties,
   cloneElement,
   createContext,
   isValidElement,
-  type ReactElement,
-  type ReactNode,
   useCallback,
   useContext,
-  useLayoutEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
 } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import type {
+  DragCancelEvent,
+  DragEndEvent,
+  DragStartEvent,
+  DropAnimation,
+  Modifiers,
+  UniqueIdentifier,
+} from "@dnd-kit/core";
 import {
   DndContext,
-  type DragCancelEvent,
-  type DragEndEvent,
   type DraggableSyntheticListeners,
   DragOverlay,
-  type DragStartEvent,
-  type DropAnimation,
   defaultDropAnimationSideEffects,
   KeyboardSensor,
   MeasuringStrategy,
-  type Modifiers,
   MouseSensor,
   TouchSensor,
-  type UniqueIdentifier,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -83,6 +83,22 @@ const dropAnimationConfig: DropAnimation = {
     },
   }),
 };
+
+/**
+ * Client-mount gate for the `createPortal` calls below, which need
+ * `document.body` and so must not run on the server or during hydration.
+ *
+ * A never-notifying subscription makes `useSyncExternalStore` return the server
+ * snapshot (`false`) while rendering on the server and while hydrating, then the
+ * client snapshot (`true`) once mounted - the same gate the previous
+ * `useLayoutEffect(() => setMounted(true), [])` provided, minus the extra render
+ * pass that `react-hooks/set-state-in-effect` flags. All three functions are
+ * module-scoped so their identities stay stable; an inline `getSnapshot` is the
+ * classic cause of an infinite re-subscribe loop.
+ */
+const subscribeToNothing = () => () => {};
+const getIsMounted = () => true;
+const getIsMountedOnServer = () => false;
 
 const MOUSE_SENSOR_OPTIONS = { activationConstraint: { distance: 10 } };
 const TOUCH_SENSOR_OPTIONS = {
@@ -142,9 +158,7 @@ function Sortable<T>({
   ...props
 }: SortableRootProps<T>) {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useLayoutEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(subscribeToNothing, getIsMounted, getIsMountedOnServer);
 
   const sensors = useSensors(
     useSensor(MouseSensor, MOUSE_SENSOR_OPTIONS),
@@ -231,12 +245,14 @@ function Sortable<T>({
     if (!activeId) return null;
     let result: ReactNode = null;
     Children.forEach(children, (child) => {
-      if (!isValidElement(child)) return;
-      const props = child.props as { value?: UniqueIdentifier; className?: string };
-      if (props.value === activeId) {
-        result = cloneElement(child as ReactElement<{ className?: string }>, {
-          ...props,
-          className: cn(props.className, "z-50"),
+      // biome-ignore lint/suspicious/noExplicitAny: <>
+      if (isValidElement(child) && (child.props as any).value === activeId) {
+        // biome-ignore lint/suspicious/noExplicitAny: <>
+        result = cloneElement(child as ReactElement<any>, {
+          // biome-ignore lint/suspicious/noExplicitAny: <>
+          ...(child.props as any),
+          // biome-ignore lint/suspicious/noExplicitAny: <>
+          className: cn((child.props as any).className, "z-50"),
         });
       }
     });
@@ -378,9 +394,7 @@ export interface SortableOverlayProps
 
 function SortableOverlay({ children, className, ...props }: SortableOverlayProps) {
   const { activeId, modifiers } = useContext(SortableInternalContext);
-  const [mounted, setMounted] = useState(false);
-
-  useLayoutEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(subscribeToNothing, getIsMounted, getIsMountedOnServer);
 
   const content =
     activeId && children

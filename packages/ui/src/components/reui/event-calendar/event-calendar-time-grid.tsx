@@ -23,6 +23,7 @@ import {
   getDayKey,
   getDayTotalMinutes,
   getRangeKey,
+  packTimedSegments,
   resolveOffDay,
   snapMinutes,
   toZoned,
@@ -97,8 +98,15 @@ function EventCalendarTimeGrid({
       cursor = zonedStartOfDay(addDays(toZoned(cursor, settings.timeZone), 1), settings.timeZone);
     }
     if (effective.weekends || view === "day") return result;
-    return result.filter((day) => ![0, 6].includes(toZoned(day, settings.timeZone).getDay()));
-  }, [visibleRange, settings.timeZone, effective.weekends, view]);
+    // Same weekend definition the month view filters on, so the toggle cannot
+    // hide one set of days here and another one there.
+    const filtered = result.filter(
+      (day) => !settings.weekendDays.includes(toZoned(day, settings.timeZone).getDay()),
+    );
+    // A short N-days window landing entirely on the weekend would otherwise
+    // filter to nothing and emit an invalid repeat(0, ...) track.
+    return filtered.length ? filtered : result;
+  }, [visibleRange, settings.timeZone, settings.weekendDays, effective.weekends, view]);
 
   // Initial scroll to scrollToHour + api.scrollToTime registration (contained)
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -619,6 +627,7 @@ function EventCalendarAllDayCell({ day }: { day: Date }) {
         ? viewConfig.offDays
         : true
       : false,
+    settings.weekendDays,
   );
   const offClassName =
     (typeof viewConfig.offDays === "object" && viewConfig.offDays.className) || "bg-muted/25";
@@ -769,6 +778,7 @@ function EventCalendarDayColumn({
         ? viewConfig.offDays
         : true
       : false,
+    settings.weekendDays,
   );
   const offClassName =
     (typeof viewConfig.offDays === "object" && viewConfig.offDays.className) || "bg-muted/25";
@@ -845,6 +855,21 @@ function EventCalendarDayColumn({
     },
   );
 
+  // Segments the day bounds clip away still occupy a column in the shared
+  // index's packing, leaving a phantom empty half beside the first in-bounds
+  // chip. Repack the visible subset; clones keep the index cache untouched.
+  const packedTimed = useMemo(() => {
+    const visible = segments.timed.filter((segment) => {
+      const startMin = Math.max(segment.startMin ?? 0, boundsStartMin);
+      const endMin = Math.min(segment.endMin ?? startMin, boundsEndMin);
+      return endMin > boundsStartMin && startMin < boundsEndMin;
+    });
+    if (visible.length === segments.timed.length) return segments.timed;
+    const clones = visible.map((segment) => ({ ...segment }) as EventCalendarSegment);
+    packTimedSegments(clones);
+    return clones;
+  }, [segments.timed, boundsStartMin, boundsEndMin]);
+
   const slotFromPointer = (e: React.MouseEvent): { date: Date; end: Date } => {
     const rect = e.currentTarget.getBoundingClientRect();
     const pxPerMinute = rect.height / boundsMinutes;
@@ -907,7 +932,7 @@ function EventCalendarDayColumn({
           })}
         </div>
       )}
-      {segments.timed.map((segment) => {
+      {packedTimed.map((segment) => {
         const startMin = Math.max(segment.startMin ?? 0, boundsStartMin);
         const endMin = Math.min(segment.endMin ?? startMin, boundsEndMin);
         if (endMin <= boundsStartMin || startMin >= boundsEndMin) return null;
@@ -1082,7 +1107,7 @@ function EventCalendarNowIndicator({
   );
 }
 
-interface TimeGridViewProps extends Omit<EventCalendarTimeGridProps, "view"> {}
+type TimeGridViewProps = Omit<EventCalendarTimeGridProps, "view">;
 
 function EventCalendarWeekView(props: TimeGridViewProps) {
   return <EventCalendarTimeGrid view="week" {...props} />;

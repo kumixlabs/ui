@@ -34,7 +34,7 @@
     "build": "rimraf dist && mkdir -p dist && bun run build:css && tsdown && publint",
     "types:check": "tsc --noEmit",
     "add:shadcn": "shadcn add --all --overwrite",
-    "add:reui": "shadcn add @reui/alert @reui/autocomplete @reui/badge @reui/data-grid @reui/date-selector @reui/event-calendar @reui/use-file-upload @reui/filters @reui/frame @reui/gantt @reui/icon-stack @reui/kanban @reui/number-field @reui/phone-input @reui/rating @reui/scrollspy @reui/sortable @reui/stepper @reui/timeline @reui/tree --overwrite"
+    "add:reui": "shadcn add @reui/alert @reui/autocomplete @reui/badge @reui/data-grid @reui/date-selector @reui/event-calendar @reui/use-file-upload @reui/filters @reui/frame @reui/gantt @reui/icon-stack @reui/icon-tile @reui/kanban @reui/number-field @reui/phone-input @reui/rating @reui/scrollspy @reui/sortable @reui/stepper @reui/timeline @reui/tree --overwrite"
   },
   "homepage": "https://github.com/kumixlabs/ui",
   "repository": {
@@ -82,13 +82,13 @@
     "date-fns": "^4.4.0",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
-    "lucide-react": "^1.26.0",
+    "lucide-react": "^1.27.0",
     "next-themes": "^0.4.6",
     "react": "^19.2.8",
     "react-day-picker": "^10.0.1",
     "react-phone-number-input": "^3.4.17",
     "react-resizable-panels": "^4.12.2",
-    "recharts": "3.10.0",
+    "recharts": "3.10.1",
     "sonner": "^2.0.7",
     "tsdown": "^0.22.14",
     "typescript": "catalog:"

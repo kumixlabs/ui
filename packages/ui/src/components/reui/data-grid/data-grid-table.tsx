@@ -1,29 +1,17 @@
 "use client";
 "use no memo";
 
-import {
-  type CSSProperties,
-  Fragment,
-  memo,
-  type MouseEvent as ReactMouseEvent,
-  type ReactNode,
-  type TouchEvent as ReactTouchEvent,
-  type Ref,
-  type RefObject,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
+import type {
+  CSSProperties,
+  MouseEvent as ReactMouseEvent,
+  ReactNode,
+  TouchEvent as ReactTouchEvent,
+  Ref,
+  RefObject,
 } from "react";
-import {
-  type Cell,
-  type Column,
-  flexRender,
-  type Header,
-  type Row,
-  type Table,
-} from "@tanstack/react-table";
+import { Fragment, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import type { Cell, Column, Header, Row, Table } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 
 import { cn } from "@kumix/utils";
 import { Checkbox } from "../../ui/checkbox";
@@ -1108,6 +1096,7 @@ function DataGridTableBodyRow<TData>({
       style={{ ...(dndStyle ? dndStyle : null) }}
       data-state={table.options.enableRowSelection && row.getIsSelected() ? "selected" : undefined}
       data-index={dataIndex}
+      data-row-id={row.id}
       data-row-pinned={isRowPinned || undefined}
       data-row-pinned-boundary={pinnedBoundary}
       onClick={() => props.onRowClick?.(row.original)}

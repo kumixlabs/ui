@@ -384,9 +384,11 @@ function buildEventIndex<TData>(
 
   const occurrences: GanttOccurrence<TData>[] = [];
   for (const event of events) {
+    const replaced = overrideTimes.get(event.id);
     const custom = opts.getOccurrences?.(event, visibleRange, { timeZone });
     if (custom) {
       custom.forEach((occ, i) => {
+        if (replaced?.has(occ.start.getTime())) return;
         if (!rangesIntersect({ start: occ.start, end: occ.end }, visibleRange)) return;
         occurrences.push({
           key: `${event.id}::${occ.start.toISOString()}`,
@@ -401,7 +403,6 @@ function buildEventIndex<TData>(
       });
       continue;
     }
-    const replaced = overrideTimes.get(event.id);
     const expanded = expandRecurrence(event, visibleRange, { timeZone });
     occurrences.push(
       ...(replaced ? expanded.filter((occ) => !replaced.has(occ.start.getTime())) : expanded),

@@ -312,6 +312,7 @@ function EventCalendarResourceAllDayCell({
         ? viewConfig.offDays
         : true
       : false,
+    settings.weekendDays,
   );
   const offClassName =
     (typeof viewConfig.offDays === "object" && viewConfig.offDays.className) || "bg-muted/25";
@@ -418,6 +419,7 @@ function EventCalendarResourceColumn({
         ? viewConfig.offDays
         : true
       : false,
+    settings.weekendDays,
   );
   const offClassName =
     (typeof viewConfig.offDays === "object" && viewConfig.offDays.className) || "bg-muted/25";
@@ -430,14 +432,21 @@ function EventCalendarResourceColumn({
   const boundsMinutes = Math.max(60, boundsEndMin - boundsStartMin);
 
   // Filter this resource's timed segments and repack per column.
-  // Clones keep the shared index cache untouched.
+  // Clones keep the shared index cache untouched. Segments the day bounds clip
+  // away are dropped here too, otherwise they hold a column nobody can see and
+  // leave a phantom empty half beside the first in-bounds chip.
   const packed = useMemo(() => {
     const mine = segments.timed
-      .filter((segment) => segment.occurrence.event.resourceId === resource.id)
+      .filter((segment) => {
+        if (segment.occurrence.event.resourceId !== resource.id) return false;
+        const startMin = Math.max(segment.startMin ?? 0, boundsStartMin);
+        const endMin = Math.min(segment.endMin ?? startMin, boundsEndMin);
+        return endMin > boundsStartMin && startMin < boundsEndMin;
+      })
       .map((segment) => ({ ...segment }) as EventCalendarSegment);
     packTimedSegments(mine);
     return mine;
-  }, [segments.timed, resource.id]);
+  }, [segments.timed, resource.id, boundsStartMin, boundsEndMin]);
 
   const dragGhost = useEventCalendarSelector<
     unknown,

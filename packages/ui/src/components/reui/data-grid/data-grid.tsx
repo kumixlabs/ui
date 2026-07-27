@@ -1,7 +1,8 @@
 "use client";
 "use no memo";
 
-import { createContext, type ReactNode, useContext, useMemo, useRef } from "react";
+import type { ReactNode } from "react";
+import { createContext, useContext, useMemo, useRef } from "react";
 import type {
   Column,
   ColumnFiltersState,

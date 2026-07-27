@@ -1,17 +1,8 @@
 "use client";
 "use no memo";
 
-import {
-  type CSSProperties,
-  Fragment,
-  memo,
-  type ReactNode,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { Fragment, memo, useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   closestCenter,
   DndContext,
@@ -30,14 +21,8 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import {
-  type Cell,
-  flexRender,
-  type Header,
-  type HeaderGroup,
-  type Row,
-  type Table,
-} from "@tanstack/react-table";
+import type { Cell, Header, HeaderGroup, Row, Table } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 import { GripVerticalIcon } from "lucide-react";
 
 import { Button } from "../../ui/button";

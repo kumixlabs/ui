@@ -1,7 +1,8 @@
 "use client";
 "use no memo";
 
-import { type PointerEvent, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import type { PointerEvent, ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollArea as ScrollAreaPrimitive } from "@base-ui/react/scroll-area";
 
 import { cn } from "@kumix/utils";

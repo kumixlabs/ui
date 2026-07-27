@@ -1,7 +1,5 @@
 "use client";
 
-import type * as React from "react";
-
 import { cn } from "@kumix/utils";
 
 type IconStackProps = React.ComponentProps<"div">;

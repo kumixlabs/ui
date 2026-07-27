@@ -1,8 +1,7 @@
 "use client";
 "use no memo";
 
-import type React from "react";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 import { cn } from "@kumix/utils";
@@ -28,7 +27,7 @@ interface DataGridPaginationProps {
   ellipsisText?: string;
 }
 
-function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
+function DataGridPagination(props: DataGridPaginationProps): JSX.Element {
   const { table, recordCount, isLoading } = useDataGrid();
 
   const defaultProps: Partial<DataGridPaginationProps> = {

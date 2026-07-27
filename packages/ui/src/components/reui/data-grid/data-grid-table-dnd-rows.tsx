@@ -1,11 +1,10 @@
 "use client";
 "use no memo";
 
+import type { CSSProperties, ReactNode } from "react";
 import {
-  type CSSProperties,
   createContext,
   memo,
-  type ReactNode,
   useContext,
   useEffect,
   useId,
@@ -33,13 +32,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import {
-  type Cell,
-  flexRender,
-  type HeaderGroup,
-  type Row,
-  type Table,
-} from "@tanstack/react-table";
+import type { Cell, HeaderGroup, Row, Table } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 import { GripHorizontalIcon } from "lucide-react";
 
 import { cn } from "@kumix/utils";

@@ -1,7 +1,8 @@
 "use client";
 "use no memo";
 
-import { type HTMLAttributes, memo, type ReactNode, useMemo } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
+import { memo, useMemo } from "react";
 import type { Column } from "@tanstack/react-table";
 import {
   ArrowDownIcon,

@@ -1,9 +1,10 @@
 "use client";
 
-import type * as React from "react";
-import { createContext, type ReactNode, useContext, useId } from "react";
+import type { ReactNode } from "react";
+import { createContext, useContext, useId } from "react";
 import { NumberField as NumberFieldPrimitive } from "@base-ui/react/number-field";
-import { cva, type VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { MinusIcon, PlusIcon } from "lucide-react";
 
 import { cn } from "@kumix/utils";
@@ -31,13 +32,14 @@ const numberFieldGroupVariants = cva(
 );
 
 const numberFieldButtonVariants = cva(
-  "relative flex shrink-0 cursor-pointer items-center justify-center transition-colors pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 hover:bg-accent [&_svg:not([class*='size-'])]:size-4",
+  "relative flex shrink-0 cursor-pointer items-center justify-center transition-colors pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 hover:bg-accent",
   {
     variants: {
       size: {
-        sm: "px-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        default: "px-2",
-        lg: "px-2.5",
+        sm: "([class*='size-'])]:size-3.5 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-3 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-3.5 px-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+        default:
+          "([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 px-2 [&_svg:not([class*='size-'])]:size-4",
+        lg: "([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 px-2.5 [&_svg:not([class*='size-'])]:size-4",
       },
     },
     defaultVariants: {
