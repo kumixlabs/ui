@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.2.4
+
+### Patch Changes
+
+- [`5f1e89f`](https://github.com/kumixlabs/ui/commit/5f1e89fc72e57bcc0e4267caf40368c2667667ad) Thanks [@kumixio](https://github.com/kumixio)! - Adjust CSS variables for improved theming in theme.css & update font classes to use 'font-heading' in various UI component files for consistency.
+
 ## 0.2.3
 
 ### Patch Changes
