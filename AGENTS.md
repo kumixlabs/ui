@@ -1,97 +1,63 @@
 # AGENTS.md
 
-## Quick Rules
+## Tooling & Setup
 
-- **Always use `bun`, never `npm`/`yarn`.** `packageManager` is `bun@1.3.14`.
-- Engines: `node >= 24`, `bun >= 1.3.0`.
-- Workspaces: `packages/*`, `apps/*`.
-- Internal deps: `"@kumix/other": "workspace:*"`.
-- TypeScript via bun catalog: `"typescript": "catalog:"` → `6.0.3`.
+- **Always use `bun`, never `npm`/`yarn`.** Package manager is `bun@1.3.14`.
+- TS version is locked via root workspaces `catalog` to `6.0.3`. Depend on it as `"typescript": "catalog:"`.
 
-## Workspace Layout
+## Package Layout & Architecture
 
-| Path           | Package      | Published    | Build  |
-| -------------- | ------------ | ------------ | ------ |
-| `packages/ui`  | `@kumix/ui`  | yes          | tsdown |
-| `packages/mcp` | `@kumix/mcp` | no (private) | tsc    |
+- `packages/ui` (`@kumix/ui`): Published package. Per-file ESM exports only (no barrel `index.ts` files).
+  - `components/ui/` — shadcn/ui (Base UI, base-nova). Add via `bun run add:shadcn`. Docs: [ui.shadcn.com](https://ui.shadcn.com/docs/components)
+  - `components/reui/` — ReUI registry. Add via `bun run add:reui`. Docs: [reui.io](https://reui.io/docs)
+  - `components/motion/` — beUI registry (Motion-based animated components). Add via `bun run add:beui`. Docs: [beui.dev](https://beui.dev/components/motion). Bundles `motion`, `lenis`, `@paper-design/shaders-react` — no extra installs needed.
+  - `hooks/` — custom hooks (per-file). Includes beUI helpers like `use-hover-capable`, `use-slider`.
+  - `lib/` — shared utilities used by motion components (e.g. `ease.ts`, `tick-sound.ts`).
+  - Imports in component source must be **relative** (e.g. `../button`, `../../lib/ease`). **Never use `@/` alias** in committed files.
+  - CSS styles (`style.css` and `theme.css`) are hand-written and copied to `dist/` via `build:css`.
+- `packages/mcp` (`@kumix/mcp`): Private MCP server for package/component discovery. Ignored by changesets.
 
-- **No `@kumix/shadcn` package** — shadcn + ReUI sources live inside `@kumix/ui`.
-- `@kumix/mcp`: MCP server for package/component discovery. Changeset `ignore`.
-- **No unit test suite** — CI is build + lint + types only. MCP has a smoke script (`node dist --test`) for the binary only.
+## Export Map (`package.json`)
 
-## @kumix/ui structure
+| Pattern     | Source              | Example import                                                               |
+| ----------- | ------------------- | ---------------------------------------------------------------------------- |
+| `./*`       | `src/components/**` | `@kumix/ui/ui/button`, `@kumix/ui/reui/kanban`, `@kumix/ui/motion/tilt-card` |
+| `./hooks/*` | `src/hooks/**`      | `@kumix/ui/hooks/use-mobile`                                                 |
+| `./lib/*`   | `src/lib/**`        | `@kumix/ui/lib/ease`                                                         |
+| `./css`     | `src/style.css`     | `@kumix/ui/css`                                                              |
+| `./theme`   | `src/theme.css`     | `@kumix/ui/theme`                                                            |
 
-```
-src/
-  components/ui/      # shadcn/ui (Base UI, base-nova) — https://ui.shadcn.com/
-  components/reui/    # ReUI registry — https://reui.io/ (data-grid/, event-calendar/, gantt/, …)
-  hooks/
-  style.css + style.css.d.ts
-  theme.css + theme.css.d.ts
-```
+`tsdown` entry: `src/hooks/**/*.ts`, `src/lib/**/*.ts`, `src/components/**/*.tsx`. ESM only, deps externalized via `neverBundle`.
 
-- **Per-file exports** (no barrel `index.ts`). Consumers:
-  - `@kumix/ui/ui/button`
-  - `@kumix/ui/reui/kanban`
-  - `@kumix/ui/reui/data-grid/data-grid`
-  - `@kumix/ui/hooks/use-mobile`
-  - `@kumix/ui/css`, `@kumix/ui/theme`
-- tsdown entry: `src/hooks/**/*.ts`, `src/components/**/*.tsx`.
-- `build:css` copies CSS + `.d.ts` to `dist/` (hand-written, not generated).
-- tsdown `clean: false`. ESM only. deps externalized via `neverBundle`.
-- Local imports in source: **relative** (`../`, `../../`). Never `@/` in committed component source.
-- Package imports OK: `@kumix/utils`, `@base-ui/react/*`, peers.
+## Workflow Rules & Codegen
 
-### shadcn / reui CLI
+- **Running CLI Adds**:
+  1. Add components using `bun run add:shadcn`, `bun run add:reui`, or `bun run add:beui` inside `packages/ui`.
+  2. Run `node scripts/fix-imports.mjs` inside `packages/ui`. This script:
+     - Rewrites `@/lib/utils` → `@kumix/utils`.
+     - Rewrites `@/lib/*` → relative paths (e.g. `../../lib/ease`).
+     - Rewrites `@/components/ui/*`, `@/components/reui/*`, `@/components/motion/*` → relative.
+     - Rewrites `@/hooks/*` → relative.
+     - Prepends `"use client"` when missing.
+     - Handles bare same-dir imports (e.g. `"button"` → `"./button"`), skipping real package names that collide (`motion`, `sonner`, `cmdk`, …).
+- **Testing**: No test suite for `packages/ui`. Smoke test for `@kumix/mcp` via:
+  ```bash
+  bun --filter=@kumix/mcp run test
+  ```
 
-```bash
-# from packages/ui
-bun run add:shadcn   # shadcn add --all --overwrite
-bun run add:reui     # shadcn add @reui/...
-node scripts/fix-imports.mjs   # REQUIRED after CLI adds
-```
-
-`fix-imports.mjs` must:
-
-1. Walk `src/components/ui`, `src/components/reui`, `src/hooks` (recursive).
-2. Prepend `"use client"` if missing.
-3. Rewrite `@/lib/utils` → `@kumix/utils`.
-4. Rewrite `@/components/*` and `@/hooks/*` to **relative** paths with `./` prefix.
-5. **Never** rewrite real package names that collide with local filenames (`input-otp`, `sonner`, `cmdk`, …).
-
-Package notes:
-
-- `sideEffects: ["**/*.css"]` so CSS is not tree-shaken.
-- Peers all required (no `peerDependenciesMeta`): react, `@base-ui/react`, cva, lucide, `@kumix/utils`, plus feature libs for components used.
-- Dual mobile hooks intentional: `useIsMobile` (fixed 768, used by sidebar) vs `useMediaQuery` (arbitrary, SSR-safe).
-
-`components.json` aliases: `ui` → `@/components/ui`, registry `@reui` (CLI only; source stays relative after fix script).
-
-Previews / API examples: upstream docs — [ui.shadcn.com](https://ui.shadcn.com/docs/components), [reui.io](https://reui.io/docs).
-
-## Commands
+## Development Commands
 
 ```bash
 bun install
-bun run build               # turbo (dependsOn: ^build)
-bun run types:check
-bun run lint                # biome at root, NOT turbo
-bun run lint:fix
-bun run build --filter=@kumix/ui
-bun run types:check --filter=@kumix/ui
+bun run build               # turbo build
+bun run types:check         # turbo typecheck
+bun run lint                # root biome check
+bun run lint:fix            # fix lint errors
 ```
 
-## Pipeline / CI
+## CI/CD & Changesets
 
-- turbo: `build` / `types:check` depend on `^build`.
-- Lint PR: build → lint → types:check.
-- Release on main (`.changeset/**` or `packages/**`): same checks → changesets/action.
-- Changesets: `ignore` = `@kumix/mcp`. `commit: false`. publish via `scripts/publish.sh` (scans `packages/**`, skips private).
-
-## Commits
-
-Commitlint types: `feat`, `feature`, `fix`, `refactor`, `docs`, `build`, `test`, `ci`, `chore`. Format: `type(scope?): message`.
-
-## Biome
-
-Extends `@kumix/biome-config/base`. 2-space, 100 width, double quotes, semicolons.
+- PR pipeline: `build` -> `lint` -> `types:check`.
+- Releases: Auto-versioned via changesets, published using `./scripts/publish.sh` (skips private packages, idempotent).
+- Commits must use conventional commit prefix, e.g. `feat(ui): add input component`.
+- Biome rules: 2-space indentation, double quotes, semicolons.

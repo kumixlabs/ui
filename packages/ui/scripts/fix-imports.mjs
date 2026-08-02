@@ -16,6 +16,7 @@ const PACKAGE_COLLISIONS = new Set([
   "next-themes",
   "date-fns",
   "recharts",
+  "motion",
 ]);
 
 async function walk(dir) {
@@ -45,6 +46,7 @@ function normalize(p) {
 const targetDirs = [
   { dir: join(SRC_DIR, "components", "ui"), exts: [".tsx"] },
   { dir: join(SRC_DIR, "components", "reui"), exts: [".tsx"] },
+  { dir: join(SRC_DIR, "components", "motion"), exts: [".tsx"] },
   { dir: join(SRC_DIR, "hooks"), exts: [".ts", ".tsx"] },
 ];
 
@@ -86,6 +88,9 @@ for (const filePath of allFiles) {
 
   content = content
     .replace(/from\s+"@\/lib\/utils"/g, 'from "@kumix/utils"')
+    .replace(/from\s+"@\/lib\/([^"]+)"/g, (_m, p1) => {
+      return `from "${toRelImport(fileDir, join(SRC_DIR, "lib", p1))}"`;
+    })
     .replace(/from\s+"@\/hooks\/([^"]+)"/g, (_m, p1) => {
       return `from "${toRelImport(fileDir, join(SRC_DIR, "hooks", p1))}"`;
     })
@@ -94,6 +99,9 @@ for (const filePath of allFiles) {
     })
     .replace(/from\s+"@\/components\/reui\/([^"]+)"/g, (_m, p1) => {
       return `from "${toRelImport(fileDir, join(SRC_DIR, "components", "reui", p1))}"`;
+    })
+    .replace(/from\s+"@\/components\/motion\/([^"]+)"/g, (_m, p1) => {
+      return `from "${toRelImport(fileDir, join(SRC_DIR, "components", "motion", p1))}"`;
     })
     // Bare same-dir imports from a broken CLI run: "button" → "./button"
     .replace(/from\s+"([^"]+)"/g, (m, spec) => {

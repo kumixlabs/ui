@@ -15,7 +15,7 @@ export default defineConfig({
       "react-dom",
     ],
   },
-  entry: ["./src/hooks/**/*.ts", "./src/components/**/*.tsx"],
+  entry: ["./src/hooks/**/*.ts", "./src/lib/**/*.ts", "./src/components/**/*.tsx"],
   format: "esm",
   target: "ES2022",
   outExtensions: () => ({ js: ".js", dts: ".d.ts" }),

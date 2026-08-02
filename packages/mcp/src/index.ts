@@ -39,8 +39,8 @@ interface ComponentEntry {
   path: string;
   /** Consumer import specifier, e.g. `@kumix/ui/ui/button`. */
   importPath: string;
-  /** `ui` | `reui` | `hooks` | `other` */
-  category: "ui" | "reui" | "hooks" | "other";
+  /** `ui` | `reui` | `motion` | `hooks` | `lib` | `other` */
+  category: "ui" | "reui" | "motion" | "hooks" | "lib" | "other";
 }
 
 interface PackageInfo {
@@ -58,7 +58,9 @@ interface PackageInfo {
   categories: {
     ui: number;
     reui: number;
+    motion: number;
     hooks: number;
+    lib: number;
     other: number;
   };
 }
@@ -71,7 +73,9 @@ function categorize(relativePath: string): ComponentEntry["category"] {
   const p = relativePath.replace(/\\/g, "/");
   if (p.startsWith("components/ui/") || p === "components/ui") return "ui";
   if (p.startsWith("components/reui/") || p === "components/reui") return "reui";
+  if (p.startsWith("components/motion/") || p === "components/motion") return "motion";
   if (p.startsWith("hooks/") || p === "hooks") return "hooks";
+  if (p.startsWith("lib/") || p === "lib") return "lib";
   return "other";
 }
 
@@ -123,7 +127,7 @@ class KumixUiMCPServer {
           const srcDir = join(packageDir, "src");
           let componentFiles: string[] = [];
           let hasSrcDir = false;
-          const categories = { ui: 0, reui: 0, hooks: 0, other: 0 };
+          const categories = { ui: 0, reui: 0, motion: 0, hooks: 0, lib: 0, other: 0 };
 
           try {
             await access(srcDir);
@@ -218,7 +222,9 @@ class KumixUiMCPServer {
                 componentCount:
                   pkg.categories.ui +
                   pkg.categories.reui +
+                  pkg.categories.motion +
                   pkg.categories.hooks +
+                  pkg.categories.lib +
                   pkg.categories.other,
               })),
               total: allPackages.length,
@@ -226,8 +232,9 @@ class KumixUiMCPServer {
                 "@kumix/ui": {
                   ui: "shadcn/ui (Base UI, base-nova) — https://ui.shadcn.com/",
                   reui: "ReUI registry — https://reui.io/",
+                  motion: "beUI registry (Motion-based animated components) — https://beui.dev/",
                   imports:
-                    "Per-file: @kumix/ui/ui/button, @kumix/ui/reui/kanban, @kumix/ui/hooks/use-mobile",
+                    "Per-file: @kumix/ui/ui/button, @kumix/ui/reui/kanban, @kumix/ui/motion/tilt-card, @kumix/ui/hooks/use-mobile, @kumix/ui/lib/ease",
                   css: ["@kumix/ui/css", "@kumix/ui/theme"],
                 },
               },
@@ -271,12 +278,15 @@ class KumixUiMCPServer {
         ? {
             shadcn: 'import { Button } from "@kumix/ui/ui/button"',
             reui: 'import { Kanban } from "@kumix/ui/reui/kanban"',
+            motion: 'import { TiltCard } from "@kumix/ui/motion/tilt-card"',
             dataGrid: 'import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid"',
             hooks: 'import { useIsMobile } from "@kumix/ui/hooks/use-mobile"',
+            lib: 'import { ease } from "@kumix/ui/lib/ease"',
             css: 'import "@kumix/ui/css";\nimport "@kumix/ui/theme";',
             docs: {
               shadcn: "https://ui.shadcn.com/docs/components",
               reui: "https://reui.io/docs",
+              motion: "https://beui.dev/components/motion",
             },
           }
         : undefined;
@@ -341,7 +351,7 @@ class KumixUiMCPServer {
             {
               components: matching,
               total: matching.length,
-              hint: "Use importPath for consumer imports. category: ui=shadcn, reui=ReUI, hooks.",
+              hint: "Use importPath for consumer imports. category: ui=shadcn, reui=ReUI, motion=beUI, hooks, lib.",
             },
             null,
             2,
@@ -533,6 +543,7 @@ class KumixUiMCPServer {
                   ? {
                       shadcn: "https://ui.shadcn.com/docs/components",
                       reui: "https://reui.io/docs",
+                      motion: "https://beui.dev/components/motion",
                     }
                   : undefined,
             },
@@ -555,6 +566,7 @@ import { Button } from "@kumix/ui/ui/button";
 import { Dialog, DialogContent } from "@kumix/ui/ui/dialog";
 import { Kanban } from "@kumix/ui/reui/kanban";
 import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid";
+import { TiltCard } from "@kumix/ui/motion/tilt-card";
 import { useIsMobile } from "@kumix/ui/hooks/use-mobile";
 import "@kumix/ui/css";
 import "@kumix/ui/theme";
@@ -565,7 +577,8 @@ export function Example() {
 }
 
 // Previews: shadcn → https://ui.shadcn.com/docs/components
-//           reui   → https://reui.io/docs`;
+//           reui   → https://reui.io/docs
+//           beUI   → https://beui.dev/components/motion`;
     }
 
     if (matches.length > 1) {
@@ -576,13 +589,13 @@ export function Example() {
           .join("");
         return `// ${m.category}: import { ${symbol} } from "${m.importPath}";`;
       });
-      return `// Multiple matches for "${componentName}" — pick category (ui=shadcn, reui=ReUI):\n${lines.join("\n")}`;
+      return `// Multiple matches for "${componentName}" — pick category (ui=shadcn, reui=ReUI, motion=beUI):\n${lines.join("\n")}`;
     }
 
     const matched = matches[0];
     if (matched) {
-      if (matched.category === "hooks") {
-        return `// ${matched.path} (hooks)
+      if (matched.category === "hooks" || matched.category === "lib") {
+        return `// ${matched.path} (${matched.category})
 import { /* named export from file */ } from "${matched.importPath}";
 
 // Source: packages/ui/src/${matched.path}
@@ -594,13 +607,21 @@ import { /* named export from file */ } from "${matched.importPath}";
         .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
         .join("");
       const origin =
-        matched.category === "ui" ? "shadcn" : matched.category === "reui" ? "ReUI" : "local";
+        matched.category === "ui"
+          ? "shadcn"
+          : matched.category === "reui"
+            ? "ReUI"
+            : matched.category === "motion"
+              ? "beUI"
+              : "local";
       const docs =
         matched.category === "ui"
           ? "https://ui.shadcn.com/docs/components"
           : matched.category === "reui"
             ? "https://reui.io/docs"
-            : "package README";
+            : matched.category === "motion"
+              ? "https://beui.dev/components/motion"
+              : "package README";
 
       return `// ${matched.path} (${matched.category} — ${origin})
 import { ${symbol} } from "${matched.importPath}";
@@ -619,6 +640,7 @@ export function Example() {
 // @kumix/ui uses per-file imports, e.g.:
 //   @kumix/ui/ui/button
 //   @kumix/ui/reui/kanban
+//   @kumix/ui/motion/tilt-card
 //   @kumix/ui/hooks/use-mobile`;
     }
 
@@ -637,7 +659,7 @@ server.registerTool(
   "list_packages",
   {
     description:
-      "List all available Kumix packages (scanned from packages/**). Includes @kumix/ui category counts (ui=shadcn, reui=ReUI, hooks).",
+      "List all available Kumix packages (scanned from packages/**). Includes @kumix/ui category counts (ui=shadcn, reui=ReUI, motion=beUI, hooks, lib).",
     inputSchema: {},
   },
   async () => kumixServer.listPackages(),
@@ -662,16 +684,18 @@ server.registerTool(
   "find_component",
   {
     description:
-      "Find components by name or path. Returns importPath for consumers. Filter by category: ui (shadcn), reui, hooks.",
+      "Find components by name or path. Returns importPath for consumers. Filter by category: ui (shadcn), reui, motion (beUI), hooks, lib.",
     inputSchema: {
       component_name: z
         .string()
         .min(1, "Component name is required")
-        .describe("Component or file name fragment (e.g. button, data-grid, use-mobile)"),
+        .describe(
+          "Component or file name fragment (e.g. button, data-grid, tilt-card, use-mobile)",
+        ),
       package_filter: z
         .string()
         .optional()
-        .describe("Optional filter: ui | reui | hooks | package name fragment"),
+        .describe("Optional filter: ui | reui | motion | hooks | lib | package name fragment"),
     },
   },
   async ({ component_name, package_filter }) =>
@@ -682,7 +706,7 @@ server.registerTool(
   "read_component_code",
   {
     description:
-      "Read source relative to package src/ (e.g. components/ui/button.tsx, components/reui/kanban.tsx, hooks/use-mobile.ts).",
+      "Read source relative to package src/ (e.g. components/ui/button.tsx, components/reui/kanban.tsx, components/motion/tilt-card.tsx, hooks/use-mobile.ts, lib/ease.ts).",
     inputSchema: {
       package_name: z
         .string()
@@ -711,7 +735,9 @@ server.registerTool(
       component_name: z
         .string()
         .optional()
-        .describe("Optional component/file name (e.g. button, kanban, use-mobile)"),
+        .describe(
+          "Optional component/file name (e.g. button, kanban, tilt-card, use-mobile, ease)",
+        ),
     },
   },
   async ({ package_name, component_name }) =>
