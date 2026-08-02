@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.1
+
+### Patch Changes
+
+- [`a77b10f`](https://github.com/kumixlabs/ui/commit/a77b10f5f800ba83c5eaa40fad650124c99ec6da) Thanks [@kumixio](https://github.com/kumixio)! - Add 19 new beUI motion components: attachment-upload, availability-scheduler, bloom-menu, command-palette, dynamic-island, expandable-action-bar, expandable-tabs, feedback-widget, file-upload, infinite-masonry, notification-stack, not-found (5 variants), otp-input, overflow-actions, swipeable-list. Fix toast icon alignment. Add custom/confirm-dialog (ConfirmDialog + ConfirmSignOut) and custom/toast (global toast helpers wrapping animated-toast-stack).
+
 ## 0.3.0
 
 ### Minor Changes
