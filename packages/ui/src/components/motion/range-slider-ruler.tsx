@@ -144,7 +144,7 @@ export function RulerSlider({
 
       {/* masked, not overlaid with background-coloured gradients — the fade has
           to work on any surface the slider is dropped onto */}
-      <div className="relative h-12 [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent)]">
+      <div className="mask-[linear-gradient(to_right,transparent,black_18%,black_82%,transparent)] relative h-12">
         {/* strip — dragged directly, so momentum comes from the drag gesture */}
         <motion.div
           drag={options.disabled ? false : "x"}

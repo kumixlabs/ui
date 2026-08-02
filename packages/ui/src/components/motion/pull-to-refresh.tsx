@@ -441,7 +441,7 @@ export function PullToRefresh({
             : { opacity: indicatorOpacity, scale: indicatorScale }
         }
         className={cn(
-          "pointer-events-none absolute inset-x-0 top-0 z-20 flex h-[4.25rem] flex-col items-center justify-center gap-0.5 bg-gradient-to-b from-background via-background/95 to-transparent font-medium text-[11px] text-muted-foreground",
+          "pointer-events-none absolute inset-x-0 top-0 z-20 flex h-[4.25rem] flex-col items-center justify-center gap-0.5 bg-linear-to-b from-background via-background/95 to-transparent font-medium text-[11px] text-muted-foreground",
           indicatorClassName,
         )}
       >
