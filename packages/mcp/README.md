@@ -6,19 +6,20 @@ Private MCP server for exploring **`@kumix/ui`** (and other `@kumix/*` workspace
 
 Scans `packages/**/package.json` at runtime (skips `@kumix/mcp`, `node_modules`, `dist`).
 
-| Package     | Layout                                                                                                                  |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `@kumix/ui` | `src/components/ui` (shadcn), `src/components/reui` (ReUI), `src/components/motion` (beUI), `src/hooks`, `src/lib`, CSS |
+| Package     | Layout                                                                                                                                                          |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@kumix/ui` | `src/components/ui` (shadcn), `src/components/reui` (ReUI), `src/components/motion` (beUI), `src/components/custom` (hand-written), `src/hooks`, `src/lib`, CSS |
 
 **Categories** on each component entry:
 
-| `category` | Source                 | Docs / previews                                                  |
-| ---------- | ---------------------- | ---------------------------------------------------------------- |
-| `ui`       | shadcn/ui base-nova    | [ui.shadcn.com](https://ui.shadcn.com/docs/components)           |
-| `reui`     | ReUI registry          | [reui.io/docs](https://reui.io/docs)                             |
-| `motion`   | beUI registry (Motion) | [beui.dev/components/motion](https://beui.dev/components/motion) |
-| `hooks`    | package hooks          | package README                                                   |
-| `lib`      | shared utilities       | package README                                                   |
+| `category` | Source                  | Docs / previews                                                  |
+| ---------- | ----------------------- | ---------------------------------------------------------------- |
+| `ui`       | shadcn/ui base-nova     | [ui.shadcn.com](https://ui.shadcn.com/docs/components)           |
+| `reui`     | ReUI registry           | [reui.io/docs](https://reui.io/docs)                             |
+| `motion`   | beUI registry (Motion)  | [beui.dev/components/motion](https://beui.dev/components/motion) |
+| `custom`   | hand-written components | package README                                                   |
+| `hooks`    | package hooks           | package README                                                   |
+| `lib`      | shared utilities        | package README                                                   |
 
 **Import paths** (per-file, no barrel):
 
@@ -26,6 +27,7 @@ Scans `packages/**/package.json` at runtime (skips `@kumix/mcp`, `node_modules`,
 @kumix/ui/ui/button
 @kumix/ui/reui/kanban
 @kumix/ui/motion/tilt-card
+@kumix/ui/custom/confirm-dialog
 @kumix/ui/hooks/use-mobile
 @kumix/ui/lib/ease
 @kumix/ui/css
@@ -59,13 +61,13 @@ bun run test
 
 ## Tools
 
-| Tool                  | Purpose                                                                    |
-| --------------------- | -------------------------------------------------------------------------- |
-| `list_packages`       | Indexed packages + category counts for `@kumix/ui`                         |
-| `get_package_info`    | Exports, peers, sample imports, doc links                                  |
-| `find_component`      | Search by name/path; filter `ui` \| `reui` \| `motion` \| `hooks` \| `lib` |
-| `read_component_code` | Read `src/`-relative file; returns `importPath`                            |
-| `get_usage_example`   | Per-file import snippet + package README                                   |
+| Tool                  | Purpose                                                                                |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| `list_packages`       | Indexed packages + category counts for `@kumix/ui`                                     |
+| `get_package_info`    | Exports, peers, sample imports, doc links                                              |
+| `find_component`      | Search by name/path; filter `ui` \| `reui` \| `motion` \| `custom` \| `hooks` \| `lib` |
+| `read_component_code` | Read `src/`-relative file; returns `importPath`                                        |
+| `get_usage_example`   | Per-file import snippet + package README                                               |
 
 ### Examples
 
@@ -76,6 +78,7 @@ find_component  component_name=tilt-card  package_filter=motion
 read_component_code  package_name=@kumix/ui  component_path=components/ui/button.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/kanban.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/motion/tilt-card.tsx
+read_component_code  package_name=@kumix/ui  component_path=components/custom/confirm-dialog.tsx
 read_component_code  package_name=@kumix/ui  component_path=lib/ease.ts
 get_usage_example  package_name=@kumix/ui  component_name=kanban
 ```

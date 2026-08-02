@@ -10,7 +10,8 @@
 - `packages/ui` (`@kumix/ui`): Published package. Per-file ESM exports only (no barrel `index.ts` files).
   - `components/ui/` — shadcn/ui (Base UI, base-nova). Add via `bun run add:shadcn`. Docs: [ui.shadcn.com](https://ui.shadcn.com/docs/components)
   - `components/reui/` — ReUI registry. Add via `bun run add:reui`. Docs: [reui.io](https://reui.io/docs)
-  - `components/motion/` — beUI registry (Motion-based animated components). Add via `bun run add:beui`. Docs: [beui.dev](https://beui.dev/components/motion). Bundles `motion`, `lenis`, `@paper-design/shaders-react` — no extra installs needed.
+  - `components/motion/` — beUI registry (Motion-based animated components). Add via `bun run add:beui`. Docs: [beui.dev](https://beui.dev/components/motion). Bundles `motion`, `lenis`, `@paper-design/shaders-react` — no extra installs needed. Multi-file dirs: `button/`, `table/`, `availability-scheduler/`, `not-found/` (each has `index.tsx`).
+  - `components/custom/` — hand-written Kumix-specific composite components (not from any registry).
   - `hooks/` — custom hooks (per-file). Includes beUI helpers like `use-hover-capable`, `use-slider`.
   - `lib/` — shared utilities used by motion components (e.g. `ease.ts`, `tick-sound.ts`).
   - Imports in component source must be **relative** (e.g. `../button`, `../../lib/ease`). **Never use `@/` alias** in committed files.
@@ -19,13 +20,13 @@
 
 ## Export Map (`package.json`)
 
-| Pattern     | Source              | Example import                                                               |
-| ----------- | ------------------- | ---------------------------------------------------------------------------- |
-| `./*`       | `src/components/**` | `@kumix/ui/ui/button`, `@kumix/ui/reui/kanban`, `@kumix/ui/motion/tilt-card` |
-| `./hooks/*` | `src/hooks/**`      | `@kumix/ui/hooks/use-mobile`                                                 |
-| `./lib/*`   | `src/lib/**`        | `@kumix/ui/lib/ease`                                                         |
-| `./css`     | `src/style.css`     | `@kumix/ui/css`                                                              |
-| `./theme`   | `src/theme.css`     | `@kumix/ui/theme`                                                            |
+| Pattern     | Source              | Example import                                                                                                  |
+| ----------- | ------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `./*`       | `src/components/**` | `@kumix/ui/ui/button`, `@kumix/ui/reui/kanban`, `@kumix/ui/motion/tilt-card`, `@kumix/ui/custom/confirm-dialog` |
+| `./hooks/*` | `src/hooks/**`      | `@kumix/ui/hooks/use-mobile`                                                                                    |
+| `./lib/*`   | `src/lib/**`        | `@kumix/ui/lib/ease`                                                                                            |
+| `./css`     | `src/style.css`     | `@kumix/ui/css`                                                                                                 |
+| `./theme`   | `src/theme.css`     | `@kumix/ui/theme`                                                                                               |
 
 `tsdown` entry: `src/hooks/**/*.ts`, `src/lib/**/*.ts`, `src/components/**/*.tsx`. ESM only, deps externalized via `neverBundle`.
 

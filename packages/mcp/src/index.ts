@@ -39,8 +39,8 @@ interface ComponentEntry {
   path: string;
   /** Consumer import specifier, e.g. `@kumix/ui/ui/button`. */
   importPath: string;
-  /** `ui` | `reui` | `motion` | `hooks` | `lib` | `other` */
-  category: "ui" | "reui" | "motion" | "hooks" | "lib" | "other";
+  /** `ui` | `reui` | `motion` | `custom` | `hooks` | `lib` | `other` */
+  category: "ui" | "reui" | "motion" | "custom" | "hooks" | "lib" | "other";
 }
 
 interface PackageInfo {
@@ -59,6 +59,7 @@ interface PackageInfo {
     ui: number;
     reui: number;
     motion: number;
+    custom: number;
     hooks: number;
     lib: number;
     other: number;
@@ -74,6 +75,7 @@ function categorize(relativePath: string): ComponentEntry["category"] {
   if (p.startsWith("components/ui/") || p === "components/ui") return "ui";
   if (p.startsWith("components/reui/") || p === "components/reui") return "reui";
   if (p.startsWith("components/motion/") || p === "components/motion") return "motion";
+  if (p.startsWith("components/custom/") || p === "components/custom") return "custom";
   if (p.startsWith("hooks/") || p === "hooks") return "hooks";
   if (p.startsWith("lib/") || p === "lib") return "lib";
   return "other";
@@ -127,7 +129,7 @@ class KumixUiMCPServer {
           const srcDir = join(packageDir, "src");
           let componentFiles: string[] = [];
           let hasSrcDir = false;
-          const categories = { ui: 0, reui: 0, motion: 0, hooks: 0, lib: 0, other: 0 };
+          const categories = { ui: 0, reui: 0, motion: 0, custom: 0, hooks: 0, lib: 0, other: 0 };
 
           try {
             await access(srcDir);
@@ -223,6 +225,7 @@ class KumixUiMCPServer {
                   pkg.categories.ui +
                   pkg.categories.reui +
                   pkg.categories.motion +
+                  pkg.categories.custom +
                   pkg.categories.hooks +
                   pkg.categories.lib +
                   pkg.categories.other,
@@ -351,7 +354,7 @@ class KumixUiMCPServer {
             {
               components: matching,
               total: matching.length,
-              hint: "Use importPath for consumer imports. category: ui=shadcn, reui=ReUI, motion=beUI, hooks, lib.",
+              hint: "Use importPath for consumer imports. category: ui=shadcn, reui=ReUI, motion=beUI, custom=hand-written, hooks, lib.",
             },
             null,
             2,
@@ -589,7 +592,7 @@ export function Example() {
           .join("");
         return `// ${m.category}: import { ${symbol} } from "${m.importPath}";`;
       });
-      return `// Multiple matches for "${componentName}" — pick category (ui=shadcn, reui=ReUI, motion=beUI):\n${lines.join("\n")}`;
+      return `// Multiple matches for "${componentName}" — pick category (ui=shadcn, reui=ReUI, motion=beUI, custom):\n${lines.join("\n")}`;
     }
 
     const matched = matches[0];
@@ -613,7 +616,9 @@ import { /* named export from file */ } from "${matched.importPath}";
             ? "ReUI"
             : matched.category === "motion"
               ? "beUI"
-              : "local";
+              : matched.category === "custom"
+                ? "hand-written"
+                : "local";
       const docs =
         matched.category === "ui"
           ? "https://ui.shadcn.com/docs/components"
@@ -659,7 +664,7 @@ server.registerTool(
   "list_packages",
   {
     description:
-      "List all available Kumix packages (scanned from packages/**). Includes @kumix/ui category counts (ui=shadcn, reui=ReUI, motion=beUI, hooks, lib).",
+      "List all available Kumix packages (scanned from packages/**). Includes @kumix/ui category counts (ui=shadcn, reui=ReUI, motion=beUI, custom=hand-written, hooks, lib).",
     inputSchema: {},
   },
   async () => kumixServer.listPackages(),
@@ -684,7 +689,7 @@ server.registerTool(
   "find_component",
   {
     description:
-      "Find components by name or path. Returns importPath for consumers. Filter by category: ui (shadcn), reui, motion (beUI), hooks, lib.",
+      "Find components by name or path. Returns importPath for consumers. Filter by category: ui (shadcn), reui, motion (beUI), custom, hooks, lib.",
     inputSchema: {
       component_name: z
         .string()

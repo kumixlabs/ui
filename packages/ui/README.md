@@ -9,6 +9,7 @@ React UI kit for Kumix products. Built on **Base UI**, **Tailwind CSS**, **class
 | `src/components/ui/*`             | [shadcn/ui](https://ui.shadcn.com/) (base-nova style)        | [ui.shadcn.com/docs/components](https://ui.shadcn.com/docs/components)          |
 | `src/components/reui/*`           | [ReUI](https://reui.io/) registry (`@reui/*`)                | [reui.io/docs](https://reui.io/docs) · [components](https://reui.io/components) |
 | `src/components/motion/*`         | [beUI](https://beui.dev/) registry (`@beui/*`, Motion-based) | [beui.dev/components/motion](https://beui.dev/components/motion)                |
+| `src/components/custom/*`         | Hand-written Kumix-specific components                       | —                                                                               |
 | `src/hooks/*`                     | Package helpers (+ ReUI `use-file-upload`, beUI helpers)     | —                                                                               |
 | `src/lib/*`                       | Shared utilities (beUI `ease`, `tick-sound`)                 | —                                                                               |
 | `src/style.css` · `src/theme.css` | Tailwind entry + design tokens                               | —                                                                               |
@@ -71,6 +72,9 @@ import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid";
 import { TiltCard } from "@kumix/ui/motion/tilt-card";
 import { MorphingModal } from "@kumix/ui/motion/morphing-modal";
 
+// custom
+import { ConfirmDialog } from "@kumix/ui/custom/confirm-dialog";
+
 // hooks
 import { useIsMobile } from "@kumix/ui/hooks/use-mobile";
 import { useFileUpload } from "@kumix/ui/hooks/use-file-upload";
@@ -92,6 +96,7 @@ Mapped from source:
 | `src/components/reui/data-grid/data-grid.tsx` | `@kumix/ui/reui/data-grid/data-grid` |
 | `src/components/motion/tilt-card.tsx`         | `@kumix/ui/motion/tilt-card`         |
 | `src/components/motion/morphing-modal.tsx`    | `@kumix/ui/motion/morphing-modal`    |
+| `src/components/custom/confirm-dialog.tsx`    | `@kumix/ui/custom/confirm-dialog`    |
 | `src/hooks/use-mobile.ts`                     | `@kumix/ui/hooks/use-mobile`         |
 | `src/lib/ease.ts`                             | `@kumix/ui/lib/ease`                 |
 | `src/style.css`                               | `@kumix/ui/css`                      |
@@ -125,7 +130,15 @@ Extended patterns. Preview: [reui.io](https://reui.io/docs).
 
 Animated components built with [Motion](https://motion.dev). Preview: [beui.dev](https://beui.dev/components/motion). Bundled — `motion`, `lenis`, `@paper-design/shaders-react` are included, no extra installs needed.
 
-`action-swap` · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, stateful, magnetic) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `hold-action-button` · `input` · `loader` · `marquee` · `magnetic` · `morphing-modal` · `number-ticker` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `slide-action-button` · `smooth-scroll` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
+`action-swap` · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, stateful, magnetic) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `command-palette` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-tabs` · `feedback-widget` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` · `loader` · `magnetic` · `marquee` · `morphing-modal` · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
+
+### Custom (`components/custom`)
+
+Hand-written Kumix-specific composite components (not from any registry).
+
+`confirm-dialog` — `ConfirmDialog` (destructive alert dialog with loading state) + `ConfirmSignOut` (centered sign-out variant).
+
+`toast` — Global toast system: `ToastContainer` (mount once) + `showToast` / `toastSuccess` / `toastError` / `toastInfo` / `toastLoading` (call anywhere). Wraps `motion/animated-toast-stack`.
 
 ### Hooks
 

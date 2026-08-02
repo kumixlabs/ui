@@ -7,6 +7,7 @@ Sources:
 - **shadcn/ui** (Base UI, base-nova) → `packages/ui/src/components/ui` — [ui.shadcn.com](https://ui.shadcn.com/)
 - **ReUI** → `packages/ui/src/components/reui` — [reui.io](https://reui.io/)
 - **beUI** (Motion-based animated components) → `packages/ui/src/components/motion` — [beui.dev](https://beui.dev/components/motion)
+- **Custom** (hand-written Kumix-specific components) → `packages/ui/src/components/custom`
 
 Previews and component examples: use the upstream docs (links in [`packages/ui/README.md`](./packages/ui/README.md)).
 
@@ -66,7 +67,8 @@ CI (PR / release): **build → lint → types:check**. No unit test suite.
 packages/ui/src/
   components/ui/      # shadcn
   components/reui/    # reui (data-grid, event-calendar, gantt, …)
-  components/motion/  # beui (tilt-card, morphing-modal, loader, …)
+  components/motion/  # beui (tilt-card, morphing-modal, loader, shader-background, not-found/*, …)
+  components/custom/  # hand-written (confirm-dialog, …)
   hooks/
   lib/                # shared utils (ease, tick-sound)
   style.css · theme.css
