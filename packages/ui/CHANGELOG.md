@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.0
+
+### Minor Changes
+
+- [`32ce5b0`](https://github.com/kumixlabs/ui/commit/32ce5b06e0a6bbc1c7fe5a2b52e02e5c790ee2ed) Thanks [@kumixio](https://github.com/kumixio)! - Add beUI (Motion-based animated components) registry under `components/motion/`, shared utilities under `lib/`, and new hooks. Export map now includes `./lib/*` and `./motion/*`.
+
 ## 0.2.4
 
 ### Patch Changes
