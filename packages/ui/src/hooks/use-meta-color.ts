@@ -1,7 +1,3 @@
-/**
- * Meta theme color management hook for React components.
- */
-
 "use client";
 
 import * as React from "react";

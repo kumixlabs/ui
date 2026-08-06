@@ -251,7 +251,7 @@ export function CenterMorphModalContent({
       {context.open ? (
         <PresencePointerGate>
           {(isPresent) => (
-            <div ref={overlayRef} className="pointer-events-none fixed inset-0 z-[100]">
+            <div ref={overlayRef} className="pointer-events-none fixed inset-0 z-100">
               <motion.button
                 type="button"
                 aria-label="Dismiss modal"
@@ -332,7 +332,7 @@ export function CenterMorphModalContent({
                           duration: reduce ? 0.12 : 0.2,
                           ease: EASE_OUT,
                         }}
-                        className="absolute top-4 right-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-foreground/[0.05] text-muted-foreground transition-colors hover:bg-foreground/[0.08] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="absolute top-4 right-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-foreground/5 text-muted-foreground transition-colors hover:bg-foreground/8 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       >
                         <X className="h-4 w-4" aria-hidden="true" />
                       </motion.button>

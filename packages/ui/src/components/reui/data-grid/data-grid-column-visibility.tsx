@@ -1,5 +1,4 @@
 "use client";
-"use no memo";
 
 import type { ReactElement } from "react";
 import type { Table } from "@tanstack/react-table";
@@ -12,13 +11,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
+import type { DataGridFeatures } from "./data-grid";
 import { getColumnHeaderLabel } from "./data-grid";
 
-function DataGridColumnVisibility<TData>({
+function DataGridColumnVisibility<TData extends object>({
   table,
   trigger,
 }: {
-  table: Table<TData>;
+  table: Table<DataGridFeatures, TData>;
   trigger: ReactElement<Record<string, unknown>>;
 }) {
   return (

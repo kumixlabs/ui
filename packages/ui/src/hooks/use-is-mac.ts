@@ -1,9 +1,3 @@
-/**
- * Platform detection hook for React components
- * Determines whether the current user agent is running on a macOS device.
- * Useful for rendering platform-specific keyboard shortcuts or UI variations.
- */
-
 "use client";
 
 import { useEffect, useState } from "react";

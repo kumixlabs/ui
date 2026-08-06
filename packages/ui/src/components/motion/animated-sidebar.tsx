@@ -42,12 +42,13 @@ const PANEL_TRANSITION = {
   ease: EASE_DRAWER,
 } as const;
 
-// The desktop rail is one surface changing shape, so a lightly underdamped
-// spring makes the width settle without scaling or stretching its contents.
+// The desktop rail settles at a hard zero-width boundary. Keep the spring
+// critically damped so it cannot overshoot, pause against that boundary, and
+// then snap back during the final frame.
 const SIDEBAR_MORPH_TRANSITION = {
   type: "spring",
   stiffness: 380,
-  damping: 28,
+  damping: 35,
   mass: 0.75,
 } as const;
 
@@ -492,6 +493,7 @@ export const AnimatedSidebar = forwardRef<HTMLElement, AnimatedSidebarProps>(
           transition={context.reduce ? REDUCED_TRANSITION : PANEL_TRANSITION}
           className={cn(
             "sticky top-0 flex h-svh w-full flex-col overflow-hidden bg-background",
+            collapsible === "offcanvas" && "w-(--sidebar-width)",
             variant === "sidebar" &&
               (side === "left" ? "border-border border-r" : "border-border border-l"),
             variant === "floating" &&

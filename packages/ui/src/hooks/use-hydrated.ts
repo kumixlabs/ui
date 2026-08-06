@@ -1,14 +1,3 @@
-/**
- * Hydration state hook for React components
- * Returns a boolean indicating whether the component is running on the client
- * with SSR-safe behavior to prevent hydration mismatches.
- *
- * This hook leverages `useSyncExternalStore` to provide a stable value between
- * server and client renders: `false` during SSR, `true` after client hydration.
- * The external store does not emit updates because the hydration state is static
- * for the lifetime of the component.
- */
-
 "use client";
 
 import { useSyncExternalStore } from "react";

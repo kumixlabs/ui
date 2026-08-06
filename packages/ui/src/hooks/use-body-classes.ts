@@ -1,7 +1,3 @@
-/**
- * Body class management hook for React components.
- */
-
 "use client";
 
 import { useEffect } from "react";

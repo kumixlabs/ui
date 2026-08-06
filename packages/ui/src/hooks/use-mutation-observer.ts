@@ -1,9 +1,3 @@
-/**
- * DOM Mutation Observer hook for React components
- * Provides a React-friendly interface for observing DOM changes
- * with automatic cleanup and ref integration
- */
-
 "use client";
 
 import * as React from "react";

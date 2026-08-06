@@ -3,6 +3,11 @@
 import type { ElementType, ReactNode } from "react";
 
 import { cn } from "@kumix/utils";
+import {
+  TEXT_SHIMMER_CLASS_NAME,
+  TEXT_SHIMMER_KEYFRAMES,
+  textShimmerStyle,
+} from "../../lib/text-shimmer";
 
 export interface TextShimmerProps {
   children: ReactNode;
@@ -19,16 +24,10 @@ export function TextShimmer({
 }: TextShimmerProps) {
   return (
     <>
-      <style>
-        {`@keyframes beui-text-shimmer{from{background-position:200% 0}to{background-position:-200% 0}}`}
-      </style>
+      <style>{TEXT_SHIMMER_KEYFRAMES}</style>
       <Comp
-        style={{ animation: `beui-text-shimmer ${duration}s linear infinite` }}
-        className={cn(
-          "inline-block bg-size-[200%_100%] bg-clip-text text-transparent",
-          "bg-[linear-gradient(110deg,var(--muted-foreground)_30%,var(--foreground)_50%,var(--muted-foreground)_70%)]",
-          className,
-        )}
+        style={textShimmerStyle(duration)}
+        className={cn("inline-block", TEXT_SHIMMER_CLASS_NAME, className)}
       >
         {children}
       </Comp>

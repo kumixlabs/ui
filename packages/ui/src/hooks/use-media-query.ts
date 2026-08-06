@@ -1,9 +1,3 @@
-/**
- * Media query hook for responsive React components
- * Provides real-time tracking of CSS media query matches
- * with SSR-safe implementation and automatic cleanup
- */
-
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";

@@ -1,9 +1,3 @@
-/**
- * Intersection observer hook for React components
- * Efficiently observes visibility of DOM elements using a shared IntersectionObserver instance.
- * Ideal for lazy loading, infinite scrolling, and animating elements when they enter the viewport.
- */
-
 "use client";
 
 import * as React from "react";

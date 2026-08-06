@@ -4,23 +4,25 @@ React UI kit for Kumix products. Built on **Base UI**, **Tailwind CSS**, **class
 
 ## Sources
 
-| Path                              | Origin                                                       | Docs / previews                                                                 |
-| --------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| `src/components/ui/*`             | [shadcn/ui](https://ui.shadcn.com/) (base-nova style)        | [ui.shadcn.com/docs/components](https://ui.shadcn.com/docs/components)          |
-| `src/components/reui/*`           | [ReUI](https://reui.io/) registry (`@reui/*`)                | [reui.io/docs](https://reui.io/docs) · [components](https://reui.io/components) |
-| `src/components/motion/*`         | [beUI](https://beui.dev/) registry (`@beui/*`, Motion-based) | [beui.dev/components/motion](https://beui.dev/components/motion)                |
-| `src/components/custom/*`         | Hand-written Kumix-specific components                       | —                                                                               |
-| `src/hooks/*`                     | Package helpers (+ ReUI `use-file-upload`, beUI helpers)     | —                                                                               |
-| `src/lib/*`                       | Shared utilities (beUI `ease`, `tick-sound`)                 | —                                                                               |
-| `src/style.css` · `src/theme.css` | Tailwind entry + design tokens                               | —                                                                               |
+| Path                              | Origin                                                                  | Docs / previews                                                                 |
+| --------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `src/components/ui/*`             | [shadcn/ui](https://ui.shadcn.com/) (base-nova style)                   | [ui.shadcn.com/docs/components](https://ui.shadcn.com/docs/components)          |
+| `src/components/reui/*`           | [ReUI](https://reui.io/) registry (`@reui/*`)                           | [reui.io/docs](https://reui.io/docs) · [components](https://reui.io/components) |
+| `src/components/motion/*`         | [beUI](https://beui.dev/) registry (`@beui/*`, Motion-based)            | [beui.dev/components/motion](https://beui.dev/components/motion)                |
+| `src/components/agents/*`         | [beUI](https://beui.dev/) AI agent components (`@beui/*`)               | [beui.dev/components/agents](https://beui.dev/components/agents)                |
+| `src/components/custom/*`         | Hand-written Kumix-specific components                                  | —                                                                               |
+| `src/hooks/*`                     | Package helpers (+ ReUI `use-file-upload`, beUI helpers)                | —                                                                               |
+| `src/lib/*`                       | Shared utilities (beUI `ease`, `tick-sound`, `text-shimmer`, `favicon`) | —                                                                               |
+| `src/style.css` · `src/theme.css` | Tailwind entry + design tokens                                          | —                                                                               |
 
 For **previews, props, and usage examples** of each component, use the upstream docs:
 
 - shadcn: https://ui.shadcn.com/docs/components/`<name>`
 - ReUI: https://reui.io/docs/components/base/`<name>` (or browse https://reui.io/components)
-- beUI: https://beui.dev/components/motion/`<name>`
+- beUI motion: https://beui.dev/components/motion/`<name>`
+- beUI agents: https://beui.dev/components/agents/`<name>`
 
-This package is a maintained distribution: imports rewritten for monorepo (`@kumix/utils`, relative paths), Biome/TypeScript clean, published via npm. Motion components bundle `motion`, `lenis`, and `@paper-design/shaders-react` — no extra installs needed.
+This package is a maintained distribution: imports rewritten for monorepo (`@kumix/utils`, relative paths), Biome/TypeScript clean, published via npm. Motion + agents bundle `motion`, `lenis`, and `@paper-design/shaders-react` — no extra installs needed.
 
 ## Install
 
@@ -40,13 +42,12 @@ bun add @base-ui/react class-variance-authority lucide-react react
 
 | Peer                                                | Used by                                        |
 | --------------------------------------------------- | ---------------------------------------------- |
-| `next-themes`                                       | `sonner`, `use-meta-color`                     |
-| `@shadcn/react`                                     | `message-scroller`                             |
+| `next-themes`                                       | `use-meta-color`                               |
+| `@shadcn/react`                                     | `message-scroller`, `questionnaire`            |
 | `@tanstack/react-table` · `@tanstack/react-virtual` | data-grid                                      |
 | `@dnd-kit/*`                                        | kanban, sortable, data-grid DnD                |
 | `date-fns` · `@date-fns/tz`                         | calendar, event-calendar, gantt, date-selector |
 | `recharts`                                          | chart                                          |
-| `sonner`                                            | toaster                                        |
 | `cmdk`                                              | command                                        |
 | `embla-carousel-react`                              | carousel                                       |
 | `input-otp`                                         | input-otp                                      |
@@ -54,6 +55,7 @@ bun add @base-ui/react class-variance-authority lucide-react react
 | `react-phone-number-input`                          | phone-input                                    |
 | `react-resizable-panels`                            | resizable                                      |
 | `@headless-tree/core`                               | tree                                           |
+| `shiki`                                             | `agents/code-block`                            |
 
 ## Import paths
 
@@ -71,6 +73,9 @@ import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid";
 // beUI (motion)
 import { TiltCard } from "@kumix/ui/motion/tilt-card";
 import { MorphingModal } from "@kumix/ui/motion/morphing-modal";
+
+// beUI (agents)
+import { PromptInput } from "@kumix/ui/agents/prompt-input";
 
 // custom
 import { ConfirmDialog } from "@kumix/ui/custom/confirm-dialog";
@@ -96,6 +101,7 @@ Mapped from source:
 | `src/components/reui/data-grid/data-grid.tsx` | `@kumix/ui/reui/data-grid/data-grid` |
 | `src/components/motion/tilt-card.tsx`         | `@kumix/ui/motion/tilt-card`         |
 | `src/components/motion/morphing-modal.tsx`    | `@kumix/ui/motion/morphing-modal`    |
+| `src/components/agents/prompt-input.tsx`      | `@kumix/ui/agents/prompt-input`      |
 | `src/components/custom/confirm-dialog.tsx`    | `@kumix/ui/custom/confirm-dialog`    |
 | `src/hooks/use-mobile.ts`                     | `@kumix/ui/hooks/use-mobile`         |
 | `src/lib/ease.ts`                             | `@kumix/ui/lib/ease`                 |
@@ -108,7 +114,7 @@ Mapped from source:
 
 Base UI / shadcn base-nova. Preview: [ui.shadcn.com](https://ui.shadcn.com/docs/components).
 
-`accordion` · `alert` · `alert-dialog` · `aspect-ratio` · `attachment` · `avatar` · `badge` · `breadcrumb` · `bubble` · `button` · `button-group` · `calendar` · `card` · `carousel` · `chart` · `checkbox` · `collapsible` · `combobox` · `command` · `context-menu` · `dialog` · `direction` · `drawer` · `dropdown-menu` · `empty` · `field` · `hover-card` · `input` · `input-group` · `input-otp` · `item` · `kbd` · `label` · `marker` · `menubar` · `message` · `message-scroller` · `native-select` · `navigation-menu` · `pagination` · `popover` · `progress` · `radio-group` · `resizable` · `scroll-area` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `slider` · `sonner` · `spinner` · `switch` · `table` · `tabs` · `textarea` · `toggle` · `toggle-group` · `tooltip`
+`accordion` · `alert` · `alert-dialog` · `aspect-ratio` · `attachment` · `avatar` · `badge` · `breadcrumb` · `bubble` · `button` · `button-group` · `calendar` · `card` · `carousel` · `chart` · `checkbox` · `collapsible` · `combobox` · `command` · `context-menu` · `dialog` · `direction` · `drawer` · `dropdown-menu` · `empty` · `field` · `hover-card` · `input` · `input-group` · `input-otp` · `item` · `kbd` · `label` · `marker` · `menubar` · `message` · `message-scroller` · `native-select` · `navigation-menu` · `pagination` · `popover` · `progress` · `questionnaire` · `radio-group` · `resizable` · `scroll-area` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `slider` · `spinner` · `switch` · `table` · `tabs` · `textarea` · `toggle` · `toggle-group` · `tooltip`
 
 ### ReUI (`components/reui`)
 
@@ -131,6 +137,12 @@ Extended patterns. Preview: [reui.io](https://reui.io/docs).
 Animated components built with [Motion](https://motion.dev). Preview: [beui.dev](https://beui.dev/components/motion). Bundled — `motion`, `lenis`, `@paper-design/shaders-react` are included, no extra installs needed.
 
 `action-swap` · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, stateful, magnetic) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `command-palette` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-tabs` · `feedback-widget` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` · `loader` · `magnetic` · `marquee` · `morphing-modal` · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
+
+### beUI — AI Agents (`components/agents`)
+
+AI agent / chat UI components from [beUI](https://beui.dev). Preview: [beui.dev/components/agents](https://beui.dev/components/agents).
+
+`agent-code` · `agent-disclosure` · `agent-activity/*` (activity-row) · `ai-sidebar` · `approval-card` · `chat-app` · `citations` · `code-block` · `file-diff` · `image-generation` · `loading-states/*` (agent-progress, reasoning-text, thinking-shimmer) · `message` · `message-bubble` · `message-context` · `message-scroller` · `prompt-input` · `streaming-response` · `todo-list` · `tool-approval` · `tool-result`
 
 ### Custom (`components/custom`)
 
@@ -178,11 +190,15 @@ Refresh registry sources (from `packages/ui`):
 ```bash
 bun run add:shadcn   # shadcn add --all --overwrite
 bun run add:reui     # @reui/* components
-bun run add:beui     # @beui/* components (Motion-based)
+bun run add:beui     # @beui/* components (Motion + AI agents + blocks)
+# Or individually:
+bun run add:beui:components   # motion/animated components
+bun run add:beui:ai-agents   # agents/ chat & AI components
+bun run add:beui:blocks      # precomposed layout blocks
 node scripts/fix-imports.mjs   # REQUIRED after CLI adds
 ```
 
-`fix-imports.mjs` rewrites `@/lib/utils` → `@kumix/utils`, converts `@/components/*` / `@/hooks/*` / `@/lib/*` to relative paths, handles all three registries (`ui`, `reui`, `motion`), and prepends `"use client"` when missing.
+`fix-imports.mjs` rewrites `@/lib/utils` → `@kumix/utils`, converts `@/components/*` / `@/hooks/*` / `@/lib/*` to relative paths, handles all registries (`ui`, `reui`, `motion`, `agents`, `custom`), and prepends `"use client"` when missing.
 
 ## License
 

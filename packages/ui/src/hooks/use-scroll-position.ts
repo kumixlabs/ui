@@ -1,9 +1,3 @@
-/**
- * Scroll position tracking hook for React components
- * Monitors scroll position of window or specific elements
- * with real-time updates and automatic cleanup
- */
-
 "use client";
 
 import { type RefObject, useEffect, useState } from "react";

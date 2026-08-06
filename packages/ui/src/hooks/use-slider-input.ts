@@ -1,9 +1,3 @@
-/**
- * Dual slider input management hook for React components
- * Provides synchronized state management between range slider and number inputs
- * with validation and boundary enforcement
- */
-
 "use client";
 
 import type * as React from "react";

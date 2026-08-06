@@ -11,22 +11,23 @@
   - `components/ui/` — shadcn/ui (Base UI, base-nova). Add via `bun run add:shadcn`. Docs: [ui.shadcn.com](https://ui.shadcn.com/docs/components)
   - `components/reui/` — ReUI registry. Add via `bun run add:reui`. Docs: [reui.io](https://reui.io/docs)
   - `components/motion/` — beUI registry (Motion-based animated components). Add via `bun run add:beui`. Docs: [beui.dev](https://beui.dev/components/motion). Bundles `motion`, `lenis`, `@paper-design/shaders-react` — no extra installs needed. Multi-file dirs: `button/`, `table/`, `availability-scheduler/`, `not-found/` (each has `index.tsx`).
+  - `components/agents/` — beUI registry (AI agent / chat components). Add via `bun run add:beui:ai-agents`. Docs: [beui.dev/components/agents](https://beui.dev/components/agents). Multi-file dirs: `agent-activity/`, `approval-card/`, `loading-states/`.
   - `components/custom/` — hand-written Kumix-specific composite components (not from any registry).
   - `hooks/` — custom hooks (per-file). Includes beUI helpers like `use-hover-capable`, `use-slider`.
-  - `lib/` — shared utilities used by motion components (e.g. `ease.ts`, `tick-sound.ts`).
+  - `lib/` — shared utilities used by motion + agents (e.g. `ease.ts`, `tick-sound.ts`, `text-shimmer.ts`, `favicon.ts`).
   - Imports in component source must be **relative** (e.g. `../button`, `../../lib/ease`). **Never use `@/` alias** in committed files.
   - CSS styles (`style.css` and `theme.css`) are hand-written and copied to `dist/` via `build:css`.
 - `packages/mcp` (`@kumix/mcp`): Private MCP server for package/component discovery. Ignored by changesets.
 
 ## Export Map (`package.json`)
 
-| Pattern     | Source              | Example import                                                                                                  |
-| ----------- | ------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `./*`       | `src/components/**` | `@kumix/ui/ui/button`, `@kumix/ui/reui/kanban`, `@kumix/ui/motion/tilt-card`, `@kumix/ui/custom/confirm-dialog` |
-| `./hooks/*` | `src/hooks/**`      | `@kumix/ui/hooks/use-mobile`                                                                                    |
-| `./lib/*`   | `src/lib/**`        | `@kumix/ui/lib/ease`                                                                                            |
-| `./css`     | `src/style.css`     | `@kumix/ui/css`                                                                                                 |
-| `./theme`   | `src/theme.css`     | `@kumix/ui/theme`                                                                                               |
+| Pattern     | Source              | Example import                                                                                                                                   |
+| ----------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `./*`       | `src/components/**` | `@kumix/ui/ui/button`, `@kumix/ui/reui/kanban`, `@kumix/ui/motion/tilt-card`, `@kumix/ui/agents/prompt-input`, `@kumix/ui/custom/confirm-dialog` |
+| `./hooks/*` | `src/hooks/**`      | `@kumix/ui/hooks/use-mobile`                                                                                                                     |
+| `./lib/*`   | `src/lib/**`        | `@kumix/ui/lib/ease`                                                                                                                             |
+| `./css`     | `src/style.css`     | `@kumix/ui/css`                                                                                                                                  |
+| `./theme`   | `src/theme.css`     | `@kumix/ui/theme`                                                                                                                                |
 
 `tsdown` entry: `src/hooks/**/*.ts`, `src/lib/**/*.ts`, `src/components/**/*.tsx`. ESM only, deps externalized via `neverBundle`.
 
@@ -37,10 +38,10 @@
   2. Run `node scripts/fix-imports.mjs` inside `packages/ui`. This script:
      - Rewrites `@/lib/utils` → `@kumix/utils`.
      - Rewrites `@/lib/*` → relative paths (e.g. `../../lib/ease`).
-     - Rewrites `@/components/ui/*`, `@/components/reui/*`, `@/components/motion/*` → relative.
+     - Rewrites `@/components/ui/*`, `@/components/reui/*`, `@/components/motion/*`, `@/components/agents/*` → relative.
      - Rewrites `@/hooks/*` → relative.
      - Prepends `"use client"` when missing.
-     - Handles bare same-dir imports (e.g. `"button"` → `"./button"`), skipping real package names that collide (`motion`, `sonner`, `cmdk`, …).
+     - Handles bare same-dir imports (e.g. `"button"` → `"./button"`), skipping real package names that collide (`motion`, `cmdk`, …).
 - **Testing**: No test suite for `packages/ui`. Smoke test for `@kumix/mcp` via:
   ```bash
   bun --filter=@kumix/mcp run test

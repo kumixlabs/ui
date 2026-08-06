@@ -1,9 +1,3 @@
-/**
- * Viewport dimensions tracking hook for React components
- * Provides real-time viewport width and height with automatic updates
- * on window resize events with SSR-safe implementation
- */
-
 "use client";
 
 import { useEffect, useState } from "react";

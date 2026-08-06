@@ -1,5 +1,4 @@
 "use client";
-"use no memo";
 
 import { useMemo, useState } from "react";
 import type { Column } from "@tanstack/react-table";
@@ -11,9 +10,10 @@ import { Input } from "../../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Separator } from "../../ui/separator";
 import { Badge } from "../badge";
+import type { DataGridFeatures } from "./data-grid";
 
-interface DataGridColumnFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>;
+interface DataGridColumnFilterProps<TData extends object, TValue> {
+  column?: Column<DataGridFeatures, TData, TValue>;
   title?: string;
   options: {
     label: string;
@@ -22,7 +22,7 @@ interface DataGridColumnFilterProps<TData, TValue> {
   }[];
 }
 
-function DataGridColumnFilter<TData, TValue>({
+function DataGridColumnFilter<TData extends object, TValue>({
   column,
   title,
   options,
