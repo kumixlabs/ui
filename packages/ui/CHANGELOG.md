@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.2
+
+### Patch Changes
+
+- [`0336441`](https://github.com/kumixlabs/ui/commit/0336441d990a85985e336f4f871ca18ec7b1c08c) Thanks [@kumixio](https://github.com/kumixio)! - Add beUI AI agent components under `components/agents/` (20 files: prompt-input, message-scroller, ai-sidebar, code-block, citations, file-diff, image-generation, todo-list, tool-approval, tool-result, streaming-response, agent-code, agent-disclosure, chat-app, message, message-bubble, message-context, agent-activity/_, approval-card/_, loading-states/*). Add shadcn `questionnaire` component. Add `lib/favicon.ts` and `lib/text-shimmer.ts`. Migrate data-grid from TanStack Table v8 to v9 (`useReactTable` → `useTable`, `tableFeatures()` API, `columnResizing` state, `start`/`end` pinning, `Subscribe` for React Compiler, `sortFn` naming). Remove `ui/sonner` (superseded by `custom/toast`). Add `shiki` peer dep for `agents/code-block`. Update `fix-imports.mjs` to handle `components/agents/` paths.
+
 ## 0.3.1
 
 ### Patch Changes
