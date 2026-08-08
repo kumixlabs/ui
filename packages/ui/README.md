@@ -30,15 +30,13 @@ This package is a maintained distribution: imports rewritten for monorepo (`@kum
 bun add @kumix/ui @kumix/utils
 ```
 
-Install peers (see `package.json` → `peerDependencies`). All listed peers are **required** by the package (no `peerDependenciesMeta`); install what your app needs for the components you import.
+Install peers (see `package.json` → `peerDependencies`). Six peers are **always required**: `react`, `@kumix/utils`, `@base-ui/react`, `class-variance-authority`, `lucide-react`, `motion`. The remaining 21 are **optional** via `peerDependenciesMeta` — install only what your imported components need.
 
 ```bash
-bun add @base-ui/react class-variance-authority lucide-react react
+bun add @base-ui/react class-variance-authority lucide-react motion react @kumix/utils
 ```
 
-**Core (almost every app):** `react`, `@base-ui/react`, `class-variance-authority`, `lucide-react`, `@kumix/utils`.
-
-**Feature peers** (required in `package.json`; needed at runtime only if you import those components):
+**Feature peers** (optional — needed at runtime only if you import those components):
 
 | Peer                                                | Used by                                        |
 | --------------------------------------------------- | ---------------------------------------------- |
@@ -136,7 +134,7 @@ Extended patterns. Preview: [reui.io](https://reui.io/docs).
 
 Animated components built with [Motion](https://motion.dev). Preview: [beui.dev](https://beui.dev/components/motion). Bundled — `motion`, `lenis`, `@paper-design/shaders-react` are included, no extra installs needed.
 
-`action-swap` · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, stateful, magnetic) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `command-palette` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-tabs` · `feedback-widget` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` · `loader` · `magnetic` · `marquee` · `morphing-modal` · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
+`action-swap` · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, stateful, magnetic, `ButtonLink`) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `command-palette` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-tabs` · `feedback-widget` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` · `loader` · `magnetic` · `marquee` · `morphing-modal` · `morphing-tabs` · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
 
 ### beUI — AI Agents (`components/agents`)
 

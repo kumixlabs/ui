@@ -70,6 +70,38 @@ const EVENT_CALENDAR_GHOST = {
 const EVENT_CALENDAR_FADE_TRUNCATE =
   "w-full truncate @max-[10rem]:text-clip @max-[10rem]:[mask-image:linear-gradient(to_right,#000_calc(100%-0.75rem),transparent)] @max-[10rem]:rtl:[mask-image:linear-gradient(to_left,#000_calc(100%-0.75rem),transparent)]";
 
+/**
+ * The drag-to-create selection, shared by every view so the gesture looks the
+ * same wherever it happens: a dashed primary outline over a faint primary wash,
+ * with the range being drawn printed inside it.
+ *
+ * Two shapes, because a draft occupies space differently per view:
+ * - `box` - one contiguous region, used by the timed grid where a draft is a
+ *   single minute-positioned rectangle.
+ * - `segment` - one day-cell's slice of a draft that runs across several cells
+ *   (month grid, all-day row). Side borders and rounded corners land only on
+ *   the run's two ends, so a multi-day selection reads as one dashed box rather
+ *   than a row of separate ones.
+ */
+const EVENT_CALENDAR_SLOT_DRAFT = {
+  box: "rounded-sm border border-dashed border-primary/40 bg-primary/5",
+  segment: "border-y border-dashed border-primary/40",
+  segmentStart: "rounded-s-sm border-s",
+  segmentEnd: "rounded-e-sm border-e",
+  /**
+   * The wash for segmented views. Belongs on the CELL, not on the dashed
+   * overlay: the overlay stacks above the event chips, so tinting it would
+   * wash the chips instead of the empty cell behind them.
+   */
+  surface: "bg-primary/5",
+  /**
+   * The range readout. `leading-none` is load-bearing: the shortest timed draft
+   * is one interval tall (16px at the default hour height), and anything looser
+   * renders ~18px and gets clipped by the draft's own overflow-hidden.
+   */
+  label: "text-primary truncate px-1 py-0.5 text-[0.6875rem] leading-none font-medium",
+} as const;
+
 interface EventCalendarChipContextValue<TData = unknown> {
   occurrence: EventCalendarOccurrence<TData>;
   segment: EventCalendarSegment<TData>;
@@ -503,6 +535,7 @@ export {
   EVENT_CALENDAR_COLORS,
   EVENT_CALENDAR_FADE_TRUNCATE,
   EVENT_CALENDAR_GHOST,
+  EVENT_CALENDAR_SLOT_DRAFT,
   EventCalendarEvent,
   useEventCalendarEventChip,
 };

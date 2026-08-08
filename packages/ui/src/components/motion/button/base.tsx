@@ -26,6 +26,13 @@ export interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children">
   children?: ReactNode;
 }
 
+export interface ButtonLinkProps extends Omit<HTMLMotionProps<"a">, "children"> {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  pressScale?: number;
+  children?: ReactNode;
+}
+
 type Ripple = { id: number; x: number; y: number; size: number };
 
 const VARIANT_CLASS: Record<ButtonVariant, string> = {
@@ -127,5 +134,32 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       ) : null}
       {children}
     </motion.button>
+  );
+});
+
+export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(function ButtonLink(
+  { variant = "primary", size = "md", pressScale = 0.93, className, children, ...rest },
+  ref,
+) {
+  const reduce = useReducedMotion();
+  const canHover = useHoverCapable();
+
+  return (
+    <motion.a
+      ref={ref}
+      whileTap={reduce ? undefined : { scale: pressScale }}
+      whileHover={reduce || !canHover ? undefined : { scale: 1.02 }}
+      transition={SPRING_PRESS}
+      className={cn(
+        "inline-flex select-none items-center justify-center font-medium",
+        "transition-colors",
+        VARIANT_CLASS[variant],
+        SIZE_CLASS[size],
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </motion.a>
   );
 });

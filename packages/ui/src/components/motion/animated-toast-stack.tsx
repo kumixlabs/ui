@@ -358,11 +358,11 @@ const ToastItem = memo(function ToastItem({
         {renderToast ? (
           renderToast(toast)
         ) : (
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             <motion.span
               layout
               className={cn(
-                "mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full",
+                "inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full",
                 STATUS_CLASS[status],
                 classNames?.iconWrap,
               )}
@@ -402,7 +402,7 @@ const ToastItem = memo(function ToastItem({
                 >
                   <p
                     className={cn(
-                      "truncate font-medium text-foreground text-sm leading-5",
+                      "font-medium text-foreground text-sm leading-5",
                       classNames?.title,
                     )}
                   >
