@@ -1,5 +1,12 @@
 # @kumix/ui
 
+## 0.3.4
+
+### Patch Changes
+
+- [`8ecfcde`](https://github.com/kumixlabs/ui/commit/8ecfcdea3062232aa6e4e6b49b124c2659d6eb1c) Thanks [@kumixio](https://github.com/kumixio)! - Add motion `signup-form` component and `aria-describedby` support on motion `checkbox`.
+  Bump `@paper-design/shaders-react` to ^0.0.80. Fix `signup-form` in beui:blocks add script.
+
 ## 0.3.3
 
 ### Patch Changes
