@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.5
+
+### Patch Changes
+
+- [`9f5322e`](https://github.com/kumixlabs/ui/commit/9f5322e9be00239d369552cba01a0645d19beedc) Thanks [@kumixio](https://github.com/kumixio)! - Fix popover goo layer hiding trigger label in Safari by replacing SVG mask with clip-path, reuse TextScramble in ReasoningText scramble variant, add renderWorkingStatus/renderCompletedStatus render props to agent-activity, add @beui/combobox to add:beui:components script
+
 ## 0.3.4
 
 ### Patch Changes
