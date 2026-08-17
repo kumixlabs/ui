@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.7
+
+### Patch Changes
+
+- [`d507ef6`](https://github.com/kumixlabs/ui/commit/d507ef6faedb0298912a769bb36b1b6a69dd8044) Thanks [@kumixio](https://github.com/kumixio)! - fix: iOS Safari touch, gesture and narrow-width defects across the component set
+
 ## 0.3.6
 
 ### Patch Changes
