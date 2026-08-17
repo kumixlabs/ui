@@ -132,6 +132,7 @@ export function TabsTrigger({
         {active ? (
           <motion.span
             layoutId={layoutId}
+            layout="position"
             className={cn("absolute right-0 -bottom-px left-0 h-px bg-primary", indicatorClassName)}
           />
         ) : null}
@@ -146,6 +147,7 @@ export function TabsTrigger({
       {active ? (
         <motion.span
           layoutId={layoutId}
+          layout="position"
           style={{ borderRadius: variant === "pill" ? 9999 : 8 }}
           className={cn("absolute inset-0 bg-primary", radius, indicatorClassName)}
         />

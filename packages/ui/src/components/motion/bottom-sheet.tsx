@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useId, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -49,6 +49,9 @@ export function BottomSheet({
   const sheetRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const heightRef = useRef(0);
+  const uid = useId();
+  const titleId = `${uid}-title`;
+  const descriptionId = `${uid}-description`;
 
   useEffect(() => {
     setMounted(true);
@@ -78,7 +81,17 @@ export function BottomSheet({
     body.style.left = "0";
     body.style.right = "0";
     body.style.overflow = "hidden";
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onOpenChange(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+
     return () => {
+      window.removeEventListener("keydown", onKey);
       body.style.position = prev.position;
       body.style.top = prev.top;
       body.style.left = prev.left;
@@ -86,7 +99,7 @@ export function BottomSheet({
       body.style.overflow = prev.overflow;
       window.scrollTo(0, scrollY);
     };
-  }, [open]);
+  }, [open, onOpenChange]);
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     const velocity = info.velocity.y;
@@ -167,20 +180,29 @@ export function BottomSheet({
             )}
             role="dialog"
             aria-modal="true"
-            aria-label={title}
+            aria-labelledby={title ? titleId : undefined}
+            aria-describedby={description ? descriptionId : undefined}
+            aria-label={title ? undefined : "Bottom sheet"}
           >
-            <div
-              onPointerDown={(e) => dragControls.start(e)}
-              className="flex cursor-grab touch-none flex-col items-center px-4 pt-3 pb-2 active:cursor-grabbing"
-            >
-              <div className="h-1.5 w-10 rounded-full bg-muted-foreground/40" />
+            <div className="flex flex-col items-center px-4 pt-3 pb-2">
+              {/* Drag only the pill so the title and description stay selectable. */}
+              <div
+                onPointerDown={(event) => dragControls.start(event)}
+                className="flex cursor-grab touch-none items-center justify-center py-1 active:cursor-grabbing"
+              >
+                <div className="h-1.5 w-10 rounded-full bg-muted-foreground/40" />
+              </div>
               {title || description ? (
-                <div className="mt-3 w-full">
+                <div className="mt-2 w-full">
                   {title ? (
-                    <h2 className="font-semibold text-base text-foreground">{title}</h2>
+                    <h2 id={titleId} className="font-semibold text-base text-foreground">
+                      {title}
+                    </h2>
                   ) : null}
                   {description ? (
-                    <p className="mt-0.5 text-muted-foreground text-sm">{description}</p>
+                    <p id={descriptionId} className="mt-0.5 text-muted-foreground text-sm">
+                      {description}
+                    </p>
                   ) : null}
                 </div>
               ) : null}

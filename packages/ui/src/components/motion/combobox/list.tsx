@@ -22,7 +22,7 @@ export function ComboboxList({ children, ariaLabel = "Options", className }: Com
       role="listbox"
       aria-label={ariaLabel}
       className={cn(
-        "max-h-64 overflow-y-auto overscroll-contain p-1.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        "scrollbar-none relative isolate max-h-64 overflow-y-auto overscroll-contain p-1.5 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
         className,
       )}
     >
@@ -140,7 +140,7 @@ export function ComboboxItem({
         context.select(value);
       }}
       className={cn(
-        "relative isolate flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm outline-none transition-colors duration-150",
+        "relative flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm outline-none transition-colors duration-150",
         active ? "text-foreground" : "text-muted-foreground",
         "disabled:pointer-events-none disabled:opacity-45",
         className,

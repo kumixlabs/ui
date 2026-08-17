@@ -41,7 +41,7 @@
     "add:reui": "shadcn add @reui/alert @reui/autocomplete @reui/badge @reui/data-grid @reui/date-selector @reui/event-calendar @reui/use-file-upload @reui/filters @reui/frame @reui/gantt @reui/icon-stack @reui/icon-tile @reui/kanban @reui/number-field @reui/phone-input @reui/rating @reui/scrollspy @reui/sortable @reui/stepper @reui/timeline @reui/tree --overwrite",
     "add:beui:ai-agents": "shadcn add @beui/prompt-input @beui/todo-list @beui/code-block @beui/approval-card @beui/file-diff @beui/tool-result @beui/streaming-response @beui/image-generation @beui/tool-approval @beui/citations @beui/agent-activity @beui/reasoning-text @beui/thinking-shimmer @beui/agent-progress @beui/ai-sidebar @beui/chat-app @beui/message-bubble @beui/message @beui/message-scroller --overwrite",
     "add:beui:components": "shadcn add @beui/marquee @beui/tabs @beui/switch @beui/input @beui/select @beui/select-morph @beui/combobox @beui/checkbox @beui/radio @beui/bottom-sheet @beui/pull-to-refresh @beui/shared-layout-bg @beui/bounce-sidebar @beui/animated-sidebar @beui/preview-rail @beui/dock @beui/tooltip @beui/context-menu @beui/popover @beui/popover-morph @beui/morphing-modal @beui/center-morph-modal @beui/chromatic-text-reveal @beui/text-reveal @beui/text-shimmer @beui/text-cascade @beui/number-ticker @beui/animated-number @beui/animated-badge @beui/action-swap-cascade @beui/action-swap-blur @beui/action-swap-roll @beui/animated-toast-stack @beui/theme-toggle @beui/bouncy-accordion @beui/drawer @beui/smooth-scroll @beui/scroll-progress @beui/parallax @beui/scroll-to @beui/scroll-reveal @beui/range-slider @beui/range-slider-fluid @beui/range-slider-wave @beui/range-slider-bubble @beui/range-slider-ruler @beui/wheel-picker @beui/table @beui/table-editable @beui/table-async @beui/shader-background @beui/cylinder-carousel @beui/loader @beui/tilt-card @beui/button-base @beui/button-stateful @beui/button-magnetic @beui/hold-action-button @beui/slide-action-button --overwrite",
-    "add:beui:blocks": "shadcn add @beui/availability-scheduler @beui/dynamic-island @beui/command-palette @beui/expandable-action-bar @beui/overflow-actions @beui/expandable-tabs @beui/morphing-tabs @beui/swipeable-list @beui/attachment-upload @beui/file-upload @beui/otp-input @beui/signup-form @beui/bloom-menu @beui/feedback-widget @beui/not-found-glitch @beui/not-found-magnetic @beui/not-found-spotlight @beui/not-found-stacked @beui/not-found-terminal @beui/infinite-masonry @beui/notification-stack --overwrite",
+    "add:beui:blocks": "shadcn add @beui/availability-scheduler @beui/dynamic-island @beui/command-palette @beui/expandable-action-bar @beui/overflow-actions @beui/expandable-tabs @beui/morphing-tabs @beui/swipeable-list @beui/attachment-upload @beui/file-upload @beui/otp-input @beui/signup-form @beui/bloom-menu @beui/feedback-widget @beui/not-found-glitch @beui/not-found-magnetic @beui/not-found-spotlight @beui/not-found-stacked @beui/not-found-terminal @beui/infinite-masonry @beui/notification-stack @beui/project-folder --overwrite",
     "add:beui": "bun run add:beui:ai-agents && bun run add:beui:components && bun run add:beui:blocks"
   },
   "homepage": "https://github.com/kumixlabs/ui",
@@ -99,7 +99,7 @@
     "react": "^19.2.8",
     "react-day-picker": "^10.0.1",
     "react-phone-number-input": "^3.4.17",
-    "react-resizable-panels": "^4.12.2",
+    "react-resizable-panels": "^4.12.3",
     "recharts": "3.10.1",
     "shiki": "^4.4.3",
     "tailwind-merge": "^3.6.0",
