@@ -1,5 +1,18 @@
 # @kumix/ui
 
+## 0.3.6
+
+### Patch Changes
+
+- [`e1c25fa`](https://github.com/kumixlabs/ui/commit/e1c25fabe7aa5841741bfa3a590babbeda57e86c) Thanks [@kumixio](https://github.com/kumixio)! - update dependencies and improve motion components
+
+  - Bump react-resizable-panels to version 4.12.3
+  - Enhance BottomSheet component with accessibility improvements
+  - Refactor ActionSwapText component for better performance
+  - Add unique IDs for accessibility in BottomSheet component
+  - Update styles in ComboboxList and TabsTrigger components
+  - Add project folder block components
+
 ## 0.3.5
 
 ### Patch Changes
