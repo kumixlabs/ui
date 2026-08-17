@@ -11,6 +11,7 @@ import {
 
 import { cn } from "@kumix/utils";
 import { type SliderOptions, snapSliderValue, useSlider } from "../../hooks/use-slider";
+import { TOUCH_GESTURE_CLASS } from "../../lib/touch";
 
 // Settle spring for the snap after a flick — quick, no overshoot past the tick.
 const SPRING_SNAP = { type: "spring", stiffness: 500, damping: 40, mass: 0.6 } as const;
@@ -129,7 +130,8 @@ export function RulerSlider({
     <div
       {...rootProps}
       className={cn(
-        "relative w-full touch-none select-none overflow-hidden",
+        "relative w-full touch-none overflow-hidden",
+        TOUCH_GESTURE_CLASS,
         options.disabled ? "pointer-events-none opacity-50" : "cursor-grab active:cursor-grabbing",
         "rounded-2xl outline-none ring-foreground/30 focus-visible:ring-4",
         className,

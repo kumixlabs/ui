@@ -13,6 +13,7 @@ import {
 import { cn } from "@kumix/utils";
 import { type SliderOptions, useSlider } from "../../hooks/use-slider";
 import { SPRING_GLIDE } from "../../lib/ease";
+import { TOUCH_GESTURE_CLASS } from "../../lib/touch";
 
 // Bouncy grab feedback for the thumb scale only.
 const SPRING_BOUNCY = { type: "spring", stiffness: 500, damping: 14, mass: 0.7 } as const;
@@ -53,7 +54,8 @@ export function RangeSlider({ showTicks = true, className, ...options }: RangeSl
     <div
       {...trackProps}
       className={cn(
-        "relative flex h-10 w-full touch-none select-none items-center overflow-hidden rounded-lg bg-muted",
+        "relative flex h-10 w-full touch-none items-center overflow-hidden rounded-lg bg-muted",
+        TOUCH_GESTURE_CLASS,
         options.disabled ? "pointer-events-none opacity-50" : "cursor-grab active:cursor-grabbing",
         className,
       )}

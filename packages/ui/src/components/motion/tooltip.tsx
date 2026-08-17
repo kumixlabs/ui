@@ -3,6 +3,7 @@
 import {
   cloneElement,
   isValidElement,
+  type PointerEvent,
   type ReactElement,
   type ReactNode,
   useCallback,
@@ -16,7 +17,9 @@ import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion
 import { createPortal } from "react-dom";
 
 import { cn } from "@kumix/utils";
-import { useHoverCapable } from "../../hooks/use-hover-capable";
+import { useDismiss } from "../../hooks/use-dismiss";
+import { useHoverGesture } from "../../hooks/use-hover-gesture";
+import { useTapGesture } from "../../hooks/use-tap-gesture";
 import { EASE_OUT } from "../../lib/ease";
 
 type Side = "top" | "right" | "bottom" | "left";
@@ -119,8 +122,8 @@ export function Tooltip({
   const id = useId();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const anchorRef = useRef<HTMLSpanElement>(null);
+  const hover = useHoverGesture();
   const reduce = useReducedMotion();
-  const canHover = useHoverCapable();
 
   // Anchor point in viewport coords, on the edge of the trigger facing `side`.
   // Position:fixed means these viewport coords place the tooltip directly, so
@@ -141,7 +144,6 @@ export function Tooltip({
   }, [side]);
 
   const show = useCallback(() => {
-    if (!canHover) return;
     if (timer.current) clearTimeout(timer.current);
     const warm = Date.now() - lastHiddenAt < WARM_WINDOW_MS;
     timer.current = setTimeout(
@@ -151,7 +153,7 @@ export function Tooltip({
       },
       warm ? 0 : delay,
     );
-  }, [canHover, delay, place]);
+  }, [delay, place]);
 
   const hide = useCallback(() => {
     if (timer.current) {
@@ -161,6 +163,29 @@ export function Tooltip({
     if (open) lastHiddenAt = Date.now();
     setOpen(false);
   }, [open]);
+
+  // A finger never hovers, and Safari does not focus a button on tap either, so
+  // the label is only reachable if the tap itself opens the tooltip. A click
+  // carries no pointerType, so the pointerdown that preceded it is what says
+  // whether this was a tap; keyboard activation arrives with no pointerdown at
+  // all, and focus has already shown the label there.
+  const tap = useTapGesture<boolean>();
+
+  const toggleOnTap = useCallback(() => {
+    const gesture = tap.take();
+    if (!gesture || gesture.pointerType === "mouse") return;
+    if (gesture.state) {
+      hide();
+      return;
+    }
+    if (timer.current) clearTimeout(timer.current);
+    place();
+    setOpen(true);
+  }, [hide, place, tap]);
+
+  // ...and closed again by the next tap that lands somewhere else. The label
+  // covers nothing interactive, so that tap passes through to what it hit.
+  useDismiss(open, hide, anchorRef);
 
   // Keep the tooltip pinned to the trigger while it's open and the page scrolls
   // or resizes (fixed coords are viewport-relative).
@@ -179,17 +204,43 @@ export function Tooltip({
 
   if (!isValidElement(children)) return children;
 
+  // The label describes the trigger, so it has to name the trigger itself.
+  // Everything else the tooltip needs is read off the anchor below instead of
+  // cloned on: a handler written onto the child is the child's handler as far
+  // as that child can tell, and a component that owns its activation —
+  // hard-wiring onClick and spreading the rest of its props over it, as
+  // ThemeToggle does — then runs the tooltip's instead of its own. Composing
+  // with `props.onClick` cannot save it either, because a component element's
+  // props hold nothing the component does internally.
   const trigger = cloneElement(children as ReactElement<Record<string, unknown>>, {
-    onMouseEnter: show,
-    onMouseLeave: hide,
-    onFocus: show,
-    onBlur: hide,
     "aria-describedby": id,
   });
 
   return (
     <>
-      <span ref={anchorRef} className={cn("relative inline-flex align-middle", wrapperClassName)}>
+      <span
+        ref={anchorRef}
+        className={cn("relative inline-flex align-middle", wrapperClassName)}
+        // Pointer events, not the mouse pair: a tap fires compatibility
+        // mouseenter/mouseleave that carry no pointerType, which raced the tap
+        // path into opening and closing the same label.
+        onPointerEnter={(event: PointerEvent) => {
+          if (hover.enter(event)) show();
+        }}
+        onPointerLeave={(event: PointerEvent) => {
+          if (hover.leave(event)) hide();
+        }}
+        onFocus={show}
+        onBlur={hide}
+        onPointerDown={(event: PointerEvent) => tap.start(event, open)}
+        // A gesture the platform took away sends no click, and a key press
+        // starts an activation that never had a pointer behind it. Either way
+        // the record has to go, or the next click reads a finger that has long
+        // since lifted.
+        onPointerCancel={tap.drop}
+        onKeyDown={tap.drop}
+        onClick={toggleOnTap}
+      >
         {trigger}
       </span>
       {typeof document !== "undefined"

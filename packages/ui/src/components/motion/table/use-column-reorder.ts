@@ -1,5 +1,6 @@
 import { type PointerEvent as ReactPointerEvent, useCallback, useMemo, useState } from "react";
 
+import { capturePointer, releasePointer } from "@/lib/touch";
 import type { HeaderCellRefs, TableColumn } from "./types";
 
 export function useColumnReorder<T>({
@@ -52,7 +53,7 @@ export function useColumnReorder<T>({
     e.preventDefault();
     e.stopPropagation();
     setDragKey(key);
-    e.currentTarget.setPointerCapture(e.pointerId);
+    capturePointer(e.currentTarget, e.pointerId);
   }, []);
 
   const moveReorder = useCallback(
@@ -65,9 +66,7 @@ export function useColumnReorder<T>({
 
   const endReorder = useCallback(
     (e: ReactPointerEvent) => {
-      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-        e.currentTarget.releasePointerCapture(e.pointerId);
-      }
+      releasePointer(e.currentTarget, e.pointerId);
       if (dragKey && dropIndex !== null) {
         const keys = orderedColumns.map((c) => c.key);
         const from = keys.indexOf(dragKey);

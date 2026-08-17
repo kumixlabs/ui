@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Plus, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -13,6 +13,7 @@ import { TimeSelect } from "./time-select";
 import {
   type DayAvailability,
   type DayKey,
+  panelKey,
   type TimeOption,
   type TimeRange,
   toMinutes,
@@ -25,23 +26,40 @@ export function DayRow({
   state,
   options,
   reduce,
-  depth,
+  elevated,
+  openPanel,
   onChange,
   onCopy,
+  onPanelOpenChange,
 }: {
   day: DayKey;
   label: string;
   state: DayAvailability;
   options: TimeOption[];
   reduce: boolean;
-  // Higher = painted above later rows, so a downward-opening panel always sits
-  // over the rows below it — during both open and close animations.
-  depth: number;
+  // True while this row holds the dropdown that opened last, which paints it
+  // above every other row. A time panel opens downward when there is room and
+  // upward when there isn't, so it has to clear the rows on either side of it
+  // — no fixed paint order can satisfy both directions. The flag stays on
+  // after the panel closes so the collapse animation stays on top too.
+  elevated: boolean;
+  /** Id of the one time panel the scheduler is holding open, if any. */
+  openPanel: string | null;
   onChange: (next: DayAvailability) => void;
   onCopy: (targets: DayKey[]) => void;
+  onPanelOpenChange: (panelId: string, open: boolean) => void;
 }) {
   const idRef = useRef(0);
   const nextId = () => `${day}-n${idRef.current++}`;
+  // Same rule one level down: ranges stack against each other inside the row.
+  const [openRangeId, setOpenRangeId] = useState<string | null>(null);
+
+  const panelId = (rangeId: string, edge: "start" | "end") => panelKey(day, rangeId, edge);
+
+  const onRangePanelOpenChange = (rangeId: string, id: string, open: boolean) => {
+    if (open) setOpenRangeId(rangeId);
+    onPanelOpenChange(id, open);
+  };
 
   const setEnabled = (enabled: boolean) => {
     if (enabled && state.ranges.length === 0) {
@@ -91,7 +109,7 @@ export function DayRow({
     <motion.div
       layout={reduce ? false : "position"}
       transition={SPRING_LAYOUT}
-      style={{ zIndex: depth }}
+      style={{ zIndex: elevated ? 1 : undefined }}
       className="relative flex flex-col gap-3 py-4 sm:flex-row sm:items-start sm:gap-4"
     >
       {/* toggle + label; actions ride along on mobile */}
@@ -112,11 +130,11 @@ export function DayRow({
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <AnimatePresence initial={false} mode="popLayout">
           {state.enabled ? (
-            state.ranges.map((r, i) => (
+            state.ranges.map((r) => (
               <motion.div
                 key={r.id}
                 layout={reduce ? false : "position"}
-                style={{ zIndex: state.ranges.length - i }}
+                style={{ zIndex: openRangeId === r.id ? 1 : undefined }}
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: -6, filter: "blur(4px)" }}
                 animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
                 exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4, filter: "blur(4px)" }}
@@ -128,6 +146,10 @@ export function DayRow({
                     value={r.start}
                     options={options}
                     onChange={(v) => updateRange(r.id, { start: v })}
+                    open={openPanel === panelId(r.id, "start")}
+                    onOpenChange={(open) =>
+                      onRangePanelOpenChange(r.id, panelId(r.id, "start"), open)
+                    }
                   />
                 </div>
                 <span className="text-muted-foreground">–</span>
@@ -136,6 +158,10 @@ export function DayRow({
                     value={r.end}
                     options={options}
                     onChange={(v) => updateRange(r.id, { end: v })}
+                    open={openPanel === panelId(r.id, "end")}
+                    onOpenChange={(open) =>
+                      onRangePanelOpenChange(r.id, panelId(r.id, "end"), open)
+                    }
                   />
                 </div>
                 <Tooltip content="Remove">

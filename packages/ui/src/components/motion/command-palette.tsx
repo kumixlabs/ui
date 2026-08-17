@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
 import { cn } from "@kumix/utils";
+import { useTouchCapable } from "../../hooks/use-touch-capable";
 import { EASE_OUT } from "../../lib/ease";
 
 export type CommandItem = {
@@ -76,6 +77,7 @@ export function CommandPalette({
   useEffect(() => setMounted(true), []);
   const uid = useId();
   const reduce = useReducedMotion();
+  const canTouch = useTouchCapable();
   const updateQuery = useCallback((value: string) => {
     setQuery(value);
     setActive(0);
@@ -224,7 +226,15 @@ export function CommandPalette({
               aria-controls={`${uid}-list`}
               aria-activedescendant={filtered.length > 0 ? `${uid}-opt-${active}` : undefined}
               aria-autocomplete="list"
-              className="h-12 flex-1 bg-transparent text-foreground text-sm outline-none placeholder:text-muted-foreground"
+              className={cn(
+                "h-12 flex-1 bg-transparent text-foreground text-sm outline-none placeholder:text-muted-foreground",
+                // The palette focuses this field the moment it opens, and iOS
+                // zooms the page in on a focused field under 16px: the fixed
+                // overlay is magnified off-center — clipped leading edge, half
+                // an icon column — and the zoom outlives the palette. 16px on
+                // touch keeps the page at scale 1; pointer devices keep 14px.
+                canTouch && "text-base",
+              )}
             />
             <kbd className="hidden rounded border border-border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground sm:inline-block">
               ESC

@@ -10,10 +10,23 @@ import {
   useRef,
   useState,
 } from "react";
-import { Bookmark, FileText, Folder, FolderOpen, MoreHorizontal, Pencil } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Bookmark,
+  FileText,
+  Folder,
+  FolderInput,
+  FolderOpen,
+  type LucideIcon,
+  MoreHorizontal,
+  Pencil,
+  Undo2,
+} from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { useTouchCapable } from "../../hooks/use-touch-capable";
 import { EASE_OUT, SPRING_LAYOUT } from "../../lib/ease";
 import { MorphPopover, MorphPopoverContent, MorphPopoverTrigger } from "../motion/popover-morph";
 
@@ -35,9 +48,23 @@ export interface SidebarResourceMove {
   position: SidebarResourceDropPosition;
 }
 
+/**
+ * The moves this row can make right now, the same four the keyboard offers on
+ * `Alt+Shift+Arrow`. A pointer drag is the fast path for them; a finger has no
+ * drag to give, so the row menu carries them too. Absent keys are moves this
+ * row cannot make from where it sits.
+ */
+export interface SidebarResourceMoveCommands {
+  up?: () => void;
+  down?: () => void;
+  into?: { label: string; run: () => void };
+  out?: () => void;
+}
+
 export interface SidebarResourceMenuControls {
   close: () => void;
   rename: () => void;
+  moves: SidebarResourceMoveCommands;
 }
 
 export interface AISidebarProps {
@@ -242,6 +269,27 @@ function MarqueeLabel({ active, children }: { active: boolean; children: string 
   );
 }
 
+function ResourceMenuAction({
+  icon: Icon,
+  onSelect,
+  children,
+}: {
+  icon: LucideIcon;
+  onSelect: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className="flex h-8 w-full items-center gap-2 rounded-lg px-2.5 text-left text-foreground text-xs outline-none transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <Icon aria-hidden="true" className="size-3.5 shrink-0" />
+      <span className="min-w-0 truncate">{children}</span>
+    </button>
+  );
+}
+
 interface ResourceRowProps {
   row: FlatResource;
   active: boolean;
@@ -250,6 +298,7 @@ interface ResourceRowProps {
   draggingId: string | null;
   dropTarget: DropTarget | null;
   menuOpen: boolean;
+  moves: SidebarResourceMoveCommands;
   renaming: boolean;
   onDragEnd: () => void;
   onDragOver: (event: DragEvent<HTMLDivElement>, row: FlatResource) => void;
@@ -276,6 +325,7 @@ function ResourceRow({
   draggingId,
   dropTarget,
   menuOpen,
+  moves,
   renaming,
   onDragEnd,
   onDragOver,
@@ -294,6 +344,7 @@ function ResourceRow({
   setRef,
 }: ResourceRowProps) {
   const reduce = useReducedMotion() ?? false;
+  const canTouch = useTouchCapable();
   const [hovered, setHovered] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const skipRenameBlurRef = useRef(false);
@@ -313,24 +364,47 @@ function ResourceRow({
     });
   }, [renaming, row.item.label]);
 
+  const runFromMenu = (action: () => void) => () => {
+    onMenuOpenChange(false);
+    action();
+  };
+
   const menu = renderMenu?.(row.item, {
     close: () => onMenuOpenChange(false),
     rename: () => {
       onMenuOpenChange(false);
       onRenameStart();
     },
+    moves,
   }) ?? (
-    <button
-      type="button"
-      onClick={() => {
-        onMenuOpenChange(false);
-        onRenameStart();
-      }}
-      className="flex h-8 w-full items-center gap-2 rounded-lg px-2.5 text-left text-foreground text-xs outline-none transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
-    >
-      <Pencil aria-hidden="true" className="size-3.5" />
-      Rename
-    </button>
+    <>
+      <ResourceMenuAction icon={Pencil} onSelect={runFromMenu(onRenameStart)}>
+        Rename
+      </ResourceMenuAction>
+      {moves.up || moves.down || moves.into || moves.out ? (
+        <div aria-hidden="true" className="my-1 h-px bg-border" />
+      ) : null}
+      {moves.up ? (
+        <ResourceMenuAction icon={ArrowUp} onSelect={runFromMenu(moves.up)}>
+          Move up
+        </ResourceMenuAction>
+      ) : null}
+      {moves.down ? (
+        <ResourceMenuAction icon={ArrowDown} onSelect={runFromMenu(moves.down)}>
+          Move down
+        </ResourceMenuAction>
+      ) : null}
+      {moves.into ? (
+        <ResourceMenuAction icon={FolderInput} onSelect={runFromMenu(moves.into.run)}>
+          Move into {moves.into.label}
+        </ResourceMenuAction>
+      ) : null}
+      {moves.out ? (
+        <ResourceMenuAction icon={Undo2} onSelect={runFromMenu(moves.out)}>
+          Move out
+        </ResourceMenuAction>
+      ) : null}
+    </>
   );
 
   return (
@@ -430,7 +504,12 @@ function ResourceRow({
               tabIndex={-1}
               aria-label={`Actions for ${row.item.label}`}
               onClick={(event) => event.stopPropagation()}
-              className="grid size-7 shrink-0 place-items-center rounded-lg opacity-0 outline-none transition-opacity hover:bg-foreground/5 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring group-hover/resource:opacity-100 group-data-[menu-open=true]/resource:opacity-100"
+              className={cn(
+                "grid size-7 shrink-0 place-items-center rounded-lg outline-none transition-opacity hover:bg-foreground/5 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring group-hover/resource:opacity-100 group-data-[menu-open=true]/resource:opacity-100",
+                // A finger never hovers, and this menu is the only path to
+                // rename and move without a drag — keep it on screen there.
+                canTouch ? "opacity-100" : "opacity-0",
+              )}
             >
               <MoreHorizontal aria-hidden="true" className="size-4" />
             </button>
@@ -573,6 +652,62 @@ export function AISidebar({
     });
   }, []);
 
+  // The same four moves `Alt+Shift+Arrow` performs, handed to the row menu so
+  // they survive on a device with no drag and no modifier keys.
+  const moveCommands = useCallback(
+    (row: FlatResource): SidebarResourceMoveCommands => {
+      if (row.item.disabled) return {};
+      const index = flat.findIndex(({ item }) => item.id === row.item.id);
+      const previous = flat[index - 1];
+      const next = flat[index + 1];
+      const parentId = row.parentId;
+      const commands: SidebarResourceMoveCommands = {};
+
+      if (previous) {
+        commands.up = () =>
+          void performMove({
+            itemId: row.item.id,
+            targetId: previous.item.id,
+            position: "before",
+          });
+      }
+      if (next) {
+        commands.down = () =>
+          void performMove({
+            itemId: row.item.id,
+            targetId: next.item.id,
+            position: "after",
+          });
+      }
+      // Only offer the reparent when it lands somewhere new — the row above a
+      // folder's first child is the folder it already lives in.
+      if (previous && canContain(previous.item) && previous.item.id !== parentId) {
+        commands.into = {
+          label: previous.item.label,
+          run: () => {
+            setExpandedIds((current) => new Set(current).add(previous.item.id));
+            void performMove({
+              itemId: row.item.id,
+              targetId: previous.item.id,
+              position: "inside",
+            });
+          },
+        };
+      }
+      if (parentId) {
+        commands.out = () =>
+          void performMove({
+            itemId: row.item.id,
+            targetId: parentId,
+            position: "after",
+          });
+      }
+
+      return commands;
+    },
+    [flat, performMove],
+  );
+
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>, row: FlatResource) => {
       const index = flat.findIndex(({ item }) => item.id === row.item.id);
@@ -698,6 +833,7 @@ export function AISidebar({
               draggingId={draggingId}
               dropTarget={dropTarget}
               menuOpen={menuOpenId === row.item.id}
+              moves={moveCommands(row)}
               renaming={renamingId === row.item.id}
               onFocus={() => setFocusedId(row.item.id)}
               onSelect={() => select(row.item.id)}

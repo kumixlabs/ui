@@ -5,8 +5,8 @@ import { BookOpenText, ChevronDown, ExternalLink, Globe2 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { useFavicon } from "../../hooks/use-favicon";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
-import { getFaviconUrl } from "../../lib/favicon";
 import { AgentDisclosure } from "./agent-disclosure";
 
 export interface CitationItem {
@@ -66,22 +66,21 @@ export function Citation({ citationId, index, idPrefix, className }: CitationPro
 }
 
 export function CitationFavicon({ url, className }: { url?: string; className?: string }) {
-  const favicon = url ? getFaviconUrl(url) : null;
-  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const favicon = useFavicon(url);
 
   return (
     <span
       aria-hidden="true"
       className={cn("grid size-5 shrink-0 place-items-center text-muted-foreground", className)}
     >
-      {favicon && failedUrl !== favicon ? (
+      {favicon.src ? (
         <img
-          src={favicon}
+          ref={favicon.ref}
+          src={favicon.src}
           alt=""
           width={16}
           height={16}
           referrerPolicy="no-referrer"
-          onError={() => setFailedUrl(favicon)}
           className="size-4 rounded-sm object-contain"
         />
       ) : (

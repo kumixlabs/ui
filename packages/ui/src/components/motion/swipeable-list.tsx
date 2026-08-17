@@ -4,6 +4,7 @@ import { type ReactNode, useCallback, useEffect, useRef, useState } from "react"
 import { animate, motion, type PanInfo, useMotionValue, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";
 
 export type SwipeSide = "left" | "right";
 
@@ -386,7 +387,13 @@ function SwipeableListRow({
         onDragEnd={onDragEnd}
         style={{ x }}
         className={cn(
-          "relative z-10 min-h-[72px] cursor-grab touch-pan-y select-none rounded-2xl border border-border bg-card px-4 py-3 shadow-sm active:cursor-grabbing",
+          // `touch-pan-y`, not `touch-none`: the row owns the horizontal
+          // swipe, the page keeps the vertical scroll through it.
+          "relative z-10 min-h-[72px] cursor-grab touch-pan-y rounded-2xl border border-border bg-card px-4 py-3 shadow-sm active:cursor-grabbing",
+          // The swipe is the row's, but what it carries is the consumer's:
+          // selection is only suppressed where the platform runs its own press
+          // gestures, so a mouse can still select and copy the row's text.
+          TOUCH_GESTURE_CONTENT_CLASS,
           classNames?.surface,
         )}
       >

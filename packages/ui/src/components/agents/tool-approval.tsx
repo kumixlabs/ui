@@ -73,7 +73,12 @@ export function ToolApprovalCode({ code, language = "bash", className }: ToolApp
     <AgentCode
       code={code}
       language={language}
-      className={cn("rounded-lg border border-border/50 bg-muted/30 px-2.5 py-2", className)}
+      className={cn(
+        // Parameter values sit in a narrow grid column with nowhere to scroll
+        // on touch, so they wrap instead of clipping (as ToolResultOutput does).
+        "wrap-break-word whitespace-pre-wrap rounded-lg border border-border/50 bg-muted/30 px-2.5 py-2",
+        className,
+      )}
     />
   );
 }

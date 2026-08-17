@@ -13,6 +13,7 @@ import {
 import { cn } from "@kumix/utils";
 import { type SliderOptions, useSlider } from "../../hooks/use-slider";
 import { SPRING_GLIDE, SPRING_PRESS } from "../../lib/ease";
+import { TOUCH_GESTURE_CLASS } from "../../lib/touch";
 
 export interface FluidSliderProps extends SliderOptions {
   /** Text shown on the left of the track. */
@@ -66,7 +67,8 @@ export function FluidSlider({
       animate={reduce ? undefined : { scale: dragging ? 1.03 : 1 }}
       transition={SPRING_PRESS}
       className={cn(
-        "relative flex h-12 w-full touch-none select-none overflow-hidden rounded-full bg-muted",
+        "relative flex h-12 w-full touch-none overflow-hidden rounded-full bg-muted",
+        TOUCH_GESTURE_CLASS,
         options.disabled ? "pointer-events-none opacity-50" : "cursor-grab active:cursor-grabbing",
         className,
       )}

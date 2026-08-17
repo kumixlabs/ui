@@ -12,6 +12,7 @@ import { createPortal } from "react-dom";
 
 import { cn } from "@kumix/utils";
 import { EASE_DRAWER } from "../../lib/ease";
+import { TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";
 
 // Vaul-style glide: a long, fully-damped tween reads smoother than a spring on
 // open — no settle/overshoot, just one clean decel. Same curve drives the
@@ -188,7 +189,12 @@ export function BottomSheet({
               {/* Drag only the pill so the title and description stay selectable. */}
               <div
                 onPointerDown={(event) => dragControls.start(event)}
-                className="flex cursor-grab touch-none items-center justify-center py-1 active:cursor-grabbing"
+                // A slow pull must not hand the gesture to iOS's callout,
+                // which would leave the sheet frozen mid-drag.
+                className={cn(
+                  "flex cursor-grab touch-none items-center justify-center py-1 active:cursor-grabbing",
+                  TOUCH_GESTURE_CONTENT_CLASS,
+                )}
               >
                 <div className="h-1.5 w-10 rounded-full bg-muted-foreground/40" />
               </div>

@@ -179,7 +179,7 @@ export function ActionSwapText({
   return (
     <span
       className={cn(
-        "relative -my-[0.08em] inline-block whitespace-nowrap py-[0.08em] align-bottom",
+        "relative -my-[0.08em] inline-block max-w-full whitespace-nowrap py-[0.08em] align-bottom",
         className,
       )}
       style={{
@@ -230,7 +230,9 @@ export function ActionSwapText({
             initial={reduce ? false : "initial"}
             animate={reduce ? { opacity: 1, filter: "blur(0px)", scale: 1, y: 0 } : "animate"}
             exit={reduce ? undefined : "exit"}
-            className="absolute top-[0.08em] left-0 inline-block will-change-[opacity,filter,transform]"
+            // Truncation lives on the layer that holds the text — the layer
+            // moves as a whole, so clipping it never eats the roll.
+            className="absolute top-[0.08em] left-0 inline-block max-w-full truncate will-change-[opacity,filter,transform]"
           >
             {children}
           </motion.span>
