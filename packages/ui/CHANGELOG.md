@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.8
+
+### Patch Changes
+
+- [`e41a63e`](https://github.com/kumixlabs/ui/commit/e41a63ea0819e26e3e33401150e19bad6bc4084e) Thanks [@kumixio](https://github.com/kumixio)! - Add ReUI cascader (multi-column, async, i18n), split ReUI filters into a `filters/*` directory (builder, chip, date, DnD, advanced), and add beUI morphing-search. Introduce `lib/presence-gate` and rework fixed overlays (bottom-sheet, drawer, morphing-modal, morphing-search, center-morph-modal, command-palette, animated-sidebar, attachment-upload, project-folder) to release interaction on exit start via `PresenceGate`, removing the full-viewport wrapper that clipped edge sampling. Fix text-shimmer to respect `prefers-reduced-motion` in installed copies. Align checkbox, radio-group, switch, and field focus styles with the `group-has-focus-visible/field-label` pattern.
+
 ## 0.3.7
 
 ### Patch Changes
