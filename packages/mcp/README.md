@@ -12,15 +12,16 @@ Scans `packages/**/package.json` at runtime (skips `@kumix/mcp`, `node_modules`,
 
 **Categories** on each component entry:
 
-| `category` | Source                  | Docs / previews                                                  |
-| ---------- | ----------------------- | ---------------------------------------------------------------- |
-| `ui`       | shadcn/ui base-nova     | [ui.shadcn.com](https://ui.shadcn.com/docs/components)           |
-| `reui`     | ReUI registry           | [reui.io/docs](https://reui.io/docs)                             |
-| `motion`   | beUI registry (Motion)  | [beui.dev/components/motion](https://beui.dev/components/motion) |
-| `agents`   | beUI registry (AI/chat) | [beui.dev/components/agents](https://beui.dev/components/agents) |
-| `custom`   | hand-written components | package README                                                   |
-| `hooks`    | package hooks           | package README                                                   |
-| `lib`      | shared utilities        | package README                                                   |
+| `category` | Source                                                 | Docs / previews                                                  |
+| ---------- | ------------------------------------------------------ | ---------------------------------------------------------------- |
+| `ui`       | shadcn/ui base-nova                                    | [ui.shadcn.com](https://ui.shadcn.com/docs/components)           |
+| `reui`     | ReUI registry                                          | [reui.io/docs](https://reui.io/docs)                             |
+| `motion`   | beUI registry (Motion)                                 | [beui.dev/components/motion](https://beui.dev/components/motion) |
+| `agents`   | beUI registry (AI/chat)                                | [beui.dev/components/agents](https://beui.dev/components/agents) |
+| `custom`   | hand-written components                                | package README                                                   |
+| `hooks`    | package hooks                                          | package README                                                   |
+| `lib`      | shared utilities                                       | package README                                                   |
+| `other`    | anything outside the dirs above (e.g. CSS, root files) | —                                                                |
 
 **Import paths** (per-file, no barrel):
 
@@ -63,13 +64,13 @@ bun run test
 
 ## Tools
 
-| Tool                  | Purpose                                                                                            |
-| --------------------- | -------------------------------------------------------------------------------------------------- |
-| `list_packages`       | Indexed packages + category counts for `@kumix/ui`                                                 |
-| `get_package_info`    | Exports, peers, sample imports, doc links                                                          |
-| `find_component`      | Search by name/path; filter `ui` \| `reui` \| `motion` \| `agents` \| `custom` \| `hooks` \| `lib` |
-| `read_component_code` | Read `src/`-relative file; returns `importPath`                                                    |
-| `get_usage_example`   | Per-file import snippet + package README                                                           |
+| Tool                  | Purpose                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `list_packages`       | Indexed packages + category counts for `@kumix/ui`                                                            |
+| `get_package_info`    | Exports, peers, sample imports, doc links                                                                     |
+| `find_component`      | Search by name/path; filter `ui` \| `reui` \| `motion` \| `agents` \| `custom` \| `hooks` \| `lib` \| `other` |
+| `read_component_code` | Read `src/`-relative file; returns `importPath`                                                               |
+| `get_usage_example`   | Per-file import snippet + package README                                                                      |
 
 ### Examples
 

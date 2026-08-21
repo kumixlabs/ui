@@ -4,16 +4,16 @@ React UI kit for Kumix products. Built on **Base UI**, **Tailwind CSS**, **class
 
 ## Sources
 
-| Path                              | Origin                                                                  | Docs / previews                                                                 |
-| --------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `src/components/ui/*`             | [shadcn/ui](https://ui.shadcn.com/) (base-nova style)                   | [ui.shadcn.com/docs/components](https://ui.shadcn.com/docs/components)          |
-| `src/components/reui/*`           | [ReUI](https://reui.io/) registry (`@reui/*`)                           | [reui.io/docs](https://reui.io/docs) · [components](https://reui.io/components) |
-| `src/components/motion/*`         | [beUI](https://beui.dev/) registry (`@beui/*`, Motion-based)            | [beui.dev/components/motion](https://beui.dev/components/motion)                |
-| `src/components/agents/*`         | [beUI](https://beui.dev/) AI agent components (`@beui/*`)               | [beui.dev/components/agents](https://beui.dev/components/agents)                |
-| `src/components/custom/*`         | Hand-written Kumix-specific components                                  | —                                                                               |
-| `src/hooks/*`                     | Package helpers (+ ReUI `use-file-upload`, beUI helpers)                | —                                                                               |
-| `src/lib/*`                       | Shared utilities (beUI `ease`, `tick-sound`, `text-shimmer`, `favicon`) | —                                                                               |
-| `src/style.css` · `src/theme.css` | Tailwind entry + design tokens                                          | —                                                                               |
+| Path                              | Origin                                                                                   | Docs / previews                                                                 |
+| --------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `src/components/ui/*`             | [shadcn/ui](https://ui.shadcn.com/) (base-nova style)                                    | [ui.shadcn.com/docs/components](https://ui.shadcn.com/docs/components)          |
+| `src/components/reui/*`           | [ReUI](https://reui.io/) registry (`@reui/*`)                                            | [reui.io/docs](https://reui.io/docs) · [components](https://reui.io/components) |
+| `src/components/motion/*`         | [beUI](https://beui.dev/) registry (`@beui/*`, Motion-based)                             | [beui.dev/components/motion](https://beui.dev/components/motion)                |
+| `src/components/agents/*`         | [beUI](https://beui.dev/) AI agent components (`@beui/*`)                                | [beui.dev/components/agents](https://beui.dev/components/agents)                |
+| `src/components/custom/*`         | Hand-written Kumix-specific components                                                   | —                                                                               |
+| `src/hooks/*`                     | Package helpers (+ ReUI `use-file-upload`, beUI helpers)                                 | —                                                                               |
+| `src/lib/*`                       | Shared utilities (beUI `ease`, `tick-sound`, `text-shimmer`, `favicon`, `presence-gate`) | —                                                                               |
+| `src/style.css` · `src/theme.css` | Tailwind entry + design tokens                                                           | —                                                                               |
 
 For **previews, props, and usage examples** of each component, use the upstream docs:
 
@@ -112,29 +112,30 @@ Mapped from source:
 
 Base UI / shadcn base-nova. Preview: [ui.shadcn.com](https://ui.shadcn.com/docs/components).
 
-`accordion` · `alert` · `alert-dialog` · `aspect-ratio` · `attachment` · `avatar` · `badge` · `breadcrumb` · `bubble` · `button` · `button-group` · `calendar` · `card` · `carousel` · `chart` · `checkbox` · `collapsible` · `combobox` · `command` · `context-menu` · `dialog` · `direction` · `drawer` · `dropdown-menu` · `empty` · `field` · `hover-card` · `input` · `input-group` · `input-otp` · `item` · `kbd` · `label` · `marker` · `menubar` · `message` · `message-scroller` · `native-select` · `navigation-menu` · `pagination` · `popover` · `progress` · `questionnaire` · `radio-group` · `resizable` · `scroll-area` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `slider` · `spinner` · `switch` · `table` · `tabs` · `textarea` · `toggle` · `toggle-group` · `tooltip`
+`accordion` · `alert` · `alert-dialog` · `aspect-ratio` · `attachment` · `avatar` · `badge` · `breadcrumb` · `bubble` · `button` · `button-group` · `calendar` · `card` · `carousel` · `chart` · `checkbox` · `collapsible` · `combobox` · `command` · `context-menu` · `dialog` · `direction` · `drawer` · `dropdown-menu` · `empty` · `field` · `hover-card` · `input` · `input-group` · `input-otp` · `item` · `kbd` · `label` · `marker` · `menubar` · `message` · `message-scroller` · `native-select` · `navigation-menu` · `pagination` · `popover` · `progress` · `questionnaire` · `radio-group` · `resizable` · `scroll-area` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `slider` · `spinner` · `switch` · `table` · `tabs` · `textarea` · `toggle` · `toggle-group` · `toast` · `tooltip`
 
 ### ReUI (`components/reui`)
 
 Extended patterns. Preview: [reui.io](https://reui.io/docs).
 
-| Module                                                                                                                           | Notes                                      |
-| -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| `alert` · `badge`                                                                                                                | Extended variants (info/success/warning/…) |
-| `autocomplete`                                                                                                                   | Base UI autocomplete                       |
-| `data-grid/*`                                                                                                                    | Table, pagination, filters, DnD, virtual   |
-| `date-selector`                                                                                                                  | Day / month / quarter / range              |
-| `event-calendar/*`                                                                                                               | Month, week, day, agenda, resource         |
-| `filters`                                                                                                                        | Faceted filter builder                     |
-| `frame`                                                                                                                          | Nested panel layout                        |
-| `gantt/*`                                                                                                                        | Day–year scales, resources, DnD            |
-| `icon-stack` · `kanban` · `number-field` · `phone-input` · `rating` · `scrollspy` · `sortable` · `stepper` · `timeline` · `tree` | —                                          |
+| Module                                                                                                                                         | Notes                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `alert` · `badge`                                                                                                                              | Extended variants (info/success/warning/…) |
+| `autocomplete`                                                                                                                                 | Base UI autocomplete                       |
+| `cascader/*`                                                                                                                                   | Multi-column cascading select, i18n, async |
+| `data-grid/*`                                                                                                                                  | Table, pagination, filters, DnD, virtual   |
+| `date-selector`                                                                                                                                | Day / month / quarter / range              |
+| `event-calendar/*`                                                                                                                             | Month, week, day, agenda, resource         |
+| `filters/*`                                                                                                                                    | Advanced filter builder (chip, date, DnD)  |
+| `frame`                                                                                                                                        | Nested panel layout                        |
+| `gantt/*`                                                                                                                                      | Day–year scales, resources, DnD            |
+| `icon-stack` · `icon-tile` · `kanban` · `number-field` · `phone-input` · `rating` · `scrollspy` · `sortable` · `stepper` · `timeline` · `tree` | —                                          |
 
 ### beUI (`components/motion`)
 
 Animated components built with [Motion](https://motion.dev). Preview: [beui.dev](https://beui.dev/components/motion). Bundled — `motion`, `lenis`, `@paper-design/shaders-react` are included, no extra installs needed.
 
-`action-swap` · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, stateful, magnetic, `ButtonLink`) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `command-palette` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-tabs` · `feedback-widget` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` · `loader` · `magnetic` · `marquee` · `morphing-modal` · `morphing-tabs` · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
+`action-swap` (4 variants: base, blur, cascade, roll) · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, stateful, magnetic, `ButtonLink`) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `combobox` + `combobox/*` (trigger, list, content, context) · `command-palette` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-tabs` · `feedback-widget` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` · `loader` · `magnetic` · `marquee` · `morphing-modal` · `morphing-search` · `morphing-tabs` · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `project-folder` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `signup-form` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-scramble` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
 
 ### beUI — AI Agents (`components/agents`)
 
@@ -152,7 +153,7 @@ Hand-written Kumix-specific composite components (not from any registry).
 
 ### Hooks
 
-`use-body-classes` · `use-copy-to-clipboard` · `use-file-upload` · `use-hover-capable` · `use-hydrated` · `use-intersection-observer` · `use-is-mac` · `use-media-query` · `use-meta-color` · `use-mobile` · `use-mutation-observer` · `use-scroll-position` · `use-slider` · `use-slider-input` · `use-viewport`
+`use-body-classes` · `use-copy-to-clipboard` · `use-dismiss` · `use-favicon` · `use-file-upload` · `use-hover-capable` · `use-hover-gesture` · `use-hydrated` · `use-intersection-observer` · `use-is-mac` · `use-media-query` · `use-meta-color` · `use-mobile` · `use-mutation-observer` · `use-scroll-position` · `use-slider` · `use-slider-input` · `use-tap-gesture` · `use-touch-capable` · `use-viewport`
 
 - `useIsMobile` (`use-mobile`) — fixed `768px` breakpoint; used by `sidebar` / `date-selector`. First paint may be `false` until mount.
 - `useMediaQuery` — arbitrary query string; SSR-safe via `useSyncExternalStore` (server snapshot `false`).

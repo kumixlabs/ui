@@ -296,8 +296,23 @@ function MobileSidebar({
   const context = useAnimatedSidebar();
   const panelRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
+  // The sheet is mounted for as long as the viewport is mobile, so it hides
+  // itself while closed rather than sitting there transparent and interactive.
+  // Opening shows it in the same commit that starts the slide — a delayed show
+  // would run the focus effect below against a still-hidden panel, and focus()
+  // on a hidden element is ignored. Closing waits for the slide to finish, and
+  // the panel's own exit tells us when that is: no duration to keep in sync.
+  const [hidden, setHidden] = useState(!context.openMobile);
+  // The completion callback fires for the open slide too, and it reads state
+  // from whenever motion settles: a ref keeps it on the current one.
+  const openMobileRef = useRef(context.openMobile);
 
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    openMobileRef.current = context.openMobile;
+    if (context.openMobile) setHidden(false);
+  }, [context.openMobile]);
 
   useEffect(() => {
     if (!context.openMobile) return;
@@ -337,11 +352,15 @@ function MobileSidebar({
 
   if (!mounted) return null;
 
+  // This container groups the sheet for hiding and the z-index and carries no
+  // box: both children are `fixed` and resolve against the viewport themselves.
+  // The scrim spans the viewport edges but paints a colour, and the panel is
+  // inset off one side and paints its own surface, so no layer here is a
   return createPortal(
     <div
       className={cn(
-        "pointer-events-none fixed inset-0 z-50 md:hidden",
-        context.openMobile ? "visible" : "invisible",
+        "pointer-events-none fixed top-0 left-0 z-50 size-0 md:hidden",
+        hidden && !context.openMobile ? "invisible" : "visible",
       )}
     >
       <motion.button
@@ -353,7 +372,7 @@ function MobileSidebar({
         transition={context.reduce ? REDUCED_TRANSITION : PANEL_TRANSITION}
         onClick={() => context.setOpenMobile(false)}
         className={cn(
-          "absolute inset-0 bg-black/40",
+          "fixed inset-0 bg-black/40",
           context.openMobile ? "pointer-events-auto" : "pointer-events-none",
         )}
       />
@@ -375,6 +394,9 @@ function MobileSidebar({
           x: context.reduce ? 0 : context.openMobile ? "0%" : side === "left" ? "-100%" : "100%",
         }}
         transition={context.reduce ? REDUCED_TRANSITION : PANEL_TRANSITION}
+        onAnimationComplete={() => {
+          if (!openMobileRef.current) setHidden(true);
+        }}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
             event.preventDefault();
@@ -404,7 +426,7 @@ function MobileSidebar({
           }
         }}
         className={cn(
-          "pointer-events-auto absolute inset-y-0 flex h-dvh w-(--sidebar-width-mobile) max-w-[88vw] flex-col overflow-hidden",
+          "pointer-events-auto fixed inset-y-0 flex h-dvh w-(--sidebar-width-mobile) max-w-[88vw] flex-col overflow-hidden",
           "border-border bg-background shadow-2xl will-change-transform",
           side === "left" ? "left-0 border-r" : "right-0 border-l",
           !context.openMobile && "pointer-events-none",

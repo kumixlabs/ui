@@ -39,7 +39,7 @@ See [packages/ui/README.md](./packages/ui/README.md) for full import map, peers,
 
 ## Development
 
-Use **Bun** only (`packageManager: bun@1.3.14`). Engines: Node `>=24`, Bun `>=1.3.0`.
+Use **Bun** only (`packageManager: bun@1.4.0`). Engines: Node `>=24`, Bun `>=1.4.0`.
 
 ```bash
 bun install
@@ -73,7 +73,7 @@ packages/ui/src/
   components/agents/   # beui AI agents (prompt-input, message-scroller, todo-list, code-block, …)
   components/custom/   # hand-written (confirm-dialog, toast, …)
   hooks/
-  lib/                 # shared utils (ease, tick-sound, text-shimmer, favicon)
+  lib/                 # shared utils (ease, tick-sound, text-shimmer, favicon, presence-gate)
   style.css · theme.css
 ```
 

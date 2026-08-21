@@ -2,7 +2,7 @@
 
 ## Tooling & Setup
 
-- **Always use `bun`, never `npm`/`yarn`.** Package manager is `bun@1.3.14`.
+- **Always use `bun`, never `npm`/`yarn`.** Package manager is `bun@1.4.0`.
 - TS version is locked via root workspaces `catalog` to `6.0.3`. Depend on it as `"typescript": "catalog:"`.
 
 ## Package Layout & Architecture
@@ -10,11 +10,11 @@
 - `packages/ui` (`@kumix/ui`): Published package. Per-file ESM exports only (no barrel `index.ts` files).
   - `components/ui/` — shadcn/ui (Base UI, base-nova). Add via `bun run add:shadcn`. Docs: [ui.shadcn.com](https://ui.shadcn.com/docs/components)
   - `components/reui/` — ReUI registry. Add via `bun run add:reui`. Docs: [reui.io](https://reui.io/docs)
-  - `components/motion/` — beUI registry (Motion-based animated components). Add via `bun run add:beui`. Docs: [beui.dev](https://beui.dev/components/motion). Bundles `motion`, `lenis`, `@paper-design/shaders-react` — no extra installs needed. Multi-file dirs: `button/`, `table/`, `availability-scheduler/`, `not-found/` (each has `index.tsx`).
+  - `components/motion/` — beUI registry (Motion-based animated components). Add via `bun run add:beui`. Docs: [beui.dev](https://beui.dev/components/motion). Bundles `motion`, `lenis`, `@paper-design/shaders-react` — no extra installs needed. Multi-file dirs: `button/`, `table/`, `availability-scheduler/`, `not-found/` (each has `index.tsx`), plus `combobox/` (parts only — entry is flat `combobox.tsx`).
   - `components/agents/` — beUI registry (AI agent / chat components). Add via `bun run add:beui:ai-agents`. Docs: [beui.dev/components/agents](https://beui.dev/components/agents). Multi-file dirs: `agent-activity/`, `approval-card/`, `loading-states/`.
   - `components/custom/` — hand-written Kumix-specific composite components (not from any registry).
   - `hooks/` — custom hooks (per-file). Includes beUI helpers like `use-hover-capable`, `use-slider`.
-  - `lib/` — shared utilities used by motion + agents (e.g. `ease.ts`, `tick-sound.ts`, `text-shimmer.ts`, `favicon.ts`).
+  - `lib/` — shared utilities used by motion + agents (e.g. `ease.ts`, `tick-sound.ts`, `text-shimmer.ts`, `favicon.ts`, `presence-gate.tsx`).
   - Imports in component source must be **relative** (e.g. `../button`, `../../lib/ease`). **Never use `@/` alias** in committed files.
   - CSS styles (`style.css` and `theme.css`) are hand-written and copied to `dist/` via `build:css`.
   - **Peer deps**: 6 required (`react`, `@kumix/utils`, `@base-ui/react`, `class-variance-authority`, `lucide-react`, `motion`); 21 optional via `peerDependenciesMeta`. When adding a component that needs a new dep, add it to both `devDependencies` and `peerDependencies`, and mark it optional in `peerDependenciesMeta` unless it's universally needed.
