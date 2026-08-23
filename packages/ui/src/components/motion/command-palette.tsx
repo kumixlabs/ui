@@ -6,6 +6,8 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
 import { cn } from "@kumix/utils";
+import { useOnOpen } from "../../hooks/use-on-open";
+import { useRowCursor } from "../../hooks/use-row-cursor";
 import { useTouchCapable } from "../../hooks/use-touch-capable";
 import { EASE_OUT } from "../../lib/ease";
 import { PresenceGate } from "../../lib/presence-gate";
@@ -72,17 +74,12 @@ export function CommandPalette({
   );
 
   const [query, setQuery] = useState("");
-  const [active, setActive] = useState(0);
   // Portal target only exists client-side; render nothing during SSR/hydration.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const uid = useId();
   const reduce = useReducedMotion();
   const canTouch = useTouchCapable();
-  const updateQuery = useCallback((value: string) => {
-    setQuery(value);
-    setActive(0);
-  }, []);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -101,14 +98,6 @@ export function CommandPalette({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, shortcut, setOpen]);
-
-  useEffect(() => {
-    if (open) {
-      updateQuery("");
-      setActive(0);
-      requestAnimationFrame(() => inputRef.current?.focus());
-    }
-  }, [open, updateQuery]);
 
   useEffect(() => {
     if (!open) return;
@@ -146,16 +135,37 @@ export function CommandPalette({
     return Array.from(map.entries());
   }, [filtered]);
 
+  // Grouping reorders the list, so the rendered order is not the filtered
+  // order whenever two groups interleave. Everything that has to agree on
+  // "which row" — the highlight, the ids, Enter, the scroll — reads this one
+  // array, so they cannot drift apart.
+  const rows = useMemo(() => grouped.flatMap(([, list]) => list), [grouped]);
+
+  const { activeIndex: active, moveTo, moveActive } = useRowCursor(rows, query);
+
+  // Clearing the query would drop the cursor on its own, but only if it had
+  // changed; `moveTo(null)` covers reopening on an already-empty query.
+  useOnOpen(open, () => {
+    setQuery("");
+    moveTo(null);
+  });
+
+  useEffect(() => {
+    if (!open) return;
+    const frame = requestAnimationFrame(() => inputRef.current?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [open]);
+
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setActive((a) => Math.min(filtered.length - 1, a + 1));
+      moveActive(1);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActive((a) => Math.max(0, a - 1));
+      moveActive(-1);
     } else if (e.key === "Enter") {
       e.preventDefault();
-      const it = filtered[active];
+      const it = rows[active];
       if (it) {
         it.onSelect();
         setOpen(false);
@@ -169,21 +179,6 @@ export function CommandPalette({
     el?.scrollIntoView({ block: "nearest" });
   }, [active, open]);
 
-  // A row's index is its position in the flattened group order, derived once
-  // per change of `grouped` rather than counted while the rows render. The rows
-  // hang off `PresenceGate`'s render prop, which is its own component: a
-  // counter declared in this body would be incremented on the gate's render
-  // passes, after this body had already run, and would never be reset again —
-  // the ids, `aria-selected` and the highlight all drift with it.
-  const indexOfItem = useMemo(() => {
-    const indices = new Map<string, number>();
-    let next = 0;
-    for (const [, list] of grouped) {
-      for (const it of list) indices.set(it.id, next++);
-    }
-    return indices;
-  }, [grouped]);
-
   if (!mounted) return null;
 
   // Portaled to <body> so ancestors with transforms, filters, or fixed
@@ -193,6 +188,7 @@ export function CommandPalette({
   // layer positioning the panel is inset off every edge. Both hang off
   // `PresenceGate`, so interaction releases in the same commit that starts the
   // exit rather than when it ends — `open` is already false for those frames.
+  // See tests/fixed-overlay-edge-sampling.test.tsx.
   return createPortal(
     <AnimatePresence initial={false}>
       {open ? (
@@ -251,13 +247,13 @@ export function CommandPalette({
                   <input
                     ref={inputRef}
                     value={query}
-                    onChange={(e) => updateQuery(e.target.value)}
+                    onChange={(e) => setQuery(e.target.value)}
                     placeholder={placeholder}
                     role="combobox"
                     // The field only exists while the palette is open.
                     aria-expanded="true"
                     aria-controls={`${uid}-list`}
-                    aria-activedescendant={filtered.length > 0 ? `${uid}-opt-${active}` : undefined}
+                    aria-activedescendant={rows.length > 0 ? `${uid}-opt-${active}` : undefined}
                     aria-autocomplete="list"
                     className={cn(
                       "h-12 flex-1 bg-transparent text-foreground text-sm outline-none placeholder:text-muted-foreground",
@@ -280,7 +276,7 @@ export function CommandPalette({
                   aria-label="Commands"
                   className="max-h-[60vh] overflow-y-auto overscroll-contain p-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 >
-                  {filtered.length === 0 ? (
+                  {rows.length === 0 ? (
                     <div className="p-8 text-center text-muted-foreground text-sm">
                       {emptyMessage}
                     </div>
@@ -294,7 +290,8 @@ export function CommandPalette({
                           {group}
                         </div>
                         {list.map((it) => {
-                          const idx = indexOfItem.get(it.id) ?? 0;
+                          // `rows` holds these very objects, in render order.
+                          const idx = rows.indexOf(it);
                           const isActive = idx === active;
                           const Icon = it.icon;
                           return (
@@ -305,7 +302,7 @@ export function CommandPalette({
                               role="option"
                               aria-selected={isActive}
                               data-index={idx}
-                              onMouseEnter={() => setActive(idx)}
+                              onMouseEnter={() => moveTo(it.id)}
                               onClick={() => {
                                 it.onSelect();
                                 setOpen(false);

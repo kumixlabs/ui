@@ -40,7 +40,7 @@ bun add @base-ui/react class-variance-authority lucide-react motion react @kumix
 
 | Peer                                                | Used by                                        |
 | --------------------------------------------------- | ---------------------------------------------- |
-| `next-themes`                                       | `use-meta-color`                               |
+| `next-themes`                                       | `use-meta-color`, `motion/theme-toggle`        |
 | `@shadcn/react`                                     | `message-scroller`, `questionnaire`            |
 | `@tanstack/react-table` · `@tanstack/react-virtual` | data-grid                                      |
 | `@dnd-kit/*`                                        | kanban, sortable, data-grid DnD                |

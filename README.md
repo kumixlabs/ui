@@ -73,7 +73,7 @@ packages/ui/src/
   components/agents/   # beui AI agents (prompt-input, message-scroller, todo-list, code-block, …)
   components/custom/   # hand-written (confirm-dialog, toast, …)
   hooks/
-  lib/                 # shared utils (ease, tick-sound, text-shimmer, favicon, presence-gate)
+  lib/                 # shared utils (ease, tick-sound, text-shimmer, favicon, presence-gate, touch)
   style.css · theme.css
 ```
 
