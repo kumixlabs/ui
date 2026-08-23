@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.9
+
+### Patch Changes
+
+- [`b46d6eb`](https://github.com/kumixlabs/ui/commit/b46d6eb228f68b099f96571a210f89926492c8e1) Thanks [@kumixio](https://github.com/kumixio)! - fix: resolve keyboard highlight during render instead of passive effects — `ai-sidebar` roving tabindex no longer skips on first paint/SSR, `command-palette` + `morphing-search` cursor holds row id stamped with query (Enter can't commit wrong row after list changes), `combobox` keeps filtering by the open query during exit animation. Adds `use-on-open` + `use-row-cursor` hooks and `combobox/use-active-option`.
+
 ## 0.3.8
 
 ### Patch Changes
