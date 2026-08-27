@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.10
+
+### Patch Changes
+
+- [`b5ceb6d`](https://github.com/kumixlabs/ui/commit/b5ceb6d039cf54ecd47d50b17fb3f1031c91dd78) Thanks [@kumixio](https://github.com/kumixio)! - Add ReUI `code-block` (Shiki syntax highlighting, ANSI colors, collapsible sections) and beUI motion components `file-tree`, `expandable-control`, `expanding-arrow-button`, plus `MetallicButton` variant. Gantt gains baselines (planned windows, variance, custom renderers), dependency arrows, and `enforceCanDrop` drop rejection. Availability-scheduler start/end options now filter and clamp into valid ranges.
+
 ## 0.3.9
 
 ### Patch Changes
