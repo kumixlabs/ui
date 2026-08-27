@@ -36,13 +36,7 @@
     "dev": "tsdown --watch",
     "build:css": "cp src/style.css dist/style.css && cp src/theme.css dist/theme.css && cp src/style.css.d.ts dist/style.css.d.ts && cp src/theme.css.d.ts dist/theme.css.d.ts",
     "build": "rimraf dist && mkdir -p dist && bun run build:css && tsdown && publint",
-    "types:check": "tsc --noEmit",
-    "add:shadcn": "shadcn add --all --overwrite",
-    "add:reui": "shadcn add @reui/alert @reui/autocomplete @reui/badge @reui/cascader @reui/data-grid @reui/date-selector @reui/event-calendar @reui/use-file-upload @reui/filters @reui/frame @reui/gantt @reui/icon-stack @reui/icon-tile @reui/kanban @reui/number-field @reui/phone-input @reui/rating @reui/scrollspy @reui/sortable @reui/stepper @reui/timeline @reui/tree --overwrite",
-    "add:beui:ai-agents": "shadcn add @beui/prompt-input @beui/todo-list @beui/code-block @beui/approval-card @beui/file-diff @beui/tool-result @beui/streaming-response @beui/image-generation @beui/tool-approval @beui/citations @beui/agent-activity @beui/reasoning-text @beui/thinking-shimmer @beui/agent-progress @beui/ai-sidebar @beui/chat-app @beui/message-bubble @beui/message @beui/message-scroller --overwrite",
-    "add:beui:components": "shadcn add @beui/marquee @beui/tabs @beui/switch @beui/input @beui/select @beui/select-morph @beui/combobox @beui/checkbox @beui/radio @beui/bottom-sheet @beui/pull-to-refresh @beui/shared-layout-bg @beui/bounce-sidebar @beui/animated-sidebar @beui/preview-rail @beui/dock @beui/tooltip @beui/context-menu @beui/popover @beui/popover-morph @beui/morphing-modal @beui/center-morph-modal @beui/chromatic-text-reveal @beui/text-reveal @beui/text-shimmer @beui/text-cascade @beui/number-ticker @beui/animated-number @beui/animated-badge @beui/action-swap-cascade @beui/action-swap-blur @beui/action-swap-roll @beui/animated-toast-stack @beui/theme-toggle @beui/bouncy-accordion @beui/drawer @beui/smooth-scroll @beui/scroll-progress @beui/parallax @beui/scroll-to @beui/scroll-reveal @beui/range-slider @beui/range-slider-fluid @beui/range-slider-wave @beui/range-slider-bubble @beui/range-slider-ruler @beui/wheel-picker @beui/table @beui/table-editable @beui/table-async @beui/shader-background @beui/cylinder-carousel @beui/loader @beui/tilt-card @beui/button-base @beui/button-stateful @beui/button-magnetic @beui/hold-action-button @beui/slide-action-button --overwrite",
-    "add:beui:blocks": "shadcn add @beui/availability-scheduler @beui/dynamic-island @beui/command-palette @beui/morphing-search @beui/expandable-action-bar @beui/overflow-actions @beui/expandable-tabs @beui/morphing-tabs @beui/swipeable-list @beui/attachment-upload @beui/file-upload @beui/otp-input @beui/signup-form @beui/bloom-menu @beui/feedback-widget @beui/not-found-glitch @beui/not-found-magnetic @beui/not-found-spotlight @beui/not-found-stacked @beui/not-found-terminal @beui/infinite-masonry @beui/notification-stack @beui/project-folder --overwrite",
-    "add:beui": "bun run add:beui:ai-agents && bun run add:beui:components && bun run add:beui:blocks"
+    "types:check": "tsc --noEmit"
   },
   "homepage": "https://github.com/kumixlabs/ui",
   "repository": {
@@ -83,7 +77,7 @@
     "@kumix/utils": "^0.2.0",
     "@paper-design/shaders-react": "^0.0.80",
     "@shadcn/react": "^0.3.0",
-    "@tanstack/react-table": "^9.1.2",
+    "@tanstack/react-table": "^9.2.3",
     "@tanstack/react-virtual": "^3.14.10",
     "@types/react": "^19.2.18",
     "class-variance-authority": "^0.7.1",
@@ -117,7 +111,7 @@
     "@kumix/utils": ">=0.2.0",
     "@paper-design/shaders-react": ">=0.0.75",
     "@shadcn/react": ">=0.3.0",
-    "@tanstack/react-table": ">=9.0.0",
+    "@tanstack/react-table": ">=9.2.0",
     "@tanstack/react-virtual": ">=3.10.0",
     "class-variance-authority": ">=0.7.0",
     "cmdk": ">=1.1.0",

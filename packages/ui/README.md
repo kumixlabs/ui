@@ -53,7 +53,7 @@ bun add @base-ui/react class-variance-authority lucide-react motion react @kumix
 | `react-phone-number-input`                          | phone-input                                    |
 | `react-resizable-panels`                            | resizable                                      |
 | `@headless-tree/core`                               | tree                                           |
-| `shiki`                                             | `agents/code-block`                            |
+| `shiki`                                             | `agents/code-block`, `reui/code-block`         |
 
 ## Import paths
 
@@ -118,24 +118,25 @@ Base UI / shadcn base-nova. Preview: [ui.shadcn.com](https://ui.shadcn.com/docs/
 
 Extended patterns. Preview: [reui.io](https://reui.io/docs).
 
-| Module                                                                                                                                         | Notes                                      |
-| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| `alert` · `badge`                                                                                                                              | Extended variants (info/success/warning/…) |
-| `autocomplete`                                                                                                                                 | Base UI autocomplete                       |
-| `cascader/*`                                                                                                                                   | Multi-column cascading select, i18n, async |
-| `data-grid/*`                                                                                                                                  | Table, pagination, filters, DnD, virtual   |
-| `date-selector`                                                                                                                                | Day / month / quarter / range              |
-| `event-calendar/*`                                                                                                                             | Month, week, day, agenda, resource         |
-| `filters/*`                                                                                                                                    | Advanced filter builder (chip, date, DnD)  |
-| `frame`                                                                                                                                        | Nested panel layout                        |
-| `gantt/*`                                                                                                                                      | Day–year scales, resources, DnD            |
-| `icon-stack` · `icon-tile` · `kanban` · `number-field` · `phone-input` · `rating` · `scrollspy` · `sortable` · `stepper` · `timeline` · `tree` | —                                          |
+| Module                                                                                                                                         | Notes                                        |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| `alert` · `badge`                                                                                                                              | Extended variants (info/success/warning/…)   |
+| `autocomplete`                                                                                                                                 | Base UI autocomplete                         |
+| `cascader/*`                                                                                                                                   | Multi-column cascading select, i18n, async   |
+| `data-grid/*`                                                                                                                                  | Table, pagination, filters, DnD, virtual     |
+| `date-selector`                                                                                                                                | Day / month / quarter / range                |
+| `event-calendar/*`                                                                                                                             | Month, week, day, agenda, resource           |
+| `filters/*`                                                                                                                                    | Advanced filter builder (chip, date, DnD)    |
+| `code-block/*`                                                                                                                                 | Shiki syntax highlighting, ANSI, collapsible |
+| `frame`                                                                                                                                        | Nested panel layout                          |
+| `gantt/*`                                                                                                                                      | Day–year scales, resources, DnD              |
+| `icon-stack` · `icon-tile` · `kanban` · `number-field` · `phone-input` · `rating` · `scrollspy` · `sortable` · `stepper` · `timeline` · `tree` | —                                            |
 
 ### beUI (`components/motion`)
 
 Animated components built with [Motion](https://motion.dev). Preview: [beui.dev](https://beui.dev/components/motion). Bundled — `motion`, `lenis`, `@paper-design/shaders-react` are included, no extra installs needed.
 
-`action-swap` (4 variants: base, blur, cascade, roll) · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, stateful, magnetic, `ButtonLink`) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `combobox` + `combobox/*` (trigger, list, content, context) · `command-palette` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-tabs` · `feedback-widget` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` · `loader` · `magnetic` · `marquee` · `morphing-modal` · `morphing-search` · `morphing-tabs` · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `project-folder` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `signup-form` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-scramble` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
+`action-swap` (4 variants: base, blur, cascade, roll) · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `button/*` (base, magnetic, metallic, stateful, `ButtonLink`) · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `combobox` + `combobox/*` (trigger, list, content, context) · `command-palette` · `context-menu` · `cylinder-carousel` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-control` · `expandable-tabs` · `expanding-arrow-button` · `feedback-widget` · `file-tree` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` · `loader` · `magnetic` · `marquee` · `morphing-modal` · `morphing-search` · `morphing-tabs` · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `preview-rail` · `project-folder` · `pull-to-refresh` · `radio` · `range-slider` (5 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `signup-form` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-scramble` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` · `wheel-picker`
 
 ### beUI — AI Agents (`components/agents`)
 

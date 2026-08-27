@@ -38,6 +38,10 @@ interface GanttI18nConfig {
     durationDays: (days: number) => string;
     /** Appended to the bar aria-label when its segment is clipped by the range. */
     continues: string;
+    /** Names the planned (baseline) range in the bar tooltip and aria-label. */
+    planned: (rangeLabel: string) => string;
+    /** Read to screen readers on a zero-duration (milestone) bar. */
+    milestone: string;
     scales: {
       day: string;
       week: string;
@@ -69,8 +73,12 @@ interface GanttI18nConfig {
     formatEventAriaLabel: (parts: {
       title: string;
       timeLabel: string;
+      /** Localized milestone clause, from `labels.milestone`. */
+      milestoneLabel?: string;
       rowTitle?: string;
       progressLabel?: string;
+      /** Localized planned-range clause, from `labels.planned`. */
+      plannedLabel?: string;
       continues: boolean;
     }) => string;
   };
@@ -100,6 +108,8 @@ const DEFAULT_LABELS: GanttI18nConfig["labels"] = {
   progress: (percent) => `${percent}% complete`,
   durationDays: (days) => (days === 1 ? "1 day" : `${days} days`),
   continues: "continues",
+  planned: (rangeLabel) => `Planned ${rangeLabel}`,
+  milestone: "milestone",
   scales: {
     day: "Day",
     week: "Week",
@@ -154,6 +164,13 @@ function makeDefaultGanttFunctions(
     },
     formatEventTime: (start, end, allDay, locale) => {
       const opts = { locale };
+      if (end.getTime() === start.getTime()) {
+        // a milestone is an instant, not a range - "9:00 AM - 9:00 AM" reads
+        // like a data bug
+        return allDay
+          ? format(start, "MMM d, yyyy", opts)
+          : format(start, `MMM d, ${cfg.formats.eventTime}`, opts);
+      }
       if (allDay) {
         // a gantt bar is a DATE RANGE: show it, never a bare "All day".
         // Ends are exclusive midnights, so the last shown day is end - 1ms;
@@ -182,8 +199,24 @@ function makeDefaultGanttFunctions(
       const rangeEnd = subMilliseconds(range.end, 1);
       return `${format(range.start, "MMM d", opts)} - ${format(rangeEnd, "MMM d", opts)}`;
     },
-    formatEventAriaLabel: ({ title, timeLabel, rowTitle, progressLabel, continues }) =>
-      [title, timeLabel, rowTitle, progressLabel, continues ? cfg.labels.continues : undefined]
+    formatEventAriaLabel: ({
+      title,
+      timeLabel,
+      milestoneLabel,
+      rowTitle,
+      progressLabel,
+      plannedLabel,
+      continues,
+    }) =>
+      [
+        title,
+        timeLabel,
+        milestoneLabel,
+        rowTitle,
+        progressLabel,
+        plannedLabel,
+        continues ? cfg.labels.continues : undefined,
+      ]
         .filter(Boolean)
         .join(", "),
   };
