@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.11
+
+### Patch Changes
+
+- [`5daa810`](https://github.com/kumixlabs/ui/commit/5daa810fd38bb7d14e373ea0d78e0dc5e68ecf6c) Thanks [@kumixio](https://github.com/kumixio)! - feat(ui): data grid cell selection, i18n, column virtualizer, quick-create row; motion adaptive-stepper, liquid, multi-select
+
 ## 0.3.10
 
 ### Patch Changes
