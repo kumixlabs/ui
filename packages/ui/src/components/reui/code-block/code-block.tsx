@@ -2,6 +2,12 @@
 
 "use client";
 
+import type {
+  ComponentProps,
+  CSSProperties,
+  KeyboardEvent as ReactKeyboardEvent,
+  ReactNode,
+} from "react";
 import {
   Children,
   createContext,
@@ -17,20 +23,9 @@ import {
   useRef,
   useState,
 } from "react";
-import type {
-  ComponentProps,
-  CSSProperties,
-  KeyboardEvent as ReactKeyboardEvent,
-  ReactNode,
-} from "react";
-import {
-  highlightCode,
-  markdownCodeProps,
-  markdownFences,
-  resolveCodeBlockLanguage,
-  stripNotationComments,
-  toPlainLines,
-} from "./code-block-highlight";
+
+import { cn } from "@kumix/utils";
+import { Button } from "../../ui/button";
 import type {
   CodeBlockDiffSpec,
   CodeBlockLevelSpec,
@@ -42,9 +37,14 @@ import type {
   CodeBlockTransformer,
   CodeBlockWordSpec,
 } from "./code-block-highlight";
-
-import { cn } from "@kumix/utils";
-import { Button } from "../../ui/button";
+import {
+  highlightCode,
+  markdownCodeProps,
+  markdownFences,
+  resolveCodeBlockLanguage,
+  stripNotationComments,
+  toPlainLines,
+} from "./code-block-highlight";
 
 /* -------------------------------------------------------------------------- */
 /*                                   Context                                   */
@@ -1816,8 +1816,8 @@ function CodeBlockCopyButton({
         "shrink-0 [&_svg]:size-3.5",
         resolvedPosition === "pinned" &&
           /* Physical `right`, not logical `end`: the code surface is forced
-     dir="ltr", so in an RTL app the logical inset landed the button
-     over the first characters instead of the trailing edge. */
+dir="ltr", so in an RTL app the logical inset landed the button
+over the first characters instead of the trailing edge. */
           "absolute top-(--code-block-copy-top) right-(--code-block-copy-inset) z-20",
         resolvedPosition === "pinned" &&
           !alwaysVisible &&
@@ -2121,12 +2121,6 @@ function useCodeBlockSelection() {
   return { selectable, selectedLines, toggleLine, clearSelection };
 }
 
-/* Re-exported so a consumer wires an AI transcript from one import path. */
-export { markdownCodeProps, markdownFences };
-export {
-  ansiToLines,
-  parseUnifiedDiff,
-} from "./code-block-highlight";
 export type {
   CodeBlockDiffSpec,
   CodeBlockHighlightOptions,
@@ -2141,9 +2135,14 @@ export type {
   CodeBlockTransformer,
   CodeBlockWordSpec,
 } from "./code-block-highlight";
-
+export {
+  ansiToLines,
+  parseUnifiedDiff,
+} from "./code-block-highlight";
+/* Re-exported so a consumer wires an AI transcript from one import path. */
 export {
   CodeBlock,
+  CodeBlockContent,
   CodeBlockCopyButton,
   CodeBlockDownloadButton,
   CodeBlockExpandButton,
@@ -2151,8 +2150,9 @@ export {
   CodeBlockLanguage,
   CodeBlockLineActions,
   CodeBlockTitle,
-  CodeBlockContent,
   CodeBlockWrapToggle,
+  markdownCodeProps,
+  markdownFences,
   useCodeBlockConfig,
   useCodeBlockFolding,
   useCodeBlockSelection,

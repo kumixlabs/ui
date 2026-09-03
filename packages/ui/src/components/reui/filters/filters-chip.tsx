@@ -234,7 +234,7 @@ export function useFilterRuleDisplay<V, O>(
     ? segments.map((segment, index) => (
         <React.Fragment
           /* Positional, because a field id is unique among its SIBLINGS only:
-   "Company > Team > Company" is a legal path and its two ids collide. */
+"Company > Team > Company" is a legal path and its two ids collide. */
           key={segment.type === "field" ? `${index}:${segment.field.id}` : `${index}:ellipsis`}
         >
           {index > 0 ? <FilterPathSeparator /> : null}
@@ -659,7 +659,7 @@ export function FilterOperatorPopover<V, O>({
              is open ended and would only push its own footer off the screen. */
           maxHeight={320}
           /* Deliberately unpinned: one selected operator in a short list, so
-   lifting it would lose the catalog's declared reading order. */
+lifting it would lose the catalog's declared reading order. */
         />
       </PopoverContent>
     </Popover>

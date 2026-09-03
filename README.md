@@ -28,6 +28,8 @@ bun add @kumix/ui @kumix/utils
 ```tsx
 import { Button } from "@kumix/ui/ui/button";
 import { Kanban } from "@kumix/ui/reui/kanban";
+import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid";
+import { MultiSelect } from "@kumix/ui/motion/multi-select";
 import { TiltCard } from "@kumix/ui/motion/tilt-card";
 import { PromptInput } from "@kumix/ui/agents/prompt-input";
 import { useIsMobile } from "@kumix/ui/hooks/use-mobile";
@@ -68,8 +70,8 @@ CI (PR / release): **build → lint → types:check**. No unit test suite.
 ```
 packages/ui/src/
   components/ui/       # shadcn
-  components/reui/     # reui (data-grid, event-calendar, gantt, code-block, …)
-  components/motion/   # beui (tilt-card, morphing-modal, morphing-tabs, loader, shader-background, file-tree, not-found/*, …)
+  components/reui/     # reui (data-grid w/ spreadsheet cell selection & i18n, event-calendar, gantt, code-block, …)
+  components/motion/   # beui (tilt-card, morphing-modal, morphing-tabs, loader, shader-background, file-tree, multi-select, adaptive-stepper, liquid, not-found/*, …)
   components/agents/   # beui AI agents (prompt-input, message-scroller, todo-list, code-block, …)
   components/custom/   # hand-written (confirm-dialog, toast, …)
   hooks/

@@ -75,7 +75,6 @@ export function useCascaderVirtualizer({
   const measureEstimate = React.useCallback(() => estimateSize, [estimateSize]);
 
   // React Compiler bails on `useVirtualizer`; harmless, rows memoise one by one.
-  // eslint-disable-next-line react-hooks/incompatible-library
   const virtualizer = useVirtualizer<HTMLElement, HTMLElement>({
     count,
     getScrollElement,

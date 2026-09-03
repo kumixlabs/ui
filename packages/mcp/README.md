@@ -77,11 +77,16 @@ bun run test
 ```text
 find_component  component_name=button  package_filter=ui
 find_component  component_name=data-grid  package_filter=reui
+find_component  component_name=data-grid-cell-selection  package_filter=reui
 find_component  component_name=code-block  package_filter=reui
+find_component  component_name=multi-select  package_filter=motion
 find_component  component_name=tilt-card  package_filter=motion
 find_component  component_name=prompt-input  package_filter=agents
 read_component_code  package_name=@kumix/ui  component_path=components/ui/button.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/code-block/code-block.tsx
+read_component_code  package_name=@kumix/ui  component_path=components/reui/data-grid/data-grid.tsx
+read_component_code  package_name=@kumix/ui  component_path=components/reui/data-grid/data-grid-cell-selection.tsx
+read_component_code  package_name=@kumix/ui  component_path=components/motion/multi-select/index.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/kanban.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/motion/tilt-card.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/agents/prompt-input.tsx

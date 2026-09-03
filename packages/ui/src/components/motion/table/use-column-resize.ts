@@ -1,6 +1,6 @@
 import { type PointerEvent as ReactPointerEvent, useCallback, useRef, useState } from "react";
 
-import { capturePointer, releasePointer } from "@/lib/touch";
+import { capturePointer, releasePointer } from "../../../lib/touch";
 import type { HeaderCellRefs, TableColumn } from "./types";
 
 export function useColumnResize<T>({

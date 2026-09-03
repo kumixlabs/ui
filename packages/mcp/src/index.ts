@@ -295,6 +295,7 @@ class KumixUiMCPServer {
             shadcn: 'import { Button } from "@kumix/ui/ui/button"',
             reui: 'import { Kanban } from "@kumix/ui/reui/kanban"',
             motion: 'import { TiltCard } from "@kumix/ui/motion/tilt-card"',
+            multiSelect: 'import { MultiSelect } from "@kumix/ui/motion/multi-select"',
             agents: 'import { PromptInput } from "@kumix/ui/agents/prompt-input"',
             dataGrid: 'import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid"',
             hooks: 'import { useIsMobile } from "@kumix/ui/hooks/use-mobile"',
@@ -585,6 +586,7 @@ import { Button } from "@kumix/ui/ui/button";
 import { Dialog, DialogContent } from "@kumix/ui/ui/dialog";
 import { Kanban } from "@kumix/ui/reui/kanban";
 import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid";
+import { MultiSelect } from "@kumix/ui/motion/multi-select";
 import { TiltCard } from "@kumix/ui/motion/tilt-card";
 import { useIsMobile } from "@kumix/ui/hooks/use-mobile";
 import "@kumix/ui/css";

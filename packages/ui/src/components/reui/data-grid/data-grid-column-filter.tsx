@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Separator } from "../../ui/separator";
 import { Badge } from "../badge";
 import type { DataGridFeatures } from "./data-grid";
+import { useDataGrid } from "./data-grid";
 
 interface DataGridColumnFilterProps<TData extends object, TValue> {
   column?: Column<DataGridFeatures, TData, TValue>;
@@ -27,6 +28,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
   title,
   options,
 }: DataGridColumnFilterProps<TData, TValue>) {
+  const { i18n } = useDataGrid();
   const facets = column?.getFacetedUniqueValues();
   const filterValue = column?.getFilterValue();
   const selectedValues = new Set(Array.isArray(filterValue) ? (filterValue as string[]) : []);
@@ -55,7 +57,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
                 <div className="hidden space-x-1 lg:flex">
                   {selectedValues.size > 2 ? (
                     <Badge variant="secondary" className="px-1 font-normal">
-                      {selectedValues.size} selected
+                      {i18n.labels.filterSelectedCount(selectedValues.size)}
                     </Badge>
                   ) : (
                     options
@@ -83,7 +85,9 @@ function DataGridColumnFilter<TData extends object, TValue>({
         </div>
         <div className="max-h-[300px] overflow-y-auto">
           {filteredOptions.length === 0 ? (
-            <div className="py-6 text-center text-muted-foreground text-sm">No results found.</div>
+            <div className="py-6 text-center text-muted-foreground text-sm">
+              {i18n.labels.filterNoResults}
+            </div>
           ) : (
             <div className="p-1">
               {filteredOptions.map((option) => {
@@ -154,7 +158,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
                   }}
                   className="relative flex cursor-pointer select-none items-center justify-center rounded-md px-2 py-1.5 text-sm outline-hidden hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                 >
-                  Clear filters
+                  {i18n.labels.filterClear}
                 </div>
               </div>
             </>

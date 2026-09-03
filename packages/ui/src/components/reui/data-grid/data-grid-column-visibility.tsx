@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import type { DataGridFeatures } from "./data-grid";
-import { getColumnHeaderLabel } from "./data-grid";
+import { getColumnHeaderLabel, useDataGrid } from "./data-grid";
 
 function DataGridColumnVisibility<TData extends object>({
   table,
@@ -21,12 +21,14 @@ function DataGridColumnVisibility<TData extends object>({
   table: Table<DataGridFeatures, TData>;
   trigger: ReactElement<Record<string, unknown>>;
 }) {
+  const { i18n } = useDataGrid();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger render={trigger} />
       <DropdownMenuContent align="end" className="min-w-[150px]">
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="font-medium">Toggle Columns</DropdownMenuLabel>
+          <DropdownMenuLabel className="font-medium">{i18n.labels.toggleColumns}</DropdownMenuLabel>
           {table
             .getAllColumns()
             .filter((column) => column.getCanHide())
