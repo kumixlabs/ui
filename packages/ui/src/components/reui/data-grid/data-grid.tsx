@@ -816,8 +816,7 @@ export interface DataGridProps<TFeatures extends TableFeatures, TData extends ob
 
 const DataGridContext = createContext<
   // biome-ignore lint/suspicious/noExplicitAny: <>
-  DataGridContextProps<any> | undefined
->(undefined);
+  DataGridContextProps<any> | undefined>(undefined);
 
 /**
  * Reads the grid context. Pass `TData` from the calling component when the

@@ -1475,8 +1475,7 @@ const DEFAULT_VIEW_CONFIG: GanttViewConfig = {
 const GanttViewConfigContext =
   createContext<
     // biome-ignore lint/suspicious/noExplicitAny: <>
-    GanttViewConfig<any>
-  >(DEFAULT_VIEW_CONFIG);
+    GanttViewConfig<any>>(DEFAULT_VIEW_CONFIG);
 
 /** Root-level display props + render overrides, for view components. */
 function useGanttViewConfig<TData = unknown>(): GanttViewConfig<TData> {

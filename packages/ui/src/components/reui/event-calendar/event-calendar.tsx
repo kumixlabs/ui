@@ -1570,8 +1570,7 @@ const DEFAULT_VIEW_CONFIG: EventCalendarViewConfig = {
 const EventCalendarViewConfigContext =
   createContext<
     // biome-ignore lint/suspicious/noExplicitAny: <>
-    EventCalendarViewConfig<any>
-  >(DEFAULT_VIEW_CONFIG);
+    EventCalendarViewConfig<any>>(DEFAULT_VIEW_CONFIG);
 
 /** Root-level display props + render overrides, for view components. */
 function useEventCalendarViewConfig<TData = unknown>(): EventCalendarViewConfig<TData> {
