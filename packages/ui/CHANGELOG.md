@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.12
+
+### Patch Changes
+
+- [`b870621`](https://github.com/kumixlabs/ui/commit/b87062161c2865bd7ba2fd7b61ce76296e08591e) Thanks [@kumixio](https://github.com/kumixio)! - data-grid: i18n column header menu labels (Asc/Desc/Pin to left/Pin to right) and dependency updates (lucide-react, tsdown)
+
 ## 0.3.11
 
 ### Patch Changes
