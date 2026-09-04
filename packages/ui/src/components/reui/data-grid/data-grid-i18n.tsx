@@ -1,18 +1,5 @@
 "use client";
 
-/**
- * Every built-in user-facing string in the data grid, overridable in one
- * place: `<DataGrid i18n={{ labels: { ... } }}>`. The shape follows the
- * event-calendar and gantt convention - a nested config merged per section,
- * with functions for anything interpolated so pluralization and word order
- * live in the label, never in string concatenation at a call site.
- *
- * Precedence, most specific wins: a component-level prop that already
- * existed (`rowCreateLabel`, `loadingMessage`, the pagination label props)
- * beats the matching `i18n` label, which beats the built-in default - so
- * adopting `i18n` is never a breaking change.
- */
-
 export interface DataGridI18nLabels {
   /* The column header menu. */
   sortAscending: string;

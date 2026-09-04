@@ -65,9 +65,6 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
     columnOrderState.length > 0
       ? columnOrderState
       : table.getAllLeafColumns().map((leafColumn) => leafColumn.id);
-  props.tableLayout?.columnsVisibility && visibility
-    ? JSON.stringify(table.state.columnVisibility)
-    : "";
   const isSorted = column.getIsSorted();
   const isPinned = column.getIsPinned();
   const canSort = column.getCanSort();
@@ -146,7 +143,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
           disabled={!canSort}
         >
           <ArrowUpIcon className="size-3.5!" />
-          <span className="grow">Asc</span>
+          <span className="grow">{i18n.labels.sortAscending}</span>
           {isSorted === "asc" && <CheckIcon className="size-4 text-primary opacity-100!" />}
         </DropdownMenuItem>,
         <DropdownMenuItem
@@ -161,7 +158,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
           disabled={!canSort}
         >
           <ArrowDownIcon className="size-3.5!" />
-          <span className="grow">Desc</span>
+          <span className="grow">{i18n.labels.sortDescending}</span>
           {isSorted === "desc" && <CheckIcon className="size-4 text-primary opacity-100!" />}
         </DropdownMenuItem>,
       );
@@ -179,7 +176,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
           onClick={() => column.pin(isPinned === "start" ? false : "start")}
         >
           <ArrowLeftToLineIcon className="size-3.5!" aria-hidden="true" />
-          <span className="grow">Pin to left</span>
+          <span className="grow">{i18n.labels.pinColumnStart}</span>
           {isPinned === "start" && <CheckIcon className="size-4 text-primary opacity-100!" />}
         </DropdownMenuItem>,
         <DropdownMenuItem
@@ -187,7 +184,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
           onClick={() => column.pin(isPinned === "end" ? false : "end")}
         >
           <ArrowRightToLineIcon className="size-3.5!" aria-hidden="true" />
-          <span className="grow">Pin to right</span>
+          <span className="grow">{i18n.labels.pinColumnEnd}</span>
           {isPinned === "end" && <CheckIcon className="size-4 text-primary opacity-100!" />}
         </DropdownMenuItem>,
       );
@@ -282,7 +279,11 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
     table,
     columnIndex,
     columnOrder,
+    i18n.labels.sortAscending,
+    i18n.labels.pinColumnStart,
     i18n.labels.moveColumnEnd,
+    i18n.labels.sortDescending,
+    i18n.labels.pinColumnEnd,
     i18n.labels.moveColumnStart,
     i18n.labels.columnsMenu,
   ]);
