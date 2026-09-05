@@ -30,7 +30,7 @@ This package is a maintained distribution: imports rewritten for monorepo (`@kum
 bun add @kumix/ui @kumix/utils
 ```
 
-Install peers (see `package.json` → `peerDependencies`). Six peers are **always required**: `react`, `@kumix/utils`, `@base-ui/react`, `class-variance-authority`, `lucide-react`, `motion`. The remaining 21 are **optional** via `peerDependenciesMeta` — install only what your imported components need.
+Install peers (see `package.json` → `peerDependencies`). Seven peers are **always required**: `react`, `@kumix/utils`, `@base-ui/react`, `class-variance-authority`, `cn`, `lucide-react`, `motion`. The remaining 21 are **optional** via `peerDependenciesMeta` — install only what your imported components need.
 
 ```bash
 bun add @base-ui/react class-variance-authority lucide-react motion react @kumix/utils

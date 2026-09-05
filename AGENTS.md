@@ -2,7 +2,7 @@
 
 ## Tooling & Setup
 
-- **Always use `bun`, never `npm`/`yarn`.** Package manager is `bun@1.4.0`.
+- **Always use `bun`, never `npm`/`yarn`.** Package manager is `bun@1.4.2`.
 - TS version is locked via root workspaces `catalog` to `6.0.3`. Depend on it as `"typescript": "catalog:"`.
 
 ## Package Layout & Architecture
@@ -17,7 +17,7 @@
   - `lib/` — shared utilities used by motion + agents (e.g. `ease.ts`, `tick-sound.ts`, `text-shimmer.ts`, `favicon.ts`, `presence-gate.tsx`).
   - Imports in component source must be **relative** (e.g. `../button`, `../../lib/ease`). **Never use `@/` alias** in committed files.
   - CSS styles (`style.css` and `theme.css`) are hand-written and copied to `dist/` via `build:css`.
-  - **Peer deps**: 6 required (`react`, `@kumix/utils`, `@base-ui/react`, `class-variance-authority`, `lucide-react`, `motion`); 21 optional via `peerDependenciesMeta`. When adding a component that needs a new dep, add it to both `devDependencies` and `peerDependencies`, and mark it optional in `peerDependenciesMeta` unless it's universally needed.
+  - **Peer deps**: 7 required (`react`, `@kumix/utils`, `@base-ui/react`, `class-variance-authority`, `cn`, `lucide-react`, `motion`); 21 optional via `peerDependenciesMeta`. When adding a component that needs a new dep, add it to both `devDependencies` and `peerDependencies`, and mark it optional in `peerDependenciesMeta` unless it's universally needed.
 - `packages/mcp` (`@kumix/mcp`): Private MCP server for package/component discovery. Ignored by changesets.
 
 ## Export Map (`package.json`)

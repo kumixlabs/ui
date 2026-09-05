@@ -18,7 +18,7 @@ This package is community-driven. Your contributions help:
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) 1.4.0 or higher (pinned via `packageManager`)
+- [Bun](https://bun.sh) 1.4.2 or higher (pinned via `packageManager`)
 - Node.js 24 or higher
 - Git
 

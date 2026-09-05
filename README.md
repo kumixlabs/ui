@@ -41,7 +41,7 @@ See [packages/ui/README.md](./packages/ui/README.md) for full import map, peers,
 
 ## Development
 
-Use **Bun** only (`packageManager: bun@1.4.0`). Engines: Node `>=24`, Bun `>=1.4.0`.
+Use **Bun** only (`packageManager: bun@1.4.2`). Engines: Node `>=24`, Bun `>=1.4.0`.
 
 ```bash
 bun install
