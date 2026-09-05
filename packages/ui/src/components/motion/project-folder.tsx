@@ -1,6 +1,7 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useId, useRef, useState } from "react";
+import { cn } from "cn";
 import { X } from "lucide-react";
 import {
   AnimatePresence,
@@ -11,7 +12,6 @@ import {
 } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../hooks/use-hover-capable";
 import { SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
 

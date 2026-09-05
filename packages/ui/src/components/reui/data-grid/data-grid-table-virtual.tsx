@@ -6,8 +6,8 @@ import type { Column, Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import type { VirtualItem, Virtualizer, VirtualizerOptions } from "@tanstack/react-virtual";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import { Spinner } from "../../ui/spinner";
 import type { DataGridFeatures, DataGridTableInstance } from "./data-grid";
 import { useDataGrid } from "./data-grid";

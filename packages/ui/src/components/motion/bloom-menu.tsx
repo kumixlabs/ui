@@ -1,10 +1,10 @@
 "use client";
 
 import { type ComponentType, useEffect, useId, useRef, useState } from "react";
+import { cn } from "cn";
 import { Bell, FileText, FolderClosed, LayoutGrid, Link, Plus, Table, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 type MenuItem = { label: string; icon: ComponentType<{ className?: string }> };

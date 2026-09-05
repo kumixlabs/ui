@@ -1,8 +1,8 @@
 "use client";
 
+import { cn } from "cn";
 import { motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
 import { SPRING_PRESS } from "../../../lib/ease";
 

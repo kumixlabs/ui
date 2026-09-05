@@ -1,8 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import { TextShimmer } from "../../motion/text-shimmer";
 
 export interface ThinkingShimmerProps {

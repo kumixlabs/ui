@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { cn } from "cn";
 import { animate, motion, useInView, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export interface NumberTickerProps {

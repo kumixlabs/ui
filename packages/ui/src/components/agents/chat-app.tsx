@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import {
   AnimatedSidebarProvider,
   type AnimatedSidebarProviderProps,

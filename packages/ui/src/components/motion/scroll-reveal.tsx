@@ -1,9 +1,9 @@
 "use client";
 
 import { type ReactNode, type RefObject, useRef } from "react";
+import { cn } from "cn";
 import { motion, useInView, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export interface ScrollRevealProps {

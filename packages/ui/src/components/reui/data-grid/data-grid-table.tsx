@@ -11,9 +11,9 @@ import type {
 import { Fragment, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import type { Cell, Column, Header, Row } from "@tanstack/react-table";
 import { flexRender, Subscribe } from "@tanstack/react-table";
+import { cn } from "cn";
 import { PlusIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import { Checkbox } from "../../ui/checkbox";
 import { Spinner } from "../../ui/spinner";

@@ -1,11 +1,11 @@
 "use client";
 
 import { type ComponentPropsWithoutRef, useEffect, useState } from "react";
+import { cn } from "cn";
 import { Moon, Sun } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import { useTheme } from "next-themes";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT_CSS } from "../../lib/ease";
 import { ActionSwapIcon } from "./action-swap";
 

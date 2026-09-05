@@ -1,10 +1,10 @@
 "use client";
 
 import { type ReactNode, useContext, useId, useLayoutEffect, useMemo, useRef } from "react";
+import { cn } from "cn";
 import { Check } from "lucide-react";
 import { motion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT } from "../../../lib/ease";
 import { ComboboxGroupContext, useComboboxContext } from "./context";
 

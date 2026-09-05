@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "cn";
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { type DayButton, DayPicker, getDefaultClassNames, type Locale } from "react-day-picker";
 
-import { cn } from "@kumix/utils";
 import { Button, buttonVariants } from "./button";
 
 function Calendar({

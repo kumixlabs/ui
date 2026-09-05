@@ -1,10 +1,10 @@
 "use client";
 
 import { type ReactNode, useCallback, useId, useLayoutEffect, useRef, useState } from "react";
+import { cn } from "cn";
 import { ChevronDown } from "lucide-react";
 import { motion, type Transition, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export type BouncyAccordionItem = {

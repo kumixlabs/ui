@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "cn";
 import {
   ArrowLeftRightIcon,
   ChevronRightIcon,
@@ -13,7 +14,6 @@ import {
   XIcon,
 } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import { ButtonGroup, ButtonGroupText } from "../../ui/button-group";
 import {

@@ -6,10 +6,10 @@ import type {
   ReactNode,
   Ref,
 } from "react";
+import { cn } from "cn";
 import { ChevronsUpDown, Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../../lib/ease";
 import { mergeRefs, useMultiSelectContext } from "./context";
 

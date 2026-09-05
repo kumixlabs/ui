@@ -2,10 +2,10 @@
 
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useRef } from "react";
+import { cn } from "cn";
 import { Check, CircleAlert, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../hooks/use-hover-capable";
 import { EASE_IN_OUT, EASE_OUT, SPRING_PRESS } from "../../lib/ease";
 

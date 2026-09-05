@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { cn } from "cn";
 import { useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { Checkbox } from "../checkbox";
 import { EditableCell } from "./editable-cell";
 import { RowHandle } from "./row-handle";

@@ -1,9 +1,9 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { cn } from "cn";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export type ExpandableTabsItem = {

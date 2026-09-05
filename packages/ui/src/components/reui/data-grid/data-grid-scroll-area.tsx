@@ -3,8 +3,8 @@
 import type { PointerEvent, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollArea as ScrollAreaPrimitive } from "@base-ui/react/scroll-area";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import { useDataGrid } from "./data-grid";
 
 const MIN_THUMB_SIZE = 24;

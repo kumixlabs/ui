@@ -14,11 +14,11 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 import { PresenceGate } from "../../lib/presence-gate";
 

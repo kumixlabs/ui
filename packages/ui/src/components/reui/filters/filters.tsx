@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { cva } from "class-variance-authority";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import { FiltersAdvanced } from "./filters-advanced";
 import { FiltersBuilder } from "./filters-builder";

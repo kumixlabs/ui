@@ -15,10 +15,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PANEL } from "../../lib/ease";
 import { usePopoverPortalPosition } from "./popover-position";
 

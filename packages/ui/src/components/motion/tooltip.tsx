@@ -13,10 +13,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { useDismiss } from "../../hooks/use-dismiss";
 import { useHoverGesture } from "../../hooks/use-hover-gesture";
 import { useTapGesture } from "../../hooks/use-tap-gesture";

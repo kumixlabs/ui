@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { cn } from "cn";
 import {
   type MotionStyle,
   motion,
@@ -9,7 +10,6 @@ import {
   useReducedMotion,
 } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_IN_OUT, EASE_OUT } from "../../lib/ease";
 
 const CHROMATIC_PALETTE = ["#60a5fa", "#818cf8", "#c084fc", "#fb7185", "#fbbf24"];

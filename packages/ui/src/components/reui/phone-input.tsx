@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, useContext, useMemo, useState } from "react";
+import { cn } from "cn";
 import { GlobeIcon } from "lucide-react";
 import * as BasePhoneInput from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../ui/button";
 import {
   Combobox,

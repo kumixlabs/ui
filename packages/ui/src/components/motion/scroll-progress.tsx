@@ -1,8 +1,8 @@
 "use client";
 
+import { cn } from "cn";
 import { type MotionValue, motion, useReducedMotion, useSpring, useTransform } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { useSmoothScroll } from "./smooth-scroll";
 
 // Soft follow so the indicator trails the scroll smoothly instead of snapping;

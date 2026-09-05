@@ -4,6 +4,7 @@ import * as React from "react";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { cn } from "cn";
 import {
   CheckIcon,
   ChevronRightIcon,
@@ -12,7 +13,6 @@ import {
   RotateCwIcon,
 } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Spinner } from "../../ui/spinner";
 import { useCascaderActions, useCascaderRender, useCascaderState } from "./cascader-context";
 import {

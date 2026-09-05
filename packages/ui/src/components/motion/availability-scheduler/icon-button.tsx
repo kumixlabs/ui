@@ -1,9 +1,9 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { cn } from "cn";
 import { motion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { SPRING_PRESS } from "../../../lib/ease";
 
 export function IconButton({

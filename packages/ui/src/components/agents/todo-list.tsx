@@ -9,10 +9,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { ChevronDown, ListTodo } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
 import { ActionSwapRollText } from "../motion/action-swap-roll";
 import { AgentDisclosure } from "./agent-disclosure";

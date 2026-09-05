@@ -1,9 +1,9 @@
 "use client";
 
 import { type ReactNode, useRef } from "react";
+import { cn } from "cn";
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../hooks/use-hover-capable";
 import { SPRING_MOUSE } from "../../lib/ease";
 

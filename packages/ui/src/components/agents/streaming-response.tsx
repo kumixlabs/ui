@@ -1,10 +1,10 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useId, useRef, useState } from "react";
+import { cn } from "cn";
 import { Check, ChevronDown, Copy, RotateCcw, ThumbsDown, ThumbsUp } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS, SPRING_SWAP } from "../../lib/ease";
 import { AgentDisclosure } from "./agent-disclosure";
 import { type CitationItem, CitationList, CitationStack } from "./citations";

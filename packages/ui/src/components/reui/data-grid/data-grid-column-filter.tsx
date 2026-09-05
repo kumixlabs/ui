@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react";
 import type { Column } from "@tanstack/react-table";
+import { cn } from "cn";
 import { CheckIcon, CirclePlusIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";

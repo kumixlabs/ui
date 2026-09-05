@@ -1,9 +1,8 @@
 "use client";
 
 import { type ReactNode, useCallback, useLayoutEffect, useRef, useState } from "react";
+import { cn } from "cn";
 import { animate, motion, useMotionValue, useReducedMotion } from "motion/react";
-
-import { cn } from "@kumix/utils";
 
 export interface BounceSidebarItem {
   id: string;

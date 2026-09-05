@@ -1,9 +1,9 @@
 "use client";
 
 import { forwardRef, useState } from "react";
+import { cn } from "cn";
 import { motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_IN_OUT } from "../../../lib/ease";
 import { Button, type ButtonProps } from "./base";
 

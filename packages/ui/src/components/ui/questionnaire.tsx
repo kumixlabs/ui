@@ -2,9 +2,9 @@
 
 import type * as React from "react";
 import { Questionnaire as QuestionnairePrimitive } from "@shadcn/react/questionnaire";
+import { cn } from "cn";
 import { CheckIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { type Button, buttonVariants } from "./button";
 
 function Questionnaire({
@@ -28,7 +28,7 @@ function QuestionnaireProgress({
     <QuestionnairePrimitive.Progress
       data-slot="questionnaire-progress"
       className={cn(
-        "min-h-lh w-fit min-w-[14ch] font-medium text-muted-foreground text-xs tabular-nums",
+        "min-h-[1lh] w-fit min-w-[14ch] font-medium text-muted-foreground text-xs tabular-nums",
         className,
       )}
       {...props}
@@ -132,7 +132,7 @@ function QuestionnaireChoice({
       </QuestionnairePrimitive.ChoiceLabel>
       <QuestionnairePrimitive.ChoiceShortcut
         data-slot="questionnaire-choice-shortcut"
-        className="pointer-events-none ms-auto hidden size-5 shrink-0 translate-y-[--spacing(0.45)] items-center justify-center rounded-md border border-input bg-background font-medium font-mono text-[0.625rem] text-muted-foreground leading-none group-has-data-[slot=questionnaire-choice-description]/questionnaire-choice:translate-y-0.5 group-data-shortcut/questionnaire-choice:inline-flex"
+        className="pointer-events-none ms-auto hidden size-5 shrink-0 translate-y-[--spacing(0.45)] items-center justify-center rounded-md border border-input bg-background font-medium font-mono text-[0.625rem] text-muted-foreground leading-none group-has-data-[slot=questionnaire-choice-description]/questionnaire-choice:translate-y-0.5 group-data-[shortcut]/questionnaire-choice:inline-flex"
       />
     </QuestionnairePrimitive.Choice>
   );

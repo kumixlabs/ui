@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, type ReactNode, useContext, useId, useMemo } from "react";
+import { cn } from "cn";
 import { motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { SPRING_LAYOUT } from "../../lib/ease";
 
 type DockContextValue = {

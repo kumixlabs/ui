@@ -9,9 +9,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { PreviewRail, type PreviewRailItem } from "../motion/preview-rail";
 
 const PREVIEW_TITLE_LENGTH = 56;

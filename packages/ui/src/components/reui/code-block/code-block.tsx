@@ -23,8 +23,8 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import type {
   CodeBlockDiffSpec,

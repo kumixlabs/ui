@@ -6,9 +6,9 @@ import type {
   ReactNode,
   Ref,
 } from "react";
+import { cn } from "cn";
 import { ChevronsUpDown, Search } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { mergeRefs, useComboboxContext } from "./context";
 
 export interface ComboboxTriggerProps {

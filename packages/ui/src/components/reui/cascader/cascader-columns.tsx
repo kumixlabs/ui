@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
+import { cn } from "cn";
 import { LoaderCircleIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { ScrollArea } from "../../ui/scroll-area";
 import type { CascaderColumn } from "./cascader-context";
 import { useCascaderActions, useCascaderState } from "./cascader-context";

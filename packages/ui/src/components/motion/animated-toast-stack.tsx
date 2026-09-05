@@ -1,11 +1,11 @@
 "use client";
 
 import { memo, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { cn } from "cn";
 import { AlertCircle, Bell, Check, Info, LoaderCircle, type LucideIcon, X } from "lucide-react";
 import { AnimatePresence, motion, type Transition, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export type ToastStatus = "neutral" | "info" | "loading" | "success" | "error";

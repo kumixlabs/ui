@@ -2,10 +2,10 @@
 
 import { type MutableRefObject, type ReactNode, useEffect, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { cn } from "cn";
 import { AlertCircle, Inbox } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PANEL } from "../../lib/ease";
 
 export type InfiniteMasonryKey = string | number | bigint;

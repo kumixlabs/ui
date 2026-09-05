@@ -8,10 +8,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { motion, type Transition } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { usePopoverPortalPosition } from "../popover-position";
 import { useComboboxContext } from "./context";
 

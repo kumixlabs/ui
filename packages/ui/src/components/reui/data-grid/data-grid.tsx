@@ -42,8 +42,8 @@ import {
   sortFn_textCaseSensitive,
   tableFeatures,
 } from "@tanstack/react-table";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import {
   type DataGridI18nConfig,
   type DataGridI18nOverrides,

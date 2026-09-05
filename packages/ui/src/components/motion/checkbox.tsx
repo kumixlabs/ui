@@ -1,9 +1,9 @@
 "use client";
 
 import { useId } from "react";
+import { cn } from "cn";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../lib/ease";
 
 const CHECK_PATH = "M5 13l4 4L19 7";

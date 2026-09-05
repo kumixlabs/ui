@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import { cn } from "cn";
 import { motion, useMotionTemplate, useMotionValue, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
 import { NOT_FOUND_DEFAULTS, NotFoundActions, type NotFoundProps, NotFoundStage } from "./shared";
 

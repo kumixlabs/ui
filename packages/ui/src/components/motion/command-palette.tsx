@@ -1,11 +1,11 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { cn } from "cn";
 import { type LucideIcon, Search } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { useOnOpen } from "../../hooks/use-on-open";
 import { useRowCursor } from "../../hooks/use-row-cursor";
 import { useTouchCapable } from "../../hooks/use-touch-capable";

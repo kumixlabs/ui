@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useId, useRef, useState } from "react";
+import { cn } from "cn";
 import {
   AlertCircle,
   CheckCircle2,
@@ -19,7 +20,6 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export type FileUploadStatus = "queued" | "uploading" | "success" | "error";

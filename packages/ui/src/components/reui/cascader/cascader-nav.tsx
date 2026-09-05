@@ -5,9 +5,9 @@ import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 import { useDirection } from "@base-ui/react/direction-provider";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { cn } from "cn";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { useCascaderActions, useCascaderState } from "./cascader-context";
 import { resolveCascaderSearchLabel } from "./cascader-i18n";
 import {

@@ -9,9 +9,9 @@ import {
   useMemo,
   useState,
 } from "react";
+import { cn } from "cn";
 import { MotionConfig, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
 
 type RadioCtx = {

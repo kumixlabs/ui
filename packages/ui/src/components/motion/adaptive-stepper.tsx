@@ -13,10 +13,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { Minus, Plus } from "lucide-react";
 import { AnimatePresence, type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../lib/ease";
 import { Liquid, LiquidItem, type LiquidTransition } from "./liquid";
 

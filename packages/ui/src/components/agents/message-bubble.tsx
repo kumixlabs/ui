@@ -12,10 +12,10 @@ import {
   useId,
   useState,
 } from "react";
+import { cn } from "cn";
 import { ChevronDown } from "lucide-react";
 import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
 import { MessageSideContext } from "./message-context";
 

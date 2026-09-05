@@ -1,9 +1,9 @@
 "use client";
 
 import type { JSX, ReactNode } from "react";
+import { cn } from "cn";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { Skeleton } from "../../ui/skeleton";

@@ -13,9 +13,9 @@ import {
 } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { cn } from "cn";
 import type { Locale } from "date-fns";
 
-import { cn } from "@kumix/utils";
 import { type GanttI18nConfig, type GanttI18nOverrides, mergeGanttI18n } from "./gantt-i18n";
 import {
   buildEventIndex,

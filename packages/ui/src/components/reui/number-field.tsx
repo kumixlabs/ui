@@ -5,9 +5,9 @@ import { createContext, useContext, useId } from "react";
 import { NumberField as NumberFieldPrimitive } from "@base-ui/react/number-field";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
+import { cn } from "cn";
 import { MinusIcon, PlusIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Label } from "../ui/label";
 
 const NumberFieldContext = createContext<{

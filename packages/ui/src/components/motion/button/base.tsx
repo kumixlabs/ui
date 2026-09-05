@@ -8,9 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { AnimatePresence, type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
 import { EASE_OUT, SPRING_PRESS } from "../../../lib/ease";
 

@@ -1,8 +1,7 @@
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
-
-import { cn } from "@kumix/utils";
+import { cn } from "cn";
 
 /**
  * CSS variable architecture for FramePanel theming:

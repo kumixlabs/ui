@@ -3,9 +3,9 @@
 import * as React from "react";
 import { Popover as PopoverPrimitive } from "@base-ui/react";
 import { useDirection } from "@base-ui/react/direction-provider";
+import { cn } from "cn";
 import { ChevronRightIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { useCascaderActions } from "./cascader-context";
 import { CASCADER_ACTION_CLASS, CascaderGroup, CascaderLabel } from "./cascader-item";
 import { CASCADER_LIST_PAD_CLASS, getCascaderFooterStops, isCascaderRtl } from "./cascader-lib";

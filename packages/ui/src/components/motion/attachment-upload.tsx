@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { cn } from "cn";
 import {
   AlertCircle,
   Check,
@@ -19,7 +20,6 @@ import {
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
 import { PresenceGate } from "../../lib/presence-gate";
 import { Tooltip } from "./tooltip";

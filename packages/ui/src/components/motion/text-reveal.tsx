@@ -1,9 +1,9 @@
 "use client";
 
 import { type ElementType, type ReactNode, useRef } from "react";
+import { cn } from "cn";
 import { motion, type Transition, useInView, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 type SplitMode = "word" | "char";

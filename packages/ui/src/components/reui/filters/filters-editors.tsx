@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "cn";
 import { CheckIcon, XIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import { ButtonGroup } from "../../ui/button-group";
 import { Input } from "../../ui/input";

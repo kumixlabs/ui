@@ -1,9 +1,9 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { cn } from "cn";
 import { animate, motion, type PanInfo, useMotionValue, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";
 
 export type SwipeSide = "left" | "right";

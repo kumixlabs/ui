@@ -40,10 +40,10 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import type { Cell, HeaderGroup, Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
+import { cn } from "cn";
 import { GripHorizontalIcon } from "lucide-react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import type { DataGridFeatures, DataGridTableInstance } from "./data-grid";
 import { useDataGrid } from "./data-grid";

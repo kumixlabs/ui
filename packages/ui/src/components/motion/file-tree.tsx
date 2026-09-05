@@ -11,10 +11,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { ChevronRight, File, Folder, FolderOpen } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
 import { SharedLayoutBg } from "./shared-layout-bg";
 

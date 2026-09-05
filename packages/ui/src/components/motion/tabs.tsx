@@ -9,9 +9,9 @@ import {
   useMemo,
   useState,
 } from "react";
+import { cn } from "cn";
 import { MotionConfig, motion, type Transition, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 type Variant = "pill" | "underline" | "segment";

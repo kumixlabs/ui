@@ -1,10 +1,10 @@
 "use client";
 
 import { type ReactNode, useCallback, useId, useState } from "react";
+import { cn } from "cn";
 import { BookOpenText, ChevronDown, ExternalLink, Globe2 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { useFavicon } from "../../hooks/use-favicon";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
 import { AgentDisclosure } from "./agent-disclosure";

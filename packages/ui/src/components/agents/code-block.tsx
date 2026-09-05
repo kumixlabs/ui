@@ -9,10 +9,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { Check, Copy, FileCode2, LoaderCircle } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { SPRING_PRESS } from "../../lib/ease";
 import { type AgentCodeLanguage, AgentCodeLine, useAgentCodeTokens } from "./agent-code";
 

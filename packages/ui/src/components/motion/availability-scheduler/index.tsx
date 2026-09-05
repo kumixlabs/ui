@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { cn } from "cn";
 import { LayoutGroup, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { DayRow } from "./day-row";
 import {
   buildOptions,

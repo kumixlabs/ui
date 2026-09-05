@@ -1,9 +1,9 @@
 "use client";
 
 import { type ReactNode, useEffect } from "react";
+import { cn } from "cn";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PANEL } from "../../lib/ease";
 import { PresenceGate } from "../../lib/presence-gate";
 

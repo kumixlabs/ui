@@ -15,6 +15,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { cn } from "cn";
 import { ChevronRight } from "lucide-react";
 import {
   AnimatePresence,
@@ -25,7 +26,6 @@ import {
 } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { EASE_DRAWER, EASE_OUT, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
 import { SharedLayoutBg } from "./shared-layout-bg";
 

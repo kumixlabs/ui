@@ -1,8 +1,8 @@
 "use client";
 
 import type { ElementType, ReactNode } from "react";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import {
   TEXT_SHIMMER_CLASS_NAME,
   TEXT_SHIMMER_KEYFRAMES,

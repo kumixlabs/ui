@@ -1,9 +1,9 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import { cn } from "cn";
 import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export interface AgentDisclosureProps extends Omit<HTMLMotionProps<"div">, "animate" | "initial"> {

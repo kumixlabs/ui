@@ -10,9 +10,9 @@ import {
 } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { cn } from "cn";
 import { CheckIcon, RepeatIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "../../ui/context-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../ui/tooltip";
 import { useGantt, useGanttSelector, useGanttViewConfig } from "./gantt";

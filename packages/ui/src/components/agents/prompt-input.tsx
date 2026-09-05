@@ -11,10 +11,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { ArrowUp, Plus, Square } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { SPRING_SWAP } from "../../lib/ease";
 import { Button } from "../motion/button";
 import { MorphPopover, MorphPopoverContent, MorphPopoverTrigger } from "../motion/popover-morph";

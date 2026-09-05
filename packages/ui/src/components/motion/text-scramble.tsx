@@ -1,9 +1,8 @@
 "use client";
 
 import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { cn } from "cn";
 import { useReducedMotion } from "motion/react";
-
-import { cn } from "@kumix/utils";
 
 const DEFAULT_GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&@$?/";
 

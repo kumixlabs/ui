@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import {
   AnimatePresence,
   animate,
@@ -18,7 +19,6 @@ import {
   useTransform,
 } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_IN_OUT, EASE_OUT, SPRING_PANEL, SPRING_SWAP } from "../../lib/ease";
 import { capturePointer, TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";
 

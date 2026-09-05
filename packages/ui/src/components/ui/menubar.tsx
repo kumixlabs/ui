@@ -3,9 +3,9 @@
 import type * as React from "react";
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 import { Menubar as MenubarPrimitive } from "@base-ui/react/menubar";
+import { cn } from "cn";
 import { CheckIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,

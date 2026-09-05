@@ -19,11 +19,11 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { Check } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_PANEL } from "../../lib/ease";
 import { holdSelection, TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";
 

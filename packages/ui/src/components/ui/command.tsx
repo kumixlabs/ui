@@ -2,9 +2,9 @@
 
 import type * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
+import { cn } from "cn";
 import { CheckIcon, SearchIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./dialog";
 import { InputGroup, InputGroupAddon } from "./input-group";
 

@@ -1,9 +1,9 @@
 "use client";
 
 import type * as React from "react";
+import { cn } from "cn";
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Button } from "./button";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {

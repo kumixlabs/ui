@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@kumix/utils";
+import { cn } from "cn";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (

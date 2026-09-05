@@ -1,6 +1,7 @@
 "use client";
 
-import { cn } from "@kumix/utils";
+import { cn } from "cn";
+
 import type { TableColumn } from "./types";
 import { alignText } from "./utils";
 

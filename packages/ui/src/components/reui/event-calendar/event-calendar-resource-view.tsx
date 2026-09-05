@@ -3,9 +3,9 @@
 import { type CSSProperties, useEffect, useMemo, useRef } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { cn } from "cn";
 import { addDays, addMinutes } from "date-fns";
 
-import { cn } from "@kumix/utils";
 import { ScrollArea } from "../../ui/scroll-area";
 import {
   EventCalendarViewContext,

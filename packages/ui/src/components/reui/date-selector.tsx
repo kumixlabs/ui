@@ -2,6 +2,7 @@
 
 import type { ChangeEvent, ComponentProps } from "react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { cn } from "cn";
 import { addMonths, format, isBefore, isSameMonth, parse, subMonths } from "date-fns";
 import {
   ChevronLeftIcon,
@@ -12,7 +13,6 @@ import {
 } from "lucide-react";
 import type { DateRange, DayButton } from "react-day-picker";
 
-import { cn } from "@kumix/utils";
 import { useIsMobile } from "../../hooks/use-mobile";
 import { Button } from "../ui/button";
 import { Calendar, CalendarDayButton } from "../ui/calendar";

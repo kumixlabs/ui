@@ -8,9 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../lib/ease";
 import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "../../lib/touch";
 

@@ -46,9 +46,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { cn } from "cn";
 import { createPortal } from "react-dom";
-
-import { cn } from "@kumix/utils";
 
 // Sortable Item Context
 const SortableItemContext = createContext<{

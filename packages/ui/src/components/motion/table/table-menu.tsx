@@ -1,10 +1,10 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
+import { cn } from "cn";
 import { motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { SPRING_PANEL } from "../../../lib/ease";
 
 export type TableMenuItem = {

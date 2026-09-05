@@ -13,10 +13,10 @@ import {
 } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { cn } from "cn";
 import { addDays, format, getWeek } from "date-fns";
 import { PlusIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { ScrollArea } from "../../ui/scroll-area";
 import {

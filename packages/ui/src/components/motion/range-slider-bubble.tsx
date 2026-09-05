@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { cn } from "cn";
 import {
   AnimatePresence,
   motion,
@@ -12,7 +13,6 @@ import {
   useVelocity,
 } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { type SliderOptions, useSlider } from "../../hooks/use-slider";
 import { SPRING_GLIDE, SPRING_PANEL, SPRING_PRESS } from "../../lib/ease";
 import { TOUCH_GESTURE_CLASS } from "../../lib/touch";

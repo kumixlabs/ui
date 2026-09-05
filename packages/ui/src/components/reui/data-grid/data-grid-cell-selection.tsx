@@ -8,9 +8,9 @@ import type {
 } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Subscribe } from "@tanstack/react-table";
+import { cn } from "cn";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import type {
   DataGridCellChange,

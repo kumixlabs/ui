@@ -45,9 +45,8 @@ import {
   Waves,
   type WavesProps,
 } from "@paper-design/shaders-react";
+import { cn } from "cn";
 import { useReducedMotion } from "motion/react";
-
-import { cn } from "@kumix/utils";
 
 type ShaderVariantProps = {
   "mesh-gradient": MeshGradientProps;

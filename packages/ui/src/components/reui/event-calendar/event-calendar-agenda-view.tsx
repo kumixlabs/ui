@@ -3,10 +3,10 @@
 import { useMemo } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { cn } from "cn";
 import { addDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { ScrollArea } from "../../ui/scroll-area";
 import { IconStack } from "../icon-stack";
 import {

@@ -1,8 +1,7 @@
 "use client";
 
+import { cn } from "cn";
 import { Loader2Icon } from "lucide-react";
-
-import { cn } from "@kumix/utils";
 
 function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   return (

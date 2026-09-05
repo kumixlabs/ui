@@ -9,9 +9,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { createTickPlayer } from "../../lib/tick-sound";
 import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "../../lib/touch";
 

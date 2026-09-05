@@ -9,9 +9,8 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { AnimatePresence, animate, motion, useReducedMotion } from "motion/react";
-
-import { cn } from "@kumix/utils";
 
 export type InputClassNames = {
   root?: string;

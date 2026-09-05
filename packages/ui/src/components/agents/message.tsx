@@ -1,9 +1,9 @@
 "use client";
 
 import { type ComponentPropsWithRef, createContext, type ReactNode, useContext } from "react";
+import { cn } from "cn";
 import { motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 import { MessageSideContext } from "./message-context";
 

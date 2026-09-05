@@ -89,6 +89,7 @@ for (const filePath of allFiles) {
 
   content = content
     .replace(/from\s+"@\/lib\/utils"/g, 'from "@kumix/utils"')
+    .replace(/import\s*\{\s*cn\s*\}\s*from\s+"@kumix\/utils";?/g, 'import { cn } from "cn";')
     .replace(/from\s+"@\/lib\/([^"]+)"/g, (_m, p1) => {
       return `from "${toRelImport(fileDir, join(SRC_DIR, "lib", p1))}"`;
     })

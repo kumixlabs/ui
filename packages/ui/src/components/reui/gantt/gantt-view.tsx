@@ -21,6 +21,7 @@ import { mergeProps } from "@base-ui/react/merge-props";
 // content automatically, so its twin needs no equivalent.)
 import { ScrollArea as ScrollAreaPrimitive } from "@base-ui/react/scroll-area";
 import { useRender } from "@base-ui/react/use-render";
+import { cn } from "cn";
 import {
   addDays,
   addMinutes,
@@ -40,7 +41,6 @@ import {
   PlusIcon,
 } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import { Checkbox } from "../../ui/checkbox";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "../../ui/context-menu";

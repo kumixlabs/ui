@@ -13,9 +13,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { useActiveOption } from "./use-active-option";
 
 export type RegisteredItem = {

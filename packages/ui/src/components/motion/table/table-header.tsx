@@ -1,6 +1,7 @@
 "use client";
 
 import { type PointerEvent as ReactPointerEvent, useEffect } from "react";
+import { cn } from "cn";
 import {
   ArrowLeftToLine,
   ArrowRightToLine,
@@ -12,7 +13,6 @@ import {
 import { motion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../../lib/ease";
 import { TOUCH_GESTURE_CLASS } from "../../../lib/touch";
 import { Checkbox } from "../checkbox";

@@ -1,8 +1,8 @@
 "use client";
 
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { cn } from "cn";
 
-import { cn } from "@kumix/utils";
 import { type ScrollTarget, type ScrollToOptions, useSmoothScroll } from "./smooth-scroll";
 
 export interface ScrollToProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {

@@ -1,9 +1,9 @@
 "use client";
 
 import { type ReactNode, useEffect, useId, useState } from "react";
+import { cn } from "cn";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_SWAP } from "../../../lib/ease";
 import {
   TEXT_SHIMMER_CLASS_NAME,

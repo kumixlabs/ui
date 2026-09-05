@@ -12,10 +12,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { Check, ChevronDown } from "lucide-react";
 import { motion, type Transition, useReducedMotion, type Variants } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 const INSTANT_TRANSITION: Transition = { duration: 0 };

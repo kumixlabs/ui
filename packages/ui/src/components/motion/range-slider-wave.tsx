@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
+import { cn } from "cn";
 import { motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { type SliderOptions, useSlider } from "../../hooks/use-slider";
 import { TOUCH_GESTURE_CLASS } from "../../lib/touch";
 

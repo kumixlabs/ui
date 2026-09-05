@@ -14,9 +14,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 type LiquidContextValue = {

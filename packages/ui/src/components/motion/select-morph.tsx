@@ -12,6 +12,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import { Check, ChevronDown } from "lucide-react";
 import {
   AnimatePresence,
@@ -20,8 +21,6 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-
-import { cn } from "@kumix/utils";
 
 // Shared-layout morph: trigger box grows into the panel and back, one surface.
 const MORPH: Transition = { type: "spring", duration: 0.5, bounce: 0.22 };

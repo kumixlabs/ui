@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "cn";
 import {
   Check,
   Circle,
@@ -15,7 +16,6 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT } from "../../../lib/ease";
 import type {
   AgentActivityItem,

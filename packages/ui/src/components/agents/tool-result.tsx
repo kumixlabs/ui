@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { cn } from "cn";
 import {
   Ban,
   Braces,
@@ -24,7 +25,6 @@ import {
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { SPRING_PRESS, SPRING_SWAP } from "../../lib/ease";
 import { ActionSwapRollText } from "../motion/action-swap-roll";
 import { AgentCode, type AgentCodeLanguage } from "./agent-code";

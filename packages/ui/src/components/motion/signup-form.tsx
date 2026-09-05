@@ -1,10 +1,10 @@
 "use client";
 
 import { type FormEvent, type ReactNode, useCallback, useId, useMemo, useState } from "react";
+import { cn } from "cn";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT } from "../../lib/ease";
 import { StatefulButton } from "./button";
 import { Checkbox } from "./checkbox";

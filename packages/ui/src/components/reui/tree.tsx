@@ -6,9 +6,8 @@ import { createContext, useContext } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import type { ItemInstance } from "@headless-tree/core";
+import { cn } from "cn";
 import { ChevronDownIcon, MinusIcon, PlusIcon } from "lucide-react";
-
-import { cn } from "@kumix/utils";
 
 type ToggleIconType = "chevron" | "plus-minus";
 

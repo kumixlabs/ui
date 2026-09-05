@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "cn";
 import {
   ChevronDownIcon,
   CircleAlertIcon,
@@ -16,7 +17,6 @@ import {
   XIcon,
 } from "lucide-react";
 
-import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import {
   DropdownMenu,
@@ -1710,7 +1710,7 @@ export function FiltersAdvancedPanel<V, O>({
           <span
             aria-hidden="true"
             /* `rounded-full` is the one radius literal safe in every
-                               style, square or round. */
+                                 style, square or round. */
             className="mb-1 flex size-9 items-center justify-center rounded-full bg-muted text-muted-foreground [&_svg]:size-4"
           >
             <ListFilterIcon />
