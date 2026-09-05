@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.13
+
+### Patch Changes
+
+- [`b0756b0`](https://github.com/kumixlabs/ui/commit/b0756b05e49295d5df190b5640df586ddac52cb1) Thanks [@kumixio](https://github.com/kumixio)! - Fix Tailwind v4 class syntax and migrate `cn` imports to the `cn` package: rewrite `transform-[...]` to `[transform:...]` in toast, fix invalid `group-has-focus-visible/` variants to `group-has-[:focus-visible]/`, replace `@kumix/utils` `cn` imports with the `cn` package (new required peer), and bump `@base-ui/react` to ^1.8.0 and `lucide-react` to ^1.41.0.
+
 ## 0.3.12
 
 ### Patch Changes
