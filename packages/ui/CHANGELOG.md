@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.14
+
+### Patch Changes
+
+- [`911bde1`](https://github.com/kumixlabs/ui/commit/911bde1448a9c9941f9fa17d1d4fc42f5eb87d7a) Thanks [@kumixio](https://github.com/kumixio)! - Add `InlineSlider` component (`motion/range-slider-inline`), update `RangeSlider` with dynamic track width observation and aligned handle geometry, and restore `cn` imports to `@kumix/utils` (removing `cn` peer dependency, bumping `@kumix/utils` to >=0.3.0).
+
 ## 0.3.13
 
 ### Patch Changes
