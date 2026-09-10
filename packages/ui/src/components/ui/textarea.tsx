@@ -1,7 +1,8 @@
 "use client";
 
 import type * as React from "react";
-import { cn } from "cn";
+
+import { cn } from "@kumix/utils";
 
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return (

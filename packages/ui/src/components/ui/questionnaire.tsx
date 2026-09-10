@@ -2,9 +2,9 @@
 
 import type * as React from "react";
 import { Questionnaire as QuestionnairePrimitive } from "@shadcn/react/questionnaire";
-import { cn } from "cn";
 import { CheckIcon } from "lucide-react";
 
+import { cn } from "@kumix/utils";
 import { type Button, buttonVariants } from "./button";
 
 function Questionnaire({

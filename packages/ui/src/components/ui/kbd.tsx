@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "cn";
+import { cn } from "@kumix/utils";
 
 function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
   return (

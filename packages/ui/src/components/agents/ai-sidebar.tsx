@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { cn } from "cn";
 import {
   ArrowDown,
   ArrowUp,
@@ -26,6 +25,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { useTouchCapable } from "../../hooks/use-touch-capable";
 import { EASE_OUT, SPRING_LAYOUT } from "../../lib/ease";
 import { MorphPopover, MorphPopoverContent, MorphPopoverTrigger } from "../motion/popover-morph";

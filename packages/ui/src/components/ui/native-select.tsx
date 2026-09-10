@@ -1,8 +1,9 @@
 "use client";
 
 import type * as React from "react";
-import { cn } from "cn";
 import { ChevronDownIcon } from "lucide-react";
+
+import { cn } from "@kumix/utils";
 
 type NativeSelectProps = Omit<React.ComponentProps<"select">, "size"> & {
   size?: "sm" | "default";

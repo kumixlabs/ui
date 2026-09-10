@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { cn } from "cn";
 import { AlertTriangle, Check, Circle, Info, LoaderCircle, type LucideIcon, X } from "lucide-react";
 import {
   AnimatePresence,
@@ -11,6 +10,7 @@ import {
   type Variants,
 } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export type AnimatedBadgeStatus = "neutral" | "info" | "success" | "warning" | "danger" | "loading";

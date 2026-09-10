@@ -1,7 +1,6 @@
 "use client";
 
 import { type KeyboardEvent, useEffect, useRef } from "react";
-import { cn } from "cn";
 import {
   animate,
   motion,
@@ -10,6 +9,7 @@ import {
   useReducedMotion,
 } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { type SliderOptions, snapSliderValue, useSlider } from "../../hooks/use-slider";
 import { TOUCH_GESTURE_CLASS } from "../../lib/touch";
 

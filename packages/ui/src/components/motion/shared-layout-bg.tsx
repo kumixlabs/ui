@@ -13,7 +13,6 @@ import {
   useId,
   useState,
 } from "react";
-import { cn } from "cn";
 import {
   AnimatePresence,
   type HTMLMotionProps,
@@ -22,6 +21,7 @@ import {
   type Variants,
 } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { SPRING_LAYOUT } from "../../lib/ease";
 
 export interface SharedLayoutBgProps extends Omit<HTMLAttributes<HTMLElement>, "children"> {

@@ -1,7 +1,8 @@
 "use client";
 
 import type * as React from "react";
-import { cn } from "cn";
+
+import { cn } from "@kumix/utils";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (

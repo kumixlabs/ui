@@ -1,7 +1,8 @@
 "use client";
 
 import { Children, type ReactNode } from "react";
-import { cn } from "cn";
+
+import { cn } from "@kumix/utils";
 
 export interface MarqueeProps {
   children: ReactNode;

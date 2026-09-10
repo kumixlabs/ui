@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { cn } from "cn";
 import {
   type AnimationPlaybackControls,
   animate,
@@ -21,6 +20,7 @@ import {
   useTransform,
 } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "../../lib/touch";
 
 // Carousel-specific: a soft spring that receives the release velocity, so a

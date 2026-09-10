@@ -4,7 +4,6 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { memo, useMemo } from "react";
 import type { Column } from "@tanstack/react-table";
 import { Subscribe } from "@tanstack/react-table";
-import { cn } from "cn";
 import {
   ArrowDownIcon,
   ArrowLeftIcon,
@@ -18,6 +17,7 @@ import {
   Settings2Icon,
 } from "lucide-react";
 
+import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import {
   DropdownMenu,

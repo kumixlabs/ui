@@ -1,7 +1,6 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useState } from "react";
-import { cn } from "cn";
 import { EllipsisVertical, Eye, EyeOff } from "lucide-react";
 import {
   AnimatePresence,
@@ -12,6 +11,7 @@ import {
   useTransform,
 } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { EASE_IN_OUT, EASE_OUT, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
 import { DigitSwap } from "./digit-swap";
 

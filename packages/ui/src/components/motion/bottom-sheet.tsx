@@ -1,7 +1,6 @@
 "use client";
 
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
-import { cn } from "cn";
 import {
   AnimatePresence,
   motion,
@@ -11,6 +10,7 @@ import {
 } from "motion/react";
 import { createPortal } from "react-dom";
 
+import { cn } from "@kumix/utils";
 import { EASE_DRAWER } from "../../lib/ease";
 import { PresenceGate } from "../../lib/presence-gate";
 import { TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";

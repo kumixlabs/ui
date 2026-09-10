@@ -1,7 +1,6 @@
 "use client";
 
 import { type MouseEvent, type ReactNode, useCallback, useRef, useState } from "react";
-import { cn } from "cn";
 import {
   AnimatePresence,
   type HTMLMotionProps,
@@ -10,6 +9,8 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
+
+import { cn } from "@kumix/utils";
 
 // Matches the Motion Patterns "Layout continuity" recipe so the surface
 // keeps its identity while its footprint changes.

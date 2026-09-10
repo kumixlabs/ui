@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "cn";
 import {
   ChevronDownIcon,
   CircleAlertIcon,
@@ -17,6 +16,7 @@ import {
   XIcon,
 } from "lucide-react";
 
+import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import {
   DropdownMenu,

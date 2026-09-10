@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { cn } from "cn";
 import {
   AnimatePresence,
   type HTMLMotionProps,
@@ -11,6 +10,7 @@ import {
   type Variants,
 } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS, SPRING_SWAP } from "../../lib/ease";
 
 export type ActionSwapItem = {

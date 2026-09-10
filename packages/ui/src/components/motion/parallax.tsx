@@ -1,7 +1,6 @@
 "use client";
 
 import { type ReactNode, type RefObject, useRef } from "react";
-import { cn } from "cn";
 import {
   type MotionStyle,
   motion,
@@ -10,6 +9,8 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
+
+import { cn } from "@kumix/utils";
 
 // Soft follow so the drift trails the scroll smoothly; looser than the UI
 // springs in lib/ease.ts on purpose.

@@ -11,7 +11,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { cn } from "cn";
 import { X } from "lucide-react";
 import {
   AnimatePresence,
@@ -25,6 +24,7 @@ import {
 } from "motion/react";
 import { createPortal } from "react-dom";
 
+import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_GLIDE, SPRING_PRESS } from "../../lib/ease";
 import { capturePointer, TOUCH_GESTURE_CLASS } from "../../lib/touch";
 

@@ -1,7 +1,8 @@
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "cn";
+
+import { cn } from "@kumix/utils";
 
 const alertVariants = cva(
   [

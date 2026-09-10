@@ -1,7 +1,6 @@
 "use client";
 
-import { cn } from "cn";
-
+import { cn } from "@kumix/utils";
 import { Magnetic } from "../magnetic";
 import { NOT_FOUND_DEFAULTS, NotFoundActions, type NotFoundProps, NotFoundStage } from "./shared";
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "cn";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 
 export type DigitSwapDirection = "up" | "down";

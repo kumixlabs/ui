@@ -1,7 +1,6 @@
 "use client";
 
 import { type ReactNode, useCallback, useId, useLayoutEffect, useRef, useState } from "react";
-import { cn } from "cn";
 import { MoreHorizontal, X } from "lucide-react";
 import {
   AnimatePresence,
@@ -11,6 +10,7 @@ import {
   type Variants,
 } from "motion/react";
 
+import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../hooks/use-hover-capable";
 import { EASE_OUT } from "../../lib/ease";
 
