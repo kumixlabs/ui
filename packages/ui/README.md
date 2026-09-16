@@ -164,15 +164,15 @@ Hand-written Kumix-specific composite components (not from any registry).
 ## Styling
 
 - Tokens live in `@kumix/ui/theme` (`--background`, `--primary`, `--sidebar`, extended `--success` / `--info` / `--warning` / `--invert`, …).
-- In the **app** CSS, also `@source` the package so class names inside published JS are scanned:
+- Minimal app CSS setup:
 
   ```css
+  @import "tailwindcss";
+  @import "shadcn/tailwind.css";
   @import "@kumix/ui/theme";
-  @import "@kumix/ui/css";
-  @source "../node_modules/@kumix/ui/dist";
   ```
 
-  (Adjust the path to your monorepo layout.) Shipped `@source "."` only covers files next to the CSS in `dist/`.
+  Requires `tailwindcss` and `shadcn` as devDependencies.
 
 - Dark mode: `.dark` class (see `theme.css`).
 
