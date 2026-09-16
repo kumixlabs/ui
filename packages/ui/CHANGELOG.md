@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.15
+
+### Patch Changes
+
+- [`9d0dee4`](https://github.com/kumixlabs/ui/commit/9d0dee45a18d9d1f337a39c42499203e4fcbadd0) Thanks [@kumixio](https://github.com/kumixio)! - Extract tooltip animation surface into `motion/tooltip-surface` (`TooltipSurface`), add controlled mode with `anchorRef`/`anchorPoint`/`open`/`onOpenChange` to `Tooltip`, extract scored fuzzy search into `lib/command-search` (`searchCommands`) used by `CommandPalette`, fix toast icon alignment for multi-line content, tune tab indicator spring to prevent scrollbar flash, clean up broken CSS selectors in `autocomplete`/`number-field`/`frame`, and widen `useDismiss` ref type to support SVG elements.
+
 ## 0.3.14
 
 ### Patch Changes
