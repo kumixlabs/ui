@@ -19,6 +19,9 @@ const numberFieldGroupVariants = cva(
   "relative flex w-full justify-between rounded-lg border border-input bg-transparent transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 focus-within:has-aria-invalid:border-destructive focus-within:has-aria-invalid:ring-destructive/20 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 dark:bg-input/30 dark:aria-invalid:ring-destructive/40 dark:focus-within:has-aria-invalid:ring-destructive/40",
   {
     variants: {
+      // Ladders restored from the pre-rename source. Rhea was added after they
+      // were written, so its rungs are new: rhea tracks nova here because
+      // .cn-input is h-8 px-2.5 in both sheets, where luma is h-9 px-3.
       size: {
         sm: "h-7 text-sm",
         default: "h-8 text-sm",
@@ -36,10 +39,9 @@ const numberFieldButtonVariants = cva(
   {
     variants: {
       size: {
-        sm: "([class*='size-'])]:size-3.5 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-3 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-3.5 px-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        default:
-          "([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 px-2 [&_svg:not([class*='size-'])]:size-4",
-        lg: "([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 px-2.5 [&_svg:not([class*='size-'])]:size-4",
+        sm: ["px-1.5", "[&_svg:not([class*='size-'])]:size-3.5"],
+        default: ["px-2", "[&_svg:not([class*='size-'])]:size-4"],
+        lg: ["px-2.5", "[&_svg:not([class*='size-'])]:size-4"],
       },
     },
     defaultVariants: {

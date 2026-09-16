@@ -9,6 +9,7 @@ import { cn } from "@kumix/utils";
 import { useOnOpen } from "../../hooks/use-on-open";
 import { useRowCursor } from "../../hooks/use-row-cursor";
 import { useTouchCapable } from "../../hooks/use-touch-capable";
+import { searchCommands } from "../../lib/command-search";
 import { EASE_OUT } from "../../lib/ease";
 import { PresenceGate } from "../../lib/presence-gate";
 
@@ -31,18 +32,6 @@ export interface CommandPaletteProps {
   emptyMessage?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-}
-
-function fuzzyMatch(needle: string, hay: string) {
-  if (!needle) return true;
-  needle = needle.toLowerCase();
-  hay = hay.toLowerCase();
-  let i = 0;
-  for (const ch of hay) {
-    if (ch === needle[i]) i++;
-    if (i === needle.length) return true;
-  }
-  return false;
 }
 
 // Opened via a keyboard shortcut many times a day — entrance must read as
@@ -112,13 +101,7 @@ export function CommandPalette({
     };
   }, [open]);
 
-  const filtered = useMemo(() => {
-    if (!query) return items;
-    return items.filter((it) => {
-      const haystacks = [it.label, it.group ?? "", ...(it.keywords ?? [])];
-      return haystacks.some((h) => fuzzyMatch(query, h));
-    });
-  }, [items, query]);
+  const filtered = useMemo(() => searchCommands(items, query), [items, query]);
 
   // Reserve the icon column only when at least one item brings an icon, so
   // icon-less lists don't render a dead gap before every label.

@@ -319,6 +319,7 @@ const ToastItem = memo(function ToastItem({
   const Icon = STATUS_ICON[status];
   const iconNode = icons?.[status] ?? toast.icon ?? <Icon className="h-3.5 w-3.5" />;
   const canDismiss = toast.dismissible !== false && Boolean(onDismiss);
+  const hasDetails = Boolean(toast.description || toast.action);
 
   return (
     <motion.li
@@ -358,11 +359,12 @@ const ToastItem = memo(function ToastItem({
         {renderToast ? (
           renderToast(toast)
         ) : (
-          <div className="flex items-center gap-3">
+          <div className={cn("flex gap-3", hasDetails ? "items-start" : "items-center")}>
             <motion.span
               layout
               className={cn(
                 "inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full",
+                hasDetails && "mt-0.5",
                 STATUS_CLASS[status],
                 classNames?.iconWrap,
               )}
@@ -402,7 +404,7 @@ const ToastItem = memo(function ToastItem({
                 >
                   <p
                     className={cn(
-                      "font-medium text-foreground text-sm leading-5",
+                      "truncate font-medium text-foreground text-sm leading-5",
                       classNames?.title,
                     )}
                   >

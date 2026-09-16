@@ -141,7 +141,9 @@ function AutocompleteItem({
         "gap-1.5 text-foreground data-highlighted:text-foreground data-highlighted:before:bg-accent",
         "rounded-md",
         "data-highlighted:before:rounded-md",
-        "([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 ([class*='size-'])]:size-4 ([class*='size-'])]:size-3.5 relative flex cursor-default select-none items-center px-1.5 py-1 text-sm outline-hidden transition-colors data-disabled:pointer-events-none data-highlighted:relative data-highlighted:z-0 data-disabled:opacity-50 data-highlighted:before:absolute data-highlighted:before:inset-x-0 data-highlighted:before:inset-y-0 data-highlighted:before:z-[-1] [&_svg:not([class*='size-'])]:size-4 [&_svg:not([role=img]):not([class*=text-])]:opacity-60 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        // Icon sizing mirrors .cn-select-item. Rhea tracks nova, matching its
+        // .cn-input metrics; the row radius above follows .cn-*-item at xl.
+        "relative flex cursor-default select-none items-center px-1.5 py-1 text-sm outline-hidden transition-colors data-disabled:pointer-events-none data-highlighted:relative data-highlighted:z-0 data-disabled:opacity-50 data-highlighted:before:absolute data-highlighted:before:inset-x-0 data-highlighted:before:inset-y-0 data-highlighted:before:z-[-1] [&_svg:not([class*='size-'])]:size-4 [&_svg:not([role=img]):not([class*=text-])]:opacity-60 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       {...props}
