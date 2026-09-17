@@ -33,6 +33,7 @@ import {
   zonedStartOfDay,
 } from "./event-calendar-lib";
 import {
+  EVENT_TRACK_WIDTH,
   EventCalendarNowIndicator,
   EventCalendarTimeGutter,
   minuteBlockStyle,
@@ -609,7 +610,6 @@ function EventCalendarResourceColumn({
         const zIndex = segment.occurrence.event.zIndex ?? 10 + column;
         // Strict side-by-side columns - no cascade overlap (fade-truncate +
         // hover reveal carry the legibility); the ring separates neighbors.
-        const colPct = 100 / columnCount;
         return (
           <div
             key={segment.occurrence.key}
@@ -620,8 +620,8 @@ function EventCalendarResourceColumn({
             style={
               {
                 ...minuteBlockStyle(startMin, endMin, boundsStartMin),
-                left: `${column * colPct}%`,
-                width: `${span * colPct}%`,
+                left: `calc(${EVENT_TRACK_WIDTH} * ${column / columnCount})`,
+                width: `calc(${EVENT_TRACK_WIDTH} * ${span / columnCount})`,
                 "--ec-z": zIndex,
               } as CSSProperties
             }

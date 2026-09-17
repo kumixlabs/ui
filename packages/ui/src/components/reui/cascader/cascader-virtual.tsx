@@ -74,7 +74,8 @@ export function useCascaderVirtualizer({
 
   const measureEstimate = React.useCallback(() => estimateSize, [estimateSize]);
 
-  // React Compiler bails on `useVirtualizer`; harmless, rows memoise one by one.
+  // React Compiler bails on `useVirtualizer` HERE, and only here - the bail does not
+  // propagate to the components that call this hook. They opt out themselves.
   const virtualizer = useVirtualizer<HTMLElement, HTMLElement>({
     count,
     getScrollElement,
@@ -202,6 +203,11 @@ function CascaderVirtualItems(props: CascaderVirtualItemsProps) {
 }
 
 function CascaderVirtualRows({ estimateSize, overscan }: CascaderVirtualItemsProps) {
+  /* The `useCascaderVirtualizer` bail does NOT reach here: the compiler caches
+     `getVirtualItems()` on the virtualizer, whose identity never changes, so the
+     window freezes on scroll. Inert where no compiler runs. */
+  "use no memo";
+
   const {
     estimateRowSize,
     overscan: rootOverscan,
@@ -337,6 +343,11 @@ function CascaderVirtualColumnRows({
   overscan,
   activeIndex,
 }: CascaderVirtualColumnProps & { activeIndex: number }) {
+  /* The `useCascaderVirtualizer` bail does NOT reach here: the compiler caches
+     `getVirtualItems()` on the virtualizer, whose identity never changes, so the
+     window freezes on scroll. Inert where no compiler runs. */
+  "use no memo";
+
   const {
     estimateRowSize,
     overscan: rootOverscan,
