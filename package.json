@@ -33,7 +33,7 @@
     "@types/react-dom": "^19.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
-    "prettier": "^3.9.7",
+    "prettier": "^3.9.8",
     "publint": "^0.3.24",
     "react-dom": "^19.3.0",
     "rimraf": "^6.1.3",
