@@ -217,6 +217,7 @@ export function ApprovalCard({
   );
   const question = questions[currentStep];
   const questionMode = questions.length > 0;
+  const multipleQuestions = questions.length > 1;
   const pending = status === "pending";
   const busy = status === "submitting";
   const interactive = pending || busy;
@@ -312,9 +313,11 @@ export function ApprovalCard({
               <ActionSwapRollText value={titleKey}>{displayTitle}</ActionSwapRollText>
             </h3>
             {questionMode && interactive ? (
-              <span className="shrink-0 text-muted-foreground/65 text-xs tabular-nums">
-                {currentStep + 1}/{questions.length}
-              </span>
+              multipleQuestions ? (
+                <span className="shrink-0 text-muted-foreground/65 text-xs tabular-nums">
+                  {currentStep + 1}/{questions.length}
+                </span>
+              ) : null
             ) : (
               <span
                 className={cn(
@@ -370,17 +373,21 @@ export function ApprovalCard({
 
             {questionMode ? (
               <div className="mt-4 flex items-center gap-3">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Previous question"
-                  disabled={busy || currentStep === 0}
-                  onClick={() => setStep(currentStep - 1)}
-                  className="rounded-full"
-                >
-                  <ArrowLeft className="size-4" />
-                </Button>
-                <ProgressDots current={currentStep} ids={questions.map((item) => item.id)} />
+                {multipleQuestions ? (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Previous question"
+                      disabled={busy || currentStep === 0}
+                      onClick={() => setStep(currentStep - 1)}
+                      className="rounded-full"
+                    >
+                      <ArrowLeft className="size-4" />
+                    </Button>
+                    <ProgressDots current={currentStep} ids={questions.map((item) => item.id)} />
+                  </>
+                ) : null}
                 <Button
                   size={currentStep === questions.length - 1 ? "sm" : "icon"}
                   aria-label={
