@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.17
+
+### Patch Changes
+
+- [`9932db2`](https://github.com/kumixlabs/ui/commit/9932db221646ef143e8162ad22c052846ff7ec78) Thanks [@kumixio](https://github.com/kumixio)! - Fix data grid column Move Left/Right to target rendered visible columns within the same pin bucket and skip grouped columns, replace expensive `:has()` ancestor selector for table footer border with direct tfoot border styling, gate pinned cell hover background on `columnsPinnable`, and normalize interactive hover/active tint colors across motion and agent components from primary tints to neutral muted tokens.
+
 ## 0.3.16
 
 ### Patch Changes
