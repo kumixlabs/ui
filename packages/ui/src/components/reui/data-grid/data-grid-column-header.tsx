@@ -58,22 +58,63 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
   const { i18n, isLoading, table, props } = useDataGrid();
   const resolvedTitle = title ?? getColumnHeaderLabel(column);
 
-  // TanStack's columnOrder defaults to [] until a consumer seeds it; fall
-  // back to the definition order so Move Left/Right work out of the box.
+  // The order a move rewrites: the consumer's columnOrder (TanStack defaults it
+  // to []), then every leaf it leaves out, in definition order - the same
+  // completion TanStack applies when rendering, so a rendered neighbour is
+  // always present to re-seat beside, even after columns are added later.
   const columnOrderState = table.state.columnOrder;
-  const columnOrder =
-    columnOrderState.length > 0
-      ? columnOrderState
-      : table.getAllLeafColumns().map((leafColumn) => leafColumn.id);
+  const definitionOrder = table
+    .getAllColumns()
+    .flatMap((topColumn) => topColumn.getLeafColumns())
+    .map((leafColumn) => leafColumn.id);
+  const columnOrder = [
+    ...columnOrderState,
+    ...definitionOrder.filter((id) => !columnOrderState.includes(id)),
+  ];
   const isSorted = column.getIsSorted();
   const isPinned = column.getIsPinned();
   const canSort = column.getCanSort();
   const canPin = column.getCanPin();
   const canResize = column.getCanResize();
 
-  const columnIndex = columnOrder.indexOf(column.id);
-  const canMoveLeft = columnIndex > 0;
-  const canMoveRight = columnIndex < columnOrder.length - 1;
+  // Move neighbours come from what is RENDERED: the column's own pin bucket,
+  // visible columns only. Stepping through the raw columnOrder would trade
+  // places with a hidden or pinned column - an enabled click that moves nothing.
+  // With grouping in TanStack's default "reorder" mode, grouped columns render
+  // first whatever columnOrder says: they neither move nor serve as a target.
+  const groupedColumnMode = (table.options as { groupedColumnMode?: false | "reorder" | "remove" })
+    .groupedColumnMode;
+  const isHoistedByGrouping = (target: object) =>
+    groupedColumnMode !== false &&
+    typeof (target as { getIsGrouped?: unknown }).getIsGrouped === "function" &&
+    (target as { getIsGrouped: () => boolean }).getIsGrouped();
+  const renderedPeers = (
+    isPinned === "start"
+      ? table.getStartVisibleLeafColumns()
+      : isPinned === "end"
+        ? table.getEndVisibleLeafColumns()
+        : table.getCenterVisibleLeafColumns()
+  )
+    .filter((leafColumn) => !isHoistedByGrouping(leafColumn))
+    .map((leafColumn) => leafColumn.id);
+  const renderedIndex = renderedPeers.indexOf(column.id);
+  const leftNeighbour = renderedIndex > 0 ? renderedPeers[renderedIndex - 1] : undefined;
+  const rightNeighbour =
+    renderedIndex !== -1 && renderedIndex < renderedPeers.length - 1
+      ? renderedPeers[renderedIndex + 1]
+      : undefined;
+  const canMoveLeft = leftNeighbour !== undefined;
+  const canMoveRight = rightNeighbour !== undefined;
+
+  /** Re-seats this column beside a rendered neighbour; every other column,
+   * hidden or pinned ones included, keeps its place in the full order. */
+  const moveBeside = (neighbourId: string, side: "before" | "after") => {
+    const newOrder = columnOrder.filter((id) => id !== column.id);
+    const at = newOrder.indexOf(neighbourId);
+    if (at === -1) return;
+    newOrder.splice(side === "before" ? at : at + 1, 0, column.id);
+    table.setColumnOrder(newOrder);
+  };
 
   const handleSort = () => {
     if (isSorted === "asc") {
@@ -200,12 +241,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
         <DropdownMenuItem
           key="move-left"
           onClick={() => {
-            if (columnIndex > 0) {
-              const newOrder = [...columnOrder];
-              const [movedColumn] = newOrder.splice(columnIndex, 1);
-              newOrder.splice(columnIndex - 1, 0, movedColumn);
-              table.setColumnOrder(newOrder);
-            }
+            if (leftNeighbour) moveBeside(leftNeighbour, "before");
           }}
           disabled={!canMoveLeft || isPinned !== false}
         >
@@ -215,12 +251,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
         <DropdownMenuItem
           key="move-right"
           onClick={() => {
-            if (columnIndex < columnOrder.length - 1) {
-              const newOrder = [...columnOrder];
-              const [movedColumn] = newOrder.splice(columnIndex, 1);
-              newOrder.splice(columnIndex + 1, 0, movedColumn);
-              table.setColumnOrder(newOrder);
-            }
+            if (rightNeighbour) moveBeside(rightNeighbour, "after");
           }}
           disabled={!canMoveRight || isPinned !== false}
         >
@@ -277,15 +308,17 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
     canMoveRight,
     visibility,
     table,
-    columnIndex,
-    columnOrder,
+    leftNeighbour,
+    rightNeighbour,
     i18n.labels.sortAscending,
-    i18n.labels.pinColumnStart,
     i18n.labels.moveColumnEnd,
+    i18n.labels.pinColumnStart,
     i18n.labels.sortDescending,
-    i18n.labels.pinColumnEnd,
     i18n.labels.moveColumnStart,
+    i18n.labels.pinColumnEnd,
     i18n.labels.columnsMenu,
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <>
+    moveBeside,
   ]);
 
   if (hasControls) {

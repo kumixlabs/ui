@@ -1246,7 +1246,16 @@ function DataGridTableBody({ children }: { children: ReactNode }) {
 function DataGridTableFoot({ children }: { children: ReactNode }) {
   const { props } = useDataGrid();
   return (
-    <tfoot data-slot="data-grid-table-foot" className={cn(props.tableClassNames?.footer)}>
+    <tfoot
+      data-slot="data-grid-table-foot"
+      className={cn(
+        // The rule between the body and the footer. It used to be drawn by the
+        // last body row through an ancestor :has(), which made every style
+        // invalidation re-match the whole grid.
+        props.tableLayout?.rowBorder && "[&>tr:first-child>td]:border-t",
+        props.tableClassNames?.footer,
+      )}
+    >
       {children}
     </tfoot>
   );
@@ -1396,8 +1405,7 @@ function DataGridTableBodyRow<TData extends object>({
   const isRowPinned = row.getIsPinned();
   const rowStatus = props.getRowStatus?.(row.original);
 
-  const bodyRowBottomBorderClasses =
-    "[&:not(:last-child)>td]:border-b [tbody:has(+tfoot)_&:last-child>td]:border-b [*:has(>[data-slot=data-grid]+[data-slot=data-grid-pagination])_[data-slot=data-grid]_&:last-child>td]:border-b";
+  const bodyRowBottomBorderClasses = "[&:not(:last-child)>td]:border-b";
 
   return (
     <tr
@@ -1419,12 +1427,14 @@ function DataGridTableBodyRow<TData extends object>({
       onClick={() => props.onRowClick?.(row.original)}
       className={cn(
         "hover:bg-muted/40 data-[state=selected]:bg-muted/50",
-        /* Pinned cells hide scrolled content behind an OPAQUE background,
-           which also hides the row's translucent hover and selected tints;
-           they get the same tints premixed over the background instead,
-           the row-status treatment. */
-        "hover:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--muted)_40%,var(--background))]",
-        "data-[state=selected]:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--muted)_50%,var(--background))]",
+        /* With the pin affordance on, pinned cells hide scrolled content
+           behind an OPAQUE background, which also hides the row's translucent
+           hover and selected tints; they get the same tints premixed over the
+           background instead, the row-status treatment. Pinning used only as
+           an ordering lock leaves cells transparent, so the premix would paint
+           a second, different hover colour: gate it on the same flag. */
+        props.tableLayout?.columnsPinnable &&
+          "hover:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--muted)_40%,var(--background))] data-[state=selected]:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--muted)_50%,var(--background))]",
         props.onRowClick && "cursor-pointer",
         // Optional CRUD indications, active only when getRowStatus is
         // wired; the warning-muted defaults yield to tableClassNames
@@ -1434,6 +1444,7 @@ function DataGridTableBodyRow<TData extends object>({
         props.getRowStatus &&
           "data-[row-status=deleted]:bg-destructive/5 data-[row-status=dirty]:bg-amber-500/5 data-[row-status=new]:bg-green-500/5 data-[row-status=deleted]:opacity-60 data-[row-status=deleted]:[&_td]:line-through",
         props.getRowStatus &&
+          props.tableLayout?.columnsPinnable &&
           "data-[row-status=deleted]:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--destructive)_5%,var(--background))] data-[row-status=dirty]:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--color-amber-500)_5%,var(--background))] data-[row-status=new]:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--color-green-500)_5%,var(--background))]",
         rowStatus === "new" && props.tableClassNames?.rowNew,
         rowStatus === "dirty" && props.tableClassNames?.rowDirty,
@@ -1477,8 +1488,7 @@ function DataGridTableBodyRowExpandded<TData extends object>({
   // would break striping parity, rowBorder, and virtual row measurement.
   if (!expandedContent) return null;
 
-  const bodyRowBottomBorderClasses =
-    "[&:not(:last-child)>td]:border-b [tbody:has(+tfoot)_&:last-child>td]:border-b [*:has(>[data-slot=data-grid]+[data-slot=data-grid-pagination])_[data-slot=data-grid]_&:last-child>td]:border-b";
+  const bodyRowBottomBorderClasses = "[&:not(:last-child)>td]:border-b";
 
   return (
     <tr className={cn(props.tableLayout?.rowBorder && bodyRowBottomBorderClasses)}>
