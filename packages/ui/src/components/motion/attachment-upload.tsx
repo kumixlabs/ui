@@ -362,6 +362,7 @@ function ImagePreviewDialog({
       // against the viewport themselves. The scrim spans the viewport edges but
       // paints a colour, and the layer that centres the image is inset off every
       // edge. `PresenceGate` releases interaction in the same commit that starts
+      // the exit.
       <PresenceGate>
         {({ isPresent, gate }) => (
           <div inert={!isPresent} className="pointer-events-none fixed top-0 left-0 z-10000 size-0">

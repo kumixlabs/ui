@@ -44,6 +44,7 @@ export function MorphingModal({
   // edge (`inset-4`, with the bottom placement's `pb-4` on top of it). Both hang
   // off `PresenceGate`, so interaction releases in the same commit that starts
   // the exit rather than when it ends — `open` is already false for those
+  // frames.
   return (
     <AnimatePresence initial={false}>
       {open ? (
