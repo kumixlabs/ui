@@ -81,6 +81,8 @@ find_component  component_name=data-grid-cell-selection  package_filter=reui
 find_component  component_name=code-block  package_filter=reui
 find_component  component_name=multi-select  package_filter=motion
 find_component  component_name=tilt-card  package_filter=motion
+find_component  component_name=breadcrumb  package_filter=motion
+find_component  component_name=color-selector  package_filter=motion
 find_component  component_name=prompt-input  package_filter=agents
 read_component_code  package_name=@kumix/ui  component_path=components/ui/button.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/code-block/code-block.tsx
