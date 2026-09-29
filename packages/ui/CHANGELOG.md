@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.3.18
+
+### Patch Changes
+
+- [`3b4207a`](https://github.com/kumixlabs/ui/commit/3b4207a40362a817961178bf497584d5b4db3d6c) Thanks [@kumixio](https://github.com/kumixio)! - Add `breadcrumb` and `color-selector` motion components, migrate motion `tooltip` positioning to `@floating-ui/dom` with cursor-following support, optimize `popover-morph` surface unmounting and trigger ref memoization, improve `kanban` pointer-within collision targeting, and clean up dead test references.
+
 ## 0.3.17
 
 ### Patch Changes
