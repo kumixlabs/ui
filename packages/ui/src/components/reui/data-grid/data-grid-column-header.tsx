@@ -116,7 +116,10 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
     table.setColumnOrder(newOrder);
   };
 
+  // column.toggleSorting has no getCanSort() guard of its own, and the
+  // direct button also renders for columns that are only resizable.
   const handleSort = () => {
+    if (!canSort) return;
     if (isSorted === "asc") {
       column.toggleSorting(true);
     } else if (isSorted === "desc") {
@@ -146,12 +149,29 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
       <ChevronsUpDownIcon className="mt-px size-3.25" aria-hidden="true" />
     ));
 
+  // A start-pinned column's resize handle covers the last 20px of its cell
+  // (the column that renders last already reserves it with pe-8, and a
+  // start-pinned one renders last only when nothing follows its group), so
+  // the unpin button steps in until it clears the handle in both densities.
+  // The step is padding on a wrapper that shrinks first: a column too narrow
+  // for label, button and clearance gives the clearance back, never the label.
+  const unpinClearsResizeHandle =
+    props.tableLayout?.columnsResizable &&
+    canResize &&
+    isPinned === "start" &&
+    !(
+      column.getIsLastColumn("start") &&
+      table.getCenterVisibleLeafColumns().length === 0 &&
+      table.getEndVisibleLeafColumns().length === 0
+    );
+
   const hasControls =
     props.tableLayout?.columnsMovable ||
     (props.tableLayout?.columnsVisibility && visibility) ||
     (props.tableLayout?.columnsPinnable && canPin) ||
     filter;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <>
   const menuItems = useMemo(() => {
     const items: ReactNode[] = [];
     let hasPreviousSection = false;
@@ -283,7 +303,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
                   checked={col.getIsVisible()}
                   onSelect={(event) => event.preventDefault()}
                   onCheckedChange={(value) => col.toggleVisibility(!!value)}
-                  className="capitalize"
+                  className={getColumnHeaderLabel(col) === col.id ? "capitalize" : undefined}
                 >
                   {getColumnHeaderLabel(col)}
                 </DropdownMenuCheckboxItem>
@@ -317,8 +337,6 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
     i18n.labels.moveColumnStart,
     i18n.labels.pinColumnEnd,
     i18n.labels.columnsMenu,
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <>
-    moveBeside,
   ]);
 
   if (hasControls) {
@@ -339,16 +357,18 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
         {props.tableLayout?.columnsPinnable && canPin && isPinned && (
-          <Button
-            size="icon-sm"
-            variant="ghost"
-            className="-me-1 size-7 rounded-lg"
-            onClick={() => column.pin(false)}
-            aria-label={i18n.labels.unpinColumn(resolvedTitle)}
-            title={i18n.labels.unpinColumn(resolvedTitle)}
-          >
-            <PinOffIcon className="size-3.5! opacity-50!" aria-hidden="true" />
-          </Button>
+          <span className={cn("-me-1 flex min-w-7 shrink-999", unpinClearsResizeHandle && "pe-4")}>
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              className="size-7 rounded-lg"
+              onClick={() => column.pin(false)}
+              aria-label={i18n.labels.unpinColumn(resolvedTitle)}
+              title={i18n.labels.unpinColumn(resolvedTitle)}
+            >
+              <PinOffIcon className="size-3.5! opacity-50!" aria-hidden="true" />
+            </Button>
+          </span>
         )}
       </div>
     );

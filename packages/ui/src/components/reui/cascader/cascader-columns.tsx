@@ -110,9 +110,17 @@ export interface CascaderColumnPanelProps {
 }
 
 function CascaderColumnPanel({ column, children, virtualized }: CascaderColumnPanelProps) {
-  const { labels, baseId, isBranch, isSelectable, isSelected, isIndeterminate, retryLevel } =
-    useCascaderActions();
-  const { loadStates } = useCascaderState();
+  const {
+    labels,
+    baseId,
+    isBranch,
+    isSelectable,
+    isSelected,
+    isIndeterminate,
+    retryLevel,
+    searchScope,
+  } = useCascaderActions();
+  const { loadStates, deepResults } = useCascaderState();
 
   // Keyed per level, not one global flag: columns load and land independently.
   const columnKey = column.parent?.value ?? CASCADER_ROOT_KEY;
@@ -195,7 +203,11 @@ function CascaderColumnPanel({ column, children, virtualized }: CascaderColumnPa
     // Addressable so the opening trail row can point `aria-controls` here, and
     // named even at the root, which has no parent label to borrow.
     id: `${baseId}-column-${column.depth}`,
-    "aria-label": column.parent?.label ?? labels.rootLevel,
+    // Global hits come from the whole tree, so the parent would understate them.
+    "aria-label":
+      column.active && searchScope === "global" && deepResults
+        ? labels.rootLevel
+        : (column.parent?.label ?? labels.rootLevel),
     // Conditional spread, never an explicit `undefined`: the active column is a
     // Base UI element, and its `mergeProps` iterates own keys.
     ...(virtualized ? { "data-virtualized": true } : null),

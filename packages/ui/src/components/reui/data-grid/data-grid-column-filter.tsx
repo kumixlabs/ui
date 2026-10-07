@@ -54,7 +54,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
                 <Badge variant="secondary" className="px-1 font-normal lg:hidden">
                   {selectedValues.size}
                 </Badge>
-                <div className="hidden space-x-1 lg:flex">
+                <div className="hidden gap-x-1 lg:flex">
                   {selectedValues.size > 2 ? (
                     <Badge variant="secondary" className="px-1 font-normal">
                       {i18n.labels.filterSelectedCount(selectedValues.size)}

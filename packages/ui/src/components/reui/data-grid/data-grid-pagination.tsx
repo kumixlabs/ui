@@ -169,7 +169,7 @@ function DataGridPagination(props: DataGridPaginationProps): JSX.Element {
         mergedProps.className,
       )}
     >
-      <div className="order-2 flex flex-wrap items-center space-x-2.5 pb-2.5 sm:order-1 sm:pb-0">
+      <div className="order-2 flex flex-wrap items-center gap-x-2.5 pb-2.5 sm:order-1 sm:pb-0">
         {isLoading ? (
           mergedProps.sizesSkeleton
         ) : (

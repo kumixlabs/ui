@@ -260,8 +260,9 @@ function CascaderVirtualRows({ estimateSize, overscan }: CascaderVirtualItemsPro
           <CascaderItem
             key={row.key}
             /* Measured, not estimated: rows are two lines with a `description`
-               and three in deep search, and row height is per style. An
-               estimate alone would make `scrollToIndex` land on the wrong row. */
+               and three in deep or global search, and row height is per
+               style. An estimate alone would make `scrollToIndex` land on the
+               wrong row. */
             ref={virtualizer.measureElement}
             data-index={row.index}
             style={cascaderVirtualRowStyle(row.start, gutter)}

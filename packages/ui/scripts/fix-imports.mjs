@@ -48,6 +48,7 @@ const targetDirs = [
   { dir: join(SRC_DIR, "components", "reui"), exts: [".tsx"] },
   { dir: join(SRC_DIR, "components", "motion"), exts: [".tsx"] },
   { dir: join(SRC_DIR, "components", "agents"), exts: [".tsx"] },
+  { dir: join(SRC_DIR, "components", "charts"), exts: [".tsx"] },
   { dir: join(SRC_DIR, "hooks"), exts: [".ts", ".tsx"] },
 ];
 
@@ -107,6 +108,9 @@ for (const filePath of allFiles) {
     })
     .replace(/from\s+"@\/components\/agents\/([^"]+)"/g, (_m, p1) => {
       return `from "${toRelImport(fileDir, join(SRC_DIR, "components", "agents", p1))}"`;
+    })
+    .replace(/from\s+"@\/components\/charts\/([^"]+)"/g, (_m, p1) => {
+      return `from "${toRelImport(fileDir, join(SRC_DIR, "components", "charts", p1))}"`;
     })
     // Bare same-dir imports from a broken CLI run: "button" → "./button"
     .replace(/from\s+"([^"]+)"/g, (m, spec) => {
