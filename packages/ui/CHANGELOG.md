@@ -1,5 +1,11 @@
 # @kumix/ui
 
+## 0.4.0
+
+### Minor Changes
+
+- [`5c80c6c`](https://github.com/kumixlabs/ui/commit/5c80c6cfe966a5cfb26a1876b4169017b650fa94) Thanks [@kumixio](https://github.com/kumixio)! - Add data visualization and financial charts (`bump-chart`, `composition-chart`, `funnel-chart`, `heat-calendar`, `liquidity-heatmap`, `order-book`, `price-target-fan`, `returns-calendar`, `status-bar`, `treemap`, `volume-profile`), new Motion components (`alert`, `arc-picker`, `aspect-ratio`, `collapsible`, `date-range-picker`, `knockout-bracket`, `knockout-wheel`, `morphing-lightbox`, `prediction-market`, `prediction-market-card`, `sortable-list`, `sortable-stack`, `swap`, `wallet-card`), `voice-orb` agent component, `signature-pad` and `time-picker` ReUI components, and `use-modal-scope` hook. Add `global` search scope support and disabled node guards to `cascader`, and improve `data-grid` column header, drag-and-drop, and virtual scroll syncing. Bump `motion` to v14, `lucide-react` to v1.52.
+
 ## 0.3.18
 
 ### Patch Changes
