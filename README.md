@@ -8,6 +8,7 @@ Sources:
 - **ReUI** → `packages/ui/src/components/reui` — [reui.io](https://reui.io/)
 - **beUI** (Motion-based animated components) → `packages/ui/src/components/motion` — [beui.dev](https://beui.dev/components/motion)
 - **beUI** (AI agent / chat components) → `packages/ui/src/components/agents` — [beui.dev](https://beui.dev/components/agents)
+- **Charts** (financial & data visualization) → `packages/ui/src/components/charts`
 - **Custom** (hand-written Kumix-specific components) → `packages/ui/src/components/custom`
 
 Previews and component examples: use the upstream docs (links in [`packages/ui/README.md`](./packages/ui/README.md)).
@@ -73,6 +74,7 @@ packages/ui/src/
   components/reui/     # reui (data-grid w/ spreadsheet cell selection & i18n, event-calendar, gantt, code-block, …)
   components/motion/   # beui (tilt-card, morphing-modal, morphing-tabs, breadcrumb, color-selector, loader, shader-background, file-tree, multi-select, adaptive-stepper, liquid, not-found/*, …)
   components/agents/   # beui AI agents (prompt-input, message-scroller, todo-list, code-block, …)
+  components/charts/   # charts (bump, treemap, funnel, heatmap, order-book, price-target-fan, …)
   components/custom/   # hand-written (confirm-dialog, toast, …)
   hooks/
   lib/                 # shared utils (ease, tick-sound, text-shimmer, favicon, presence-gate, touch, command-search)

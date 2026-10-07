@@ -10,6 +10,7 @@ React UI kit for Kumix products. Built on **Base UI**, **Tailwind CSS**, **class
 | `src/components/reui/*`           | [ReUI](https://reui.io/) registry (`@reui/*`)                                                                       | [reui.io/docs](https://reui.io/docs) · [components](https://reui.io/components) |
 | `src/components/motion/*`         | [beUI](https://beui.dev/) registry (`@beui/*`, Motion-based)                                                        | [beui.dev/components/motion](https://beui.dev/components/motion)                |
 | `src/components/agents/*`         | [beUI](https://beui.dev/) AI agent components (`@beui/*`)                                                           | [beui.dev/components/agents](https://beui.dev/components/agents)                |
+| `src/components/charts/*`         | Financial & data visualization charts                                                                               | —                                                                               |
 | `src/components/custom/*`         | Hand-written Kumix-specific components                                                                              | —                                                                               |
 | `src/hooks/*`                     | Package helpers (+ ReUI `use-file-upload`, beUI helpers)                                                            | —                                                                               |
 | `src/lib/*`                       | Shared utilities (beUI `ease`, `tick-sound`, `text-shimmer`, `favicon`, `presence-gate`, `touch`, `command-search`) | —                                                                               |
@@ -73,6 +74,9 @@ import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid";
 import { TiltCard } from "@kumix/ui/motion/tilt-card";
 import { MorphingModal } from "@kumix/ui/motion/morphing-modal";
 
+// charts
+import { Treemap } from "@kumix/ui/charts/treemap";
+
 // beUI (agents)
 import { PromptInput } from "@kumix/ui/agents/prompt-input";
 
@@ -100,6 +104,7 @@ Mapped from source:
 | `src/components/reui/data-grid/data-grid.tsx` | `@kumix/ui/reui/data-grid/data-grid` |
 | `src/components/motion/tilt-card.tsx`         | `@kumix/ui/motion/tilt-card`         |
 | `src/components/motion/morphing-modal.tsx`    | `@kumix/ui/motion/morphing-modal`    |
+| `src/components/charts/treemap.tsx`           | `@kumix/ui/charts/treemap`           |
 | `src/components/agents/prompt-input.tsx`      | `@kumix/ui/agents/prompt-input`      |
 | `src/components/custom/confirm-dialog.tsx`    | `@kumix/ui/custom/confirm-dialog`    |
 | `src/hooks/use-mobile.ts`                     | `@kumix/ui/hooks/use-mobile`         |
@@ -119,31 +124,37 @@ Base UI / shadcn base-nova. Preview: [ui.shadcn.com](https://ui.shadcn.com/docs/
 
 Extended patterns. Preview: [reui.io](https://reui.io/docs).
 
-| Module                                                                                                                                         | Notes                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `alert` · `badge`                                                                                                                              | Extended variants (info/success/warning/…)                                                                                                             |
-| `autocomplete`                                                                                                                                 | Base UI autocomplete                                                                                                                                   |
-| `cascader/*`                                                                                                                                   | Multi-column cascading select, i18n, async                                                                                                             |
-| `data-grid/*`                                                                                                                                  | Spreadsheet cell selection (ranges, clipboard, fill handle, editor), i18n, quick-create row, pagination, filters, DnD, virtual (rows + opt-in columns) |
-| `date-selector`                                                                                                                                | Day / month / quarter / range                                                                                                                          |
-| `event-calendar/*`                                                                                                                             | Month, week, day, agenda, resource                                                                                                                     |
-| `filters/*`                                                                                                                                    | Advanced filter builder (chip, date, DnD)                                                                                                              |
-| `code-block/*`                                                                                                                                 | Shiki syntax highlighting, ANSI, collapsible                                                                                                           |
-| `frame`                                                                                                                                        | Nested panel layout                                                                                                                                    |
-| `gantt/*`                                                                                                                                      | Day–year scales, resources, DnD                                                                                                                        |
-| `icon-stack` · `icon-tile` · `kanban` · `number-field` · `phone-input` · `rating` · `scrollspy` · `sortable` · `stepper` · `timeline` · `tree` | —                                                                                                                                                      |
+| Module                                                                                                                                                                           | Notes                                                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `alert` · `badge`                                                                                                                                                                | Extended variants (info/success/warning/…)                                                                                                             |
+| `autocomplete`                                                                                                                                                                   | Base UI autocomplete                                                                                                                                   |
+| `cascader/*`                                                                                                                                                                     | Multi-column cascading select, i18n, async                                                                                                             |
+| `data-grid/*`                                                                                                                                                                    | Spreadsheet cell selection (ranges, clipboard, fill handle, editor), i18n, quick-create row, pagination, filters, DnD, virtual (rows + opt-in columns) |
+| `date-selector`                                                                                                                                                                  | Day / month / quarter / range                                                                                                                          |
+| `event-calendar/*`                                                                                                                                                               | Month, week, day, agenda, resource                                                                                                                     |
+| `filters/*`                                                                                                                                                                      | Advanced filter builder (chip, date, DnD)                                                                                                              |
+| `code-block/*`                                                                                                                                                                   | Shiki syntax highlighting, ANSI, collapsible                                                                                                           |
+| `frame`                                                                                                                                                                          | Nested panel layout                                                                                                                                    |
+| `gantt/*`                                                                                                                                                                        | Day–year scales, resources, DnD                                                                                                                        |
+| `icon-stack` · `icon-tile` · `kanban` · `number-field` · `phone-input` · `rating` · `scrollspy` · `signature-pad` · `sortable` · `stepper` · `time-picker` · `timeline` · `tree` | —                                                                                                                                                      |
 
 ### beUI (`components/motion`)
 
 Animated components built with [Motion](https://motion.dev). Preview: [beui.dev](https://beui.dev/components/motion). Bundled — `motion`, `lenis`, `@paper-design/shaders-react` are included, no extra installs needed.
 
-`action-swap` (4 variants: base, blur, cascade, roll) · `adaptive-stepper` (+ `Liquid` easing backdrop) · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `breadcrumb` · `button/*` (base, magnetic, metallic, stateful, `ButtonLink`) · `card-folder` · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `color-selector` · `combobox` + `combobox/*` (trigger, list, content, context) · `command-palette` · `context-menu` · `cylinder-carousel` · `digit-swap` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-control` · `expandable-tabs` · `expanding-arrow-button` · `feedback-widget` · `file-tree` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` (`reserveErrorLine` reserves one validation line) · `liquid` (gooey SVG backdrop: `Liquid`, `LiquidItem`) · `loader` · `magnetic` · `marquee` · `morphing-modal` · `morphing-search` · `morphing-tabs` · `multi-select/*` (composable: trigger, list, content, context — entry `multi-select`) · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `popover-position` (shared popover positioning helper) · `preview-rail` · `project-folder` · `pull-to-refresh` · `radio` · `range-slider` (6 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `signup-form` · `slide-action-button` · `smooth-scroll` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-scramble` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` (controlled + uncontrolled; `followCursor`; `@floating-ui/dom` positioning; `anchorRef`/`anchorPoint` for chart integration) · `tooltip-surface` (shared animated surface) · `wheel-picker`
+`action-swap` (4 variants: base, blur, cascade, roll) · `adaptive-stepper` (+ `Liquid` easing backdrop) · `alert` · `animated-badge` · `animated-number` · `animated-sidebar` · `animated-toast-stack` · `arc-picker` · `aspect-ratio` · `attachment-upload` · `availability-scheduler/*` (copy-menu, day-row, time-select) · `bloom-menu` · `bottom-sheet` · `bounce-sidebar` · `bouncy-accordion` · `breadcrumb` · `button/*` (base, magnetic, metallic, stateful, `ButtonLink`) · `card-folder` · `center-morph-modal` · `checkbox` · `chromatic-text-reveal` · `collapsible` · `color-selector` · `combobox` + `combobox/*` (trigger, list, content, context) · `command-palette` · `context-menu` · `cylinder-carousel` · `date-range-picker/*` · `digit-swap` · `dock` · `drawer` · `dynamic-island` · `expandable-action-bar` · `expandable-control` · `expandable-tabs` · `expanding-arrow-button` · `feedback-widget` · `file-tree` · `file-upload` · `hold-action-button` · `infinite-masonry` · `input` (`reserveErrorLine` reserves one validation line) · `knockout-bracket` · `knockout-wheel` · `liquid` (gooey SVG backdrop: `Liquid`, `LiquidItem`) · `loader` · `magnetic` · `marquee` · `morphing-lightbox` · `morphing-modal` · `morphing-search` · `morphing-tabs` · `multi-select/*` (composable: trigger, list, content, context — entry `multi-select`) · `not-found/*` (glitch, magnetic, spotlight, stacked, terminal) · `notification-stack` · `number-ticker` · `otp-input` · `overflow-actions` · `parallax` · `popover` · `popover-morph` · `popover-position` (shared popover positioning helper) · `prediction-market` · `prediction-market-card` · `preview-rail` · `project-folder` · `pull-to-refresh` · `radio` · `range-slider` (6 variants) · `scroll-progress` · `scroll-reveal` · `scroll-to` · `select` · `select-morph` · `shader-background` · `shared-layout-bg` · `signup-form` · `slide-action-button` · `smooth-scroll` · `sortable-list` · `sortable-stack` · `swap/*` · `swipeable-list` · `switch` · `table/*` (virtualized, editable, async) · `tabs` · `text-cascade` · `text-reveal` · `text-scramble` · `text-shimmer` · `theme-toggle` · `tilt-card` · `tooltip` (controlled + uncontrolled; `followCursor`; `@floating-ui/dom` positioning; `anchorRef`/`anchorPoint` for chart integration) · `tooltip-surface` (shared animated surface) · `wallet-card/*` · `wheel-picker`
 
 ### beUI — AI Agents (`components/agents`)
 
 AI agent / chat UI components from [beUI](https://beui.dev). Preview: [beui.dev/components/agents](https://beui.dev/components/agents).
 
-`agent-code` · `agent-disclosure` · `agent-activity/*` (activity-row) · `ai-sidebar` · `approval-card` · `chat-app` · `citations` · `code-block` · `file-diff` · `image-generation` · `loading-states/*` (agent-progress, reasoning-text, thinking-shimmer) · `message` · `message-bubble` · `message-context` · `message-scroller` · `prompt-input` · `streaming-response` · `todo-list` · `tool-approval` · `tool-result`
+`agent-code` · `agent-disclosure` · `agent-activity/*` (activity-row) · `ai-sidebar` · `approval-card` · `chat-app` · `citations` · `code-block` · `file-diff` · `image-generation` · `loading-states/*` (agent-progress, reasoning-text, thinking-shimmer) · `message` · `message-bubble` · `message-context` · `message-scroller` · `prompt-input` · `streaming-response` · `todo-list` · `tool-approval` · `tool-result` · `voice-orb/*`
+
+### Charts (`components/charts`)
+
+Financial & data visualization charts.
+
+`bump-chart/*` · `composition-chart/*` · `funnel-chart/*` · `heat-calendar/*` · `liquidity-heatmap/*` · `order-book/*` · `price-target-fan/*` · `returns-calendar/*` · `status-bar/*` · `treemap/*` · `volume-profile/*`
 
 ### Custom (`components/custom`)
 
@@ -155,7 +166,7 @@ Hand-written Kumix-specific composite components (not from any registry).
 
 ### Hooks
 
-`use-body-classes` · `use-copy-to-clipboard` · `use-dismiss` · `use-favicon` · `use-file-upload` · `use-hover-capable` · `use-hover-gesture` · `use-hydrated` · `use-intersection-observer` · `use-is-mac` · `use-media-query` · `use-meta-color` · `use-mobile` · `use-mutation-observer` · `use-on-open` · `use-row-cursor` · `use-scroll-position` · `use-slider` · `use-slider-input` · `use-tap-gesture` · `use-touch-capable` · `use-viewport`
+`use-body-classes` · `use-copy-to-clipboard` · `use-dismiss` · `use-favicon` · `use-file-upload` · `use-hover-capable` · `use-hover-gesture` · `use-hydrated` · `use-intersection-observer` · `use-is-mac` · `use-media-query` · `use-meta-color` · `use-mobile` · `use-modal-scope` · `use-mutation-observer` · `use-on-open` · `use-row-cursor` · `use-scroll-position` · `use-slider` · `use-slider-input` · `use-tap-gesture` · `use-touch-capable` · `use-viewport`
 
 - `useIsMobile` (`use-mobile`) — fixed `768px` breakpoint; used by `sidebar` / `date-selector`. First paint may be `false` until mount.
 - `useMediaQuery` — arbitrary query string; SSR-safe via `useSyncExternalStore` (server snapshot `false`).
@@ -199,7 +210,7 @@ bun run add:beui:blocks      # precomposed layout blocks
 node scripts/fix-imports.mjs   # REQUIRED after CLI adds
 ```
 
-`fix-imports.mjs` rewrites `@/lib/utils` → `@kumix/utils`, converts `@/components/*` / `@/hooks/*` / `@/lib/*` to relative paths, handles all registries (`ui`, `reui`, `motion`, `agents`, `custom`), and prepends `"use client"` when missing.
+`fix-imports.mjs` rewrites `@/lib/utils` → `@kumix/utils`, converts `@/components/*` / `@/hooks/*` / `@/lib/*` to relative paths, handles all registries (`ui`, `reui`, `motion`, `agents`, `charts`, `custom`), and prepends `"use client"` when missing.
 
 ## License
 

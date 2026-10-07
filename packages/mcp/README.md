@@ -6,9 +6,9 @@ Private MCP server for exploring **`@kumix/ui`** (and other `@kumix/*` workspace
 
 Scans `packages/**/package.json` at runtime (skips `@kumix/mcp`, `node_modules`, `dist`).
 
-| Package     | Layout                                                                                                                                                                                             |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@kumix/ui` | `src/components/ui` (shadcn), `src/components/reui` (ReUI), `src/components/motion` (beUI), `src/components/agents` (beUI AI), `src/components/custom` (hand-written), `src/hooks`, `src/lib`, CSS |
+| Package     | Layout                                                                                                                                                                                                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@kumix/ui` | `src/components/ui` (shadcn), `src/components/reui` (ReUI), `src/components/motion` (beUI), `src/components/agents` (beUI AI), `src/components/charts` (charts), `src/components/custom` (hand-written), `src/hooks`, `src/lib`, CSS |
 
 **Categories** on each component entry:
 
@@ -18,6 +18,7 @@ Scans `packages/**/package.json` at runtime (skips `@kumix/mcp`, `node_modules`,
 | `reui`     | ReUI registry                                          | [reui.io/docs](https://reui.io/docs)                             |
 | `motion`   | beUI registry (Motion)                                 | [beui.dev/components/motion](https://beui.dev/components/motion) |
 | `agents`   | beUI registry (AI/chat)                                | [beui.dev/components/agents](https://beui.dev/components/agents) |
+| `charts`   | Charts & visual representations                        | package README                                                   |
 | `custom`   | hand-written components                                | package README                                                   |
 | `hooks`    | package hooks                                          | package README                                                   |
 | `lib`      | shared utilities                                       | package README                                                   |
@@ -29,6 +30,7 @@ Scans `packages/**/package.json` at runtime (skips `@kumix/mcp`, `node_modules`,
 @kumix/ui/ui/button
 @kumix/ui/reui/kanban
 @kumix/ui/motion/tilt-card
+@kumix/ui/charts/treemap
 @kumix/ui/agents/prompt-input
 @kumix/ui/custom/confirm-dialog
 @kumix/ui/hooks/use-mobile
@@ -64,13 +66,13 @@ bun run test
 
 ## Tools
 
-| Tool                  | Purpose                                                                                                       |
-| --------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `list_packages`       | Indexed packages + category counts for `@kumix/ui`                                                            |
-| `get_package_info`    | Exports, peers, sample imports, doc links                                                                     |
-| `find_component`      | Search by name/path; filter `ui` \| `reui` \| `motion` \| `agents` \| `custom` \| `hooks` \| `lib` \| `other` |
-| `read_component_code` | Read `src/`-relative file; returns `importPath`                                                               |
-| `get_usage_example`   | Per-file import snippet + package README                                                                      |
+| Tool                  | Purpose                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `list_packages`       | Indexed packages + category counts for `@kumix/ui`                                                                        |
+| `get_package_info`    | Exports, peers, sample imports, doc links                                                                                 |
+| `find_component`      | Search by name/path; filter `ui` \| `reui` \| `motion` \| `agents` \| `charts` \| `custom` \| `hooks` \| `lib` \| `other` |
+| `read_component_code` | Read `src/`-relative file; returns `importPath`                                                                           |
+| `get_usage_example`   | Per-file import snippet + package README                                                                                  |
 
 ### Examples
 
@@ -84,6 +86,7 @@ find_component  component_name=tilt-card  package_filter=motion
 find_component  component_name=breadcrumb  package_filter=motion
 find_component  component_name=color-selector  package_filter=motion
 find_component  component_name=prompt-input  package_filter=agents
+find_component  component_name=treemap  package_filter=charts
 read_component_code  package_name=@kumix/ui  component_path=components/ui/button.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/code-block/code-block.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/data-grid/data-grid.tsx
@@ -92,6 +95,7 @@ read_component_code  package_name=@kumix/ui  component_path=components/motion/mu
 read_component_code  package_name=@kumix/ui  component_path=components/reui/kanban.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/motion/tilt-card.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/agents/prompt-input.tsx
+read_component_code  package_name=@kumix/ui  component_path=components/charts/treemap.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/custom/confirm-dialog.tsx
 read_component_code  package_name=@kumix/ui  component_path=lib/ease.ts
 get_usage_example  package_name=@kumix/ui  component_name=kanban
