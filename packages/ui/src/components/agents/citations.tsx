@@ -14,6 +14,11 @@ export interface CitationItem {
   title: ReactNode;
   domain?: ReactNode;
   url?: string;
+  /**
+   * Replaces the URL favicon, e.g. a document icon for non-web sources. An svg
+   * child is sized to match the favicon; falsy values fall back to the favicon.
+   */
+  icon?: ReactNode;
 }
 
 export interface CitationsProps {
@@ -31,6 +36,11 @@ export interface CitationProps {
   index: number;
   /** Must match the related Citations idPrefix. */
   idPrefix: string;
+  /**
+   * Accessible name for the marker. Defaults to `View citation {index}`. Include
+   * the index so voice control users can say the number they see.
+   */
+  label?: string;
   className?: string;
 }
 
@@ -50,11 +60,11 @@ function citationTargetId(prefix: string, citationId: string) {
   return `${prefix}-${citationId.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 }
 
-export function Citation({ citationId, index, idPrefix, className }: CitationProps) {
+export function Citation({ citationId, index, idPrefix, label, className }: CitationProps) {
   return (
     <a
       href={`#${citationTargetId(idPrefix, citationId)}`}
-      aria-label={`View citation ${index}`}
+      aria-label={label ?? `View citation ${index}`}
       className={cn(
         "mx-0.5 inline-flex min-w-4 -translate-y-0.5 items-center justify-center rounded-md bg-muted/60 px-1 py-0.5 font-semibold text-[10px] text-muted-foreground leading-none no-underline outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
         className,
@@ -65,15 +75,29 @@ export function Citation({ citationId, index, idPrefix, className }: CitationPro
   );
 }
 
-export function CitationFavicon({ url, className }: { url?: string; className?: string }) {
-  const favicon = useFavicon(url);
+export function CitationFavicon({
+  url,
+  icon,
+  className,
+}: {
+  url?: string;
+  /** Drawn instead of the favicon when truthy. */
+  icon?: ReactNode;
+  className?: string;
+}) {
+  const favicon = useFavicon(icon ? undefined : url);
 
   return (
     <span
       aria-hidden="true"
-      className={cn("grid size-5 shrink-0 place-items-center text-muted-foreground", className)}
+      className={cn(
+        "grid size-5 shrink-0 place-items-center text-muted-foreground [&>svg]:size-3.5",
+        className,
+      )}
     >
-      {favicon.src ? (
+      {icon ? (
+        icon
+      ) : favicon.src ? (
         <img
           ref={favicon.ref}
           src={favicon.src}
@@ -97,6 +121,7 @@ export function CitationStack({ citations, limit = 3, className }: CitationStack
         <CitationFavicon
           key={citation.id}
           url={citation.url}
+          icon={citation.icon}
           className="size-6 rounded-full bg-background ring-2 ring-background"
         />
       ))}
@@ -115,7 +140,7 @@ function CitationRow({
 }) {
   const content = (
     <>
-      <CitationFavicon url={citation.url} />
+      <CitationFavicon url={citation.url} icon={citation.icon} />
       <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2 gap-y-0.5">
         <span className="truncate font-medium text-foreground/80 text-sm transition-colors group-hover/citation:text-foreground">
           {citation.title}

@@ -530,7 +530,6 @@ const WheelAnchor = memo(function WheelAnchor({
         <Tooltip
           content={caption}
           side="top"
-          wrapperClassName="block h-full w-full"
           className="wrap-break-word max-w-[20rem] whitespace-normal text-balance text-center"
         >
           {trigger}

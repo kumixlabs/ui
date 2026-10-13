@@ -360,7 +360,13 @@ function MorphPopoverSurface({
         id={ctx.contentId}
         role="dialog"
         aria-labelledby={ctx.triggerId}
+        // Own states rather than inherited ones: reopening during the close
+        // cancels the exit per element, and only an element that owns its
+        // target returns to it. Inherited, the clip stayed at its hidden corner.
         variants={clip}
+        initial="hidden"
+        animate={layout ? "show" : "hidden"}
+        exit="hidden"
         style={{
           borderRadius: radius,
           maxHeight: layout ? availableHeight : undefined,

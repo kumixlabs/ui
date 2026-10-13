@@ -74,6 +74,11 @@ function CascadePhrase({ phrase, reduce, shimmerDuration }: PhraseProps) {
           <motion.span
             key={characterIndex}
             custom={characterIndex * CASCADE_STAGGER}
+            // Own states: a phrase that cycles back re-enters mid-exit, and
+            // only owned targets are restored.
+            initial="initial"
+            animate="animate"
+            exit="exit"
             variants={{
               initial: { opacity: 0, y: "100%" },
               animate: (delay: number) => ({

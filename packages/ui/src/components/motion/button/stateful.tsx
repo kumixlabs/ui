@@ -124,6 +124,11 @@ function TextSlot({ value, children }: { value: string; children: ReactNode }) {
                   key={index}
                   custom={index * CASCADE_STAGGER}
                   variants={CASCADE_LETTER_VARIANTS}
+                  // Own states: a label that swaps away and straight back
+                  // re-enters mid-exit, and only owned targets are restored.
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
                   className="inline-block whitespace-pre will-change-[opacity,filter,transform]"
                 >
                   {char}

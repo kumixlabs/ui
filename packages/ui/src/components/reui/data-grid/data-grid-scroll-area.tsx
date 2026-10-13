@@ -74,6 +74,19 @@ function areMetricsEqual(next: ScrollbarMetrics, prev: ScrollbarMetrics) {
   );
 }
 
+// A footer held at the bottom (its tfoot or its cells are sticky, however the
+// consumer made them so) takes the track's lower end the way the sticky header
+// takes its top, so the thumb never paints over the totals.
+function getStickyFooterHeight(table: HTMLElement | null) {
+  const footer = table instanceof HTMLTableElement ? table.tFoot : null;
+  if (!footer) return 0;
+
+  const isSticky = [footer, footer.rows[0]?.cells[0]].some(
+    (element) => element && getComputedStyle(element).position === "sticky",
+  );
+  return isSticky ? footer.getBoundingClientRect().height : 0;
+}
+
 function applyMetrics(element: HTMLElement, metrics: ScrollbarMetrics) {
   element.style.setProperty("--data-grid-scrollbar-header-height", `${metrics.headerHeight}px`);
   element.style.setProperty("--data-grid-scrollbar-thumb-height", `${metrics.thumbHeight}px`);
@@ -177,8 +190,9 @@ function DataGridScrollArea({
       return;
     }
 
-    const { header, horizontalScrollbar } = observedElementsRef.current;
+    const { header, horizontalScrollbar, table } = observedElementsRef.current;
     const headerHeight = header?.getBoundingClientRect().height ?? 0;
+    const footerHeight = getStickyFooterHeight(table);
     const viewportHeight = viewport.clientHeight;
     const viewportWidth = viewport.clientWidth;
     const scrollHeight = viewport.scrollHeight;
@@ -187,7 +201,12 @@ function DataGridScrollArea({
     const horizontalScrollbarSize = hasHorizontalOverflow
       ? (horizontalScrollbar?.offsetHeight || FALLBACK_SCROLLBAR_SIZE) + SCROLLBAR_EDGE_GAP
       : 0;
-    const trackHeight = Math.max(0, viewportHeight - headerHeight - horizontalScrollbarSize);
+    // The horizontal bar overlays the bottom of the viewport, which a sticky
+    // footer already covers, so only the larger of the two is taken off.
+    const trackHeight = Math.max(
+      0,
+      viewportHeight - headerHeight - Math.max(footerHeight, horizontalScrollbarSize),
+    );
     const maxScroll = Math.max(0, scrollHeight - viewportHeight);
 
     let nextMetrics: ScrollbarMetrics;
@@ -202,7 +221,7 @@ function DataGridScrollArea({
         trackHeight,
       };
     } else {
-      const bodyContentHeight = Math.max(trackHeight, scrollHeight - headerHeight);
+      const bodyContentHeight = Math.max(trackHeight, scrollHeight - headerHeight - footerHeight);
       const thumbHeight = clamp(
         trackHeight * (trackHeight / bodyContentHeight),
         MIN_THUMB_SIZE,

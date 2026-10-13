@@ -39,7 +39,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { Cell, Header, HeaderGroup, Row } from "@tanstack/react-table";
+import type { Cell, Header, Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import { GripHorizontalIcon } from "lucide-react";
 import { createPortal } from "react-dom";
@@ -66,6 +66,9 @@ import {
   DataGridTableHeadRowCellResize,
   DataGridTableRowSpacer,
   DataGridTableViewport,
+  getDataGridHeadCellResizeHeader,
+  getDataGridTableMergedHeaderGroups,
+  renderDataGridTableHeadCellContent,
 } from "./data-grid-table";
 
 // Context to share sortable listeners from row to handle
@@ -306,7 +309,7 @@ function DataGridTableDndRow<TData extends object>({
 
   return (
     <SortableRowContext.Provider value={{ attributes, listeners }}>
-      <DataGridTableBodyRow row={row} dndRef={setNodeRef} dndStyle={style}>
+      <DataGridTableBodyRow row={row} dndRef={setNodeRef} dndStyle={style} dndDragging={isDragging}>
         {/* One keyed list with the fill in the middle, as in the head row. */}
         {[
           ...cells.filter((cell) => cell.column.getIsPinned() !== "end").map(renderCell),
@@ -446,6 +449,7 @@ function DataGridTableDndRows<TData extends object>({
   accessibility?: DndContextProps["accessibility"];
 }) {
   const { table, props } = useDataGrid<TData>();
+  const mergedHeaderGroups = getDataGridTableMergedHeaderGroups(table);
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const [isDraggingRow, setIsDraggingRow] = useState(false);
   // The overlay is portalled to the document body. dnd-kit renders DragOverlay
@@ -493,14 +497,20 @@ function DataGridTableDndRows<TData extends object>({
     ).find((candidate) => candidate.dataset.rowId === String(id));
     const height = source?.getBoundingClientRect().height ?? 0;
 
-    // The fill cell is a header-only spacer that soaks up the surplus a column
-    // resize leaves behind, and the clone renders data cells only. Measuring it
-    // in would make the clone's table wider than the cells it actually holds,
+    // The fill cell is a spacer that soaks up the surplus a column resize
+    // leaves behind, and the clone renders data cells only. Measuring it in
+    // would make the clone's table wider than the cells it actually holds,
     // and `table-fixed` hands that orphaned width back out across every column
     // -- the carried row comes out visibly wider than the row it was lifted
     // from. So the width is the sum of what we render, never the header's own.
-    const columns = Array.from(head.children)
-      .filter((cell) => cell.getAttribute("data-slot") !== "data-grid-table-fill-head-cell")
+    // Read off the source row, one cell per column: a head cell can span
+    // several (a group, a merged or a meta.headerColSpan cell).
+    const columns = Array.from(source?.children ?? head.children)
+      .filter(
+        (cell) =>
+          cell.getAttribute("data-slot") !== "data-grid-table-fill-body-cell" &&
+          cell.getAttribute("data-slot") !== "data-grid-table-fill-head-cell",
+      )
       .map((cell) => cell.getBoundingClientRect().width);
 
     // Inline padding is read off the source cells for the same reason. A fixed
@@ -616,47 +626,52 @@ function DataGridTableDndRows<TData extends object>({
       >
         <DataGridTableBase>
           <DataGridTableHead>
-            {table
-              .getHeaderGroups()
-              .map((headerGroup: HeaderGroup<DataGridFeatures, TData>, index) => {
-                const renderHeader = (header: Header<DataGridFeatures, TData, unknown>) => {
-                  const { column } = header;
-
-                  return (
-                    <DataGridTableHeadRowCell header={header} key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : props.tableLayout?.columnsResizable && column.getCanResize()
-                          ? flexRender(header.column.columnDef.header, header.getContext())
-                          : flexRender(header.column.columnDef.header, header.getContext())}
-                      {props.tableLayout?.columnsResizable && column.getCanResize() && (
-                        <DataGridTableHeadRowCellResize header={header} />
-                      )}
-                    </DataGridTableHeadRowCell>
-                  );
-                };
+            {mergedHeaderGroups.map((headerGroup, index) => {
+              const renderHeader = (header: Header<DataGridFeatures, TData, unknown>) => {
+                const coveredHeaders = headerGroup.coveredHeaders.get(header.id);
+                const resizeHeader = getDataGridHeadCellResizeHeader(header, coveredHeaders);
 
                 return (
-                  <DataGridTableHeadRow key={index} rowId={headerGroup.id}>
-                    {/* Every row follows DataGridTableBase's colgroup, which
-                          puts the fill col between the center and end-pinned
-                          groups; a fill cell appended last hands its width to
-                          the end-pinned column. One keyed list, not three, so
-                          a column pinned into or out of the end group moves
-                          instead of remounting, which would drop keyboard
-                          focus. */}
-                    {[
-                      ...headerGroup.headers
-                        .filter((header) => header.column.getIsPinned() !== "end")
-                        .map(renderHeader),
-                      <DataGridTableFillHeadCell key="__data-grid-fill" />,
-                      ...headerGroup.headers
-                        .filter((header) => header.column.getIsPinned() === "end")
-                        .map(renderHeader),
-                    ]}
-                  </DataGridTableHeadRow>
+                  <DataGridTableHeadRowCell
+                    header={header}
+                    coveredHeaders={coveredHeaders}
+                    key={header.id}
+                  >
+                    {renderDataGridTableHeadCellContent(header)}
+                    {props.tableLayout?.columnsResizable && resizeHeader.column.getCanResize() && (
+                      <DataGridTableHeadRowCellResize header={resizeHeader} />
+                    )}
+                  </DataGridTableHeadRowCell>
                 );
-              })}
+              };
+
+              return (
+                <DataGridTableHeadRow key={index} rowId={headerGroup.id}>
+                  {/* Every row follows DataGridTableBase's colgroup, which
+                      puts the fill col between the center and end-pinned
+                      groups; a fill cell appended last hands its width to
+                      the end-pinned column. One keyed list, not three, so
+                      a column pinned into or out of the end group moves
+                      instead of remounting, which would drop keyboard
+                      focus. The fill spans every head row, so only the
+                      first renders it. */}
+                  {[
+                    ...[...headerGroup.startHeaders, ...headerGroup.centerHeaders].map(
+                      renderHeader,
+                    ),
+                    ...(index === 0
+                      ? [
+                          <DataGridTableFillHeadCell
+                            key="__data-grid-fill"
+                            rowSpan={mergedHeaderGroups.length}
+                          />,
+                        ]
+                      : []),
+                    ...headerGroup.endHeaders.map(renderHeader),
+                  ]}
+                </DataGridTableHeadRow>
+              );
+            })}
           </DataGridTableHead>
 
           {(props.tableLayout?.stripped || !props.tableLayout?.rowBorder) && (

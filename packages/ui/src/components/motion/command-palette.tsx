@@ -222,7 +222,7 @@ export function CommandPalette({
                 transition={reduce ? { duration: 0.1 } : PANEL_SPRING}
                 {...gate}
                 onKeyDown={onKeyDown}
-                className="pointer-events-auto w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl will-change-transform"
+                className="pointer-events-auto w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl will-change-transform"
               >
                 <div className="flex items-center gap-3 border-border border-b px-4">
                   <Search className="h-4 w-4 text-muted-foreground" />
@@ -297,7 +297,7 @@ export function CommandPalette({
                               {isActive ? (
                                 <motion.span
                                   layoutId={`${uid}-active`}
-                                  className="absolute inset-0 z-0 rounded-md bg-muted/60"
+                                  className="absolute inset-0 z-0 rounded-md bg-muted"
                                   transition={
                                     reduce
                                       ? { duration: 0 }

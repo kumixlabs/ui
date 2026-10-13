@@ -203,7 +203,7 @@ function Kanban<T>({
   // Always-current mirrors so the drag handlers can read fresh values without
   // widening their dependency arrays (keeps handler identity stable). The
   // handlers only fire after commit, so syncing the mirrors in an effect is
-  // safe — assigning to a ref during render breaks under concurrent rendering.
+  // safe. Assigning to a ref during render breaks under concurrent rendering.
   const valueRef = useRef(value);
   const getItemValueRef = useRef(getItemValue);
   useLayoutEffect(() => {
@@ -731,7 +731,9 @@ function KanbanColumnHandle({
     ...attributes,
     ...listeners,
     className: cn(
-      "opacity-0 transition-opacity group-hover/kanban-column:opacity-100",
+      /* Keyboard focus shows it too. focus-within would also match the focus
+         a mousedown gives the handle, so it would stay shown after a drag. */
+      "opacity-0 transition-opacity focus-visible:opacity-100 group-hover/kanban-column:opacity-100 has-focus-visible:opacity-100",
       cursor && (isDragging ? "cursor-grabbing!" : "cursor-grab!"),
       className,
     ),
