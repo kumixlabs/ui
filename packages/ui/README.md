@@ -4,17 +4,17 @@ React UI kit for Kumix products. Built on **Base UI**, **Tailwind CSS**, **class
 
 ## Sources
 
-| Path                              | Origin                                                                                                              | Docs / previews                                                                 |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `src/components/ui/*`             | [shadcn/ui](https://ui.shadcn.com/) (base-nova style)                                                               | [ui.shadcn.com/docs/components](https://ui.shadcn.com/docs/components)          |
-| `src/components/reui/*`           | [ReUI](https://reui.io/) registry (`@reui/*`)                                                                       | [reui.io/docs](https://reui.io/docs) · [components](https://reui.io/components) |
-| `src/components/motion/*`         | [beUI](https://beui.dev/) registry (`@beui/*`, Motion-based)                                                        | [beui.dev/components/motion](https://beui.dev/components/motion)                |
-| `src/components/agents/*`         | [beUI](https://beui.dev/) AI agent components (`@beui/*`)                                                           | [beui.dev/components/agents](https://beui.dev/components/agents)                |
-| `src/components/charts/*`         | Financial & data visualization charts                                                                               | —                                                                               |
-| `src/components/custom/*`         | Hand-written Kumix-specific components                                                                              | —                                                                               |
-| `src/hooks/*`                     | Package helpers (+ ReUI `use-file-upload`, beUI helpers)                                                            | —                                                                               |
-| `src/lib/*`                       | Shared utilities (beUI `ease`, `tick-sound`, `text-shimmer`, `favicon`, `presence-gate`, `touch`, `command-search`) | —                                                                               |
-| `src/style.css` · `src/theme.css` | Tailwind entry + design tokens                                                                                      | —                                                                               |
+| Path                              | Origin                                                                                                                             | Docs / previews                                                                 |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `src/components/ui/*`             | [shadcn/ui](https://ui.shadcn.com/) (base-nova style)                                                                              | [ui.shadcn.com/docs/components](https://ui.shadcn.com/docs/components)          |
+| `src/components/reui/*`           | [ReUI](https://reui.io/) registry (`@reui/*`)                                                                                      | [reui.io/docs](https://reui.io/docs) · [components](https://reui.io/components) |
+| `src/components/motion/*`         | [beUI](https://beui.dev/) registry (`@beui/*`, Motion-based)                                                                       | [beui.dev/components/motion](https://beui.dev/components/motion)                |
+| `src/components/agents/*`         | [beUI](https://beui.dev/) AI agent components (`@beui/*`)                                                                          | [beui.dev/components/agents](https://beui.dev/components/agents)                |
+| `src/components/charts/*`         | Financial & data visualization charts                                                                                              | —                                                                               |
+| `src/components/custom/*`         | Hand-written Kumix-specific components                                                                                             | —                                                                               |
+| `src/hooks/*`                     | Package helpers (+ ReUI `use-file-upload`, beUI helpers)                                                                           | —                                                                               |
+| `src/lib/*`                       | Shared utilities (beUI `ease`, `tick-sound`, `text-shimmer`, `favicon`, `presence-gate`, `touch`, `command-search`, `highlighter`) | —                                                                               |
+| `src/style.css` · `src/theme.css` | Tailwind entry + design tokens                                                                                                     | —                                                                               |
 
 For **previews, props, and usage examples** of each component, use the upstream docs:
 
@@ -39,23 +39,23 @@ bun add @base-ui/react class-variance-authority lucide-react motion react @kumix
 
 **Feature peers** (optional — needed at runtime only if you import those components):
 
-| Peer                                                | Used by                                        |
-| --------------------------------------------------- | ---------------------------------------------- |
-| `next-themes`                                       | `use-meta-color`, `motion/theme-toggle`        |
-| `@shadcn/react`                                     | `message-scroller`, `questionnaire`            |
-| `@tanstack/react-table` · `@tanstack/react-virtual` | data-grid                                      |
-| `@dnd-kit/*`                                        | kanban, sortable, data-grid DnD                |
-| `date-fns` · `@date-fns/tz`                         | calendar, event-calendar, gantt, date-selector |
-| `recharts`                                          | chart                                          |
-| `cmdk`                                              | command                                        |
-| `embla-carousel-react`                              | carousel                                       |
-| `input-otp`                                         | input-otp                                      |
-| `react-day-picker`                                  | calendar                                       |
-| `react-phone-number-input`                          | phone-input                                    |
-| `react-resizable-panels`                            | resizable                                      |
-| `@headless-tree/core`                               | tree                                           |
-| `shiki`                                             | `agents/code-block`, `reui/code-block`         |
-| `@floating-ui/dom`                                  | `motion/tooltip`                               |
+| Peer                                                | Used by                                                                       |
+| --------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `next-themes`                                       | `use-meta-color`, `motion/theme-toggle`                                       |
+| `@shadcn/react`                                     | `message-scroller`, `questionnaire`                                           |
+| `@tanstack/react-table` · `@tanstack/react-virtual` | data-grid                                                                     |
+| `@dnd-kit/*`                                        | kanban, sortable, data-grid DnD                                               |
+| `date-fns` · `@date-fns/tz`                         | calendar, event-calendar, gantt, date-selector                                |
+| `recharts`                                          | chart                                                                         |
+| `cmdk`                                              | command                                                                       |
+| `embla-carousel-react`                              | carousel                                                                      |
+| `input-otp`                                         | input-otp                                                                     |
+| `react-day-picker`                                  | calendar                                                                      |
+| `react-phone-number-input`                          | phone-input                                                                   |
+| `react-resizable-panels`                            | resizable                                                                     |
+| `@headless-tree/core`                               | tree                                                                          |
+| `shiki`                                             | `agents/code-block`, `reui/code-block`, `ui/code-block` via `lib/highlighter` |
+| `@floating-ui/dom`                                  | `motion/tooltip`                                                              |
 
 ## Import paths
 
@@ -118,7 +118,7 @@ Mapped from source:
 
 Base UI / shadcn base-nova. Preview: [ui.shadcn.com](https://ui.shadcn.com/docs/components).
 
-`accordion` · `alert` · `alert-dialog` · `aspect-ratio` · `attachment` · `avatar` · `badge` · `breadcrumb` · `bubble` · `button` · `button-group` · `calendar` · `card` · `carousel` · `chart` · `checkbox` · `collapsible` · `combobox` · `command` · `context-menu` · `dialog` · `direction` · `drawer` · `dropdown-menu` · `empty` · `field` · `hover-card` · `input` · `input-group` · `input-otp` · `item` · `kbd` · `label` · `marker` · `menubar` · `message` · `message-scroller` · `native-select` · `navigation-menu` · `pagination` · `popover` · `progress` · `questionnaire` · `radio-group` · `resizable` · `scroll-area` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `slider` · `spinner` · `switch` · `table` · `tabs` · `textarea` · `toggle` · `toggle-group` · `toast` · `tooltip`
+`accordion` · `alert` · `alert-dialog` · `aspect-ratio` · `attachment` · `avatar` · `badge` · `breadcrumb` · `bubble` · `button` · `button-group` · `calendar` · `card` · `carousel` · `chart` · `checkbox` · `code-block` · `collapsible` · `combobox` · `command` · `context-menu` · `dialog` · `direction` · `drawer` · `dropdown-menu` · `empty` · `field` · `hover-card` · `input` · `input-group` · `input-otp` · `item` · `kbd` · `label` · `marker` · `menubar` · `message` · `message-scroller` · `native-select` · `navigation-menu` · `pagination` · `popover` · `progress` · `questionnaire` · `radio-group` · `resizable` · `scroll-area` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `slider` · `spinner` · `switch` · `table` · `tabs` · `textarea` · `toggle` · `toggle-group` · `toast` · `tooltip` · `trace`
 
 ### ReUI (`components/reui`)
 
@@ -164,14 +164,21 @@ Hand-written Kumix-specific composite components (not from any registry).
 
 `toast` — Global toast system: `ToastContainer` (mount once) + `showToast` / `toastSuccess` / `toastError` / `toastInfo` / `toastLoading` (call anywhere). Wraps `motion/animated-toast-stack`.
 
+`code-block` — Copy button, line numbers (`lineNumbers`, `startLine`), wrap mode, `variant` (`default`/`destructive`), `size` (`default`/`sm`). Pair with `use-highlighted-code` for streaming Shiki syntax highlighting.
+
+`trace` — Collapsible trace lines for agent runs / stack traces: `Trace`, `TraceLine` (status `running`/`error`/`pending`), `TraceIcon`, `TraceTitle`, `TraceDescription`, `TraceCollapsible` (+ `Trigger`/`Content`).
+
 ### Hooks
 
-`use-body-classes` · `use-copy-to-clipboard` · `use-dismiss` · `use-favicon` · `use-file-upload` · `use-hover-capable` · `use-hover-gesture` · `use-hydrated` · `use-intersection-observer` · `use-is-mac` · `use-media-query` · `use-meta-color` · `use-mobile` · `use-modal-scope` · `use-mutation-observer` · `use-on-open` · `use-row-cursor` · `use-scroll-position` · `use-slider` · `use-slider-input` · `use-tap-gesture` · `use-touch-capable` · `use-viewport`
+`use-body-classes` · `use-copy-to-clipboard` · `use-dismiss` · `use-favicon` · `use-file-upload` · `use-focus-trap` · `use-highlighted-code` · `use-hover-capable` · `use-hover-gesture` · `use-hydrated` · `use-intersection-observer` · `use-is-mac` · `use-listbox` · `use-media-query` · `use-meta-color` · `use-mobile` · `use-modal-scope` · `use-mutation-observer` · `use-on-open` · `use-row-cursor` · `use-scroll-position` · `use-slider` · `use-slider-input` · `use-tap-gesture` · `use-touch-capable` · `use-viewport`
 
 - `useIsMobile` (`use-mobile`) — fixed `768px` breakpoint; used by `sidebar` / `date-selector`. First paint may be `false` until mount.
 - `useMediaQuery` — arbitrary query string; SSR-safe via `useSyncExternalStore` (server snapshot `false`).
 - `useHoverCapable` — detects pointer/hover capability; used by beUI tilt-card.
 - `useSlider` — shared slider input logic; used by beUI range-sliders.
+- `useFocusTrap` — stack-aware focus trap for overlays rendered in place (drawer, bottom-sheet): moves focus in on open, Tab cycles inside, Escape closes, focus returns on close. Innermost trap wins when stacked.
+- `useListbox` — popup listbox keyboard model: arrows/Home/End over enabled rows, 500ms typeahead, DOM focus follows the active option. Used by `motion/select` and `motion/select-morph`.
+- `useHighlightedCode` — streaming Shiki syntax highlight: tokenizes only new lines as code streams, re-tokenizes the tail each render. Pair with `ui/code-block`.
 
 ## Styling
 

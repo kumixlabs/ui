@@ -78,6 +78,11 @@ bun run test
 
 ```text
 find_component  component_name=button  package_filter=ui
+find_component  component_name=code-block  package_filter=ui
+find_component  component_name=trace  package_filter=ui
+find_component  component_name=use-focus-trap  package_filter=hooks
+find_component  component_name=use-listbox  package_filter=hooks
+find_component  component_name=use-highlighted-code  package_filter=hooks
 find_component  component_name=data-grid  package_filter=reui
 find_component  component_name=data-grid-cell-selection  package_filter=reui
 find_component  component_name=code-block  package_filter=reui
@@ -96,6 +101,8 @@ find_component  component_name=donut-chart  package_filter=charts
 find_component  component_name=prompt-input  package_filter=agents
 find_component  component_name=treemap  package_filter=charts
 read_component_code  package_name=@kumix/ui  component_path=components/ui/button.tsx
+read_component_code  package_name=@kumix/ui  component_path=components/ui/code-block.tsx
+read_component_code  package_name=@kumix/ui  component_path=components/ui/trace.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/code-block/code-block.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/data-grid/data-grid.tsx
 read_component_code  package_name=@kumix/ui  component_path=components/reui/data-grid/data-grid-cell-selection.tsx

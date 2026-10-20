@@ -77,7 +77,7 @@ packages/ui/src/
   components/charts/   # charts (bump, candlestick, composition, donut, funnel, heatmap, order-book, price-target-fan, …)
   components/custom/   # hand-written (confirm-dialog, toast, …)
   hooks/
-  lib/                 # shared utils (ease, tick-sound, text-shimmer, favicon, presence-gate, touch, command-search)
+  lib/                 # shared utils (ease, tick-sound, text-shimmer, favicon, presence-gate, touch, command-search, highlighter)
   style.css · theme.css
 ```
 

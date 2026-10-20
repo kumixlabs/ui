@@ -14,8 +14,8 @@
   - `components/agents/` — beUI registry (AI agent / chat components). Add via `bun run add:beui:ai-agents`. Docs: [beui.dev/components/agents](https://beui.dev/components/agents). Multi-file dirs: `agent-activity/`, `approval-card/`, `loading-states/`.
   - `components/charts/` — Financial & data visualization charts (bump-chart, candlestick-chart, composition-chart, donut-chart, funnel-chart, heat-calendar, liquidity-heatmap, order-book, price-target-fan, returns-calendar, status-bar, treemap, volume-profile).
   - `components/custom/` — hand-written Kumix-specific composite components (not from any registry).
-  - `hooks/` — custom hooks (per-file). Includes beUI helpers like `use-hover-capable`, `use-slider`.
-  - `lib/` — shared utilities used by motion + agents (e.g. `ease.ts`, `tick-sound.ts`, `text-shimmer.ts`, `favicon.ts`, `presence-gate.tsx`, `command-search.ts`).
+  - `hooks/` — custom hooks (per-file). Includes beUI helpers like `use-hover-capable`, `use-slider`, plus `use-focus-trap` (overlay focus trap), `use-listbox` (popup keyboard model), `use-highlighted-code` (streaming Shiki).
+  - `lib/` — shared utilities used by motion + agents (e.g. `ease.ts`, `tick-sound.ts`, `text-shimmer.ts`, `favicon.ts`, `presence-gate.tsx`, `command-search.ts`, `highlighter.tsx` — lazy Shiki core loader for `use-highlighted-code`).
   - Imports in component source must be **relative** (e.g. `../button`, `../../lib/ease`). **Never use `@/` alias** in committed files.
   - CSS styles (`style.css` and `theme.css`) are hand-written and copied to `dist/` via `build:css`.
   - **Peer deps**: 6 required (`react`, `@kumix/utils`, `@base-ui/react`, `class-variance-authority`, `lucide-react`, `motion`); 22 optional via `peerDependenciesMeta`. When adding a component that needs a new dep, add it to both `devDependencies` and `peerDependencies`, and mark it optional in `peerDependenciesMeta` unless it's universally needed.
