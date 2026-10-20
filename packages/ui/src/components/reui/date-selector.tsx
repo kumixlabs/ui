@@ -1,7 +1,15 @@
 "use client";
 
 import type { ChangeEvent, ComponentProps } from "react";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { addMonths, format, isBefore, isSameMonth, parse, subMonths } from "date-fns";
 import {
   ChevronLeftIcon,
@@ -204,6 +212,18 @@ interface UseDateSelectorOptions {
   periodTypes?: DateSelectorPeriodType[];
 }
 
+// The clock has no event to subscribe to, but a store snapshot is still read
+// on every render. Compiled, a render-body clock read is cached at mount.
+const subscribeToClock = () => () => {};
+const getCurrentYear = () => new Date().getFullYear();
+
+/** Where a calendar month sits against today's month. */
+function getMonthPosition(month: Date | undefined) {
+  const today = new Date();
+  if (!month || isSameMonth(month, today)) return "current";
+  return month > today ? "future" : "past";
+}
+
 export function useDateSelector({
   value,
   onChange,
@@ -217,7 +237,8 @@ export function useDateSelector({
   maxYear,
   periodTypes,
 }: UseDateSelectorOptions) {
-  const currentYear = baseYear ?? new Date().getFullYear();
+  const clockYear = useSyncExternalStore(subscribeToClock, getCurrentYear, getCurrentYear);
+  const currentYear = baseYear ?? clockYear;
 
   const validDefaultPeriodType = useMemo(() => {
     if (!periodTypes || periodTypes.length === 0) return defaultPeriodType;
@@ -234,7 +255,7 @@ export function useDateSelector({
   const [filterType, setFilterType] = useState<DateSelectorFilterType>(effectiveFilterType);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(value?.startDate);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(value?.endDate);
-  const [calendarMonth, setCalendarMonth] = useState(value?.startDate || new Date());
+  const [calendarMonth, setCalendarMonth] = useState(() => value?.startDate || new Date());
   const [selectedYear, setSelectedYear] = useState<number | undefined>(value?.year);
   const [selectedMonth, setSelectedMonth] = useState<number | undefined>(value?.month);
   const [selectedQuarter, setSelectedQuarter] = useState<number | undefined>(value?.quarter);
@@ -554,6 +575,12 @@ function DateSelectorPeriodTabs({
   showNavigationButtons = false,
 }: DateSelectorDateSelectorPeriodTabsProps) {
   const { i18n } = useDateSelectorContext();
+  const getCalendarMonthPosition = () => getMonthPosition(calendarMonth);
+  const monthPosition = useSyncExternalStore(
+    subscribeToClock,
+    getCalendarMonthPosition,
+    getCalendarMonthPosition,
+  );
 
   const tabs: { value: DateSelectorPeriodType; label: string }[] = [
     { value: "day", label: i18n.periodTypes.day },
@@ -590,29 +617,17 @@ function DateSelectorPeriodTabs({
       </Tabs>
       {showNavigationButtons && value === "day" && calendarMonth && onMonthChange && (
         <div className="flex items-center">
-          {(() => {
-            const today = new Date();
-            const isCurrentMonth = isSameMonth(calendarMonth, today);
-
-            // Only show today button if not on current month
-            if (isCurrentMonth) {
-              return null;
-            }
-
-            // Determine direction based on whether calendarMonth is in future or past
-            const isFuture = calendarMonth > today;
-
-            return (
-              <Button
-                variant="ghost"
-                className="size-8.5"
-                onClick={() => onMonthChange(new Date())}
-                title={i18n.today}
-              >
-                {isFuture ? <CornerUpLeftIcon /> : <CornerUpRightIcon />}
-              </Button>
-            );
-          })()}
+          {/* Only off the current month, pointing back to today */}
+          {monthPosition !== "current" && (
+            <Button
+              variant="ghost"
+              className="size-8.5"
+              onClick={() => onMonthChange(new Date())}
+              title={i18n.today}
+            >
+              {monthPosition === "future" ? <CornerUpLeftIcon /> : <CornerUpRightIcon />}
+            </Button>
+          )}
           <Button
             variant="ghost"
             className="size-8.5"

@@ -550,6 +550,18 @@ export function PopoverContent({ children, className }: PopoverContentProps) {
 
   useMotionValueEvent(progress, "change", (p) => render(geoRef.current, p));
 
+  // While closed, the layer still paints its copy of the trigger pill, and the
+  // cutout's antialiased edge leaves a faint rim around the real trigger. It
+  // matches the page, but shows as hairlines over any dimmed backdrop below
+  // the layer. Hide it once the close has settled, and show it again in the
+  // render that opens.
+  const [closedAtRest, setClosedAtRest] = useState(() => !open && progress.get() === 0);
+  if (open && closedAtRest) setClosedAtRest(false);
+  const handleAnimationComplete = useCallback(() => {
+    if (!open && progress.get() === 0) setClosedAtRest(true);
+  }, [open, progress]);
+  useMotionValueEvent(progress, "animationComplete", handleAnimationComplete);
+
   const hoverHandlers =
     triggerMode === "hover" ? makeHoverHandlers(panelHover, openHover, scheduleClose) : {};
 
@@ -562,7 +574,7 @@ export function PopoverContent({ children, className }: PopoverContentProps) {
       data-popover-portal=""
       className="pointer-events-none fixed top-0 left-0 isolate z-9999 size-0"
       style={{
-        visibility: layout ? "visible" : "hidden",
+        visibility: layout && !closedAtRest ? "visible" : "hidden",
         transform: `translate3d(${layout?.trigger.left ?? 0}px, ${layout?.trigger.top ?? 0}px, 0)`,
       }}
     >

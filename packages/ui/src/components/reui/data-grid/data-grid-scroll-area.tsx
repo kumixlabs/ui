@@ -1,5 +1,8 @@
 "use client";
 
+// Opted out of React Compiler with the rest of the grid (see data-grid.tsx).
+"use no memo";
+
 import type { PointerEvent, ReactNode } from "react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { DirectionProvider, useDirection } from "@base-ui/react/direction-provider";

@@ -11,7 +11,7 @@ import {
 } from "motion/react";
 
 import { cn } from "@kumix/utils";
-import { EASE_OUT, SPRING_PRESS, SPRING_SWAP } from "../../lib/ease";
+import { EASE_OUT, SPRING_LAYOUT, SPRING_PRESS, SPRING_SWAP } from "../../lib/ease";
 
 export type ActionSwapItem = {
   id: string;
@@ -54,10 +54,15 @@ export interface ActionSwapIconProps {
   className?: string;
 }
 
-const BLUR_TRANSITION = { duration: 0.2, ease: "easeInOut" } as const;
+// The arriving layer springs in, so a second press mid-swap bends it toward
+// the new target instead of restarting. The leaving layer is a little quicker,
+// still long enough to cross the arrival so the swap reads as one morph.
+const BLUR_TRANSITION = SPRING_SWAP;
+const BLUR_EXIT_TRANSITION = { duration: 0.16, ease: EASE_OUT } as const;
 const ROLL_TRANSITION = SPRING_SWAP;
 const ROLL_EXIT_TRANSITION = { duration: 0.14, ease: EASE_OUT } as const;
-const SWAP_BLUR = "blur(8px)";
+// A light blur softens the crossing without smearing small glyphs.
+const SWAP_BLUR = "blur(2px)";
 const ROLL_BLUR = "blur(3px)";
 
 // Cascade rolls the label one letter at a time, left to right. The leaving
@@ -84,7 +89,7 @@ const CASCADE_LETTER_VARIANTS: Variants = {
 
 const TEXT_VARIANTS: Record<CoreAnimation, Variants> = {
   blur: {
-    initial: { opacity: 0, scale: 0.94, filter: SWAP_BLUR },
+    initial: { opacity: 0, scale: 0.9, filter: SWAP_BLUR },
     animate: {
       opacity: 1,
       scale: 1,
@@ -93,9 +98,9 @@ const TEXT_VARIANTS: Record<CoreAnimation, Variants> = {
     },
     exit: {
       opacity: 0,
-      scale: 0.94,
+      scale: 0.96,
       filter: SWAP_BLUR,
-      transition: BLUR_TRANSITION,
+      transition: BLUR_EXIT_TRANSITION,
     },
   },
   roll: {
@@ -128,7 +133,7 @@ const ICON_VARIANTS: Record<CoreAnimation, Variants> = {
       opacity: 0,
       scale: 0.25,
       filter: SWAP_BLUR,
-      transition: BLUR_TRANSITION,
+      transition: BLUR_EXIT_TRANSITION,
     },
   },
   roll: {
@@ -291,6 +296,7 @@ export function ActionSwapButton({
   className,
   disabled,
   onClick,
+  style,
   ...rest
 }: ActionSwapButtonProps) {
   const reduce = useReducedMotion();
@@ -309,13 +315,21 @@ export function ActionSwapButton({
   const accessibleLabel =
     activeItem.ariaLabel ??
     (iconOnly && typeof activeItem.label === "string" ? activeItem.label : undefined);
+  const layoutTransition = reduce ? { duration: 0 } : SPRING_LAYOUT;
 
   return (
     <motion.button
       type="button"
       disabled={disabled}
+      // A label of a different length resizes the button: glide the width on
+      // the soft layout spring, and only when the value changes, so unrelated
+      // page reflow never animates the button.
+      layout
+      layoutDependency={activeItem.id}
       whileTap={reduce || disabled ? undefined : { scale: 0.97 }}
-      transition={SPRING_PRESS}
+      transition={{ ...SPRING_PRESS, layout: layoutTransition }}
+      // Layout animations only correct a radius set inline.
+      style={{ borderRadius: 9999, ...style }}
       className={cn(
         "inline-flex items-center justify-center overflow-hidden font-medium transition-colors",
         "disabled:pointer-events-none disabled:opacity-50",
@@ -332,15 +346,31 @@ export function ActionSwapButton({
       }}
       {...rest}
     >
+      {/* Position-only layout keeps the contents from stretching with the
+          button while its width glides. */}
       {hasIcon ? (
-        <ActionSwapIcon value={activeItem.id} animation={animation} className="h-4 w-4">
-          {activeItem.icon ?? null}
-        </ActionSwapIcon>
+        <motion.span
+          layout="position"
+          layoutDependency={activeItem.id}
+          transition={layoutTransition}
+          className="inline-flex shrink-0"
+        >
+          <ActionSwapIcon value={activeItem.id} animation={animation} className="h-4 w-4">
+            {activeItem.icon ?? null}
+          </ActionSwapIcon>
+        </motion.span>
       ) : null}
       {!iconOnly ? (
-        <ActionSwapText value={activeItem.id} animation={animation}>
-          {activeItem.label}
-        </ActionSwapText>
+        <motion.span
+          layout="position"
+          layoutDependency={activeItem.id}
+          transition={layoutTransition}
+          className="inline-flex min-w-0 max-w-full"
+        >
+          <ActionSwapText value={activeItem.id} animation={animation}>
+            {activeItem.label}
+          </ActionSwapText>
+        </motion.span>
       ) : null}
     </motion.button>
   );

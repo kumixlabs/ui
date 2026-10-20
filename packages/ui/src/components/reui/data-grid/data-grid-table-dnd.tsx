@@ -1,5 +1,8 @@
 "use client";
 
+// Opted out of React Compiler with the rest of the grid (see data-grid.tsx).
+"use no memo";
+
 import type { CSSProperties, ReactNode } from "react";
 import { Fragment, memo, useEffect, useId, useMemo, useRef, useState } from "react";
 import {
@@ -251,7 +254,7 @@ function DataGridTableDndBodyRows<TData extends object>({
  */
 const MemoizedDataGridTableDndBodyRows = memo(
   DataGridTableDndBodyRows,
-  (_prev, next) => !!next.table.state.columnResizing.isResizingColumn,
+  (_prev, next) => !!next.table.state.columnResizing?.isResizingColumn,
 ) as typeof DataGridTableDndBodyRows;
 
 // dnd-kit's KeyboardSensor scrolls instead of moving when the target sits

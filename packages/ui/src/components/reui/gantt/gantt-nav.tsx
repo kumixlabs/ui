@@ -19,7 +19,13 @@ import {
 } from "../../ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../ui/tooltip";
-import { useGanttNavigation, useGanttScale, useGanttSettings, useGanttViewConfig } from "./gantt";
+import {
+  useGanttNavigation,
+  useGanttScale,
+  useGanttSelector,
+  useGanttSettings,
+  useGanttViewConfig,
+} from "./gantt";
 import { toZoned } from "./gantt-lib";
 import type { GanttScale } from "./gantt-types";
 
@@ -73,11 +79,12 @@ function GanttNavToday({ className, render, children, tooltip, ...props }: NavBu
   const { today, isToday } = useGanttNavigation();
   const settings = useGanttSettings();
   const nav = useNavButtonProps();
-  // zoned: a system-zone new Date() can name a different day than Today opens
-  const defaultTooltip = format(
-    toZoned(new Date(), settings.timeZone),
-    settings.i18n.formats.dayTitle,
-    { locale: settings.locale },
+  // zoned: a system-zone new Date() can name a different day than Today opens.
+  // A selector re-reads the clock on every render, compiled or not.
+  const defaultTooltip = useGanttSelector(() =>
+    format(toZoned(new Date(), settings.timeZone), settings.i18n.formats.dayTitle, {
+      locale: settings.locale,
+    }),
   );
   return (
     <NavTooltip content={tooltip === undefined ? defaultTooltip : tooltip}>

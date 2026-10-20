@@ -1,5 +1,8 @@
 "use client";
 
+// Opted out of React Compiler with the rest of the grid (see data-grid.tsx).
+"use no memo";
+
 import type { CSSProperties, ReactNode } from "react";
 import {
   createContext,
@@ -390,7 +393,7 @@ function DataGridTableDndRowsBody<TData extends object>({
  */
 const MemoizedDataGridTableDndRowsBody = memo(
   DataGridTableDndRowsBody,
-  (_prev, next) => !!next.table.state.columnResizing.isResizingColumn,
+  (_prev, next) => !!next.table.state.columnResizing?.isResizingColumn,
 ) as typeof DataGridTableDndRowsBody;
 
 function DataGridTableDndRows<TData extends object>({

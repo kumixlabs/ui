@@ -15,6 +15,7 @@ import {
   CASCADER_ROOT_KEY,
   CASCADER_ROWS_CLASS,
   CASCADER_SCROLL_CLASS,
+  focusCascaderHome,
   warnCascaderOnce,
 } from "./cascader-lib";
 
@@ -134,7 +135,12 @@ function CascaderColumnPanel({ column, children, virtualized }: CascaderColumnPa
         <button
           type="button"
           data-slot="cascader-retry"
-          onClick={() => retryLevel(columnKey)}
+          onClick={(event) => {
+            // Same hand-off as the panel's Retry: a trail column, or an
+            // inline one, can hold focus, and the loading state unmounts this.
+            focusCascaderHome(event.currentTarget);
+            retryLevel(columnKey);
+          }}
           className="rounded-md px-1 font-medium text-foreground outline-hidden transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/50"
         >
           {labels.retry}

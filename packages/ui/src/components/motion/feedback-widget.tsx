@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useId, useRef, useState } from "react";
 import { AlertCircle, MessageSquare, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
@@ -58,6 +58,7 @@ export function FeedbackWidget({
   const reduce = useReducedMotion();
   const rootRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const titleId = useId();
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [status, setStatus] = useState<Status>("idle");
@@ -353,7 +354,9 @@ export function FeedbackWidget({
                     >
                       <div className="min-h-[150px] rounded-[20px] bg-border/60 px-4 py-3.5">
                         <div className="flex items-start justify-between gap-3">
-                          <h3 className="font-semibold text-foreground text-sm">{title}</h3>
+                          <h3 id={titleId} className="font-semibold text-foreground text-sm">
+                            {title}
+                          </h3>
                           <button
                             type="button"
                             onClick={close}
@@ -365,6 +368,7 @@ export function FeedbackWidget({
                         </div>
                         <textarea
                           ref={textareaRef}
+                          aria-labelledby={titleId}
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
                           placeholder={placeholder}

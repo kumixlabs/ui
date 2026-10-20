@@ -36,26 +36,19 @@ export interface BouncyAccordionProps {
   classNames?: BouncyAccordionClassNames;
 }
 
-// Local springs keep the accordion's connected groups moving together while
-// avoiding scale projection on text-heavy row contents.
-// Gap spring: must not overshoot y — positive y overshoot drifts items below
-// their mt-3 resting point and briefly overlaps the next item.
-const ROW_TRANSITION: Transition = {
-  type: "spring",
-  duration: 0.55,
-  bounce: 0.38,
-};
-
-const CONTENT_OPEN_TRANSITION: Transition = {
+// Rows, cards and scale-corrected text share a transition so their edges
+// stay joined. A close or switch uses the faster non-overshooting spring;
+// opening from all-closed keeps the weighted bounce.
+const EXPAND_TRANSITION: Transition = {
   type: "spring",
   duration: 0.58,
   bounce: 0.32,
 };
 
-const CONTENT_CLOSE_TRANSITION: Transition = {
+const COLLAPSE_TRANSITION: Transition = {
   type: "spring",
   duration: 0.46,
-  bounce: 0.26,
+  bounce: 0,
 };
 
 const DESCRIPTION_TRANSITION: Transition = {
@@ -80,7 +73,7 @@ function useControllableAccordionValue({
 }) {
   const [internalValue, setInternalValue] = useState(defaultValue ?? null);
   const isControlled = value !== undefined;
-  const currentValue = value ?? internalValue;
+  const currentValue = isControlled ? value : internalValue;
 
   const setValue = useCallback(
     (next: string | null) => {
@@ -105,6 +98,8 @@ function BouncyAccordionRow({
   contentId,
   triggerId,
   reduce,
+  layoutTransition,
+  layoutDependency,
   classNames,
   onToggle,
 }: {
@@ -116,6 +111,8 @@ function BouncyAccordionRow({
   contentId: string;
   triggerId: string;
   reduce: boolean | null;
+  layoutTransition: Transition;
+  layoutDependency: string | null;
   classNames?: BouncyAccordionClassNames;
   onToggle: () => void;
 }) {
@@ -142,13 +139,16 @@ function BouncyAccordionRow({
 
   return (
     <motion.div
-      layout="position"
+      layout={reduce ? false : "position"}
+      layoutDependency={layoutDependency}
       initial={false}
       style={{ marginTop: separatedFromPrevious ? 12 : 0 }}
-      transition={reduce ? { duration: 0 } : ROW_TRANSITION}
+      transition={{ layout: layoutTransition }}
     >
       <motion.div
         data-state={open ? "open" : "closed"}
+        layout={!reduce}
+        layoutDependency={layoutDependency}
         initial={false}
         animate={{
           borderTopLeftRadius: startsGroup ? 28 : 0,
@@ -156,20 +156,25 @@ function BouncyAccordionRow({
           borderBottomLeftRadius: endsGroup ? 28 : 0,
           borderBottomRightRadius: endsGroup ? 28 : 0,
         }}
-        transition={reduce ? { duration: 0 } : ROW_TRANSITION}
+        transition={reduce ? { duration: 0 } : layoutTransition}
+        style={{ originY: 0 }}
         className={cn(
           "overflow-hidden bg-card text-card-foreground",
           item.disabled && "opacity-50",
           classNames?.item,
         )}
       >
-        <button
+        <motion.button
           id={triggerId}
           type="button"
           disabled={item.disabled}
           aria-expanded={open}
           aria-controls={contentId}
           onClick={onToggle}
+          layout={reduce ? false : "position"}
+          layoutDependency={layoutDependency}
+          transition={{ layout: layoutTransition }}
+          style={{ originY: 0 }}
           className={cn(
             "flex min-h-[54px] w-full items-center gap-4 px-5 text-left outline-none transition-colors",
             "focus-visible:bg-muted/25",
@@ -206,28 +211,30 @@ function BouncyAccordionRow({
           >
             <ChevronDown className="h-4 w-4" />
           </motion.span>
-        </button>
+        </motion.button>
 
-        <motion.div
-          layout="size"
+        <section
           id={contentId}
-          role="region"
           aria-labelledby={triggerId}
           aria-hidden={!open}
           inert={!open}
-          initial={false}
-          style={{ height: open && item.description ? contentHeight : 0 }}
-          transition={
-            reduce ? { duration: 0 } : open ? CONTENT_OPEN_TRANSITION : CONTENT_CLOSE_TRANSITION
-          }
-          className={cn("overflow-hidden", classNames?.content)}
+          style={{ height: open && item.description ? contentHeight || "auto" : 0 }}
+          className={cn(classNames?.content)}
         >
           <motion.div
             ref={contentRef}
-            animate={{
-              opacity: open ? 1 : 0,
+            // The card clips this full-size layout node. Correcting only the
+            // card scale avoids a one-pixel clip and its extreme text scale.
+            // Size changes outside a toggle snap to their natural geometry.
+            layout={reduce ? false : "position"}
+            layoutDependency={layoutDependency}
+            initial={false}
+            animate={{ opacity: open ? 1 : 0 }}
+            transition={{
+              opacity: reduce ? { duration: 0 } : DESCRIPTION_TRANSITION,
+              layout: layoutTransition,
             }}
-            transition={reduce ? { duration: 0 } : DESCRIPTION_TRANSITION}
+            style={{ originY: 0 }}
             className="px-5 pb-5"
           >
             <div
@@ -236,7 +243,7 @@ function BouncyAccordionRow({
               {item.description}
             </div>
           </motion.div>
-        </motion.div>
+        </section>
       </motion.div>
     </motion.div>
   );
@@ -259,6 +266,14 @@ export function BouncyAccordion({
     onValueChange,
   });
   const activeIndex = items.findIndex((item) => item.id === activeValue);
+  const previousValue = useRef(activeValue);
+  const layoutTransition =
+    activeValue === null || previousValue.current !== null
+      ? COLLAPSE_TRANSITION
+      : EXPAND_TRANSITION;
+  useLayoutEffect(() => {
+    previousValue.current = activeValue;
+  }, [activeValue]);
 
   const toggleItem = useCallback(
     (id: string) => {
@@ -297,6 +312,8 @@ export function BouncyAccordion({
             contentId={contentId}
             triggerId={triggerId}
             reduce={reduce}
+            layoutTransition={layoutTransition}
+            layoutDependency={activeValue}
             classNames={classNames}
             onToggle={() => toggleItem(item.id)}
           />

@@ -1,5 +1,8 @@
 "use client";
 
+// Opted out of React Compiler with the rest of the grid (see data-grid.tsx).
+"use no memo";
+
 import type { CSSProperties, ReactNode } from "react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Column, Row } from "@tanstack/react-table";
@@ -608,7 +611,7 @@ function DataGridTableVirtualBody<TData extends object>({
 const MemoizedVirtualBody = memo(
   DataGridTableVirtualBody,
   (_prev, next) =>
-    !!next.table.state.columnResizing.isResizingColumn || next.table._isSelectingCells === true,
+    !!next.table.state.columnResizing?.isResizingColumn || next.table._isSelectingCells === true,
 ) as typeof DataGridTableVirtualBody;
 
 function DataGridTableVirtual<TData extends object>({

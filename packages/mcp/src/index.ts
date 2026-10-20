@@ -299,6 +299,9 @@ class KumixUiMCPServer {
       packageName === "@kumix/ui"
         ? {
             shadcn: 'import { Button } from "@kumix/ui/ui/button"',
+            shadcnCodeBlock:
+              'import { CodeBlock, CodeBlockContent } from "@kumix/ui/ui/code-block"',
+            shadcnTrace: 'import { Trace, TraceLine } from "@kumix/ui/ui/trace"',
             reui: 'import { Kanban } from "@kumix/ui/reui/kanban"',
             motion: 'import { TiltCard } from "@kumix/ui/motion/tilt-card"',
             multiSelect: 'import { MultiSelect } from "@kumix/ui/motion/multi-select"',

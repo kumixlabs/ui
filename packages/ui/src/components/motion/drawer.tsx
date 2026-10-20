@@ -1,9 +1,10 @@
 "use client";
 
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { useFocusTrap } from "../../hooks/use-focus-trap";
 import { EASE_OUT, SPRING_PANEL } from "../../lib/ease";
 import { PresenceGate } from "../../lib/presence-gate";
 
@@ -17,7 +18,7 @@ export interface DrawerProps {
   /** Class for the backdrop. */
   backdropClassName?: string;
   ariaLabel?: string;
-  /** Close when the backdrop is clicked. Default true. */
+  /** Close when the backdrop is clicked or Escape is pressed. Default true. */
   dismissable?: boolean;
 }
 
@@ -32,20 +33,22 @@ export function Drawer({
   dismissable = true,
 }: DrawerProps) {
   const reduce = useReducedMotion();
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Focus moves into the panel on open, Tab stays inside it, and focus returns
+  // to the opener on close.
+  useFocusTrap(open, panelRef, {
+    onEscape: dismissable ? () => onOpenChange(false) : undefined,
+  });
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onOpenChange(false);
-    };
-    window.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
     };
-  }, [open, onOpenChange]);
+  }, [open]);
 
   const offscreen = side === "right" ? "100%" : "-100%";
 
@@ -62,7 +65,9 @@ export function Drawer({
             <motion.button
               type="button"
               aria-label="Close"
-              tabIndex={dismissable ? 0 : -1}
+              // Outside the panel, so the focus trap never lands on it; it is
+              // a pointer target only.
+              tabIndex={-1}
               onClick={() => dismissable && onOpenChange(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -80,7 +85,9 @@ export function Drawer({
       {open ? (
         <PresenceGate key="panel">
           {({ gate }) => (
-            <motion.aside
+            <motion.div
+              ref={panelRef}
+              tabIndex={-1}
               role="dialog"
               aria-modal="true"
               aria-label={ariaLabel}
@@ -90,7 +97,7 @@ export function Drawer({
               transition={reduce ? { duration: 0.2, ease: EASE_OUT } : SPRING_PANEL}
               {...gate}
               className={cn(
-                "fixed inset-y-0 z-50 flex w-80 max-w-[85vw] flex-col bg-background shadow-2xl",
+                "fixed inset-y-0 z-50 flex w-80 max-w-[85vw] flex-col bg-background shadow-2xl outline-none",
                 side === "right"
                   ? "right-0 border-border border-l"
                   : "left-0 border-border border-r",
@@ -98,7 +105,7 @@ export function Drawer({
               )}
             >
               {children}
-            </motion.aside>
+            </motion.div>
           )}
         </PresenceGate>
       ) : null}

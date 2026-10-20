@@ -46,10 +46,12 @@ import {
   findAmbiguousCascaderLabels,
   findCascaderDataIssues,
   flattenCascaderTree,
+  focusCascaderHome,
   getCascaderCheckedValues,
   getCascaderChildren,
   getCascaderCount,
   getCascaderIndeterminateFrom,
+  getCascaderListedValues,
   getCascaderPath,
   getCascaderSelectedDescendants,
   getCascaderTabTarget,
@@ -62,6 +64,7 @@ import {
   normalizeCascaderQuery,
   searchCascaderDeep,
   warnCascaderOnce,
+  withCascaderMoreRow,
 } from "./cascader-lib";
 import type {
   CascaderActionItem,
@@ -290,7 +293,9 @@ export interface CascaderBaseProps<T = unknown> {
   getParent?: (node: CascaderNode<T>) => string | null | undefined;
 
   /**
-   * Fetches one level on demand; `node` is `null` for the root. Return an
+   * Fetches one level on demand; `node` is `null` for the root, and only
+   * `{ value, label: value }` for a level on screen whose node has not loaded
+   * (a deep link, or a page-loaded level after a `loadKey` change). Return an
    * array, or a `CascaderLoadResult` when the level pages. Pages cache apart
    * from `items`; mark unfetched branches `hasChildren` or they read as leaves.
    */
@@ -305,8 +310,9 @@ export interface CascaderBaseProps<T = unknown> {
   searchDebounce?: number;
   /**
    * Resolves a value the loader has never seen into its ancestor chain, root
-   * first, so the trigger can path a server-supplied selection. Does NOT mark
-   * those levels loaded: opening one still fetches.
+   * first, so the trigger can path a server-supplied selection. Runs with the
+   * popup closed too. Does NOT mark those levels loaded: opening one still
+   * fetches, and lists the node after its rows while it has pages left.
    */
   resolveValue?: CascaderResolveValue<T>;
   /** Cache key. Changing it drops every page and aborts anything in flight. */
@@ -341,9 +347,10 @@ export interface CascaderBaseProps<T = unknown> {
   /**
    * Parent/child cascading. Multi-select only, off by default, and it needs
    * committable branches (`selectable="any"` or a predicate). A commit selects
-   * or deselects every SELECTABLE node in the LOADED subtree and reconciles
-   * ancestors. LOADED is the semantic, not a hedge: a commit must not fan out
-   * into a request per level, so children arriving later arrive unchecked.
+   * or deselects every SELECTABLE node in the KNOWN subtree (loaded, or on a
+   * resolved chain) and reconciles ancestors. KNOWN is the semantic, not a
+   * hedge: a commit must not fan out into a request per level, so children
+   * arriving later arrive unchecked.
    */
   cascade?: boolean;
 
@@ -386,7 +393,8 @@ export interface CascaderBaseProps<T = unknown> {
   /** Custom matcher, replacing label + keywords substring matching. */
   filter?: (node: CascaderNode<T>, normalizedQuery: string) => boolean;
 
-  /** On open, navigate to the level holding the selection. Default true. */
+  /** On open, navigate to the level holding the selection. Default true.
+   * Not in `mode="tree"`, which has no levels to navigate. */
   revealSelected?: boolean;
 
   maxHeight?: number | string;
@@ -853,10 +861,8 @@ function Cascader<T>({
 
   /**
    * Whether pressing this branch has to FETCH first: in flight, failed, or
-   * never asked. `baseIndex`, NOT the merged `index`: `resolveValue` writes an
-   * ancestor chain into `pages` without touching `states`, so the merged index
-   * shows children for levels never requested. Must agree with `ensureLevel`'s
-   * own guards or a press parks a navigation nothing will ever settle.
+   * never asked. `baseIndex`, as `ensureLevel` asks it: the two must agree or a
+   * press parks a navigation nothing will ever settle.
    */
   const needsChildren = React.useCallback(
     (node: CascaderNode<T>) => {
@@ -868,12 +874,26 @@ function Cascader<T>({
     [loader.active, loadStates, baseIndex],
   );
 
-  // Keyed on the two maps the merge reads, NOT the store: `withLoadState`
+  // Levels with pages left, the only ones a resolved chain node is listed in.
+  // A string first, so a loading flip that leaves `hasMore` alone keeps the
+  // set, and the index, as they were.
+  const pagingKey = JSON.stringify(
+    Array.from(loadStates)
+      .filter(([, state]) => state.hasMore)
+      .map(([key]) => key),
+  );
+  const paging = React.useMemo(
+    () => new Set<string>(JSON.parse(pagingKey) as string[]),
+    [pagingKey],
+  );
+
+  // Keyed on the maps the merge reads, NOT the store: `withLoadState`
   // returns a fresh store over the SAME maps, so keying on it rebuilt the
   // whole index on every loading flip that changed no data.
+  const { pages, detached, links } = loader.store;
   const index = React.useMemo(
-    () => mergeCascaderIndex(baseIndex, loader.store.pages, loader.store.detached),
-    [baseIndex, loader.store.pages, loader.store.detached],
+    () => mergeCascaderIndex(baseIndex, pages, detached, links, paging),
+    [baseIndex, pages, detached, links, paging],
   );
 
   /** Whether a level needs the paging pseudo-row. A never-fetched level gets
@@ -946,8 +966,12 @@ function Cascader<T>({
   const levelRendered = React.useMemo(() => {
     if (deepResults) return deepResults;
     if (!needsMoreRow(currentLevelKey, levelItems.length)) return levelItems;
-    return [...levelItems, createCascaderMoreNode<T>(currentLevelKey, levelItems.length)];
-  }, [deepResults, levelItems, currentLevelKey, needsMoreRow]);
+    return withCascaderMoreRow(
+      levelItems,
+      createCascaderMoreNode<T>(currentLevelKey, levelItems.length),
+      index.pinned,
+    );
+  }, [deepResults, levelItems, currentLevelKey, needsMoreRow, index.pinned]);
 
   // Columns renders the whole trail, but only the deepest column is
   // interactive through Base UI, so `renderedItems` stays what drill uses.
@@ -966,7 +990,11 @@ function Cascader<T>({
         const key = parentValue ?? CASCADER_ROOT_KEY;
         const children = getCascaderChildren(index, parentValue);
         columnItems = needsMoreRow(key, children.length)
-          ? [...children, createCascaderMoreNode<T>(key, children.length)]
+          ? withCascaderMoreRow(
+              children,
+              createCascaderMoreNode<T>(key, children.length),
+              index.pinned,
+            )
           : children;
       }
       trail.push({
@@ -1007,7 +1035,11 @@ function Cascader<T>({
     // hit inside a collapsed branch disappears. Same matcher as every other
     // path, so keyword-only hits do not vanish in tree mode alone.
     const keep = new Set<string>();
+    // Only a hit some level shows: a resolved node no loaded level lists kept
+    // its ancestors expanded over nothing, while the status said no results.
+    const listed = getCascaderListedValues(index);
     for (const node of index.all) {
+      if (!listed.has(node.value)) continue;
       if (!(filter ? filter(node, normalized) : matchesCascaderQuery(node, normalized))) {
         continue;
       }
@@ -1311,6 +1343,10 @@ function Cascader<T>({
       .length;
   }, [deepResults, renderedItems, query, filter]);
 
+  // Real rows only: a tree's first load renders its loading row, and counting
+  // that one called the first fetch "Loading more".
+  const hasRows = renderedItems.some((node) => !isCascaderMoreNode(node));
+
   // The live-region text plus whether it may be DEFERRED; see
   // `ANNOUNCE_DEBOUNCE`. The committed string is state, set below.
   const announcementTarget = React.useMemo(() => {
@@ -1354,7 +1390,7 @@ function Cascader<T>({
       // that "Loading more" misreads what is being waited on.
       text = query.trim()
         ? labels.searchingAnnouncement
-        : total > 0
+        : hasRows
           ? labels.loadingMore
           : labels.loading;
     } else if (query.trim()) {
@@ -1386,6 +1422,7 @@ function Cascader<T>({
     query,
     labels,
     renderedItems.length,
+    hasRows,
     announcedMatches,
     currentParent,
     path.length,
@@ -1918,21 +1955,24 @@ function Cascader<T>({
       }
 
       // Opening onto the level holding the selection is the difference
-      // between "edit this" and "start over".
+      // between "edit this" and "start over". Not in a tree, where `path`
+      // does nothing and the live region announced a level nobody could see.
       if (revealSelected) {
         setQuery("");
         const first = toArray(value)[0];
-        setPathWithReason(
-          first
-            ? getCascaderPath(index, first)
-                .slice(0, -1)
-                .map((node) => node.value)
-            : [],
-          "reveal",
-        );
+        if (mode !== "tree") {
+          setPathWithReason(
+            first
+              ? getCascaderPath(index, first)
+                  .slice(0, -1)
+                  .map((node) => node.value)
+              : [],
+            "reveal",
+          );
+        }
       }
     },
-    [setOpen, setQuery, revealSelected, value, index, setPathWithReason, hasOpenFlyout],
+    [setOpen, setQuery, revealSelected, value, index, mode, setPathWithReason, hasOpenFlyout],
   );
 
   /* -------------------------------- context ------------------------------- */
@@ -1948,7 +1988,7 @@ function Cascader<T>({
    * change or a highlight, which is what makes `React.memo` on `CascaderItem`
    * hold while the user types. Destructured off `loader` so the memo depends
    * on its `[]`-dep callbacks, not the object it republishes per load. */
-  const { active: hasLoader, loadMore, retryLevel, prefetchNode } = loader;
+  const { active: hasLoader, loadMore, retryLevel, retrySearch, prefetchNode } = loader;
 
   const actionsValue = React.useMemo<CascaderActionsContextValue<T>>(
     () => ({
@@ -1975,6 +2015,7 @@ function Cascader<T>({
       hasLoader,
       loadMore,
       retryLevel,
+      retrySearch,
       invalidateLevel,
       getIndex,
       getState,
@@ -2023,6 +2064,7 @@ function Cascader<T>({
       hasLoader,
       loadMore,
       retryLevel,
+      retrySearch,
       invalidateLevel,
       getIndex,
       getState,
@@ -2713,7 +2755,7 @@ function CascaderEmpty({
   skeletonRows,
   ...props
 }: CascaderEmptyProps) {
-  const { labels, retryLevel } = useCascaderActions();
+  const { labels, retryLevel, retrySearch } = useCascaderActions();
   const { query, path, searchState } = useCascaderState();
   // The level whose emptiness is on screen; tree always shows the root.
   const levelKey = path.length ? path[path.length - 1] : CASCADER_ROOT_KEY;
@@ -2731,7 +2773,13 @@ function CascaderEmpty({
           data-slot="cascader-retry"
           /* A real button because this lives OUTSIDE the listbox; a focusable
              element inside a `role="option"` is `nested-interactive`. */
-          onClick={() => retryLevel(levelKey)}
+          onClick={(event) => {
+            focusCascaderHome(event.currentTarget);
+            // With a query set the error shown is the SEARCH's, so that is
+            // what to ask again; the level behind it never failed.
+            if (query.trim() && searchState?.error) retrySearch();
+            else retryLevel(levelKey);
+          }}
           className="rounded-md px-2 py-0.5 font-medium text-foreground outline-hidden transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/50"
         >
           {labels.retry}

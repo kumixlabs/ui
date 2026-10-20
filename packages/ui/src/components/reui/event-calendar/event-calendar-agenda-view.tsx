@@ -34,8 +34,10 @@ function EventCalendarAgendaView({ className, render, ...props }: EventCalendarA
       isEqual: (a, b) => getRangeKey(a) === getRangeKey(b),
     },
   );
-  // Subscribe to event changes via the day-bucket content of the whole range
-  useEventCalendarSelector((state) => state.events);
+  // The index rebuilds whenever the events change, so its identity is the
+  // subscription. Read it here, not in render: React Compiler caches a bare
+  // getIndex() on the stable `instance`, and an edit never repainted a row.
+  const index = useEventCalendarSelector(() => instance.internals.getIndex());
 
   const days = useMemo(() => {
     const result: Date[] = [];
@@ -47,7 +49,6 @@ function EventCalendarAgendaView({ className, render, ...props }: EventCalendarA
     return result;
   }, [visibleRange, settings.timeZone]);
 
-  const index = instance.internals.getIndex();
   const groups = days
     .map((day) => ({
       day,

@@ -901,7 +901,12 @@ function useGanttNavigation(): {
     },
   );
   useGanttSettingsVersion(instance);
-  const now = new Date();
+  // Read in a selector, which runs on every render: compiled, a render-body
+  // clock read is cached and Today keeps its mount-time answer.
+  const isToday = useGanttSelector((state) => {
+    const now = new Date();
+    return now >= state.activeRange.start && now < state.activeRange.end;
+  });
   // The title names what you are LOOKING at: the visible-center period when
   // the view reports one, otherwise the anchor period.
   const titleDate = slice.viewportCenter ?? slice.date;
@@ -925,7 +930,7 @@ function useGanttNavigation(): {
     prev: instance.api.prev,
     today: instance.api.today,
     goTo: instance.api.goTo,
-    isToday: now >= slice.activeRange.start && now < slice.activeRange.end,
+    isToday,
   };
 }
 
