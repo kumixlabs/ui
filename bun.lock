@@ -11,7 +11,7 @@
         "@changesets/cli": "^3.0.3",
         "@commitlint/cli": "^21.2.4",
         "@commitlint/config-conventional": "^21.2.4",
-        "@kumix/biome-config": "^0.2.0",
+        "@kumix/biome-config": "^0.2.1",
         "@types/bun": "^1.4.3",
         "@types/node": "^26.6.5",
         "@types/react-dom": "^19.3.0",
@@ -280,7 +280,7 @@
 
     "@hono/node-server": ["@hono/node-server@2.1.5", "", { "peerDependencies": { "hono": "^4 || ^5.0.0-0" } }, "sha512-MgP/I06GdvsilDspMk/qmRzpk8LOUStP6jFAbSRi40W09DhoyUn+Mj7eyKICPqeYKybOjVFLVIAQzvu1bfIa7Q=="],
 
-    "@kumix/biome-config": ["@kumix/biome-config@0.2.0", "", { "peerDependencies": { "@biomejs/biome": ">=2.6.0" } }, "sha512-S40hYUXDKNPfH2DZ4lR5OmaOHF+2cCBAxqE0DrgTN2Q+plQNaMrRagEYq82aA2OVvuVlKVeH8+etA2jH29RNVQ=="],
+    "@kumix/biome-config": ["@kumix/biome-config@0.2.1", "", { "peerDependencies": { "@biomejs/biome": ">=2.6.0" } }, "sha512-PWwZE7Inp0jCLbGwVspcICHuGOabCSxxeo8exmmSniRfG5V4bQ9XQSq9giQKyBu5vbcF4sk6qAslClgz+9/CvQ=="],
 
     "@kumix/mcp": ["@kumix/mcp@workspace:packages/mcp"],
 
@@ -1083,8 +1083,6 @@
     "@reduxjs/toolkit/reselect": ["reselect@5.3.0", "", {}, "sha512-XGoLeRAVzUTcJ1qkxPQhDJyIZ5d6zzZD9nT7AEZOaaU9UbWclhycElmhO+VD5bFeLuzhPBaOV2oXC8uG35ZSpg=="],
 
     "body-parser/content-type": ["content-type@2.1.0", "", {}, "sha512-mj7UPXE0jaqaOsukNZRUEfEi2AcL7C/vwmwcHV0O97eO1E1pxBZuyjlZrx5seTaNBg1U6+o35wpa35Qfcc+7ag=="],
-
-    "bun-types/undici-types": ["undici-types@8.12.3", "", {}, "sha512-EXE4ydL3S76dFb27UFjNVZHTyv/TLdATj/KUe29ptdcg6qXL48J2tZ3126E5kICj5jn781OR+XlVH1N6Mz8jbA=="],
 
     "cliui/string-width": ["string-width@7.2.0", "", { "dependencies": { "emoji-regex": "^10.3.0", "get-east-asian-width": "^1.0.0", "strip-ansi": "^7.1.0" } }, "sha512-tsaTIkKW9b4N+AEj+SVA+WhJzV7/zMhcSu78mLKWSk7cXMOSHsBKFWUs0fWwq8QyK3MgJBQRX6Gbi4kYbdvGkQ=="],
 

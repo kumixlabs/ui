@@ -82,4 +82,6 @@ packages/ui/src/
 
 ## License
 
-MIT © Kumix Labs
+MIT License — see [LICENSE](./LICENSE) for details.
+
+By contributing to Kumix UI, you agree that your contributions will be licensed under the MIT License.
