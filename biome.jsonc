@@ -2,7 +2,31 @@
   "$schema": "https://biomejs.dev/schemas/latest/schema.json",
   "extends": ["@kumix/biome-config/base"],
   "files": {
-    "includes": ["**", "!**/CHANGELOG.md"]
+    // Mirrors @kumix/biome-config/base includes (arrays replace on extends) + CHANGELOG exclusion.
+    "includes": [
+      // biome-ignore lint/suspicious/noBiomeFirstException: mirrors base config, arrays replace on extends
+      "**",
+      "!**/bun.lock",
+      "!**/routeTree.gen.ts",
+      "!**/CHANGELOG.md",
+      "!!**/.changeset",
+      "!!**/.cloudflare",
+      "!!**/.husky",
+      "!!**/.next",
+      "!!**/.nitro",
+      "!!**/.output",
+      "!!**/.source",
+      "!!**/.tanstack",
+      "!!**/.turbo",
+      "!!**/.wrangler",
+      "!!**/build",
+      "!!**/coverage",
+      "!!**/dist",
+      "!!**/dist-ssr",
+      "!!**/generated",
+      "!!**/node_modules",
+      "!!**/out"
+    ]
   },
   "overrides": [
     {
