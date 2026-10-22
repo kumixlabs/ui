@@ -1,6 +1,9 @@
 {
   "$schema": "https://biomejs.dev/schemas/latest/schema.json",
   "extends": ["@kumix/biome-config/base"],
+  "files": {
+    "includes": ["**", "!**/CHANGELOG.md"]
+  },
   "overrides": [
     {
       "includes": ["packages/ui/src/components/ui/calendar.tsx"],
