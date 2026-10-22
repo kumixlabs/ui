@@ -109,7 +109,6 @@
 ### Patch Changes
 
 - [`e1c25fa`](https://github.com/kumixlabs/ui/commit/e1c25fabe7aa5841741bfa3a590babbeda57e86c) Thanks [@kumixio](https://github.com/kumixio)! - update dependencies and improve motion components
-
   - Bump react-resizable-panels to version 4.12.3
   - Enhance BottomSheet component with accessibility improvements
   - Refactor ActionSwapText component for better performance
@@ -171,7 +170,6 @@
 ### Patch Changes
 
 - [`b0d2053`](https://github.com/kumixlabs/ui/commit/b0d205346b001cb554b051e94edc8f34ff8c7278) Thanks [@kumixio](https://github.com/kumixio)! - Update event calendar agenda view styles
-
   - Adjust styles to remove the bottom border from the last agenda item to prevent double borders with the calendar container.
   - Enhance the sticky header to account for custom scrollbar visibility, ensuring it does not overlap with the header background.
 

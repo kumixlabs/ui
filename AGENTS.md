@@ -10,7 +10,7 @@
 - `packages/ui` (`@kumix/ui`): Published package. Per-file ESM exports only (no barrel `index.ts` files).
   - `components/ui/` — shadcn/ui (Base UI, base-nova). Add via `bun run add:shadcn`. Docs: [ui.shadcn.com](https://ui.shadcn.com/docs/components)
   - `components/reui/` — ReUI registry. Add via `bun run add:reui`. Docs: [reui.io](https://reui.io/docs). Multi-file dirs: `code-block/` (entry `code-block.tsx` + `code-block-highlight.tsx`), `data-grid/` (entry `data-grid.tsx`; parts include `data-grid-table.tsx`, `data-grid-table-virtual.tsx`, `data-grid-cell-selection.tsx`, `data-grid-i18n.tsx`, pagination/column-header/filter/visibility/scroll-area/dnd)
-  - `components/motion/` — beUI registry (Motion-based animated components). Add via `bun run add:beui`. Docs: [beui.dev](https://beui.dev/components/motion). Bundles `motion`, `lenis`, `@paper-design/shaders-react` — no extra installs needed. Multi-file dirs: `button/`, `table/`, `availability-scheduler/`, `not-found/`, `multi-select/`, `swap/`, `wallet-card/`, `date-range-picker/` (each has `index.tsx`), plus `combobox/` (parts only — entry is flat `combobox.tsx`), `tooltip/` (positioner, grace area, and hook helper). Flat entries include `adaptive-stepper.tsx` (Liquid-eased), `liquid.tsx` (`Liquid`/`LiquidItem`), `breadcrumb.tsx`, `card.tsx`, `color-selector.tsx`, `color-picker.tsx`, and `morphing-search-chips.tsx`.
+  - `components/motion/` — beUI registry (Motion-based animated components). Add via `bun run add:beui`. Docs: [beui.dev](https://beui.dev/components/motion). Bundles `motion`, `lenis`, `@paper-design/shaders-react` — no extra installs needed. Multi-file dirs: `button/`, `table/`, `availability-scheduler/`, `not-found/`, `multi-select/`, `swap/`, `wallet-card/`, `date-range-picker/` (each has `index.tsx`), plus `combobox/` (parts only — entry is flat `combobox.tsx`), `tooltip/` (positioner, grace area, and hook helper). Flat entries include `adaptive-stepper.tsx` (Liquid-eased), `liquid.tsx` (`Liquid`/`LiquidItem`), `breadcrumb.tsx`, `card.tsx`, `color-selector.tsx`, `color-picker.tsx`, `morphing-search-chips.tsx`, and `timeline.tsx` (pointer-drag carousel).
   - `components/agents/` — beUI registry (AI agent / chat components). Add via `bun run add:beui:ai-agents`. Docs: [beui.dev/components/agents](https://beui.dev/components/agents). Multi-file dirs: `agent-activity/`, `approval-card/`, `loading-states/`.
   - `components/charts/` — Financial & data visualization charts (bump-chart, candlestick-chart, composition-chart, donut-chart, funnel-chart, heat-calendar, liquidity-heatmap, order-book, price-target-fan, returns-calendar, status-bar, treemap, volume-profile).
   - `components/custom/` — hand-written Kumix-specific composite components (not from any registry).
@@ -45,6 +45,7 @@
      - Prepends `"use client"` when missing.
      - Handles bare same-dir imports (e.g. `"button"` → `"./button"`), skipping real package names that collide (`motion`, `cmdk`, …).
 - **Testing**: No test suite for `packages/ui`. Smoke test for `@kumix/mcp` via:
+
   ```bash
   bun --filter=@kumix/mcp run test
   ```

@@ -3,7 +3,6 @@
 Monorepo for Kumix React UI packages. Publishable package: **`@kumix/ui`**.
 
 Sources:
-
 - **shadcn/ui** (Base UI, base-nova) → `packages/ui/src/components/ui` — [ui.shadcn.com](https://ui.shadcn.com/)
 - **ReUI** → `packages/ui/src/components/reui` — [reui.io](https://reui.io/)
 - **beUI** (Motion-based animated components) → `packages/ui/src/components/motion` — [beui.dev](https://beui.dev/components/motion)
