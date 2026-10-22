@@ -66,7 +66,7 @@ export function FunnelChartPlot({ className }: { className?: string }) {
   const reduced = useReducedMotion();
   if (!rows.length)
     return (
-      <p className={cn("py-16 text-center text-muted-foreground text-sm", className)}>
+      <p className={cn("text-muted-foreground py-16 text-center text-sm", className)}>
         No funnel data
       </p>
     );
@@ -139,10 +139,10 @@ export function FunnelChartPlot({ className }: { className?: string }) {
                 >
                   <button
                     type="button"
-                    className="flex h-full w-full items-center justify-center outline-none transition-colors hover:bg-foreground/5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                    className="hover:bg-foreground/5 focus-visible:ring-ring flex h-full w-full items-center justify-center transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset"
                     aria-label={`${stage.label}: ${formatValue(stage.value)} ${unit}, ${percentage(stage.conversion)} of starting total`}
                   >
-                    <span className="rounded bg-background/85 px-2 py-1 font-medium font-mono text-xs tabular-nums">
+                    <span className="bg-background/85 rounded px-2 py-1 font-mono text-xs font-medium tabular-nums">
                       {formatValue(stage.value)}
                     </span>
                   </button>
@@ -161,7 +161,7 @@ export function FunnelChartPlot({ className }: { className?: string }) {
               style={{ backgroundColor: stage.color ?? colors[index % colors.length] }}
             />
             <span>{stage.label}</span>
-            <span className="font-mono text-[10px] text-muted-foreground">
+            <span className="text-muted-foreground font-mono text-[10px]">
               {percentage(stage.conversion)}
             </span>
           </span>
@@ -176,7 +176,7 @@ export function FunnelChartSummary({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-between gap-3 border-border border-t pt-4 text-xs",
+        "border-border flex flex-wrap items-center justify-between gap-3 border-t pt-4 text-xs",
         className,
       )}
     >
@@ -185,7 +185,7 @@ export function FunnelChartSummary({ className }: { className?: string }) {
       </span>
       <span className="flex items-center gap-2">
         <span className="text-muted-foreground">Overall conversion</span>
-        <span className="font-medium font-mono tabular-nums">{percentage(conversion)}</span>
+        <span className="font-mono font-medium tabular-nums">{percentage(conversion)}</span>
       </span>
     </div>
   );

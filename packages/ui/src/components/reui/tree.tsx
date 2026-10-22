@@ -87,7 +87,7 @@ function TreeItem<T = any>({ item, className, render, children, ...props }: Tree
     "data-slot": "tree-item",
     style: mergedStyle,
     className: cn(
-      "z-10 select-none ps-(--tree-padding) not-last:pb-0.5 outline-hidden focus:z-20 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "z-10 ps-(--tree-padding) outline-hidden select-none not-last:pb-0.5 focus:z-20 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     ),
     "data-focus": typeof item.isFocused === "function" ? item.isFocused() || false : undefined,
@@ -133,7 +133,7 @@ function TreeItemLabel<T = any>({
     <span
       data-slot="tree-item-label"
       className={cn(
-        "flex items-center gap-1 bg-background in-data-[drag-target=true]:bg-accent in-data-[search-match=true]:bg-blue-50! in-data-[selected=true]:bg-accent not-in-data-[folder=true]:ps-7 in-data-[selected=true]:text-accent-foreground in-focus-visible:ring-[3px] in-focus-visible:ring-ring/50 transition-colors hover:bg-accent [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "bg-background in-data-[drag-target=true]:bg-accent in-data-[selected=true]:bg-accent in-data-[selected=true]:text-accent-foreground in-focus-visible:ring-ring/50 hover:bg-accent flex items-center gap-1 transition-colors not-in-data-[folder=true]:ps-7 in-focus-visible:ring-[3px] in-data-[search-match=true]:bg-blue-50! [&_svg]:pointer-events-none [&_svg]:shrink-0",
         "rounded-md",
         "py-1.5",
         "px-2",
@@ -146,19 +146,19 @@ function TreeItemLabel<T = any>({
         (toggleIconType === "plus-minus" ? (
           item.isExpanded() ? (
             <MinusIcon
-              className="size-3.5 text-muted-foreground"
+              className="text-muted-foreground size-3.5"
               stroke="currentColor"
               strokeWidth="1"
             />
           ) : (
             <PlusIcon
-              className="size-3.5 text-muted-foreground"
+              className="text-muted-foreground size-3.5"
               stroke="currentColor"
               strokeWidth="1"
             />
           )
         ) : (
-          <ChevronDownIcon className="size-4 in-aria-[expanded=false]:-rotate-90 text-muted-foreground" />
+          <ChevronDownIcon className="text-muted-foreground size-4 in-aria-[expanded=false]:-rotate-90" />
         ))}
       {children || (typeof item.getItemName === "function" ? item.getItemName() : null)}
     </span>
@@ -180,7 +180,7 @@ function TreeDragLine({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
     <div
       style={dragLine}
       className={cn(
-        "absolute z-30 -mt-px h-0.5 w-[unset] bg-primary before:absolute before:-top-[3px] before:left-0 before:size-2 before:border-2 before:border-primary before:bg-background",
+        "bg-primary before:border-primary before:bg-background absolute z-30 -mt-px h-0.5 w-[unset] before:absolute before:-top-[3px] before:left-0 before:size-2 before:border-2",
         "before:rounded-full",
         className,
       )}

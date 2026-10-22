@@ -295,8 +295,8 @@ export function SelectTrigger({ className, children }: SelectTriggerProps) {
         borderBottomRightRadius: ctx.reduce || isTop ? RADIUS : nearRadius,
       }}
       className={cn(
-        "relative z-10 flex w-full items-center justify-between gap-2 border border-border bg-background px-3 py-2 text-foreground text-sm outline-none transition-colors",
-        "hover:border-(--color-border-strong) focus-visible:ring-2 focus-visible:ring-foreground/20",
+        "border-border bg-background text-foreground relative z-10 flex w-full items-center justify-between gap-2 border px-3 py-2 text-sm transition-colors outline-none",
+        "focus-visible:ring-foreground/20 hover:border-(--color-border-strong) focus-visible:ring-2",
         "disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
@@ -441,7 +441,7 @@ export function SelectContent({ className, children }: SelectContentProps) {
       // flush against the trigger, then separates into its own rounded pill;
       // sits above or below depending on available space
       className={cn(
-        "absolute right-0 left-0 z-20 overflow-hidden border border-border bg-background shadow-lg",
+        "border-border bg-background absolute right-0 left-0 z-20 overflow-hidden border shadow-lg",
         isTop ? "bottom-full" : "top-full",
         className,
       )}
@@ -485,7 +485,7 @@ export function SelectItem({ value, disabled = false, className, children }: Sel
         data-listbox-id={value}
         onClick={() => ctx.select(value)}
         className={cn(
-          "flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-left text-sm outline-none transition-colors",
+          "flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-left text-sm transition-colors outline-none",
           selected
             ? "bg-muted text-foreground"
             : "text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:bg-muted",

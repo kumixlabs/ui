@@ -62,7 +62,7 @@ export function WalletCard({
   return (
     <div
       className={cn(
-        "relative w-full max-w-xs overflow-hidden rounded-4xl border border-border p-6",
+        "border-border relative w-full max-w-xs overflow-hidden rounded-4xl border p-6",
         className,
       )}
     >
@@ -91,8 +91,8 @@ export function WalletCard({
             <Bell className="h-4 w-4" />
             {hasNotifications ? (
               <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                <span className="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" />
+                <span className="bg-primary relative inline-flex h-2 w-2 rounded-full" />
               </span>
             ) : null}
           </Button>
@@ -107,7 +107,7 @@ export function WalletCard({
             onClick={() => setBalanceHidden((h) => !h)}
             aria-label={balanceHidden ? "Show balance" : "Hide balance"}
             aria-pressed={balanceHidden}
-            className="text-muted-foreground outline-none transition-colors hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground transition-colors outline-none"
           >
             {balanceHidden ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
           </button>
@@ -117,13 +117,13 @@ export function WalletCard({
         <ActionSwapText
           value={balanceHidden ? "hidden" : shownBalance}
           animation="cascade"
-          className="font-semibold text-3xl text-foreground"
+          className="text-foreground text-3xl font-semibold"
         >
           {balanceHidden ? maskedBalance : shownBalance}
         </ActionSwapText>
         {balanceHidden ? (
           <div className="mt-2 flex h-7 items-center justify-center">
-            <span className="translate-y-[3px] font-semibold text-muted-foreground text-sm leading-none tracking-[0.3em]">
+            <span className="text-muted-foreground translate-y-[3px] text-sm leading-none font-semibold tracking-[0.3em]">
               *****
             </span>
           </div>

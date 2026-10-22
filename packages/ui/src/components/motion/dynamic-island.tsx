@@ -173,7 +173,7 @@ export function DynamicIsland({ view, compact, children, className }: DynamicIsl
               <Slot
                 keyId="compact"
                 // iPhone pill proportions: ~126 x 37.
-                className="min-h-[37px] min-w-[126px] gap-2 px-4 py-1.5 font-medium text-xs"
+                className="min-h-[37px] min-w-[126px] gap-2 px-4 py-1.5 text-xs font-medium"
               >
                 {compact}
               </Slot>

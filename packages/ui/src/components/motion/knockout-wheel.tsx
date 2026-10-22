@@ -376,7 +376,7 @@ function TeamMark({
             y={node.y - node.r * 0.7}
             width={node.r * 1.4}
             height={node.r * 1.4}
-            className="fill-current text-muted-foreground/50"
+            className="text-muted-foreground/50 fill-current"
           />
         </motion.g>
       )}
@@ -510,7 +510,7 @@ const WheelAnchor = memo(function WheelAnchor({
       }}
       // ring-foreground, not the ring token: --ring is a 10% white hairline
       // that disappears over a flag. Focus has to be obvious.
-      className="block h-full w-full rounded-full outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="focus-visible:ring-foreground focus-visible:ring-offset-background block h-full w-full rounded-full outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
     />
   );
 
@@ -530,7 +530,7 @@ const WheelAnchor = memo(function WheelAnchor({
         <Tooltip
           content={caption}
           side="top"
-          className="wrap-break-word max-w-[20rem] whitespace-normal text-balance text-center"
+          className="max-w-[20rem] text-center text-balance wrap-break-word whitespace-normal"
         >
           {trigger}
         </Tooltip>
@@ -700,7 +700,7 @@ export function KnockoutWheel({ rounds, initialRound = 0, className }: KnockoutW
           tap, so the wheel holds its size and pans instead. The floor is fixed,
           not rim-derived: node radius grows with depth, so a shallower draw has
           *smaller* marks and needs the width more, not less. */}
-      <div ref={stageRef} className="relative mx-auto w-full min-w-[32rem] max-w-[34rem]">
+      <div ref={stageRef} className="relative mx-auto w-full max-w-[34rem] min-w-[32rem]">
         <svg
           ref={ref}
           viewBox={`0 0 ${SIZE} ${SIZE}`}
@@ -782,7 +782,7 @@ export function KnockoutWheel({ rounds, initialRound = 0, className }: KnockoutW
               top: pct(tapped.y + (tapAbove ? -tapped.r : tapped.r)),
             }}
             className={cn(
-              "wrap-break-word pointer-events-none absolute z-10 w-max max-w-[min(18rem,80vw)] -translate-x-1/2 text-balance rounded-lg border border-border bg-background px-2.5 py-1 text-center font-medium text-foreground text-xs shadow-lg",
+              "border-border bg-background text-foreground pointer-events-none absolute z-10 w-max max-w-[min(18rem,80vw)] -translate-x-1/2 rounded-lg border px-2.5 py-1 text-center text-xs font-medium text-balance wrap-break-word shadow-lg",
               tapAbove ? "-translate-y-[calc(100%+8px)]" : "translate-y-2",
             )}
           >

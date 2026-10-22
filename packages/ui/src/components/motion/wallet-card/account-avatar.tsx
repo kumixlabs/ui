@@ -16,7 +16,7 @@ export function AccountAvatar({
     <img
       src={diceBearGlassUrl(account.id || account.address)}
       alt={account.name}
-      className={cn("h-7 w-7 shrink-0 rounded-full bg-muted", className)}
+      className={cn("bg-muted h-7 w-7 shrink-0 rounded-full", className)}
     />
   );
 }

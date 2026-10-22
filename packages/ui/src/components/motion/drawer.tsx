@@ -97,10 +97,10 @@ export function Drawer({
               transition={reduce ? { duration: 0.2, ease: EASE_OUT } : SPRING_PANEL}
               {...gate}
               className={cn(
-                "fixed inset-y-0 z-50 flex w-80 max-w-[85vw] flex-col bg-background shadow-2xl outline-none",
+                "bg-background fixed inset-y-0 z-50 flex w-80 max-w-[85vw] flex-col shadow-2xl outline-none",
                 side === "right"
-                  ? "right-0 border-border border-l"
-                  : "left-0 border-border border-r",
+                  ? "border-border right-0 border-l"
+                  : "border-border left-0 border-r",
                 className,
               )}
             >

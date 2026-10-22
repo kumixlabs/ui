@@ -127,7 +127,7 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
           minWidth: present ? style?.minWidth : "var(--breadcrumb-exit-width)",
           pointerEvents: present ? style?.pointerEvents : "none",
         }}
-        className={cn("relative inline-flex min-w-0 max-w-full items-center gap-1", className)}
+        className={cn("relative inline-flex max-w-full min-w-0 items-center gap-1", className)}
       >
         {children}
       </motion.li>
@@ -144,7 +144,7 @@ export function BreadcrumbLink({ className, render, ...props }: BreadcrumbLinkPr
   const linkProps = {
     ...props,
     className: cn(
-      "inline-flex min-h-8 min-w-0 items-center gap-1.5 rounded-md px-2 font-medium text-muted-foreground transition-colors duration-150 hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>svg]:size-3.5 [&>svg]:shrink-0",
+      "text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:ring-ring inline-flex min-h-8 min-w-0 items-center gap-1.5 rounded-md px-2 font-medium transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none [&>svg]:size-3.5 [&>svg]:shrink-0",
       className,
     ),
   };
@@ -159,7 +159,7 @@ export function BreadcrumbPage({ className, children, ...props }: BreadcrumbPage
       {...props}
       aria-current="page"
       className={cn(
-        "wrap-anywhere relative isolate inline-flex min-h-8 min-w-0 items-center gap-1.5 rounded-md px-2 font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&>svg]:size-3.5 [&>svg]:shrink-0",
+        "text-foreground focus-visible:ring-ring relative isolate inline-flex min-h-8 min-w-0 items-center gap-1.5 rounded-md px-2 font-medium wrap-anywhere focus-visible:ring-2 focus-visible:outline-none [&>svg]:size-3.5 [&>svg]:shrink-0",
         className,
       )}
     >
@@ -178,7 +178,7 @@ export function BreadcrumbSeparator({ className, children, ...props }: Breadcrum
       aria-hidden="true"
       data-breadcrumb-separator=""
       className={cn(
-        "inline-flex shrink-0 items-center text-muted-foreground/50 rtl:rotate-180 [&>svg]:size-3.5",
+        "text-muted-foreground/50 inline-flex shrink-0 items-center rtl:rotate-180 [&>svg]:size-3.5",
         className,
       )}
     >
@@ -286,7 +286,7 @@ export function BreadcrumbEllipsis({
             ref={trigger}
             type="button"
             aria-label={label}
-            className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:ring-ring inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none"
             onClick={(event) => {
               focusOnOpen.current = event.detail === 0;
             }}
@@ -355,7 +355,7 @@ function BreadcrumbOverflowPaths({
         if (typeof ref === "function") return ref(node);
         if (ref) ref.current = node;
       }}
-      className="[&_a]:wrap-anywhere flex max-h-64 flex-col gap-0.5 overflow-y-auto **:data-breadcrumb-separator:hidden [&>li]:w-full [&_a]:w-full [&_a]:py-1"
+      className="flex max-h-64 flex-col gap-0.5 overflow-y-auto **:data-breadcrumb-separator:hidden [&_a]:w-full [&_a]:py-1 [&_a]:wrap-anywhere [&>li]:w-full"
     />
   );
 }

@@ -40,14 +40,14 @@ export function MultiSelectTrigger({ children, className }: MultiSelectTriggerPr
         context.setOpen(true);
       }}
       className={cn(
-        "relative z-20 flex min-h-11 w-full min-w-52 cursor-text items-center gap-2 rounded-xl border border-border bg-transparent px-2.5 py-1.5 text-foreground text-sm transition-[border-color] hover:border-(--color-border-strong)",
-        "focus-within:ring-2 focus-within:ring-foreground/20",
+        "border-border text-foreground relative z-20 flex min-h-11 w-full min-w-52 cursor-text items-center gap-2 rounded-xl border bg-transparent px-2.5 py-1.5 text-sm transition-[border-color] hover:border-(--color-border-strong)",
+        "focus-within:ring-foreground/20 focus-within:ring-2",
         context.disabled && "pointer-events-none opacity-50",
         className,
       )}
     >
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">{children}</div>
-      <ChevronsUpDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
+      <ChevronsUpDown aria-hidden="true" className="text-muted-foreground size-4 shrink-0" />
     </div>
   );
 }
@@ -119,7 +119,7 @@ export function MultiSelectValue({
                     }
               }
               className={cn(
-                "inline-flex h-7 max-w-full items-center gap-1 rounded-lg bg-muted px-2 font-medium text-foreground text-xs",
+                "bg-muted text-foreground inline-flex h-7 max-w-full items-center gap-1 rounded-lg px-2 text-xs font-medium",
                 chipClassName,
               )}
             >
@@ -135,7 +135,7 @@ export function MultiSelectValue({
                   context.remove(value);
                   context.inputRef.current?.focus({ preventScroll: true });
                 }}
-                className="-mr-1 grid size-5 shrink-0 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-foreground/10 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+                className="text-muted-foreground hover:bg-foreground/10 hover:text-foreground focus-visible:ring-ring -mr-1 grid size-5 shrink-0 place-items-center rounded-md transition-colors outline-none focus-visible:ring-2"
               >
                 <X aria-hidden="true" className="size-3" />
               </button>
@@ -200,7 +200,7 @@ export function MultiSelectInput({
 
   return (
     <div className="flex min-w-20 flex-1 items-center gap-1.5">
-      {showIcon ? <Search aria-hidden="true" className="size-3.5 text-muted-foreground" /> : null}
+      {showIcon ? <Search aria-hidden="true" className="text-muted-foreground size-3.5" /> : null}
       <input
         {...props}
         ref={mergeRefs(ref, context.inputRef)}
@@ -235,7 +235,7 @@ export function MultiSelectInput({
         }}
         onKeyDown={handleKeyDown}
         className={cn(
-          "h-7 min-w-12 flex-1 bg-transparent text-foreground text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed",
+          "text-foreground placeholder:text-muted-foreground h-7 min-w-12 flex-1 bg-transparent text-sm outline-none disabled:cursor-not-allowed",
           className,
         )}
       />

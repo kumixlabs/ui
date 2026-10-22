@@ -86,16 +86,16 @@ export function MultiChainSwap({
     <div
       className={cn(
         "relative isolate w-full max-w-[420px] overflow-hidden rounded-3xl",
-        "border border-border/20 bg-card",
+        "border-border/20 bg-card border",
         className,
       )}
     >
-      <div className="flex h-12 items-center justify-between border-border/50 border-b px-3">
-        <span className="px-2 font-semibold text-foreground text-sm tracking-tight">Swap</span>
+      <div className="border-border/50 flex h-12 items-center justify-between border-b px-3">
+        <span className="text-foreground px-2 text-sm font-semibold tracking-tight">Swap</span>
         <button
           type="button"
           aria-label="Settings"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-transform hover:bg-muted/60 hover:text-foreground active:scale-[0.97]"
+          className="text-muted-foreground hover:bg-muted/60 hover:text-foreground inline-flex h-8 w-8 items-center justify-center rounded-full transition-transform active:scale-[0.97]"
         >
           <Settings className="h-4 w-4" />
         </button>

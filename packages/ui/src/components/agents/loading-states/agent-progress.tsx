@@ -65,7 +65,7 @@ export function AgentProgress({
       role="status"
       aria-label={`${label}, in progress`}
       className={cn(
-        "inline-flex items-center gap-3 font-mono text-muted-foreground text-sm",
+        "text-muted-foreground inline-flex items-center gap-3 font-mono text-sm",
         className,
       )}
     >
@@ -91,7 +91,7 @@ export function AgentProgress({
           />
         ))}
       </span>
-      <span className="font-medium font-sans">{label}</span>
+      <span className="font-sans font-medium">{label}</span>
       <span aria-hidden="true" className="text-muted-foreground/70 tabular-nums">
         {formatElapsed(elapsed)}
       </span>

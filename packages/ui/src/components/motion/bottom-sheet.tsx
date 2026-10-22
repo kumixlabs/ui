@@ -165,7 +165,7 @@ export function BottomSheet({
               // A dim scrim with a light blur. backdrop-blur is GPU-expensive and
               // re-rasterizes every frame the sheet drags over it; a small radius
               // plus more opacity keeps the glass look without the jank.
-              className="pointer-events-auto fixed inset-0 z-50 bg-background/40 backdrop-blur-sm"
+              className="bg-background/40 pointer-events-auto fixed inset-0 z-50 backdrop-blur-sm"
             />
           )}
         </PresenceGate>
@@ -192,8 +192,8 @@ export function BottomSheet({
               {...gate}
               style={{ ...heightStyle, ...gate.style }}
               className={cn(
-                "pointer-events-auto fixed right-0 bottom-0 left-0 z-50 mx-auto flex max-w-2xl flex-col overflow-hidden rounded-t-3xl outline-none will-change-transform",
-                "border border-border bg-background shadow-xl",
+                "pointer-events-auto fixed right-0 bottom-0 left-0 z-50 mx-auto flex max-w-2xl flex-col overflow-hidden rounded-t-3xl will-change-transform outline-none",
+                "border-border bg-background border shadow-xl",
                 className,
               )}
               role="dialog"
@@ -214,17 +214,17 @@ export function BottomSheet({
                     TOUCH_GESTURE_CONTENT_CLASS,
                   )}
                 >
-                  <div className="h-1.5 w-10 rounded-full bg-muted-foreground/40" />
+                  <div className="bg-muted-foreground/40 h-1.5 w-10 rounded-full" />
                 </div>
                 {title || description ? (
                   <div className="mt-2 w-full">
                     {title ? (
-                      <h2 id={titleId} className="font-semibold text-base text-foreground">
+                      <h2 id={titleId} className="text-foreground text-base font-semibold">
                         {title}
                       </h2>
                     ) : null}
                     {description ? (
-                      <p id={descriptionId} className="mt-0.5 text-muted-foreground text-sm">
+                      <p id={descriptionId} className="text-muted-foreground mt-0.5 text-sm">
                         {description}
                       </p>
                     ) : null}

@@ -95,7 +95,7 @@ function TextSlot({ value, children }: { value: string; children: ReactNode }) {
       initial={false}
       animate={{ width }}
       transition={reduce ? { duration: 0 } : SPRING_SWAP}
-      className="relative inline-block overflow-hidden whitespace-nowrap align-bottom"
+      className="relative inline-block overflow-hidden align-bottom whitespace-nowrap"
     >
       <span ref={measureRef} aria-hidden className="invisible inline-block whitespace-nowrap">
         {cascade

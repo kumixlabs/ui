@@ -133,12 +133,12 @@ export function RulerSlider({
         "relative w-full touch-none overflow-hidden",
         TOUCH_GESTURE_CLASS,
         options.disabled ? "pointer-events-none opacity-50" : "cursor-grab active:cursor-grabbing",
-        "rounded-2xl outline-none ring-foreground/30 focus-visible:ring-4",
+        "ring-foreground/30 rounded-2xl outline-none focus-visible:ring-4",
         className,
       )}
     >
       <div className="pointer-events-none flex items-baseline justify-center gap-1 pt-1 pb-3">
-        <span className="font-semibold text-3xl text-foreground tabular-nums">
+        <span className="text-foreground text-3xl font-semibold tabular-nums">
           {readout(current)}
         </span>
         {unit ? <span className="text-muted-foreground text-sm">{unit}</span> : null}
@@ -146,7 +146,7 @@ export function RulerSlider({
 
       {/* masked, not overlaid with background-coloured gradients — the fade has
           to work on any surface the slider is dropped onto */}
-      <div className="mask-[linear-gradient(to_right,transparent,black_18%,black_82%,transparent)] relative h-12">
+      <div className="relative h-12 mask-[linear-gradient(to_right,transparent,black_18%,black_82%,transparent)]">
         {/* strip — dragged directly, so momentum comes from the drag gesture */}
         <motion.div
           drag={options.disabled ? false : "x"}
@@ -184,11 +184,11 @@ export function RulerSlider({
                 className={cn(
                   "w-px rounded-full",
                   // minor ticks at /45 clear the 3:1 non-text floor in both themes
-                  tick.major ? "h-7 bg-foreground/70" : "h-3.5 bg-foreground/45",
+                  tick.major ? "bg-foreground/70 h-7" : "bg-foreground/45 h-3.5",
                 )}
               />
               {tick.major ? (
-                <span className="absolute bottom-0 text-[10px] text-muted-foreground tabular-nums">
+                <span className="text-muted-foreground absolute bottom-0 text-[10px] tabular-nums">
                   {tick.value}
                 </span>
               ) : null}
@@ -198,7 +198,7 @@ export function RulerSlider({
 
         {/* needle — the read head the scale moves under */}
         <div className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2">
-          <span className="block h-9 w-[3px] rounded-full bg-foreground" />
+          <span className="bg-foreground block h-9 w-[3px] rounded-full" />
         </div>
       </div>
     </div>

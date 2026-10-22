@@ -988,7 +988,7 @@ function SignaturePadGuide({ className, children, ...props }: ComponentProps<"di
       data-slot="signature-pad-guide"
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute inset-x-6 bottom-8 flex items-end gap-2 border-muted-foreground/40 border-b border-dashed pb-1.5 text-muted-foreground text-xs",
+        "border-muted-foreground/40 text-muted-foreground pointer-events-none absolute inset-x-6 bottom-8 flex items-end gap-2 border-b border-dashed pb-1.5 text-xs",
         className,
       )}
       {...props}
@@ -1019,7 +1019,7 @@ function SignaturePadPlaceholder({ className, children, ...props }: ComponentPro
       data-slot="signature-pad-placeholder"
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center text-muted-foreground text-sm",
+        "text-muted-foreground pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center text-sm",
         className,
       )}
       {...props}
@@ -1237,7 +1237,7 @@ function SignaturePadPreview({
       viewBox={`${x} ${y} ${width} ${height}`}
       width={width}
       height={height}
-      className={cn("h-auto max-w-full text-foreground", className)}
+      className={cn("text-foreground h-auto max-w-full", className)}
       {...props}
     >
       {strokes.map((stroke, index) => (

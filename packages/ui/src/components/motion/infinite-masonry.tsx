@@ -88,12 +88,12 @@ function DefaultLoadingItem({ index }: { index: number }) {
   return (
     <div
       aria-hidden="true"
-      className="animate-pulse rounded-2xl border border-border bg-card p-3"
+      className="border-border bg-card animate-pulse rounded-2xl border p-3"
       style={{ minHeight: 144 + (index % 3) * 36 }}
     >
-      <div className="h-3 w-2/3 rounded-full bg-muted" />
-      <div className="mt-3 h-2 w-full rounded-full bg-muted" />
-      <div className="mt-2 h-2 w-4/5 rounded-full bg-muted" />
+      <div className="bg-muted h-3 w-2/3 rounded-full" />
+      <div className="bg-muted mt-3 h-2 w-full rounded-full" />
+      <div className="bg-muted mt-2 h-2 w-4/5 rounded-full" />
     </div>
   );
 }
@@ -101,9 +101,9 @@ function DefaultLoadingItem({ index }: { index: number }) {
 function DefaultEmptyState() {
   return (
     <div className="flex h-full min-h-64 flex-col items-center justify-center px-6 text-center">
-      <Inbox className="size-8 text-muted-foreground" aria-hidden="true" />
-      <p className="mt-3 font-medium text-foreground text-sm">No items yet</p>
-      <p className="mt-1 max-w-xs text-muted-foreground text-xs leading-5">
+      <Inbox className="text-muted-foreground size-8" aria-hidden="true" />
+      <p className="text-foreground mt-3 text-sm font-medium">No items yet</p>
+      <p className="text-muted-foreground mt-1 max-w-xs text-xs leading-5">
         New items will appear here when they become available.
       </p>
     </div>
@@ -238,7 +238,7 @@ export function InfiniteMasonry<T>({
       <section
         aria-label={ariaLabel}
         className={cn(
-          "w-full overflow-hidden rounded-3xl border border-border bg-background",
+          "border-border bg-background w-full overflow-hidden rounded-3xl border",
           className,
         )}
       >
@@ -255,7 +255,7 @@ export function InfiniteMasonry<T>({
       aria-label={ariaLabel}
       aria-busy={loading}
       className={cn(
-        "contain-[layout_paint] w-full overflow-y-auto overscroll-none rounded-3xl border border-border bg-background p-3 [overflow-anchor:none] [scrollbar-gutter:stable]",
+        "border-border bg-background w-full [scrollbar-gutter:stable] overflow-y-auto overscroll-none rounded-3xl border p-3 contain-[layout_paint] [overflow-anchor:none]",
         className,
       )}
     >
@@ -284,17 +284,17 @@ export function InfiniteMasonry<T>({
             >
               {isTail ? (
                 hasError ? (
-                  <div className="flex min-h-36 flex-col items-start justify-center rounded-2xl border border-destructive/20 bg-destructive/5 p-4">
-                    <div className="flex items-center gap-2 text-destructive">
+                  <div className="border-destructive/20 bg-destructive/5 flex min-h-36 flex-col items-start justify-center rounded-2xl border p-4">
+                    <div className="text-destructive flex items-center gap-2">
                       <AlertCircle className="size-4" aria-hidden="true" />
-                      <p className="font-medium text-sm">Couldn&apos;t load more</p>
+                      <p className="text-sm font-medium">Couldn&apos;t load more</p>
                     </div>
-                    <div className="mt-2 text-muted-foreground text-xs leading-5">{error}</div>
+                    <div className="text-muted-foreground mt-2 text-xs leading-5">{error}</div>
                     {onRetry ? (
                       <button
                         type="button"
                         onClick={onRetry}
-                        className="mt-3 min-h-10 rounded-full border border-border bg-background px-4 font-medium text-foreground text-xs outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        className="border-border bg-background text-foreground hover:bg-muted focus-visible:ring-ring mt-3 min-h-10 rounded-full border px-4 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                       >
                         Try again
                       </button>
@@ -323,7 +323,7 @@ export function InfiniteMasonry<T>({
       </div>
 
       {!hasMore && items.length > 0 && endState ? (
-        <div className="py-4 text-center text-muted-foreground text-xs">{endState}</div>
+        <div className="text-muted-foreground py-4 text-center text-xs">{endState}</div>
       ) : null}
       <span className="sr-only" aria-live="polite">
         {loading ? "Loading more items" : null}

@@ -188,7 +188,7 @@ export function CommandPalette({
               transition={{ duration: 0.18, ease: EASE_OUT }}
               {...gate}
               onClick={() => setOpen(false)}
-              className="pointer-events-auto fixed inset-0 z-100 bg-background/5 [-webkit-backdrop-filter:blur(12px)_saturate(140%)] [backdrop-filter:blur(12px)_saturate(140%)]"
+              className="bg-background/5 pointer-events-auto fixed inset-0 z-100 [backdrop-filter:blur(12px)_saturate(140%)] [-webkit-backdrop-filter:blur(12px)_saturate(140%)]"
             />
           )}
         </PresenceGate>
@@ -222,10 +222,10 @@ export function CommandPalette({
                 transition={reduce ? { duration: 0.1 } : PANEL_SPRING}
                 {...gate}
                 onKeyDown={onKeyDown}
-                className="pointer-events-auto w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl will-change-transform"
+                className="border-border bg-background pointer-events-auto w-full max-w-xl overflow-hidden rounded-2xl border shadow-2xl will-change-transform"
               >
-                <div className="flex items-center gap-3 border-border border-b px-4">
-                  <Search className="h-4 w-4 text-muted-foreground" />
+                <div className="border-border flex items-center gap-3 border-b px-4">
+                  <Search className="text-muted-foreground h-4 w-4" />
                   <input
                     ref={inputRef}
                     value={query}
@@ -238,7 +238,7 @@ export function CommandPalette({
                     aria-activedescendant={rows.length > 0 ? `${uid}-opt-${active}` : undefined}
                     aria-autocomplete="list"
                     className={cn(
-                      "h-12 flex-1 bg-transparent text-foreground text-sm outline-none placeholder:text-muted-foreground",
+                      "text-foreground placeholder:text-muted-foreground h-12 flex-1 bg-transparent text-sm outline-none",
                       // The palette focuses this field the moment it opens, and iOS
                       // zooms the page in on a focused field under 16px: the fixed
                       // overlay is magnified off-center — clipped leading edge, half
@@ -247,7 +247,7 @@ export function CommandPalette({
                       canTouch && "text-base",
                     )}
                   />
-                  <kbd className="hidden rounded border border-border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground sm:inline-block">
+                  <kbd className="border-border bg-background text-muted-foreground hidden rounded border px-1.5 py-0.5 text-[10px] sm:inline-block">
                     ESC
                   </kbd>
                 </div>
@@ -256,10 +256,10 @@ export function CommandPalette({
                   id={`${uid}-list`}
                   role="listbox"
                   aria-label="Commands"
-                  className="max-h-[60vh] overflow-y-auto overscroll-contain p-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                  className="max-h-[60vh] [scrollbar-width:none] overflow-y-auto overscroll-contain p-2 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                 >
                   {rows.length === 0 ? (
-                    <div className="p-8 text-center text-muted-foreground text-sm">
+                    <div className="text-muted-foreground p-8 text-center text-sm">
                       {emptyMessage}
                     </div>
                   ) : (
@@ -267,7 +267,7 @@ export function CommandPalette({
                       <div key={group} className="mb-1 last:mb-0">
                         <div
                           aria-hidden
-                          className="px-2 py-1.5 font-semibold text-[10px] text-muted-foreground uppercase tracking-wider"
+                          className="text-muted-foreground px-2 py-1.5 text-[10px] font-semibold tracking-wider uppercase"
                         >
                           {group}
                         </div>
@@ -297,7 +297,7 @@ export function CommandPalette({
                               {isActive ? (
                                 <motion.span
                                   layoutId={`${uid}-active`}
-                                  className="absolute inset-0 z-0 rounded-md bg-muted"
+                                  className="bg-muted absolute inset-0 z-0 rounded-md"
                                   transition={
                                     reduce
                                       ? { duration: 0 }
@@ -321,7 +321,7 @@ export function CommandPalette({
                                 <span className="relative z-10 shrink-0">{it.badge}</span>
                               ) : null}
                               {it.hint ? (
-                                <kbd className="relative z-10 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                                <kbd className="border-border bg-background text-muted-foreground relative z-10 rounded border px-1.5 py-0.5 text-[10px]">
                                   {it.hint}
                                 </kbd>
                               ) : null}

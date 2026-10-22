@@ -142,7 +142,7 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                 if (next instanceof Node && !ref.current?.contains(next)) close(false);
               }}
               style={{ borderRadius: 16 }}
-              className="w-[min(86vw,420px)] overflow-hidden border border-border bg-card"
+              className="border-border bg-card w-[min(86vw,420px)] overflow-hidden border"
             >
               <motion.div
                 // `layout` lets framer undo the box's morph scaling so this
@@ -153,10 +153,10 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                 transition={{ delay: reduce ? 0 : 0.12, duration: 0.2 }}
               >
                 {/* header */}
-                <div className="flex items-center justify-between border-border border-b px-4 py-3">
+                <div className="border-border flex items-center justify-between border-b px-4 py-3">
                   <span
                     id={`${menuId}-label`}
-                    className="font-medium text-muted-foreground text-sm"
+                    className="text-muted-foreground text-sm font-medium"
                   >
                     Create
                   </span>
@@ -164,7 +164,7 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                     type="button"
                     onClick={() => close(true)}
                     aria-label="Close menu"
-                    className="rounded-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+                    className="text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-sm transition-colors outline-none focus-visible:ring-2"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -216,7 +216,7 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                         // the grid lines never flicker as items stagger in. Only the
                         // inner content animates.
                         className={cn(
-                          "flex items-center justify-center px-3 py-6 text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:bg-muted/60 focus-visible:text-foreground",
+                          "text-muted-foreground hover:text-foreground focus-visible:bg-muted/60 focus-visible:text-foreground flex items-center justify-center px-3 py-6 transition-colors outline-none",
                           i % 3 !== 2 && "border-border border-r",
                           i < 3 && "border-border border-b",
                         )}
@@ -237,7 +237,7 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                           className="flex flex-col items-center gap-2"
                         >
                           <item.icon className="h-5 w-5" />
-                          <span className="font-medium text-sm">{item.label}</span>
+                          <span className="text-sm font-medium">{item.label}</span>
                         </motion.span>
                       </button>
                     );
@@ -263,7 +263,7 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                 }
               }}
               whileTap={reduce ? undefined : { scale: 0.97 }}
-              className="inline-flex h-11 w-36 items-center justify-center border border-border bg-card font-medium text-foreground text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="border-border bg-card text-foreground focus-visible:ring-ring inline-flex h-11 w-36 items-center justify-center border text-sm font-medium outline-none focus-visible:ring-2"
             >
               {/* own `layout` counter-scales the label so it stays crisp while the
                   button box morphs, instead of stretching with it */}

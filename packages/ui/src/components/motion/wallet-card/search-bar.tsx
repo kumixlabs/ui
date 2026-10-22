@@ -85,7 +85,7 @@ export function SearchBar({
             onClick={() => setOpen(true)}
             transition={morph}
             style={{ borderRadius: 12 }}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground inline-flex h-8 w-8 items-center justify-center rounded-lg transition-colors outline-none"
           >
             <Search className="h-4 w-4" />
           </motion.button>
@@ -102,11 +102,11 @@ export function SearchBar({
             layoutId={layoutId}
             transition={morph}
             style={{ borderRadius: 16 }}
-            className="absolute top-0 -right-2 -left-2 z-40 overflow-hidden border border-border/30 bg-background backdrop-blur-md"
+            className="border-border/30 bg-background absolute top-0 -right-2 -left-2 z-40 overflow-hidden border backdrop-blur-md"
           >
             <div className="flex h-9 items-center gap-2 px-3">
               <motion.span layout="position" transition={glide} className="shrink-0">
-                <Search className="h-4 w-4 text-muted-foreground" />
+                <Search className="text-muted-foreground h-4 w-4" />
               </motion.span>
               <motion.input
                 ref={inputRef}
@@ -127,11 +127,11 @@ export function SearchBar({
                   if (e.key === "Escape") close();
                 }}
                 placeholder={placeholder}
-                className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                className="placeholder:text-muted-foreground min-w-0 flex-1 bg-transparent text-sm outline-none"
               />
             </div>
 
-            <div className="h-px bg-border/40" />
+            <div className="bg-border/40 h-px" />
 
             {filtered.length > 0 ? (
               <motion.ul
@@ -150,7 +150,7 @@ export function SearchBar({
                         submit(term);
                       }}
                       className={cn(
-                        "flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-muted-foreground text-sm outline-none transition-colors",
+                        "text-muted-foreground flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm transition-colors outline-none",
                         armed && "hover:bg-muted hover:text-foreground",
                       )}
                     >
@@ -165,7 +165,7 @@ export function SearchBar({
                 layout="position"
                 className="flex flex-col items-center gap-1 px-4 py-8 text-center"
               >
-                <Search className="h-5 w-5 text-muted-foreground/60" />
+                <Search className="text-muted-foreground/60 h-5 w-5" />
                 <p className="text-muted-foreground text-sm">
                   {query ? "No matches" : "No recent searches"}
                 </p>

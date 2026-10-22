@@ -188,7 +188,7 @@ export function ReasoningText({
         aria-live="polite"
         aria-labelledby={statusId}
         className={cn(
-          "inline-flex items-center gap-2 font-medium text-muted-foreground text-sm",
+          "text-muted-foreground inline-flex items-center gap-2 text-sm font-medium",
           className,
         )}
       >

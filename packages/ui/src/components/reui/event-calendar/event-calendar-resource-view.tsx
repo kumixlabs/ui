@@ -199,7 +199,7 @@ function EventCalendarResourceView({
         <div
           className={cn(
             "flex border-b pe-(--ec-scrollbar-w,0px)",
-            !contained && "sticky top-(--ec-sticky-offset,0px) z-20 bg-background",
+            !contained && "bg-background sticky top-(--ec-sticky-offset,0px) z-20",
             viewConfig.classNames?.timeGridHeader,
           )}
         >
@@ -239,7 +239,7 @@ function EventCalendarResourceView({
                     // one bar-row tall and centers the label so it sits on the SAME
                     // baseline as the first all-day chip and stays top-aligned when
                     // the chips wrap onto more lanes (mirrors the time-grid label)
-                    "w-(--ec-gutter-width,4.5rem) shrink-0 border-e ps-2 pe-2.5 pt-1.5 text-muted-foreground",
+                    "text-muted-foreground w-(--ec-gutter-width,4.5rem) shrink-0 border-e ps-2 pe-2.5 pt-1.5",
                     viewConfig.classNames?.allDayLabel,
                   )}
                 >
@@ -629,7 +629,7 @@ function EventCalendarResourceColumn({
             <EventCalendarEvent
               segment={segment}
               className={cn(
-                columnCount > 1 && "ring-1 ring-background",
+                columnCount > 1 && "ring-background ring-1",
                 // short chips: single centered row, exact-fit line height so
                 // the title never slices mid-glyph
                 endMin - startMin < viewConfig.compactEventMinutes

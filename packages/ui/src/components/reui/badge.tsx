@@ -8,15 +8,15 @@ import { cn } from "@kumix/utils";
 
 const badgeVariants = cva(
   [
-    "relative inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap border border-transparent font-medium outline-none transition-shadow",
-    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50",
-    "[&_svg:not([class*=size-])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "relative inline-flex w-fit shrink-0 items-center justify-center border border-transparent font-medium whitespace-nowrap transition-shadow outline-none",
+    "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-3",
   ],
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground",
-        outline: "border-border bg-transparent dark:bg-input/32",
+        outline: "border-border dark:bg-input/32 bg-transparent",
         secondary: "bg-secondary text-secondary-foreground",
         info: "bg-info text-white",
         success: "bg-success text-white",

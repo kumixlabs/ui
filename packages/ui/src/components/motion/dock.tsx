@@ -28,7 +28,7 @@ export function Dock({ children, size = 44, className }: DockProps) {
     <DockContext.Provider value={ctx}>
       <div
         className={cn(
-          "inline-flex h-auto items-end gap-1.5 rounded-2xl border border-border bg-card/80 px-2 py-1 shadow-2xl backdrop-blur-xl",
+          "border-border bg-card/80 inline-flex h-auto items-end gap-1.5 rounded-2xl border px-2 py-1 shadow-2xl backdrop-blur-xl",
           className,
         )}
       >
@@ -57,12 +57,12 @@ export function DockItem({ children, className, onClick, active, ...rest }: Dock
     <motion.span
       layoutId={pillLayoutId}
       transition={reduce ? { duration: 0 } : SPRING_LAYOUT}
-      className="absolute inset-0.5 -z-10 rounded-xl bg-muted/60"
+      className="bg-muted/60 absolute inset-0.5 -z-10 rounded-xl"
     />
   ) : null;
   const sharedStyle = { width: size, height: size };
   const sharedClass = cn(
-    "relative flex shrink-0 items-center justify-center rounded-full text-foreground",
+    "text-foreground relative flex shrink-0 items-center justify-center rounded-full",
     className,
   );
 
@@ -77,7 +77,7 @@ export function DockItem({ children, className, onClick, active, ...rest }: Dock
         className={cn(
           sharedClass,
           "cursor-pointer border-0 bg-transparent p-0 outline-none",
-          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
         )}
       >
         {pill}
@@ -96,5 +96,5 @@ export function DockItem({ children, className, onClick, active, ...rest }: Dock
 }
 
 export function DockSeparator({ className }: { className?: string }) {
-  return <span aria-hidden className={cn("mx-1 h-6 w-px self-center bg-border", className)} />;
+  return <span aria-hidden className={cn("bg-border mx-1 h-6 w-px self-center", className)} />;
 }

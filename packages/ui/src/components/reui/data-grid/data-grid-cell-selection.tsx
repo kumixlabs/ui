@@ -2389,11 +2389,11 @@ function DataGridSelectionBar({
           <div
             data-slot="data-grid-selection-bar"
             className={cn(
-              "sticky inset-x-0 bottom-4 z-40 mx-auto flex w-fit max-w-[calc(100%-2rem)] flex-wrap items-center gap-3 rounded-lg border bg-background px-4 py-2.5 shadow-lg",
+              "bg-background sticky inset-x-0 bottom-4 z-40 mx-auto flex w-fit max-w-[calc(100%-2rem)] flex-wrap items-center gap-3 rounded-lg border px-4 py-2.5 shadow-lg",
               className,
             )}
           >
-            <span className="font-medium text-foreground text-sm">
+            <span className="text-foreground text-sm font-medium">
               {label ? label(count) : `${count} selected`}
             </span>
             <div className="flex flex-1 flex-wrap items-center justify-end gap-2.5">

@@ -266,7 +266,7 @@ export function ColorPicker({
         disabled={disabled}
         form={form}
         className={cn(
-          "relative flex w-full min-w-0 max-w-72 flex-col gap-3 border-0 p-0",
+          "relative flex w-full max-w-72 min-w-0 flex-col gap-3 border-0 p-0",
           // Holding a trigger, the root is just the trigger's box, so the panel
           // anchors under it even inside a stretching flex or grid parent.
           "has-[>[data-color-picker-trigger]]:w-fit has-[>[data-color-picker-trigger]]:self-start",
@@ -411,7 +411,7 @@ function Thumb({
         className={cn(
           "absolute left-0 size-[18px] -translate-x-1/2 -translate-y-1/2 rounded-full outline-none",
           y ? "top-0" : "top-1/2",
-          "focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2",
+          "focus-visible:outline-foreground focus-visible:outline-2 focus-visible:outline-offset-2",
           className,
         )}
       >
@@ -762,7 +762,7 @@ export function ColorPickerHexInput({
     <div ref={scope} className={cn("relative min-w-0 flex-1", className)}>
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground text-sm"
+        className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm"
       >
         #
       </span>
@@ -851,7 +851,7 @@ function ChannelField({ spec }: { spec: ChannelSpec }) {
         }}
         className={cn(FIELD_CLASS, "px-1 text-center")}
       />
-      <span aria-hidden="true" className="font-medium text-[11px] text-muted-foreground">
+      <span aria-hidden="true" className="text-muted-foreground text-[11px] font-medium">
         {spec.short}
       </span>
     </label>
@@ -989,7 +989,7 @@ export function ColorPickerEyeDropper({
         }
       }}
       className={cn(
-        "inline-flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed",
+        "border-border bg-background text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex size-9 shrink-0 items-center justify-center rounded-lg border transition-colors outline-none focus-visible:ring-2 disabled:cursor-not-allowed",
         className,
       )}
     >
@@ -1060,7 +1060,7 @@ export function ColorPickerPreset({
         commit();
       }}
       className={cn(
-        "relative size-6 shrink-0 rounded-full outline-none focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-3 disabled:cursor-not-allowed",
+        "focus-visible:outline-foreground relative size-6 shrink-0 rounded-full outline-none focus-visible:outline-2 focus-visible:outline-offset-3 disabled:cursor-not-allowed",
         className,
       )}
     >
@@ -1070,7 +1070,7 @@ export function ColorPickerPreset({
           layoutId={reduce ? undefined : "color-picker-preset"}
           initial={false}
           transition={PRESET_HOP}
-          className="pointer-events-none absolute -inset-[3px] rounded-full border-2 border-foreground/70"
+          className="border-foreground/70 pointer-events-none absolute -inset-[3px] rounded-full border-2"
         />
       )}
       <span
@@ -1125,7 +1125,7 @@ function TriggerLabel({ hex }: { hex: string }) {
     >
       <span
         ref={textRef}
-        className="relative inline-flex shrink-0 whitespace-nowrap font-mono uppercase tabular-nums"
+        className="relative inline-flex shrink-0 font-mono whitespace-nowrap uppercase tabular-nums"
       >
         {hex.slice(0, 7)}
         <AnimatePresence mode="popLayout" initial={false}>
@@ -1179,13 +1179,13 @@ export function ColorPickerTrigger({
         if (!event.defaultPrevented) setOpen(!open);
       }}
       className={cn(
-        "inline-flex h-10 w-fit items-center gap-2.5 rounded-xl border border-border bg-background pr-3.5 pl-2.5 text-foreground text-sm outline-none transition-colors hover:border-foreground/20 focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed",
+        "border-border bg-background text-foreground hover:border-foreground/20 focus-visible:ring-ring inline-flex h-10 w-fit items-center gap-2.5 rounded-xl border pr-3.5 pl-2.5 text-sm transition-colors outline-none focus-visible:ring-2 disabled:cursor-not-allowed",
         className,
       )}
     >
       <span aria-hidden="true" className="relative size-6 shrink-0">
         {/* The chip's empty socket while it is out being the area. */}
-        <span className="absolute inset-0 rounded-md border border-foreground/20 border-dashed" />
+        <span className="border-foreground/20 absolute inset-0 rounded-md border border-dashed" />
         {!open && (
           <motion.span
             layoutId={reduce ? undefined : `${id}-chip`}
@@ -1307,7 +1307,7 @@ export function ColorPickerContent({
                 {/* The surface fades on its own layer so the morphing area is never faded with it. */}
                 <motion.div
                   aria-hidden="true"
-                  className="absolute inset-0 -z-10 rounded-2xl border border-border bg-background shadow-[0_12px_32px_-8px_rgb(0_0_0/0.25)]"
+                  className="border-border bg-background absolute inset-0 -z-10 rounded-2xl border shadow-[0_12px_32px_-8px_rgb(0_0_0/0.25)]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

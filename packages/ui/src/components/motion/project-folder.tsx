@@ -211,7 +211,7 @@ export function ProjectFolder({
               exit={{ opacity: 0 }}
               transition={reduce ? { duration: 0 } : { duration: 0.18 }}
               className={cn(
-                "fixed inset-0 z-50 cursor-default bg-background/80 backdrop-blur-xl",
+                "bg-background/80 fixed inset-0 z-50 cursor-default backdrop-blur-xl",
                 isClosing && "pointer-events-none",
               )}
             />
@@ -245,17 +245,17 @@ export function ProjectFolder({
                   className="mb-6 flex items-center justify-between gap-4"
                 >
                   <div>
-                    <h2 id={dialogTitleId} className="font-medium text-foreground text-xl">
+                    <h2 id={dialogTitleId} className="text-foreground text-xl font-medium">
                       {title}
                     </h2>
-                    <p className="mt-1 text-muted-foreground text-sm">{countText}</p>
+                    <p className="text-muted-foreground mt-1 text-sm">{countText}</p>
                   </div>
                   <button
                     ref={closeButtonRef}
                     type="button"
                     onClick={closeOverlay}
                     aria-label={`Close ${title}`}
-                    className="flex size-10 items-center justify-center rounded-full border border-foreground/10 bg-background/50 text-muted-foreground backdrop-blur-xl transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="border-foreground/10 bg-background/50 text-muted-foreground hover:text-foreground focus-visible:ring-ring flex size-10 items-center justify-center rounded-full border backdrop-blur-xl transition-colors focus-visible:ring-2 focus-visible:outline-none"
                   >
                     <X className="size-4" aria-hidden="true" />
                   </button>
@@ -270,7 +270,7 @@ export function ProjectFolder({
                       key={preview.id}
                       layoutId={`file-${preview.id}`}
                       transition={transition}
-                      className="aspect-3/4 w-full max-w-40 overflow-hidden rounded-xl border border-foreground/10 bg-background/50 backdrop-blur-xl"
+                      className="border-foreground/10 bg-background/50 aspect-3/4 w-full max-w-40 overflow-hidden rounded-xl border backdrop-blur-xl"
                     >
                       {preview.content}
                     </motion.div>
@@ -321,7 +321,7 @@ export function ProjectFolder({
         whileTap={reduce || disabled ? undefined : { scale: 0.98 }}
         transition={reduce ? { duration: 0 } : SPRING_PRESS}
         className={cn(
-          "perspective-[1200px] relative block h-56 w-72 select-none rounded-2xl text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50",
+          "focus-visible:ring-ring focus-visible:ring-offset-background relative block h-56 w-72 rounded-2xl text-left outline-none select-none perspective-[1200px] focus-visible:ring-2 focus-visible:ring-offset-4 disabled:cursor-not-allowed disabled:opacity-50",
           className,
         )}
       >
@@ -329,7 +329,7 @@ export function ProjectFolder({
           aria-hidden="true"
           animate={{ rotateX: isOpen && !reduce ? 15 : 0 }}
           transition={transition}
-          className="absolute inset-0 origin-[center_bottom] rounded-2xl border border-foreground/10 bg-background/25 backdrop-blur-xl"
+          className="border-foreground/10 bg-background/25 absolute inset-0 origin-[center_bottom] rounded-2xl border backdrop-blur-xl"
         />
 
         <span aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -364,7 +364,7 @@ export function ProjectFolder({
                         onLayoutAnimationComplete={() => {
                           if (isClosing && index === 0) finishClose();
                         }}
-                        className="absolute top-0 left-0 -ml-12 block h-40 w-24 overflow-hidden rounded-lg border border-foreground/10 bg-background/45 backdrop-blur-lg"
+                        className="border-foreground/10 bg-background/45 absolute top-0 left-0 -ml-12 block h-40 w-24 overflow-hidden rounded-lg border backdrop-blur-lg"
                         style={{ zIndex: opened.zIndex }}
                       >
                         {preview.content}
@@ -380,16 +380,16 @@ export function ProjectFolder({
           initial={false}
           animate={{ rotateX: isOpen && !reduce ? -25 : 0 }}
           transition={transition}
-          className="backface-hidden absolute inset-x-0 bottom-0 z-20 origin-[center_bottom] overflow-hidden rounded-2xl border border-foreground/10 bg-background/60 backdrop-blur-2xl"
+          className="border-foreground/10 bg-background/60 absolute inset-x-0 bottom-0 z-20 origin-[center_bottom] overflow-hidden rounded-2xl border backdrop-blur-2xl backface-hidden"
         >
           <span className="flex h-16 items-center px-4">
-            <span className="line-clamp-2 font-medium text-foreground text-xl leading-tight">
+            <span className="text-foreground line-clamp-2 text-xl leading-tight font-medium">
               {title}
             </span>
           </span>
-          <span className="flex h-12 items-center justify-between gap-3 border-foreground/10 border-t px-4">
-            <span className="shrink-0 font-medium text-foreground/70 text-sm">{countText}</span>
-            <span className="truncate text-muted-foreground text-sm">{description}</span>
+          <span className="border-foreground/10 flex h-12 items-center justify-between gap-3 border-t px-4">
+            <span className="text-foreground/70 shrink-0 text-sm font-medium">{countText}</span>
+            <span className="text-muted-foreground truncate text-sm">{description}</span>
           </span>
         </motion.span>
       </motion.button>

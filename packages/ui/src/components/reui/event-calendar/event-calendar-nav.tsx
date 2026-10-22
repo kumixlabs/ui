@@ -197,7 +197,7 @@ function EventCalendarTitle({
     "data-slot": "event-calendar-title",
     "aria-live": "polite" as const,
     className: cn(
-      "min-w-0 truncate font-semibold text-sm",
+      "min-w-0 truncate text-sm font-semibold",
       viewConfig.classNames?.title,
       className,
     ),
@@ -305,7 +305,7 @@ function EventCalendarViewSwitcher({
         <DropdownMenuGroup>
           <DropdownMenuLabel
             className={cn(
-              "font-normal text-muted-foreground",
+              "text-muted-foreground font-normal",
               viewConfig.classNames?.viewSwitcherLabel,
             )}
           >
@@ -352,7 +352,7 @@ function EventCalendarViewShortcut({ children }: { children: ReactNode }) {
     <kbd
       data-slot="event-calendar-view-shortcut"
       className={cn(
-        "ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-sm border font-sans text-muted-foreground text-xs",
+        "text-muted-foreground ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-sm border font-sans text-xs",
         viewConfig.classNames?.viewShortcut,
       )}
     >
@@ -503,7 +503,7 @@ function EventCalendarNav({
     "data-slot": "event-calendar-nav",
     className: cn(
       "flex min-w-0 flex-wrap items-center gap-1 px-2 py-2",
-      viewConfig.stickyNav && "sticky top-0 z-30 bg-background",
+      viewConfig.stickyNav && "bg-background sticky top-0 z-30",
       viewConfig.classNames?.nav,
       className,
     ),

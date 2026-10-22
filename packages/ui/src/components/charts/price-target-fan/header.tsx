@@ -24,10 +24,10 @@ export function PriceTargetFanHeader({
             format={(v) => (v / 100).toFixed(2)}
             prefix="$"
             duration={0.5}
-            className="font-mono font-semibold text-2xl text-foreground tabular-nums tracking-tight"
+            className="text-foreground font-mono text-2xl font-semibold tracking-tight tabular-nums"
           />
           <span
-            className="font-medium font-mono text-xs tabular-nums"
+            className="font-mono text-xs font-medium tabular-nums"
             style={{ color: ink((head.color as string | undefined) ?? (headPct >= 0 ? UP : LOW)) }}
           >
             <NumberTicker

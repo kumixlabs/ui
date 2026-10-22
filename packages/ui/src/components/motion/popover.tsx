@@ -610,7 +610,7 @@ export function PopoverContent({ children, className }: PopoverContentProps) {
         }}
       >
         <div
-          className="absolute bg-popover"
+          className="bg-popover absolute"
           style={{
             left: geo.trigger.x,
             top: geo.trigger.y,
@@ -621,7 +621,7 @@ export function PopoverContent({ children, className }: PopoverContentProps) {
         />
         <div
           ref={blobRef}
-          className="absolute inset-0 bg-popover"
+          className="bg-popover absolute inset-0"
           style={{
             clipPath: clipForProgress(geo, progress.get(), false),
           }}
@@ -660,7 +660,7 @@ export function PopoverContent({ children, className }: PopoverContentProps) {
               transformOrigin: `${ALIGN_ORIGIN[align]} ${side === "bottom" ? "top" : "bottom"}`,
             }}
             className={cn(
-              "w-max max-w-[min(92vw,20rem)] p-4 text-popover-foreground outline-none",
+              "text-popover-foreground w-max max-w-[min(92vw,20rem)] p-4 outline-none",
               className,
             )}
           >

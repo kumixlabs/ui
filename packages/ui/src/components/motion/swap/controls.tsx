@@ -28,7 +28,7 @@ export function FlipButton({
         whileTap={reduce ? undefined : { scale: 0.9 }}
         animate={reduce ? undefined : { rotate: rotation }}
         transition={{ type: "spring", stiffness: 380, damping: 26, mass: 0.6 }}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border-[3px] border-card bg-muted text-foreground backdrop-blur"
+        className="border-card bg-muted text-foreground inline-flex h-9 w-9 items-center justify-center rounded-full border-[3px] backdrop-blur"
       >
         <ArrowDownUp className="h-3.5 w-3.5" />
       </motion.button>
@@ -67,9 +67,9 @@ export function ActionButton({
       transition={SPRING_PRESS}
       disabled={disabled}
       className={cn(
-        "mt-3 inline-flex h-12 w-full items-center justify-center rounded-2xl font-semibold text-sm transition-colors",
+        "mt-3 inline-flex h-12 w-full items-center justify-center rounded-2xl text-sm font-semibold transition-colors",
         disabled
-          ? "cursor-not-allowed bg-muted text-muted-foreground"
+          ? "bg-muted text-muted-foreground cursor-not-allowed"
           : "bg-primary text-primary-foreground hover:bg-primary/90",
       )}
     >
@@ -111,11 +111,11 @@ export function DestinationRow({
   }, [show]);
 
   return (
-    <div className="mt-1 overflow-hidden rounded-xl border border-border/50 bg-background/40">
+    <div className="border-border/50 bg-background/40 mt-1 overflow-hidden rounded-xl border">
       <button
         type="button"
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-2 px-3.5 py-2.5 text-[12px] text-muted-foreground hover:text-foreground"
+        className="text-muted-foreground hover:text-foreground flex w-full items-center justify-between gap-2 px-3.5 py-2.5 text-[12px]"
       >
         <span className="flex items-center gap-2">
           <Send className="h-3.5 w-3.5 shrink-0" />
@@ -157,7 +157,7 @@ export function DestinationRow({
                   onChange={(e) => onAddress(e.target.value.trim())}
                   placeholder="0x... or name.eth"
                   spellCheck={false}
-                  className="min-w-0 flex-1 bg-transparent font-mono text-[12px] text-foreground outline-none placeholder:text-muted-foreground/60"
+                  className="text-foreground placeholder:text-muted-foreground/60 min-w-0 flex-1 bg-transparent font-mono text-[12px] outline-none"
                 />
                 <AnimatePresence mode="wait">
                   {hasAddress ? (
@@ -169,7 +169,7 @@ export function DestinationRow({
                         exit={{ opacity: 0, scale: 0.7 }}
                         transition={{ duration: 0.14, ease: EASE }}
                       >
-                        <Check className="h-3.5 w-3.5 shrink-0 text-primary" />
+                        <Check className="text-primary h-3.5 w-3.5 shrink-0" />
                       </motion.span>
                     ) : (
                       <motion.button
@@ -181,7 +181,7 @@ export function DestinationRow({
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.7 }}
                         transition={{ duration: 0.14, ease: EASE }}
-                        className="shrink-0 text-muted-foreground hover:text-foreground"
+                        className="text-muted-foreground hover:text-foreground shrink-0"
                       >
                         <X className="h-3.5 w-3.5" />
                       </motion.button>

@@ -152,10 +152,10 @@ export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonPr
         whileTap={reduce || disabled ? undefined : { scale: 0.98 }}
         transition={SPRING_PRESS}
         className={cn(
-          "relative inline-grid h-16 min-w-72 touch-none place-items-center overflow-hidden rounded-(--hold-radius) bg-primary px-8 text-primary-foreground",
+          "bg-primary text-primary-foreground relative inline-grid h-16 min-w-72 touch-none place-items-center overflow-hidden rounded-(--hold-radius) px-8",
           "[--hold-radius:22px]",
           TOUCH_GESTURE_CLASS,
-          "outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "focus-visible:ring-primary focus-visible:ring-offset-background outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
           "disabled:pointer-events-none disabled:opacity-50",
           className,
         )}
@@ -240,7 +240,7 @@ export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonPr
 
         <span
           className={cn(
-            "relative z-10 grid place-items-center font-medium text-base tracking-[-0.01em]",
+            "relative z-10 grid place-items-center text-base font-medium tracking-[-0.01em]",
             labelClassName,
           )}
         >

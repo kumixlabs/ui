@@ -236,7 +236,7 @@ export function SignUpForm({
       noValidate
       onSubmit={handleSubmit}
       className={cn(
-        "flex w-full max-w-sm flex-col gap-5 rounded-3xl border border-border p-6",
+        "border-border flex w-full max-w-sm flex-col gap-5 rounded-3xl border p-6",
         className,
         classNames?.root,
       )}
@@ -246,7 +246,7 @@ export function SignUpForm({
           {title ? (
             <h2
               className={cn(
-                "font-semibold text-foreground text-xl tracking-tight",
+                "text-foreground text-xl font-semibold tracking-tight",
                 classNames?.title,
               )}
             >
@@ -305,7 +305,7 @@ export function SignUpForm({
                 disabled={isSubmitting}
                 onClick={() => setRevealPassword((prev) => !prev)}
                 aria-label={revealPassword ? "Hide password" : "Show password"}
-                className="text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:text-foreground"
+                className="text-muted-foreground hover:text-foreground focus-visible:text-foreground transition-colors outline-none"
               >
                 {revealPassword ? <EyeOff /> : <Eye />}
               </button>
@@ -331,7 +331,7 @@ export function SignUpForm({
                   {[0, 1, 2, 3].map((index) => (
                     <span
                       key={index}
-                      className="h-1 flex-1 overflow-hidden rounded-full bg-muted-foreground/20"
+                      className="bg-muted-foreground/20 h-1 flex-1 overflow-hidden rounded-full"
                     >
                       {/* scaleX rather than width — transforms only, per the
                           motion conventions, and it keeps the bar off layout. */}
@@ -391,7 +391,7 @@ export function SignUpForm({
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4, filter: "blur(4px)" }}
               transition={{ duration: 0.2 }}
-              className="px-1 text-destructive text-xs"
+              className="text-destructive px-1 text-xs"
             >
               {shownError("terms")}
             </motion.p>
@@ -408,7 +408,7 @@ export function SignUpForm({
             animate={{ opacity: 1, y: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4 }}
             transition={{ duration: 0.2 }}
-            className="rounded-2xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-destructive text-xs"
+            className="border-destructive/30 bg-destructive/10 text-destructive rounded-2xl border px-3 py-2 text-xs"
           >
             {errorMessage}
           </motion.p>
@@ -429,7 +429,7 @@ export function SignUpForm({
       </StatefulButton>
 
       {footer ? (
-        <div className={cn("text-center text-muted-foreground text-sm", classNames?.footer)}>
+        <div className={cn("text-muted-foreground text-center text-sm", classNames?.footer)}>
           {footer}
         </div>
       ) : null}

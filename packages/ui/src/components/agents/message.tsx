@@ -149,7 +149,7 @@ export function MessageAvatar({
       data-slot="message-avatar"
       aria-hidden={placeholder || undefined}
       className={cn(
-        "grid size-7 shrink-0 place-items-center overflow-hidden rounded-full bg-muted font-medium text-muted-foreground text-xs [&_img]:size-full [&_img]:object-cover [&_svg]:size-3.5",
+        "bg-muted text-muted-foreground grid size-7 shrink-0 place-items-center overflow-hidden rounded-full text-xs font-medium [&_img]:size-full [&_img]:object-cover [&_svg]:size-3.5",
         placeholder && "invisible",
         className,
       )}
@@ -183,7 +183,7 @@ export function MessageHeader({ className, ...props }: MessageHeaderProps) {
     <div
       data-slot="message-header"
       className={cn(
-        "flex items-center gap-1.5 px-1 text-[11px] text-muted-foreground leading-none",
+        "text-muted-foreground flex items-center gap-1.5 px-1 text-[11px] leading-none",
         from === "user" ? "justify-end" : "justify-start",
         className,
       )}
@@ -199,7 +199,7 @@ export function MessageFooter({ className, ...props }: MessageFooterProps) {
     <div
       data-slot="message-footer"
       className={cn(
-        "flex min-h-5 items-center gap-1 px-1 text-[11px] text-muted-foreground",
+        "text-muted-foreground flex min-h-5 items-center gap-1 px-1 text-[11px]",
         from === "user" ? "justify-end" : "justify-start",
         className,
       )}
@@ -213,7 +213,7 @@ export function MessageMarker({ className, ...props }: MessageMarkerProps) {
     <div
       data-slot="message-marker"
       className={cn(
-        "mx-auto flex w-fit max-w-[88%] items-center gap-1.5 rounded-full bg-muted/70 px-2.5 py-1 text-center text-muted-foreground text-xs",
+        "bg-muted/70 text-muted-foreground mx-auto flex w-fit max-w-[88%] items-center gap-1.5 rounded-full px-2.5 py-1 text-center text-xs",
         className,
       )}
       {...props}

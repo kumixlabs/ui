@@ -868,7 +868,7 @@ function DataGridTableAddRow() {
           // Block-level flex: inline-flex would sit on the cell's text
           // baseline and push the icon and label off vertical center.
           className={cn(
-            "flex w-full items-center justify-start rounded-none px-3 text-muted-foreground",
+            "text-muted-foreground flex w-full items-center justify-start rounded-none px-3",
             props.tableLayout?.dense ? "h-8 px-2" : "h-9",
           )}
           onClick={(event) => {
@@ -976,7 +976,7 @@ function DataGridTableBase({ children }: { children: ReactNode }) {
           : undefined
       }
       className={cn(
-        "caption-bottom text-left align-middle font-normal text-foreground text-sm rtl:text-right",
+        "text-foreground caption-bottom text-left align-middle text-sm font-normal rtl:text-right",
         /* Opaque surfaces (pinned cells, the footer band, their premixed
            tints) read --data-grid-surface and fall back to --background;
            inside a Card that is the wrong token, so they follow --card. The
@@ -1308,7 +1308,7 @@ function DataGridTableHeadRowCell<TData extends object>({
       data-outer-pinned-col={isFirstStartPinned ? "start" : isLastEndPinned ? "end" : undefined}
       data-last-col={isLastStartPinned ? "start" : isFirstEndPinned ? "end" : undefined}
       className={cn(
-        "relative h-10 text-left align-middle font-medium text-foreground rtl:text-right [&:has([role=checkbox])]:pe-0",
+        "text-foreground relative h-10 text-left align-middle font-medium rtl:text-right [&:has([role=checkbox])]:pe-0",
         headerCellSpacing,
         isBanded && "align-bottom",
         props.tableLayout?.headerBackground && "bg-muted",
@@ -1344,10 +1344,10 @@ function DataGridTableHeadRowCell<TData extends object>({
         props.tableLayout?.columnsPinnable &&
           column.getCanPin() &&
           cn(
-            "data-pinned:isolate data-pinned:bg-muted data-outer-pinned-col:bg-clip-padding",
+            "data-pinned:bg-muted data-outer-pinned-col:bg-clip-padding data-pinned:isolate",
             /* No rule here may reach the resize handle: it sits outside the
-     handle's own cn(), so the onChange resize line could not undo
-     it. The handle decides its own line. */
+   handle's own cn(), so the onChange resize line could not undo
+   it. The handle decides its own line. */
             "[&[data-pinned=end][data-last-col=end]]:shadow-[inset_calc(1px*var(--data-grid-dir,1))_0_0_0_var(--border)] [&[data-pinned=start][data-last-col=start]]:shadow-[inset_calc(-1px*var(--data-grid-dir,1))_0_0_0_var(--border)]",
           ),
         header.column.columnDef.meta?.headerClassName,
@@ -1381,7 +1381,7 @@ function DataGridTableHeadRowCell<TData extends object>({
           aria-hidden="true"
           data-slot="data-grid-table-head-group-rule"
           className={cn(
-            "pointer-events-none absolute h-px bg-border",
+            "bg-border pointer-events-none absolute h-px",
             // On the cell's last pixel row: over the transparent header
             // border when there is one, as the border-b rule paints.
             props.tableLayout?.headerBorder ? "-bottom-px" : "bottom-0",
@@ -1394,7 +1394,7 @@ function DataGridTableHeadRowCell<TData extends object>({
           aria-hidden="true"
           data-slot="data-grid-table-head-divider"
           className={cn(
-            "pointer-events-none absolute inset-y-0 w-px bg-border",
+            "bg-border pointer-events-none absolute inset-y-0 w-px",
             groupLineEdge === "end" ? "end-0" : "start-0",
           )}
         />
@@ -1519,7 +1519,7 @@ function DataGridTableHeadRowCellResize<TData extends object>({
                 "start-0 w-5 justify-start",
                 props.tableLayout?.columnsPinnable
                   ? "before:hidden"
-                  : "before:absolute before:inset-y-0 before:start-0 before:w-px before:bg-border",
+                  : "before:bg-border before:absolute before:inset-y-0 before:start-0 before:w-px",
               )
             : isLastVisibleColumn
               ? "end-0 w-5 justify-end before:hidden"
@@ -1537,7 +1537,7 @@ function DataGridTableHeadRowCellResize<TData extends object>({
                     // column showing a resize cursor and no indicator at all.
                     props.tableLayout?.columnsPinnable
                       ? "before:hidden"
-                      : "before:absolute before:inset-y-0 before:end-0 before:w-px before:bg-border",
+                      : "before:bg-border before:absolute before:inset-y-0 before:end-0 before:w-px",
                   )
                 : cn(
                     "-end-2 w-5 justify-center",
@@ -1548,19 +1548,19 @@ function DataGridTableHeadRowCellResize<TData extends object>({
                     // cell's last pixel column, where a th border-e paints.
                     props.tableLayout?.cellBorder || hidesLastCenterLine
                       ? "before:hidden"
-                      : "before:absolute before:inset-y-0 before:end-2 before:w-px before:bg-border",
+                      : "before:bg-border before:absolute before:inset-y-0 before:end-2 before:w-px",
                   ),
           column.getIsResizing() &&
             (isResizeModeOnEnd
               ? "opacity-100"
               : isLastVisibleColumn && isPinned !== "end"
-                ? "opacity-100 before:absolute before:inset-y-0 before:end-0 before:block before:w-0.5 before:bg-primary"
+                ? "before:bg-primary opacity-100 before:absolute before:inset-y-0 before:end-0 before:block before:w-0.5"
                 : isPinned
-                  ? "opacity-100 before:block before:w-0.5 before:bg-primary"
+                  ? "before:bg-primary opacity-100 before:block before:w-0.5"
                   : cn(
                       // Positioned explicitly: under cellBorder the resting
                       // line is hidden and unpositioned.
-                      "opacity-100 before:absolute before:inset-y-0 before:block before:w-0.5 before:bg-primary",
+                      "before:bg-primary opacity-100 before:absolute before:inset-y-0 before:block before:w-0.5",
                       // A th border-e ends the padding box 1px inside the
                       // cell edge, so the line moves out by that pixel.
                       props.tableLayout?.cellBorder && !hidesLastCenterLine
@@ -1688,10 +1688,10 @@ function DataGridTableResizeIndicator({
       data-slot="data-grid-table-resize-indicator"
       className="pointer-events-none absolute inset-y-0 z-50"
     >
-      <div className="absolute inset-y-0 left-0 w-px -translate-x-1/2 bg-primary/85" />
+      <div className="bg-primary/85 absolute inset-y-0 left-0 w-px -translate-x-1/2" />
       <div
         ref={indicatorHeadRef}
-        className="absolute top-0 left-0 -translate-x-1/2 rounded-b-sm bg-primary shadow-xs"
+        className="bg-primary absolute top-0 left-0 -translate-x-1/2 rounded-b-sm shadow-xs"
         style={{ width: 5 }}
       />
     </div>
@@ -1782,7 +1782,7 @@ function DataGridTableFootRowCell({
     <td
       colSpan={colSpan}
       className={cn(
-        "align-middle font-medium text-secondary-foreground/80",
+        "text-secondary-foreground/80 align-middle font-medium",
         spacing,
         props.tableLayout?.footerBackground &&
           "bg-muted/40 dark:bg-(--data-grid-surface,var(--data-grid-card-surface,var(--background)))",
@@ -1807,7 +1807,7 @@ function DataGridTableBodyRowSkeleton({ children }: { children: ReactNode }) {
           props.tableLayout?.rowBorder &&
           "border-border border-b [&:not(:last-child)>td]:border-b",
         props.tableLayout?.cellBorder && "*:last:border-e-0",
-        props.tableLayout?.stripped && "odd:bg-muted/90 hover:bg-transparent odd:hover:bg-muted",
+        props.tableLayout?.stripped && "odd:bg-muted/90 odd:hover:bg-muted hover:bg-transparent",
         props.tableClassNames?.bodyRow,
       )}
     >
@@ -1937,7 +1937,7 @@ function DataGridTableBodyRow<TData extends object>({
         // scrolled content), so they get the same tint pre-mixed over the
         // background instead of inheriting the translucent row fill.
         props.getRowStatus &&
-          "data-[row-status=deleted]:bg-destructive/5 data-[row-status=dirty]:bg-amber-500/5 data-[row-status=new]:bg-green-500/5 data-[row-status=deleted]:opacity-60 data-[row-status=deleted]:[&_td]:line-through",
+          "data-[row-status=deleted]:bg-destructive/5 data-[row-status=deleted]:opacity-60 data-[row-status=dirty]:bg-amber-500/5 data-[row-status=new]:bg-green-500/5 data-[row-status=deleted]:[&_td]:line-through",
         props.getRowStatus &&
           props.tableLayout?.columnsPinnable &&
           "data-[row-status=deleted]:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--destructive)_5%,var(--data-grid-surface,var(--data-grid-card-surface,var(--background))))] data-[row-status=dirty]:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--color-amber-500)_5%,var(--data-grid-surface,var(--data-grid-card-surface,var(--background))))] data-[row-status=new]:[&>td[data-pinned]]:bg-[color-mix(in_oklab,var(--color-green-500)_5%,var(--data-grid-surface,var(--data-grid-card-surface,var(--background))))]",
@@ -1945,13 +1945,13 @@ function DataGridTableBodyRow<TData extends object>({
         rowStatus === "dirty" && props.tableClassNames?.rowDirty,
         rowStatus === "deleted" && props.tableClassNames?.rowDeleted,
         !props.tableLayout?.stripped && props.tableLayout?.rowBorder && bodyRowBottomBorderClasses,
-        props.tableLayout?.cellBorder && `*:last:border-e-0 ${bodyRowBottomBorderClasses}`,
+        props.tableLayout?.cellBorder && cn("*:last:border-e-0", bodyRowBottomBorderClasses),
         // Virtualized rows stripe by absolute row index (CSS :nth-child
         // parity flips as spacer rows resize while scrolling).
         props.tableLayout?.stripped &&
           (typeof dataIndex === "number"
             ? cn("hover:bg-transparent", dataIndex % 2 === 0 && "bg-muted/90 hover:bg-muted")
-            : "odd:bg-muted/90 hover:bg-transparent odd:hover:bg-muted"),
+            : "odd:bg-muted/90 odd:hover:bg-muted hover:bg-transparent"),
         props.tableLayout?.rowsPinnable && isRowPinned && "bg-muted/30 hover:bg-muted/50",
         pinnedBoundary === "top" &&
           "[&>td]:shadow-[0_2px_0_rgba(0,0,0,0.03)] dark:[&>td]:shadow-[0_2px_0_rgba(255,255,255,0.06)]",
@@ -2130,7 +2130,7 @@ function DataGridTableBodyRowCell<TData extends object>({
         // getCellStatus is wired: amber for "dirty", destructive for
         // "invalid".
         props.getCellStatus &&
-          "data-cell-status:relative data-cell-status:after:absolute data-cell-status:after:end-0 data-cell-status:after:top-0 data-cell-status:after:size-0 data-cell-status:after:border-s-[5px] data-cell-status:after:border-s-transparent data-[cell-status=dirty]:after:border-t-amber-500 data-[cell-status=invalid]:after:border-t-destructive data-cell-status:after:border-t-[5px] data-cell-status:after:content-['']",
+          "data-[cell-status=invalid]:after:border-t-destructive data-cell-status:relative data-cell-status:after:absolute data-cell-status:after:end-0 data-cell-status:after:top-0 data-cell-status:after:size-0 data-cell-status:after:border-s-[5px] data-cell-status:after:border-t-[5px] data-cell-status:after:border-s-transparent data-cell-status:after:content-[''] data-[cell-status=dirty]:after:border-t-amber-500",
         props.tableLayout?.cellBorder && "border-e",
         // Mirror of the head cell rule: no floating border against the
         // resize filler strip.
@@ -2188,16 +2188,16 @@ function DataGridTableBodyRowCell<TData extends object>({
                the straddling half - raising the handle instead would float
                it above the pinned column during horizontal scroll. */
             className={cn(
-              "absolute z-10 in-data-cell-editing:hidden in-data-cell-selecting:hidden cursor-crosshair",
+              "absolute z-10 cursor-crosshair in-data-cell-editing:hidden in-data-cell-selecting:hidden",
               props.tableLayout?.cellFillHandleVariant === "ring"
-                ? "-end-[5px] in-[td:has(+[data-slot=data-grid-table-fill-body-cell]+td[data-pinned])]:end-0 in-[td:has(+[data-slot=data-grid-table-fill-body-cell]:last-child)]:end-0 in-[td:has(+td[data-pinned])]:end-0 in-[td:last-child]:end-0 -bottom-[5px] in-[tr:last-child]:bottom-0 size-[11px] rounded-full border-2 border-primary bg-background"
+                ? "border-primary bg-background -end-[5px] -bottom-[5px] size-[11px] rounded-full border-2 in-[td:has(+[data-slot=data-grid-table-fill-body-cell]+td[data-pinned])]:end-0 in-[td:has(+[data-slot=data-grid-table-fill-body-cell]:last-child)]:end-0 in-[td:has(+td[data-pinned])]:end-0 in-[td:last-child]:end-0 in-[tr:last-child]:bottom-0"
                 : props.tableLayout?.cellFillHandleVariant === "square"
                   ? /* Abutting the cell borders from inside: no gap and no
                        overlap, so the square cannot merge with a gridline
                        into a wider-than-tall blob, and it can never leave
                        the grid, which is why it needs no boundary clamps. */
-                    "end-0 bottom-0 size-[5px] bg-primary"
-                  : "end-0 bottom-0 size-[9px] rounded-full border border-background bg-primary",
+                    "bg-primary end-0 bottom-0 size-[5px]"
+                  : "border-background bg-primary end-0 bottom-0 size-[9px] rounded-full border",
               props.tableClassNames?.cellFillHandle,
             )}
           />
@@ -2341,7 +2341,7 @@ function DataGridTableEmpty() {
     <tr>
       <td
         colSpan={Math.max(visibleColumnCount, 1)}
-        className="py-6 text-center text-muted-foreground text-sm"
+        className="text-muted-foreground py-6 text-center text-sm"
       >
         <div ref={handleMessageRef} data-slot="data-grid-table-empty" className="sticky start-0">
           {props.emptyMessage || i18n.labels.empty}
@@ -2356,7 +2356,7 @@ function DataGridTableLoader() {
 
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-      <div className="flex items-center gap-2 rounded-lg border bg-card px-4 py-2 font-medium text-muted-foreground text-sm leading-none">
+      <div className="bg-card text-muted-foreground flex items-center gap-2 rounded-lg border px-4 py-2 text-sm leading-none font-medium">
         <Spinner className="size-5 opacity-60" />
         {props.loadingMessage || i18n.labels.loading}
       </div>
@@ -2383,7 +2383,7 @@ function DataGridTableRowPin<TData extends object>({ row }: { row: Row<DataGridF
         }
       }}
       className={cn(
-        "inline-flex size-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground",
+        "text-muted-foreground hover:text-foreground inline-flex size-7 items-center justify-center rounded-lg transition-colors",
         isPinned && "text-primary hover:text-primary/80",
       )}
     >
@@ -2521,7 +2521,7 @@ function DataGridTableRowExpand<TData extends object>({
             row.toggleExpanded();
           }}
           className={cn(
-            "inline-flex items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground",
+            "text-muted-foreground hover:text-foreground inline-flex items-center justify-center rounded-lg transition-colors",
             controlSize,
           )}
         >
@@ -2537,7 +2537,7 @@ function DataGridTableRowExpand<TData extends object>({
               strokeLinecap="round"
               strokeLinejoin="round"
               aria-hidden="true"
-              className="in-aria-[expanded=false]:-rotate-90 transition-transform duration-200 rtl:in-aria-[expanded=false]:rotate-90"
+              className="transition-transform duration-200 in-aria-[expanded=false]:-rotate-90 rtl:in-aria-[expanded=false]:rotate-90"
             >
               <path d="m6 9 6 6 6-6" />
             </svg>
@@ -2605,7 +2605,7 @@ function DataGridTableBodyRows<TData extends object>({
         >
           <div className="flex items-center justify-center">
             <svg
-              className="mr-3 -ml-1 h-5 w-5 animate-spin text-muted-foreground"
+              className="text-muted-foreground mr-3 -ml-1 h-5 w-5 animate-spin"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

@@ -65,7 +65,7 @@ export function Loader({
     <span
       role="status"
       aria-label={label}
-      className={cn("inline-flex items-center justify-center text-foreground", className)}
+      className={cn("text-foreground inline-flex items-center justify-center", className)}
     >
       {variant === "spinner" && <Spinner size={size} speed={speed} reduce={reduce} />}
       {variant === "dots" && <Dots size={size} speed={speed} reduce={reduce} />}
@@ -161,7 +161,7 @@ function Ascii({ frames, size, speed, reduce }: PartProps & { frames: string[] }
   }, [frames.length, speed, reduce]);
 
   return (
-    <span className="font-mono tabular-nums leading-none" style={{ fontSize: size, lineHeight: 1 }}>
+    <span className="font-mono leading-none tabular-nums" style={{ fontSize: size, lineHeight: 1 }}>
       {frames[frame % frames.length]}
     </span>
   );
@@ -304,7 +304,7 @@ function Scramble({ size, speed, reduce }: PartProps) {
 
   return (
     <span
-      className="font-medium font-mono tabular-nums tracking-[0.2em]"
+      className="font-mono font-medium tracking-[0.2em] tabular-nums"
       style={{ fontSize: size * 0.42 }}
     >
       {text}
@@ -457,7 +457,7 @@ function Percent({ size, speed, reduce }: PartProps) {
   return (
     <span className="flex flex-col items-center" style={{ gap: size * 0.14, width: size * 1.4 }}>
       <span
-        className="font-medium font-mono tabular-nums"
+        className="font-mono font-medium tabular-nums"
         style={{ fontSize: size * 0.42, lineHeight: 1 }}
       >
         {p}%

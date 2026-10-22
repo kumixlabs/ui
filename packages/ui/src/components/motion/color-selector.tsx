@@ -86,7 +86,7 @@ export function ColorSelectorLabel({ className, ...props }: ColorSelectorLabelPr
   return (
     <legend
       {...props}
-      className={cn("mb-3 p-0 font-medium text-muted-foreground text-sm", className)}
+      className={cn("text-muted-foreground mb-3 p-0 text-sm font-medium", className)}
     />
   );
 }
@@ -156,8 +156,8 @@ export function ColorSelectorItem({
         aria-hidden="true"
         style={style}
         className={cn(
-          "relative flex size-11 items-center justify-center rounded-full border border-foreground/10 bg-muted/60",
-          "peer-focus-visible:outline-2 peer-focus-visible:outline-foreground peer-focus-visible:outline-offset-4",
+          "border-foreground/10 bg-muted/60 relative flex size-11 items-center justify-center rounded-full border",
+          "peer-focus-visible:outline-foreground peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4",
           className,
         )}
       >

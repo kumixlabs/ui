@@ -104,7 +104,7 @@ export function MorphingModal({
               transition={{ duration: 0.2, ease: EASE_OUT }}
               {...gate}
               onClick={onClose}
-              className="pointer-events-auto fixed inset-0 z-80 bg-background/5 [-webkit-backdrop-filter:blur(14px)_saturate(140%)] [backdrop-filter:blur(14px)_saturate(140%)]"
+              className="bg-background/5 pointer-events-auto fixed inset-0 z-80 [backdrop-filter:blur(14px)_saturate(140%)] [-webkit-backdrop-filter:blur(14px)_saturate(140%)]"
             />
           )}
         </PresenceGate>
@@ -142,7 +142,7 @@ export function MorphingModal({
                 transition={SPRING_PANEL}
                 {...gate}
                 className={cn(
-                  "pointer-events-auto relative w-full max-w-sm overflow-hidden rounded-3xl border border-border bg-background shadow-2xl outline-none will-change-transform",
+                  "border-border bg-background pointer-events-auto relative w-full max-w-sm overflow-hidden rounded-3xl border shadow-2xl will-change-transform outline-none",
                   className,
                 )}
               >

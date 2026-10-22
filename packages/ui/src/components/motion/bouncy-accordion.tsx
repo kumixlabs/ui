@@ -159,7 +159,7 @@ function BouncyAccordionRow({
         transition={reduce ? { duration: 0 } : layoutTransition}
         style={{ originY: 0 }}
         className={cn(
-          "overflow-hidden bg-card text-card-foreground",
+          "bg-card text-card-foreground overflow-hidden",
           item.disabled && "opacity-50",
           classNames?.item,
         )}
@@ -176,7 +176,7 @@ function BouncyAccordionRow({
           transition={{ layout: layoutTransition }}
           style={{ originY: 0 }}
           className={cn(
-            "flex min-h-[54px] w-full items-center gap-4 px-5 text-left outline-none transition-colors",
+            "flex min-h-[54px] w-full items-center gap-4 px-5 text-left transition-colors outline-none",
             "focus-visible:bg-muted/25",
             "disabled:pointer-events-none",
             classNames?.trigger,
@@ -185,7 +185,7 @@ function BouncyAccordionRow({
           {item.icon ? (
             <span
               className={cn(
-                "grid h-7 w-7 shrink-0 place-items-center text-muted-foreground",
+                "text-muted-foreground grid h-7 w-7 shrink-0 place-items-center",
                 classNames?.icon,
               )}
             >
@@ -194,7 +194,7 @@ function BouncyAccordionRow({
           ) : null}
           <span
             className={cn(
-              "min-w-0 flex-1 truncate font-medium text-[15px] text-foreground",
+              "text-foreground min-w-0 flex-1 truncate text-[15px] font-medium",
               classNames?.title,
             )}
           >
@@ -205,7 +205,7 @@ function BouncyAccordionRow({
             animate={{ rotate: open ? 180 : 0 }}
             transition={reduce ? { duration: 0 } : CHEVRON_TRANSITION}
             className={cn(
-              "grid h-6 w-6 shrink-0 place-items-center text-muted-foreground",
+              "text-muted-foreground grid h-6 w-6 shrink-0 place-items-center",
               classNames?.chevron,
             )}
           >
@@ -238,7 +238,7 @@ function BouncyAccordionRow({
             className="px-5 pb-5"
           >
             <div
-              className={cn("text-[15px] text-muted-foreground leading-6", classNames?.description)}
+              className={cn("text-muted-foreground text-[15px] leading-6", classNames?.description)}
             >
               {item.description}
             </div>

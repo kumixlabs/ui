@@ -97,7 +97,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       {label ? (
         <label
           htmlFor={id}
-          className={cn("px-1 font-medium text-foreground text-sm", classNames?.label)}
+          className={cn("text-foreground px-1 text-sm font-medium", classNames?.label)}
         >
           {label}
         </label>
@@ -109,8 +109,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         className={cn(
           "relative h-11 overflow-hidden rounded-full border transition-colors duration-200",
           "border-border",
-          focused && !hasError && "border-foreground/40 ring-2 ring-ring/40",
-          hasError && "border-destructive ring-2 ring-destructive/25",
+          focused && !hasError && "border-foreground/40 ring-ring/40 ring-2",
+          hasError && "border-destructive ring-destructive/25 ring-2",
           disabled && "opacity-60",
           classNames?.field,
         )}
@@ -118,7 +118,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         {leftIcon ? (
           <span
             className={cn(
-              "pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center text-muted-foreground [&_svg]:h-4 [&_svg]:w-4",
+              "text-muted-foreground pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center [&_svg]:h-4 [&_svg]:w-4",
               classNames?.leftIcon,
             )}
           >
@@ -145,7 +145,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             onBlur?.(event);
           }}
           className={cn(
-            "peer h-full w-full bg-transparent text-base text-foreground leading-6 caret-foreground outline-none",
+            "peer text-foreground caret-foreground h-full w-full bg-transparent text-base leading-6 outline-none",
             "placeholder:text-muted-foreground/60",
             leftIcon ? "pl-10" : "pl-3.5",
             rightSlot || success ? "pr-10" : "pr-3.5",
@@ -177,7 +177,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         ) : rightSlot ? (
           <span
             className={cn(
-              "absolute top-0 right-0 flex h-full items-center text-muted-foreground [&_button]:grid [&_button]:size-11 [&_button]:place-items-center [&_svg]:h-4 [&_svg]:w-4",
+              "text-muted-foreground absolute top-0 right-0 flex h-full items-center [&_button]:grid [&_button]:size-11 [&_button]:place-items-center [&_svg]:h-4 [&_svg]:w-4",
               classNames?.rightIcon,
             )}
           >
@@ -196,7 +196,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4, filter: "blur(4px)" }}
               transition={{ duration: 0.2 }}
-              className={cn("px-1 text-destructive text-xs", classNames?.errorMessage)}
+              className={cn("text-destructive px-1 text-xs", classNames?.errorMessage)}
             >
               {errorMessage}
             </motion.p>

@@ -1422,7 +1422,7 @@ export function ColorPickerTrigger({
       <>
         <ColorPickerSwatch data-icon="inline-start" />
         <ColorPickerValue placeholder={placeholder} className="flex-1 text-start" />
-        <span data-icon="inline-end" aria-hidden="true" className="flex text-muted-foreground">
+        <span data-icon="inline-end" aria-hidden="true" className="text-muted-foreground flex">
           {CHEVRON_ICON}
         </span>
       </>
@@ -2511,7 +2511,7 @@ export function ColorPickerFields({
                 {formats.map((item) => (
                   <DropdownMenuRadioItem key={item} value={item} closeOnClick>
                     <span className="w-12 shrink-0 font-medium">{FORMAT_LABELS[item]}</span>
-                    <span className="truncate text-muted-foreground text-xs tabular-nums">
+                    <span className="text-muted-foreground truncate text-xs tabular-nums">
                       {formatColor(context.display, item).replace(/^\w+\(|\)$/g, "")}
                     </span>
                   </DropdownMenuRadioItem>
@@ -2622,7 +2622,7 @@ export function ColorPickerSwatches({
         data-slot="color-picker-swatches"
         data-empty={activeId ? undefined : ""}
         className={cn(
-          "group/color-picker-swatches grid grid-cols-[repeat(auto-fill,var(--color-picker-swatch-size))] justify-between gap-x-1 gap-y-1.5 outline-none [--color-picker-swatch-size:calc(var(--spacing)*6)] aria-disabled:opacity-50 data-empty:focus-visible:outline-2 data-empty:focus-visible:outline-ring data-empty:focus-visible:outline-offset-2",
+          "group/color-picker-swatches data-empty:focus-visible:outline-ring grid grid-cols-[repeat(auto-fill,var(--color-picker-swatch-size))] justify-between gap-x-1 gap-y-1.5 outline-none [--color-picker-swatch-size:calc(var(--spacing)*6)] aria-disabled:opacity-50 data-empty:focus-visible:outline-2 data-empty:focus-visible:outline-offset-2",
           className,
         )}
         onFocus={(event) => {

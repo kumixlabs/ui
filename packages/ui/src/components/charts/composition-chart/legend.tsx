@@ -10,7 +10,7 @@ export function CompositionChartLegend({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "grid min-w-0 @min-[480px]:grid-cols-3 @min-[900px]:grid-cols-6 grid-cols-2 gap-x-4 gap-y-1",
+        "grid min-w-0 grid-cols-2 gap-x-4 gap-y-1 @min-[480px]:grid-cols-3 @min-[900px]:grid-cols-6",
         className,
       )}
     >
@@ -35,7 +35,7 @@ export function CompositionChartLegend({ className }: { className?: string }) {
             }
           }}
           className={cn(
-            "flex min-h-12 min-w-0 items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-xs transition-opacity duration-150 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
+            "focus-visible:outline-ring flex min-h-12 min-w-0 items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-xs transition-opacity duration-150 focus-visible:outline-2 focus-visible:outline-offset-2",
             pinned === row.id && "bg-muted/60",
             highlight && highlight !== row.id && "opacity-40",
           )}
@@ -46,7 +46,7 @@ export function CompositionChartLegend({ className }: { className?: string }) {
             style={{ backgroundColor: row.color }}
           />
           <span className="grid min-w-0 gap-0.5">
-            <span className="truncate text-muted-foreground">{row.name}</span>
+            <span className="text-muted-foreground truncate">{row.name}</span>
             <span
               title={row.value === null ? "Missing value" : formatValue(row.value)}
               className="shrink-0 font-mono tabular-nums"

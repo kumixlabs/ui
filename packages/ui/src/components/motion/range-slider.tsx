@@ -63,7 +63,7 @@ export function RangeSlider({ showTicks = true, className, ...options }: RangeSl
     <div
       {...trackProps}
       className={cn(
-        "relative flex h-10 w-full touch-none items-center overflow-hidden rounded-lg bg-muted",
+        "bg-muted relative flex h-10 w-full touch-none items-center overflow-hidden rounded-lg",
         TOUCH_GESTURE_CLASS,
         options.disabled ? "pointer-events-none opacity-50" : "cursor-grab active:cursor-grabbing",
         className,
@@ -73,7 +73,7 @@ export function RangeSlider({ showTicks = true, className, ...options }: RangeSl
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-[2px] inset-y-0 overflow-hidden rounded-lg"
       >
-        <motion.div className="absolute inset-0 rounded-lg bg-foreground/15" style={{ x: fillX }} />
+        <motion.div className="bg-foreground/15 absolute inset-0 rounded-lg" style={{ x: fillX }} />
       </div>
 
       {/* Tick centres follow the same inset path as the handle centre. */}
@@ -83,7 +83,7 @@ export function RangeSlider({ showTicks = true, className, ...options }: RangeSl
           return (
             <span
               key={t}
-              className="absolute top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground/25"
+              className="bg-foreground/25 absolute top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 rounded-full"
               style={{ left: `${tp}%` }}
             />
           );
@@ -95,7 +95,7 @@ export function RangeSlider({ showTicks = true, className, ...options }: RangeSl
         {...sliderProps}
         animate={reduce ? undefined : { scaleY: dragging ? 1.35 : 1 }}
         transition={SPRING_BOUNCY}
-        className="absolute top-1/2 left-0 h-6 w-1 rounded-full bg-foreground outline-none ring-foreground/30 ring-inset focus-visible:ring-4"
+        className="bg-foreground ring-foreground/30 absolute top-1/2 left-0 h-6 w-1 rounded-full outline-none ring-inset focus-visible:ring-4"
         style={{ x: thumbX, y: "-50%" }}
       />
     </div>

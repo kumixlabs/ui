@@ -83,7 +83,7 @@ function InputComponent({ className, ...props }: React.ComponentProps<typeof Inp
   return (
     <Input
       className={cn(
-        "rounded-s-none outline-none! ring-none! focus:z-1",
+        "ring-none! rounded-s-none outline-none! focus:z-1",
         variant === "sm" && "h-7",
         variant === "lg" && "h-9",
         className,
@@ -155,7 +155,7 @@ function CountrySelect({
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           showTrigger={false}
-          className="rounded-none border-0 border-input px-0 py-2.5 shadow-none outline-none! ring-0! focus-visible:border-border focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="border-input focus-visible:border-border rounded-none border-0 px-0 py-2.5 shadow-none ring-0! outline-none! focus-visible:ring-0 focus-visible:ring-offset-0"
         />
         <ComboboxSeparator />
         <ComboboxEmpty className="px-4 py-2.5 text-sm">No country found.</ComboboxEmpty>

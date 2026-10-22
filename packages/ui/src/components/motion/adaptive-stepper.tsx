@@ -116,7 +116,7 @@ export function AdaptiveStepper({
   const incrementRef = useRef<HTMLButtonElement>(null);
   const lower = Number.isFinite(min) ? min : 0;
   const suppliedMax = Number.isFinite(max) ? max : lower;
-  const upper = suppliedMax > lower ? suppliedMax : lower;
+  const upper = Math.max(suppliedMax, lower);
   const stride = Number.isFinite(step) && step > 0 ? step : 1;
   const [internalValue, setInternalValue] = useState(() =>
     clamp(Number.isFinite(defaultValue) ? defaultValue : lower, lower, upper),
@@ -255,7 +255,7 @@ function StepperAction({
         transition={context.reduce ? { duration: 0 } : SPRING_PRESS}
         style={style}
         className={cn(
-          "grid size-full place-items-center rounded-full border border-transparent bg-transparent bg-clip-padding text-foreground outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none",
+          "text-foreground hover:bg-muted focus-visible:ring-ring grid size-full place-items-center rounded-full border border-transparent bg-transparent bg-clip-padding transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none",
           hidden && "hover:bg-transparent",
           context.disabled && "opacity-50",
           className,
@@ -334,7 +334,7 @@ export function AdaptiveStepperValue({
         aria-atomic="true"
         style={style}
         className={cn(
-          "flex size-full min-w-0 items-center justify-center overflow-hidden rounded-full border border-transparent bg-transparent bg-clip-padding px-4 font-semibold text-foreground text-lg tabular-nums",
+          "text-foreground flex size-full min-w-0 items-center justify-center overflow-hidden rounded-full border border-transparent bg-transparent bg-clip-padding px-4 text-lg font-semibold tabular-nums",
           className,
         )}
       >

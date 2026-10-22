@@ -256,7 +256,7 @@ export function ExpandableTabs({
         transition={reduce ? { duration: 0 } : SHELL_SPRING}
         style={{ transformOrigin: "bottom center" }}
         className={cn(
-          "relative overflow-hidden rounded-[26px] border border-border bg-card",
+          "border-border bg-card relative overflow-hidden rounded-[26px] border",
           className,
           classNames?.root,
         )}
@@ -334,8 +334,8 @@ export function ExpandableTabs({
                 }}
                 transition={reduce ? { duration: 0 } : TAB_CHANGE_SPRING}
                 className={cn(
-                  "relative isolate flex h-9 min-w-8 shrink-0 items-center justify-center overflow-hidden rounded-[18px] px-2 font-medium text-sm outline-none",
-                  "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  "relative isolate flex h-9 min-w-8 shrink-0 items-center justify-center overflow-hidden rounded-[18px] px-2 text-sm font-medium outline-none",
+                  "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
                   active && isActive && "min-w-0 justify-start pr-4 pl-2.5",
                   isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                   classNames?.tab,
@@ -345,7 +345,7 @@ export function ExpandableTabs({
                 {isActive ? (
                   <span
                     className={cn(
-                      "absolute inset-0 -z-10 rounded-[18px] bg-foreground/10",
+                      "bg-foreground/10 absolute inset-0 -z-10 rounded-[18px]",
                       classNames?.pill,
                     )}
                   />
@@ -390,7 +390,7 @@ export function ExpandableTabs({
       >
         {items.map((item) => (
           <span
-            className={cn("whitespace-nowrap font-medium text-sm leading-none", classNames?.label)}
+            className={cn("text-sm leading-none font-medium whitespace-nowrap", classNames?.label)}
             key={item.id}
             ref={setLabelMeasureRef(item.id)}
           >

@@ -13,7 +13,7 @@ export function HeatCalendarLegend({ className }: { className?: string }) {
       </span>
       {/* hovering a step keeps only cells of that level lit, so the legend doubles as a filter */}
       <span className="flex items-center gap-1" onPointerLeave={() => setStep(null)}>
-        <span className="mr-0.5 text-muted-foreground text-xs">less</span>
+        <span className="text-muted-foreground mr-0.5 text-xs">less</span>
         {STEPS.map((s, i) => (
           <button
             type="button"
@@ -33,7 +33,7 @@ export function HeatCalendarLegend({ className }: { className?: string }) {
             }}
           />
         ))}
-        <span className="ml-0.5 text-muted-foreground text-xs">more</span>
+        <span className="text-muted-foreground ml-0.5 text-xs">more</span>
       </span>
     </div>
   );

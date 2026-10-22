@@ -151,15 +151,15 @@ export function FileDiff({
         aria-expanded={currentOpen}
         aria-controls={contentId}
         onClick={() => setOpen(!currentOpen)}
-        className="group flex min-h-9 w-full items-center gap-2 rounded-md py-1 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="group focus-visible:ring-ring focus-visible:ring-offset-background flex min-h-9 w-full items-center gap-2 rounded-md py-1 text-left outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
       >
-        <FileCode2 aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
-        <span className="min-w-0 flex-1 truncate font-mono text-foreground/80 text-xs">{file}</span>
+        <FileCode2 aria-hidden="true" className="text-muted-foreground size-4 shrink-0" />
+        <span className="text-foreground/80 min-w-0 flex-1 truncate font-mono text-xs">{file}</span>
         <span className="flex shrink-0 items-center gap-2">
           <ChangeCount value={additions} type="added" />
           <ChangeCount value={deletions} type="removed" />
         </span>
-        <span className="grid size-4 shrink-0 place-items-center text-muted-foreground/60">
+        <span className="text-muted-foreground/60 grid size-4 shrink-0 place-items-center">
           {streaming ? (
             <LoaderCircle
               aria-label="Applying changes"
@@ -173,7 +173,7 @@ export function FileDiff({
           aria-hidden="true"
           animate={{ rotate: currentOpen ? 180 : 0 }}
           transition={reduce ? { duration: 0 } : SPRING_SWAP}
-          className="shrink-0 text-muted-foreground/45 transition-colors group-hover:text-muted-foreground"
+          className="text-muted-foreground/45 group-hover:text-muted-foreground shrink-0 transition-colors"
         >
           <ChevronDown className="size-3.5" />
         </motion.span>
@@ -181,7 +181,7 @@ export function FileDiff({
 
       <AgentDisclosure id={contentId} role="region" aria-labelledby={triggerId} open={currentOpen}>
         <div className="pt-1.5 pl-6">
-          <div className="overflow-hidden rounded-xl bg-muted/80">
+          <div className="bg-muted/80 overflow-hidden rounded-xl">
             <div
               ref={viewportRef}
               data-slot="file-diff-viewport"
@@ -202,15 +202,15 @@ export function FileDiff({
                         type === "removed" && "bg-rose-500/[0.07]",
                       )}
                     >
-                      <span className="select-none pr-2 text-right text-muted-foreground/40 tabular-nums">
+                      <span className="text-muted-foreground/40 pr-2 text-right tabular-nums select-none">
                         {line.oldLine}
                       </span>
-                      <span className="select-none pr-2 text-right text-muted-foreground/40 tabular-nums">
+                      <span className="text-muted-foreground/40 pr-2 text-right tabular-nums select-none">
                         {line.newLine}
                       </span>
                       <span
                         className={cn(
-                          "select-none text-center text-muted-foreground/45",
+                          "text-muted-foreground/45 text-center select-none",
                           type === "added" && "text-emerald-600 dark:text-emerald-400",
                           type === "removed" && "text-rose-600 dark:text-rose-400",
                         )}
@@ -220,7 +220,7 @@ export function FileDiff({
                       <AgentCodeLine
                         code={line.content}
                         tokens={tokens?.[index]}
-                        className="min-w-0 whitespace-pre px-1.5"
+                        className="min-w-0 px-1.5 whitespace-pre"
                       />
                     </div>
                   );
@@ -237,7 +237,7 @@ export function FileDiff({
                   onClick={handleCopy}
                   whileTap={reduce ? undefined : { scale: 0.9 }}
                   transition={SPRING_PRESS}
-                  className="grid size-7 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-background/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+                  className="text-muted-foreground hover:bg-background/70 hover:text-foreground focus-visible:ring-ring grid size-7 place-items-center rounded-md transition-colors outline-none focus-visible:ring-2"
                 >
                   {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
                 </motion.button>

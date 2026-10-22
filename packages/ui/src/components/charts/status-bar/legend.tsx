@@ -22,7 +22,7 @@ export function StatusBarLegend({
       {...props}
       data-slot="status-bar-legend"
       className={cn(
-        "flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground text-xs",
+        "text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 text-xs",
         className,
       )}
     >

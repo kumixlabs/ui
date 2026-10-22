@@ -57,7 +57,7 @@ export function HeatCalendarGrid({
           <span
             key={c.id}
             className={cn(
-              "whitespace-nowrap text-[10px] leading-none transition-colors duration-200",
+              "text-[10px] leading-none whitespace-nowrap transition-colors duration-200",
               hotMonth === c.m ? "text-foreground" : "text-muted-foreground",
             )}
             style={{ gridColumn: c.w + 1, gridRow: 1 }}
@@ -116,7 +116,7 @@ export function HeatCalendarGrid({
                 onKeyDown={(e) => {
                   if (e.key === "Escape") clear();
                 }}
-                className="absolute -inset-0.5 block rounded-[5px] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="focus-visible:ring-ring absolute -inset-0.5 block rounded-[5px] outline-none focus-visible:ring-2"
                 whileTap={reduce ? undefined : { scale: 0.9, transition: SPRING_PRESS }}
               >
                 <motion.span

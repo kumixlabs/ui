@@ -52,12 +52,12 @@ export function StatusBarPlot({
     lastPointerId.current = id;
   };
   if (!rows.length)
-    return <p className={cn("py-4 text-muted-foreground text-sm", className)}>No status data</p>;
+    return <p className={cn("text-muted-foreground py-4 text-sm", className)}>No status data</p>;
   return (
     <div data-slot="status-bar-plot" className={cn("min-w-0 space-y-1.5", className)}>
       <div
         ref={plotRef}
-        className="relative h-11 rounded-md has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-offset-4"
+        className="has-focus-visible:outline-ring relative h-11 rounded-md has-focus-visible:outline-2 has-focus-visible:outline-offset-4"
       >
         <div aria-hidden="true" className="flex h-full items-center gap-0.5 sm:gap-1">
           {rows.map(({ datum, status }, i) => {
@@ -93,7 +93,7 @@ export function StatusBarPlot({
                   />
                 </AnimatePresence>
                 <motion.span
-                  className="pointer-events-none absolute -inset-0.5 rounded-[inherit] ring-1 ring-foreground/60"
+                  className="ring-foreground/60 pointer-events-none absolute -inset-0.5 rounded-[inherit] ring-1"
                   initial={false}
                   animate={{ opacity: active ? 1 : 0 }}
                   transition={{ duration: 0.1, ease: EASE_OUT }}
@@ -174,7 +174,7 @@ export function StatusBarPlot({
         />
       </div>
       {showLabels ? (
-        <div className="flex justify-between gap-4 text-muted-foreground text-xs">
+        <div className="text-muted-foreground flex justify-between gap-4 text-xs">
           <span>{rows[0].datum.label}</span>
           <span>{rows.at(-1)?.datum.label}</span>
         </div>

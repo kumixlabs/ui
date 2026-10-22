@@ -80,7 +80,7 @@ export function CopyMenu({
       </Tooltip>
 
       <MorphPopoverContent align="end" className="w-52 p-2">
-        <p className="px-2 py-1.5 font-medium text-muted-foreground text-xs">Copy times to</p>
+        <p className="text-muted-foreground px-2 py-1.5 text-xs font-medium">Copy times to</p>
         <div className="flex flex-col">
           {others.map((d) => (
             <Checkbox
@@ -88,15 +88,15 @@ export function CopyMenu({
               checked={picked.has(d.key)}
               onCheckedChange={() => toggle(d.key)}
               label={d.label}
-              className="w-full flex-row-reverse justify-between rounded-lg px-2 py-1.5 transition-colors hover:bg-muted [&_button[data-state=unchecked]]:border-border-strong [&_button]:size-4 [&_button]:rounded-[5px] [&_button]:border"
+              className="hover:bg-muted [&_button[data-state=unchecked]]:border-border-strong w-full flex-row-reverse justify-between rounded-lg px-2 py-1.5 transition-colors [&_button]:size-4 [&_button]:rounded-[5px] [&_button]:border"
             />
           ))}
         </div>
-        <div className="mt-1 flex items-center gap-2 border-border border-t px-1 pt-2">
+        <div className="border-border mt-1 flex items-center gap-2 border-t px-1 pt-2">
           <button
             type="button"
             onClick={() => apply(others.map((d) => d.key))}
-            className="flex-1 rounded-lg px-2 py-1.5 font-medium text-muted-foreground text-xs outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:bg-muted"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:bg-muted flex-1 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors outline-none"
           >
             Every day
           </button>
@@ -104,7 +104,7 @@ export function CopyMenu({
             type="button"
             onClick={() => apply([...picked])}
             disabled={picked.size === 0}
-            className="flex-1 rounded-lg bg-primary px-2 py-1.5 font-semibold text-primary-foreground text-xs outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40"
+            className="bg-primary text-primary-foreground focus-visible:ring-ring flex-1 rounded-lg px-2 py-1.5 text-xs font-semibold transition-opacity outline-none hover:opacity-90 focus-visible:ring-2 disabled:opacity-40"
           >
             Apply
           </button>

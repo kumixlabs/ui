@@ -413,7 +413,7 @@ export function CylinderCarousel({
         // claim the same touch for its callout or a slide drag.
         TOUCH_GESTURE_CLASS,
         "cursor-grab active:cursor-grabbing",
-        "focus-visible:ring-2 focus-visible:ring-foreground/20",
+        "focus-visible:ring-foreground/20 focus-visible:ring-2",
         className,
       )}
       style={{ height: stageHeight }}

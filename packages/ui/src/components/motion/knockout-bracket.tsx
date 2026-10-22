@@ -141,11 +141,11 @@ function BracketConnector({ connector, transition }: { connector: Connector; tra
       initial={false}
       animate={{ x, y, height, opacity: visible ? 1 : 0 }}
       transition={geo}
-      className="pointer-events-none absolute top-0 left-0 rounded-r-xl border-border border-y border-r"
+      className="border-border pointer-events-none absolute top-0 left-0 rounded-r-xl border-y border-r"
       style={{ width: CONNECTOR_POCKET, willChange: "transform" }}
     >
       <span
-        className="absolute top-1/2 left-full h-px bg-border"
+        className="bg-border absolute top-1/2 left-full h-px"
         style={{ width: CONNECTOR_STEM }}
       />
     </motion.div>
@@ -187,7 +187,7 @@ function TeamCrest({ team }: { team: Team | null }) {
           draggable={false}
           onError={() => setFailedSrc(src)}
           className={cn(
-            "shrink-0 rounded-[4px] border border-border/40",
+            "border-border/40 shrink-0 rounded-[4px] border",
             // Flags are 4:3 and fill the slot; a logo keeps its own shape inside it.
             team?.logo ? "h-5 w-5 border-transparent object-contain" : "h-5 w-7 object-cover",
           )}
@@ -195,11 +195,11 @@ function TeamCrest({ team }: { team: Team | null }) {
       ) : team ? (
         // text-foreground, not muted: the /10 tint lifts the disc toward the
         // muted ramp, leaving 4.44:1 light and 3.55:1 dark — both under AA.
-        <span className="grid size-5 place-items-center rounded-full bg-foreground/10 font-semibold text-[10px] text-foreground leading-none">
+        <span className="bg-foreground/10 text-foreground grid size-5 place-items-center rounded-full text-[10px] leading-none font-semibold">
           {initials(team.name)}
         </span>
       ) : (
-        <Shield className="size-5 fill-current text-muted-foreground/50" />
+        <Shield className="text-muted-foreground/50 size-5 fill-current" />
       )}
     </span>
   );
@@ -207,7 +207,7 @@ function TeamCrest({ team }: { team: Team | null }) {
 
 function WinnerMarker() {
   return (
-    <svg viewBox="0 0 6 8" aria-hidden="true" className="h-2 w-1.5 shrink-0 fill-foreground">
+    <svg viewBox="0 0 6 8" aria-hidden="true" className="fill-foreground h-2 w-1.5 shrink-0">
       <path d="M6 0 0 4 6 8Z" />
     </svg>
   );
@@ -228,7 +228,7 @@ function TeamRow({
       <TeamCrest team={side.team} />
       <span
         className={cn(
-          "min-w-0 flex-1 truncate font-medium text-base",
+          "min-w-0 flex-1 truncate text-base font-medium",
           dim && "text-muted-foreground",
         )}
       >
@@ -237,7 +237,7 @@ function TeamRow({
       {side.score != null && (
         <span
           className={cn(
-            "shrink-0 font-medium text-base tabular-nums",
+            "shrink-0 text-base font-medium tabular-nums",
             dim && "text-muted-foreground",
           )}
         >
@@ -286,16 +286,16 @@ function MatchCard({ match }: { match: Match }) {
   return (
     <div
       style={{ width: CARD_W, height: CARD_H }}
-      className="rounded-2xl border border-border bg-card p-4"
+      className="border-border bg-card rounded-2xl border p-4"
     >
       {/* h-5 holds the row open when a match carries no date or badge, so a
           dateless draw's cards don't sit top-heavy inside the fixed CARD_H. */}
       <div className="mb-3 flex h-5 items-center justify-between gap-2">
-        <span className="min-w-0 flex-1 truncate text-muted-foreground text-sm leading-5">
+        <span className="text-muted-foreground min-w-0 flex-1 truncate text-sm leading-5">
           {[match.date, match.time].filter(Boolean).join(", ")}
         </span>
         {badge && (
-          <span className="shrink-0 rounded-full bg-background px-2.5 font-medium text-muted-foreground text-xs leading-5">
+          <span className="bg-background text-muted-foreground shrink-0 rounded-full px-2.5 text-xs leading-5 font-medium">
             {badge}
           </span>
         )}
@@ -434,7 +434,7 @@ export function KnockoutBracket({
                   opacity: isInWindow(r, page, visibleCols) ? 1 : 0,
                 }}
                 transition={transition}
-                className="absolute top-0 left-0 flex h-full items-center justify-center font-bold text-foreground text-sm"
+                className="text-foreground absolute top-0 left-0 flex h-full items-center justify-center text-sm font-bold"
                 style={{ width: CARD_W }}
               >
                 {round.name}
@@ -451,7 +451,7 @@ export function KnockoutBracket({
               style={{ left: PAD_X }}
               className="group absolute top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full outline-none"
             >
-              <span className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors group-hover:bg-foreground/10 group-hover:text-foreground group-focus-visible:ring-2 group-focus-visible:ring-ring">
+              <span className="text-muted-foreground group-hover:bg-foreground/10 group-hover:text-foreground group-focus-visible:ring-ring grid size-9 place-items-center rounded-full transition-colors group-focus-visible:ring-2">
                 <ChevronLeft className="size-5" />
               </span>
             </button>
@@ -464,7 +464,7 @@ export function KnockoutBracket({
               style={{ right: PAD_X }}
               className="group absolute top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full outline-none"
             >
-              <span className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors group-hover:bg-foreground/10 group-hover:text-foreground group-focus-visible:ring-2 group-focus-visible:ring-ring">
+              <span className="text-muted-foreground group-hover:bg-foreground/10 group-hover:text-foreground group-focus-visible:ring-ring grid size-9 place-items-center rounded-full transition-colors group-focus-visible:ring-2">
                 <ChevronRight className="size-5" />
               </span>
             </button>
@@ -518,10 +518,10 @@ export function KnockoutBracket({
         {/* Outside the bracket stage — it feeds off the semi-finals rather than
             into the final, so it gets its own rule instead of a column. */}
         {thirdPlace && (
-          <div className="mt-8 border-border border-t pt-6" style={{ paddingLeft: PAD_X }}>
+          <div className="border-border mt-8 border-t pt-6" style={{ paddingLeft: PAD_X }}>
             <ul aria-label={thirdPlaceLabel} className="m-0 list-none p-0">
               <li aria-label={matchLabel(thirdPlaceLabel, thirdPlace)}>
-                <p className="mb-2 text-muted-foreground/70 text-sm leading-5">{thirdPlaceLabel}</p>
+                <p className="text-muted-foreground/70 mb-2 text-sm leading-5">{thirdPlaceLabel}</p>
                 <MatchCard match={thirdPlace} />
               </li>
             </ul>

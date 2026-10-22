@@ -352,7 +352,7 @@ const ToastItem = memo(function ToastItem({
     >
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl border border-border bg-card/95 p-3 shadow-2xl backdrop-blur-xl",
+          "border-border bg-card/95 relative overflow-hidden rounded-2xl border p-3 shadow-2xl backdrop-blur-xl",
           classNames?.surface,
         )}
       >
@@ -404,7 +404,7 @@ const ToastItem = memo(function ToastItem({
                 >
                   <p
                     className={cn(
-                      "truncate font-medium text-foreground text-sm leading-5",
+                      "text-foreground truncate text-sm leading-5 font-medium",
                       classNames?.title,
                     )}
                   >
@@ -413,7 +413,7 @@ const ToastItem = memo(function ToastItem({
                   {toast.description ? (
                     <p
                       className={cn(
-                        "mt-0.5 line-clamp-2 text-muted-foreground text-xs leading-4",
+                        "text-muted-foreground mt-0.5 line-clamp-2 text-xs leading-4",
                         classNames?.description,
                       )}
                     >
@@ -428,7 +428,7 @@ const ToastItem = memo(function ToastItem({
                   type="button"
                   onClick={() => toast.action?.onClick(toast)}
                   className={cn(
-                    "mt-2 inline-flex h-7 items-center rounded-full bg-muted/80 px-3 font-medium text-foreground text-xs transition-colors hover:bg-muted",
+                    "bg-muted/80 text-foreground hover:bg-muted mt-2 inline-flex h-7 items-center rounded-full px-3 text-xs font-medium transition-colors",
                     classNames?.action,
                   )}
                 >
@@ -443,7 +443,7 @@ const ToastItem = memo(function ToastItem({
                 onClick={() => onDismiss?.(toast.id)}
                 aria-label="Dismiss toast"
                 className={cn(
-                  "inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground",
+                  "text-muted-foreground hover:bg-muted/80 hover:text-foreground inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-colors",
                   classNames?.close,
                 )}
               >

@@ -47,10 +47,10 @@ export function WalletActions({
           transition={SPRING_PRESS}
           className="flex flex-1 flex-col items-center gap-2 outline-none"
         >
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-foreground">
+          <span className="bg-muted text-foreground flex h-12 w-12 items-center justify-center rounded-full">
             <Icon className="h-5 w-5" />
           </span>
-          <span className="font-medium text-muted-foreground text-xs">{label}</span>
+          <span className="text-muted-foreground text-xs font-medium">{label}</span>
         </motion.button>
       ))}
     </div>

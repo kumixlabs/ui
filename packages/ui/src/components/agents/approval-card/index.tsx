@@ -179,7 +179,7 @@ function ProgressDots({ current, ids }: { current: number; ids: string[] }) {
             opacity: index <= current ? 1 : 0.35,
           }}
           transition={SPRING_SWAP}
-          className="size-1.5 rounded-full bg-foreground"
+          className="bg-foreground size-1.5 rounded-full"
         />
       ))}
     </span>
@@ -284,13 +284,13 @@ export function ApprovalCard({
     <div
       data-state={status}
       aria-busy={busy}
-      className={cn("w-full overflow-hidden rounded-2xl bg-muted p-4 text-sm", className)}
+      className={cn("bg-muted w-full overflow-hidden rounded-2xl p-4 text-sm", className)}
     >
       <div className="flex items-start gap-3">
         <span
           aria-hidden="true"
           className={cn(
-            "grid size-5 shrink-0 place-items-center text-muted-foreground",
+            "text-muted-foreground grid size-5 shrink-0 place-items-center",
             getStatusClass(status),
           )}
         >
@@ -311,19 +311,19 @@ export function ApprovalCard({
 
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 items-start gap-3">
-            <h3 className="min-w-0 flex-1 font-medium text-base text-foreground leading-5">
+            <h3 className="text-foreground min-w-0 flex-1 text-base leading-5 font-medium">
               <ActionSwapRollText value={titleKey}>{displayTitle}</ActionSwapRollText>
             </h3>
             {questionMode && interactive ? (
               multipleQuestions ? (
-                <span className="shrink-0 text-muted-foreground/65 text-xs tabular-nums">
+                <span className="text-muted-foreground/65 shrink-0 text-xs tabular-nums">
                   {currentStep + 1}/{questions.length}
                 </span>
               ) : null
             ) : (
               <span
                 className={cn(
-                  "shrink-0 rounded-full border px-2 py-0.5 font-medium text-[11px] transition-colors",
+                  "shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium transition-colors",
                   getStatusBadgeClass(status),
                 )}
               >
@@ -335,7 +335,7 @@ export function ApprovalCard({
                 type="button"
                 aria-label="Dismiss"
                 onClick={onDismiss}
-                className="grid size-5 shrink-0 place-items-center rounded-full text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+                className="text-muted-foreground hover:text-foreground focus-visible:ring-ring grid size-5 shrink-0 place-items-center rounded-full transition-colors outline-none focus-visible:ring-2"
               >
                 <X className="size-4" />
               </button>
@@ -353,7 +353,7 @@ export function ApprovalCard({
                   transition={{ duration: reduce ? 0 : 0.2, ease: EASE_OUT }}
                 >
                   {question.description ? (
-                    <p className="mt-1 text-muted-foreground leading-5">{question.description}</p>
+                    <p className="text-muted-foreground mt-1 leading-5">{question.description}</p>
                   ) : null}
                   <QuestionOptions
                     question={question}
@@ -367,7 +367,7 @@ export function ApprovalCard({
             ) : (
               <div>
                 {description ? (
-                  <p className="mt-1 text-muted-foreground leading-5">{description}</p>
+                  <p className="text-muted-foreground mt-1 leading-5">{description}</p>
                 ) : null}
                 {children ? <div className="mt-3">{children}</div> : null}
               </div>
@@ -433,7 +433,7 @@ export function ApprovalCard({
                     size="sm"
                     disabled={busy}
                     onClick={onReject}
-                    className="rounded-full text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400"
+                    className="text-muted-foreground rounded-full hover:text-rose-600 dark:hover:text-rose-400"
                   >
                     Reject
                   </Button>
@@ -443,7 +443,7 @@ export function ApprovalCard({
           </AgentDisclosure>
 
           {!interactive ? (
-            <p className="mt-1 text-muted-foreground text-sm">{result ?? statusLabel}</p>
+            <p className="text-muted-foreground mt-1 text-sm">{result ?? statusLabel}</p>
           ) : null}
         </div>
       </div>

@@ -743,7 +743,7 @@ export function MorphingTabs({
                     }}
                     onKeyDown={(event) => handleTabKeyDown(item.id, event)}
                     className={cn(
-                      "group relative z-10 flex h-full w-full min-w-0 items-center gap-2 overflow-hidden rounded-t-[1.5rem] px-3 text-left outline-none transition-colors",
+                      "group relative z-10 flex h-full w-full min-w-0 items-center gap-2 overflow-hidden rounded-t-[1.5rem] px-3 text-left transition-colors outline-none",
                       isActive ? "text-[#181818]" : "pb-2 text-white/70 hover:text-white",
                       classNames?.tab,
                     )}
@@ -753,7 +753,7 @@ export function MorphingTabs({
                       className={cn(
                         "pointer-events-none absolute inset-x-1 top-1 opacity-0 transition-opacity group-focus-visible:opacity-100",
                         isActive
-                          ? "bottom-0 rounded-t-[1.25rem] border-black/20 border-x-2 border-t-2"
+                          ? "bottom-0 rounded-t-[1.25rem] border-x-2 border-t-2 border-black/20"
                           : "bottom-2 rounded-[1rem] border-2 border-white/60",
                       )}
                     />
@@ -767,7 +767,7 @@ export function MorphingTabs({
                     ) : null}
                     <span
                       className={cn(
-                        "min-w-0 truncate whitespace-nowrap font-medium text-base leading-none tracking-[-0.025em]",
+                        "min-w-0 truncate text-base leading-none font-medium tracking-[-0.025em] whitespace-nowrap",
                         classNames?.label,
                       )}
                     >
@@ -785,7 +785,7 @@ export function MorphingTabs({
                         onClose(item.id);
                       }}
                       className={cn(
-                        "absolute top-1/2 right-2 z-20 grid size-6 -translate-y-1/2 place-items-center rounded-full text-[#9aa0a8] transition-colors hover:bg-black/[0.06] hover:text-[#4b5563] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current",
+                        "absolute top-1/2 right-2 z-20 grid size-6 -translate-y-1/2 place-items-center rounded-full text-[#9aa0a8] transition-colors hover:bg-black/[0.06] hover:text-[#4b5563] focus-visible:ring-2 focus-visible:ring-current focus-visible:outline-none",
                         !isActive &&
                           "top-[calc(50%-4px)] text-white/45 hover:bg-white/[0.08] hover:text-white/80",
                         classNames?.close,

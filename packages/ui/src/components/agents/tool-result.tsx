@@ -117,7 +117,7 @@ function ToolResultAction({
       onClick={onClick}
       whileTap={reduce ? undefined : { scale: 0.9 }}
       transition={SPRING_PRESS}
-      className="grid size-7 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+      className="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring grid size-7 place-items-center rounded-md transition-colors outline-none focus-visible:ring-2"
     >
       {children}
     </motion.button>
@@ -133,7 +133,7 @@ export function ToolResultOutput({
     <AgentCode
       code={children}
       language={language}
-      className={cn("wrap-break-word whitespace-pre-wrap text-foreground/80", className)}
+      className={cn("text-foreground/80 wrap-break-word whitespace-pre-wrap", className)}
     />
   );
 }
@@ -233,30 +233,30 @@ export function ToolResult({
         aria-expanded={currentOpen}
         aria-controls={contentId}
         onClick={() => setOpen(!currentOpen)}
-        className="group flex min-h-9 w-full items-center gap-2 rounded-md py-1 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="group focus-visible:ring-ring focus-visible:ring-offset-background flex min-h-9 w-full items-center gap-2 rounded-md py-1 text-left outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
       >
         <span
           aria-hidden="true"
-          className="grid size-4 shrink-0 place-items-center text-muted-foreground"
+          className="text-muted-foreground grid size-4 shrink-0 place-items-center"
         >
           {icon ?? <KindIcon kind={kind} />}
         </span>
         <span className="flex min-w-0 flex-1 items-baseline gap-2">
-          <span className="min-w-0 truncate font-medium text-foreground/90">
+          <span className="text-foreground/90 min-w-0 truncate font-medium">
             <ActionSwapRollText value={titleKey}>{title}</ActionSwapRollText>
           </span>
           {meta ? (
-            <span className="shrink-0 text-muted-foreground/60 text-xs">
+            <span className="text-muted-foreground/60 shrink-0 text-xs">
               <ActionSwapRollText value={metaKey}>{meta}</ActionSwapRollText>
             </span>
           ) : null}
-          <span className="min-w-0 truncate font-mono text-[11px] text-muted-foreground/55">
+          <span className="text-muted-foreground/55 min-w-0 truncate font-mono text-[11px]">
             <ActionSwapRollText value={toolKey}>{tool}</ActionSwapRollText>
           </span>
         </span>
         <span
           className={cn(
-            "inline-flex shrink-0 items-center gap-1 font-medium text-[11px]",
+            "inline-flex shrink-0 items-center gap-1 text-[11px] font-medium",
             getStatusClass(status),
           )}
         >
@@ -267,7 +267,7 @@ export function ToolResult({
           aria-hidden="true"
           animate={{ rotate: currentOpen ? 180 : 0 }}
           transition={reduce ? { duration: 0 } : SPRING_SWAP}
-          className="shrink-0 text-muted-foreground/50 transition-colors group-hover:text-muted-foreground"
+          className="text-muted-foreground/50 group-hover:text-muted-foreground shrink-0 transition-colors"
         >
           <ChevronDown className="size-3.5" />
         </motion.span>
@@ -275,7 +275,7 @@ export function ToolResult({
 
       <AgentDisclosure id={contentId} role="region" aria-labelledby={triggerId} open={currentOpen}>
         <div className="pt-1.5 pl-6">
-          <div className="overflow-hidden rounded-xl bg-muted/80">
+          <div className="bg-muted/80 overflow-hidden rounded-xl">
             <div
               ref={viewportRef}
               role="log"
@@ -298,7 +298,7 @@ export function ToolResult({
                     <RotateCcw className="size-3.5" />
                   </ToolResultAction>
                 ) : null}
-                <span className="ml-auto text-[11px] text-muted-foreground/55">
+                <span className="text-muted-foreground/55 ml-auto text-[11px]">
                   <ActionSwapRollText value={status}>{statusLabel}</ActionSwapRollText>
                 </span>
               </div>

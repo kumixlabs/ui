@@ -417,7 +417,7 @@ function CodeBlockTokens({ tokens }: { tokens: CodeBlockToken[] }) {
             data-word={token.word || undefined}
             className={cn(
               token.word &&
-                "rounded-sm bg-primary/10 px-0.5 py-px ring-1 ring-primary/20 ring-inset",
+                "bg-primary/10 ring-primary/20 rounded-sm px-0.5 py-px ring-1 ring-inset",
             )}
             style={style}
           >
@@ -559,7 +559,7 @@ const CodeBlockLineRow = memo(function CodeBlockLineRow({
             /* Square, centred in the line box: height matches the width and
                the translate makes up the difference to the 24px line. Open
                regions read darker than folded ones. */
-            "sticky z-20 inline-flex size-(--code-block-fold-width) shrink-0 translate-y-[calc((var(--code-block-line-height)-var(--code-block-fold-width))/2)] cursor-pointer items-center justify-center rounded-[4px] align-top text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50",
+            "text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring/50 sticky z-20 inline-flex size-(--code-block-fold-width) shrink-0 translate-y-[calc((var(--code-block-line-height)-var(--code-block-fold-width))/2)] cursor-pointer items-center justify-center rounded-[4px] align-top outline-none focus-visible:ring-2",
             /* Margins cancel: -(4px + width) then +4px, so the toggle paints
                in the channel, sits 4px from the code, and the code still
                starts where a row without a toggle does. An uncancelled
@@ -602,7 +602,7 @@ const CodeBlockLineRow = memo(function CodeBlockLineRow({
             /* Inside the <pre>, so the code surface's mono face, pre
                whitespace and token color would cascade into real buttons
                placed here. Reset to app typography at the boundary. */
-            "z-20 select-none items-center gap-1 whitespace-normal font-sans text-foreground",
+            "text-foreground z-20 items-center gap-1 font-sans whitespace-normal select-none",
             !inGutter && "absolute end-2 top-0 flex h-(--code-block-line-height)",
             /* ABSOLUTE and centred on the row's START EDGE: `left-0` is where
                the code column begins (the row box already excludes the
@@ -643,7 +643,7 @@ const CodeBlockLineRow = memo(function CodeBlockLineRow({
                channel and the translate makes up the difference to the line
                box, so the label sits on the code baseline's visual centre
                instead of riding high. */
-            className="ml-2 inline-flex h-(--code-block-fold-width) translate-y-[calc((var(--code-block-line-height)-var(--code-block-fold-width))/2)] cursor-pointer select-none items-center rounded-sm bg-muted/80 px-1.5 align-top text-[0.8em] text-muted-foreground leading-none hover:bg-muted"
+            className="bg-muted/80 text-muted-foreground hover:bg-muted ml-2 inline-flex h-(--code-block-fold-width) translate-y-[calc((var(--code-block-line-height)-var(--code-block-fold-width))/2)] cursor-pointer items-center rounded-sm px-1.5 align-top text-[0.8em] leading-none select-none"
           >
             {`... ${hiddenCount} lines`}
           </button>
@@ -1539,13 +1539,13 @@ function CodeBlockSurface({
         onScroll={handleScroll}
         onKeyDown={handleKeyDown}
         className={cn(
-          "relative min-w-0 rounded-[inherit] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+          "focus-visible:ring-ring/50 relative min-w-0 rounded-[inherit] outline-none focus-visible:ring-[3px]",
           /* Composed under an ancestor scroller the surface scrolls NOTHING
              itself: both axes belong to the ancestor, whose viewport picks up
              the pre's overflowing width, and the sticky number cell anchors
              to that viewport instead. Mixed ownership shipped once and read
              as two scrollbar styles on one block. */
-          scroll && "overflow-auto [scrollbar-width:thin]",
+          scroll && "[scrollbar-width:thin] overflow-auto",
           scroll && visibleLines && "max-h-(--cb-max-height)",
           className,
         )}
@@ -1570,14 +1570,14 @@ function CodeBlockSurface({
           onPointerLeave={clearActive}
           onFocus={trackActive}
           className={cn(
-            "text-(length:--code-block-font-size) w-max min-w-full py-(--code-block-padding) font-mono",
+            "w-max min-w-full py-(--code-block-padding) font-mono text-(length:--code-block-font-size)",
             TOKEN_COLOR_CLASS,
             TOKEN_MOTION_CLASS,
             /* `min-w-0` must beat the `min-w-full` above, or the pre keeps
                    a floor of 100% of a scroll container that is itself wider
                    than the viewport, and wrapping still leaves a stray
                    horizontal scrollbar. */
-            wrap && "wrap-break-word w-full min-w-0 max-w-full whitespace-pre-wrap",
+            wrap && "w-full max-w-full min-w-0 wrap-break-word whitespace-pre-wrap",
             showLineNumbers && "pl-(--code-block-gutter-width)",
             /* The expand control floats over the surface in BOTH states, so
                    an expanded block reserves a row of clearance rather than
@@ -1638,7 +1638,7 @@ function CodeBlockHeader({ className, ...props }: ComponentProps<"div">) {
       <div
         data-slot="code-block-header"
         className={cn(
-          "flex min-h-9 shrink-0 items-center gap-2 border-border border-b px-3 py-0 text-sm",
+          "border-border flex min-h-9 shrink-0 items-center gap-2 border-b px-3 py-0 text-sm",
           className,
         )}
         {...props}
@@ -1651,7 +1651,7 @@ function CodeBlockTitle({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="code-block-title"
-      className={cn("min-w-0 truncate font-mono text-muted-foreground text-xs", className)}
+      className={cn("text-muted-foreground min-w-0 truncate font-mono text-xs", className)}
       {...props}
     />
   );
@@ -1673,7 +1673,7 @@ function CodeBlockLanguage({ className, children, ...props }: ComponentProps<"sp
       data-slot="code-block-language"
       data-unsupported={!resolvedLanguage || undefined}
       className={cn(
-        "inline-flex shrink-0 items-center rounded-md border border-border bg-muted/60 px-1.5 py-0.5 font-mono text-[0.6875rem] text-muted-foreground uppercase leading-none",
+        "border-border bg-muted/60 text-muted-foreground inline-flex shrink-0 items-center rounded-md border px-1.5 py-0.5 font-mono text-[0.6875rem] leading-none uppercase",
         className,
       )}
       {...props}
@@ -1821,7 +1821,7 @@ over the first characters instead of the trailing edge. */
           "absolute top-(--code-block-copy-top) right-(--code-block-copy-inset) z-20",
         resolvedPosition === "pinned" &&
           !alwaysVisible &&
-          "opacity-0 transition-opacity focus-visible:opacity-100 group-hover/code-block:opacity-100",
+          "opacity-0 transition-opacity group-hover/code-block:opacity-100 focus-visible:opacity-100",
         className,
       )}
       {...props}
@@ -1898,7 +1898,7 @@ function CodeBlockExpandButton({
            state only. Expanded, the surface already reserves a clear row for
            this control, and keeping the gradient just dimmed the last real
            line of code. */
-        !expanded && "bg-linear-to-t from-card via-card/85 to-transparent",
+        !expanded && "from-card via-card/85 bg-linear-to-t to-transparent",
         className,
       )}
     >
@@ -2040,7 +2040,7 @@ function CodeBlockDownloadButton({
           "absolute top-(--code-block-copy-top) right-(--code-block-copy-inset) z-20",
         resolvedPosition === "pinned" &&
           !alwaysVisible &&
-          "opacity-0 transition-opacity focus-visible:opacity-100 group-hover/code-block:opacity-100",
+          "opacity-0 transition-opacity group-hover/code-block:opacity-100 focus-visible:opacity-100",
         className,
       )}
       {...props}

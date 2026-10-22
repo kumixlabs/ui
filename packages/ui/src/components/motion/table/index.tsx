@@ -226,7 +226,7 @@ export function Table<T>({
 
   return (
     <div
-      className={cn("w-full overflow-hidden border border-border bg-background text-sm", className)}
+      className={cn("border-border bg-background w-full overflow-hidden border text-sm", className)}
     >
       <div ref={scrollRef} onScroll={handleScroll} className="overflow-auto" style={{ height }}>
         <table
@@ -287,7 +287,7 @@ export function Table<T>({
                 />
               ) : (
                 <tr>
-                  <td colSpan={leadColumns + 1} className="p-10 text-center text-muted-foreground">
+                  <td colSpan={leadColumns + 1} className="text-muted-foreground p-10 text-center">
                     {emptyState}
                   </td>
                 </tr>
@@ -334,7 +334,7 @@ export function Table<T>({
                       {orderedColumns.map((column) => (
                         <td
                           key={column.key}
-                          className={cn("truncate px-4 text-foreground", alignText(column.align))}
+                          className={cn("text-foreground truncate px-4", alignText(column.align))}
                         >
                           {!column.cell && column.editable ? (
                             <EditableCell

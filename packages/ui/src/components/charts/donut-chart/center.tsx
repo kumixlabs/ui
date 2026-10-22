@@ -52,7 +52,7 @@ export function DonutChartCenter({
 
   return (
     <div aria-live="polite" className={cn("relative max-w-[56%]", className)}>
-      <p className="font-medium text-2xl tabular-nums tracking-tight">
+      <p className="text-2xl font-medium tracking-tight tabular-nums">
         <DigitSwap value={formatValue(value)} direction={direction} />
       </p>
       <div className="relative mt-1 h-4 overflow-hidden">
@@ -63,7 +63,7 @@ export function DonutChartCenter({
             animate={{ opacity: 1, y: "0%" }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: "-100%" }}
             transition={{ duration: reduce ? 0.12 : 0.22, ease: EASE_OUT }}
-            className="flex items-center justify-center gap-1.5 whitespace-nowrap text-muted-foreground text-xs leading-4"
+            className="text-muted-foreground flex items-center justify-center gap-1.5 text-xs leading-4 whitespace-nowrap"
           >
             {segment ? (
               <>

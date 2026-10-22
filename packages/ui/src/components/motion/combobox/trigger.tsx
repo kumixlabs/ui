@@ -31,14 +31,14 @@ export function ComboboxTrigger({ children, className }: ComboboxTriggerProps) {
         context.setOpen(true);
       }}
       className={cn(
-        "relative z-20 flex h-10 w-full min-w-52 cursor-text items-center justify-between gap-3 rounded-xl border border-border bg-transparent px-3 text-foreground text-sm transition-[border-color] hover:border-(--color-border-strong)",
-        "focus-within:ring-2 focus-within:ring-foreground/20",
+        "border-border text-foreground relative z-20 flex h-10 w-full min-w-52 cursor-text items-center justify-between gap-3 rounded-xl border bg-transparent px-3 text-sm transition-[border-color] hover:border-(--color-border-strong)",
+        "focus-within:ring-foreground/20 focus-within:ring-2",
         context.disabled && "pointer-events-none opacity-50",
         className,
       )}
     >
       <span className="min-w-0 flex-1 text-left">{children}</span>
-      <span aria-hidden className="shrink-0 text-muted-foreground">
+      <span aria-hidden className="text-muted-foreground shrink-0">
         <ChevronsUpDown className="size-4" />
       </span>
     </div>
@@ -132,7 +132,7 @@ export function ComboboxInput({
 
   return (
     <div className={cn("flex min-w-0 flex-1 items-center gap-2", wrapperClassName)}>
-      <Search aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+      <Search aria-hidden className="text-muted-foreground size-4 shrink-0" />
       <input
         {...props}
         ref={mergeRefs(ref, context.inputRef)}
@@ -169,7 +169,7 @@ export function ComboboxInput({
         }}
         onKeyDown={handleKeyDown}
         className={cn(
-          "h-10 min-w-0 flex-1 bg-transparent text-foreground text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed",
+          "text-foreground placeholder:text-muted-foreground h-10 min-w-0 flex-1 bg-transparent text-sm outline-none disabled:cursor-not-allowed",
           className,
         )}
       />

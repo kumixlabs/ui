@@ -188,7 +188,7 @@ const COMBINATOR_CLASS = cn(
 /** The two static words in that column, CENTRED because the pill's own
  * `justify-center` centres its word. `w-full`, or `truncate` has no box. */
 const COMBINATOR_TEXT_CLASS = cn(
-  "w-full truncate px-1 text-center text-muted-foreground text-sm",
+  "text-muted-foreground w-full truncate px-1 text-center text-sm",
   SERA_TEXT_CLASS,
 );
 
@@ -217,17 +217,17 @@ const VALUE_CELL_CLASS = "basis-[var(--filter-value-width,12rem)]";
 
 /** The trailing band. `pe-1` is on the BAND and not the gutter, since a group
  * card is `pe-0`; the footer and `DROP_SLOT_INDICATOR` restate the same four. */
-const ACTION_BAND_CLASS = cn("flex shrink-0 items-center gap-0.5 pe-1 text-muted-foreground");
+const ACTION_BAND_CLASS = cn("text-muted-foreground flex shrink-0 items-center gap-0.5 pe-1");
 
 /** What the grip and the kebab wear while open. TWO ATTRIBUTES, because Radix
  * sets `data-state="open"` and Base UI `data-popup-open`, so one selector alone
  * would be dead in one twin, silently, in a byte-locked file. */
 const ACTION_CONTROL_CLASS = cn(
-  "hover:inset-ring hover:inset-ring-border",
+  "hover:inset-ring-border hover:inset-ring",
   // Base UI.
-  "data-popup-open:inset-ring data-popup-open:inset-ring-border",
+  "data-popup-open:inset-ring-border data-popup-open:inset-ring",
   // Radix.
-  "data-[state=open]:inset-ring data-[state=open]:inset-ring-border",
+  "data-[state=open]:inset-ring-border data-[state=open]:inset-ring",
 );
 
 /** The gap between sibling rows, one third of one measurement:
@@ -257,8 +257,8 @@ const PANEL_CLASS = "flex w-full min-w-0 flex-col gap-2 py-(--filter-panel-pad)"
 /** A RING and not a border, the whole answer to the staggered trailing
  * controls: a border pushes the content edge inward a pixel per level. */
 const GROUP_CARD_CLASS = cn(
-  "min-w-0 flex-1 rounded-md bg-muted/40",
-  "inset-ring inset-ring-border",
+  "bg-muted/40 min-w-0 flex-1 rounded-md",
+  "inset-ring-border inset-ring",
   "ps-2 pe-0",
   "data-invalid:inset-ring-destructive/50",
   // The DESTINATION of a drop into this group, told apart from the insertion
@@ -318,7 +318,7 @@ const FOOTER_DROP_CLASS = cn(
   "data-drop-into:after:start-(--filter-panel-pad)",
   "data-drop-into:after:end-[calc(var(--filter-panel-pad)+4px)]",
   "data-drop-into:after:top-0 data-drop-into:after:h-0.5",
-  "data-drop-into:after:rounded-full data-drop-into:after:bg-primary",
+  "data-drop-into:after:bg-primary data-drop-into:after:rounded-full",
 );
 
 /** The cells a row owns ITSELF: a group's row contains its children's rows, so
@@ -436,7 +436,7 @@ function RowIssueHint({ message, className }: { message: string; className?: str
               tabIndex={-1}
               aria-hidden="true"
               className={cn(
-                "flex shrink-0 items-center justify-center text-destructive [&_svg]:size-3.5",
+                "text-destructive flex shrink-0 items-center justify-center [&_svg]:size-3.5",
                 className,
               )}
             >
@@ -481,7 +481,7 @@ function RowHandle({
       /* `touch-none`, or a finger on the handle becomes a page scroll the
          gesture then fights. Muted at rest, never hidden. */
       className={cn(
-        "cursor-grab touch-none focus-visible:text-foreground",
+        "focus-visible:text-foreground cursor-grab touch-none",
         "active:cursor-grabbing",
         ACTION_CONTROL_CLASS,
       )}
@@ -1007,7 +1007,7 @@ function FilterUnknownRow<V>({ rule, position }: { rule: FilterRule<V>; position
          `data-parent-id` into the surface, and this row carries one. */
       className={cn(ROW_BAND_CLASS, DROP_INDICATOR)}
     >
-      <span className="min-w-0 flex-1 truncate text-muted-foreground text-sm">
+      <span className="text-muted-foreground min-w-0 flex-1 truncate text-sm">
         {rule.path.join(actions.labels.pathSeparator)}
       </span>
       {/* The same trailing band, so the broken row lands on the kebab column. */}
@@ -1138,7 +1138,7 @@ function FilterAdvancedGroup<V, O>({
               className={cn(
                 /* 70% foreground, not the muted token: on the card's tint the
                    muted foreground measured 4.35:1 in light, under 4.5:1 AA. */
-                "rounded-md border border-dashed px-2 py-3 text-foreground/70",
+                "text-foreground/70 rounded-md border border-dashed px-2 py-3",
                 "text-center text-xs",
                 "data-drop-into:border-primary/60 data-drop-into:bg-primary/5",
                 "data-drop-into:text-primary",
@@ -1168,7 +1168,7 @@ function FilterAdvancedGroup<V, O>({
         {/* `flex-nowrap`, or the group's kebab leaves the kebab column. */}
         <div
           data-slot="filter-group-footer"
-          className="flex flex-nowrap items-center gap-2 pt-2 pb-2 text-muted-foreground"
+          className="text-muted-foreground flex flex-nowrap items-center gap-2 pt-2 pb-2"
           data-drop-parent={group.id}
           data-drop-index={group.rules.length}
         >
@@ -1710,12 +1710,12 @@ export function FiltersAdvancedPanel<V, O>({
           <span
             aria-hidden="true"
             /* `rounded-full` is the one radius literal safe in every
-                                                 style, square or round. */
-            className="mb-1 flex size-9 items-center justify-center rounded-full bg-muted text-muted-foreground [&_svg]:size-4"
+                                                   style, square or round. */
+            className="bg-muted text-muted-foreground mb-1 flex size-9 items-center justify-center rounded-full [&_svg]:size-4"
           >
             <ListFilterIcon />
           </span>
-          <p className="font-medium text-sm">{actions.labels.builderEmpty}</p>
+          <p className="text-sm font-medium">{actions.labels.builderEmpty}</p>
           {actions.readOnly ? null : (
             <p className="text-muted-foreground text-xs">{actions.labels.builderEmptyHint}</p>
           )}
@@ -1779,7 +1779,7 @@ export function FiltersAdvancedPanel<V, O>({
           <Button
             variant="ghost"
             size={sizes.button}
-            className="ms-auto shrink-0 text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground ms-auto shrink-0"
             disabled={actions.disabled}
             {...filterReadOnlyProps(actions)}
             onClick={() => actions.clearQuery()}
@@ -1878,7 +1878,7 @@ export function FiltersAdvanced<V, O>({
               {ruleCount > 0 ? (
                 <span
                   aria-hidden="true"
-                  className="rounded-sm bg-muted px-1.5 text-muted-foreground text-xs tabular-nums"
+                  className="bg-muted text-muted-foreground rounded-sm px-1.5 text-xs tabular-nums"
                 >
                   {ruleCount}
                 </span>

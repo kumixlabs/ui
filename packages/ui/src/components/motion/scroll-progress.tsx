@@ -63,7 +63,7 @@ function ScrollProgressBar({
       aria-hidden
       style={{ height, scaleX: value }}
       className={cn(
-        "right-0 left-0 z-50 origin-left bg-foreground",
+        "bg-foreground right-0 left-0 z-50 origin-left",
         fixed ? "fixed" : "absolute",
         position === "top" ? "top-0" : "bottom-0",
         className,

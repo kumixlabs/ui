@@ -846,7 +846,7 @@ export function TimePickerTrigger({
     children === undefined ? (
       <>
         <TimePickerValue placeholder={placeholder} />
-        <span data-icon="inline-end" aria-hidden="true" className="flex text-muted-foreground">
+        <span data-icon="inline-end" aria-hidden="true" className="text-muted-foreground flex">
           {CLOCK_ICON}
         </span>
       </>

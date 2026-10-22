@@ -62,7 +62,7 @@ export function TreemapCell({
         .join(". ")}
       aria-describedby={present && selected ? tooltipId : undefined}
       className={cn(
-        "absolute overflow-hidden border-2 border-background text-left outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-inset",
+        "border-background absolute overflow-hidden border-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-inset",
         className,
       )}
       style={{
@@ -124,7 +124,7 @@ export function TreemapCell({
           renderTile(tile)
         ) : showLabel ? (
           <>
-            <span className="block truncate font-semibold text-xs sm:text-sm">{tile.label}</span>
+            <span className="block truncate text-xs font-semibold sm:text-sm">{tile.label}</span>
             {showValue ? (
               <span className="mt-1 block truncate font-mono text-[10px] tabular-nums opacity-80 sm:text-xs">
                 {formatValue(tile.value)}

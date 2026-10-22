@@ -163,12 +163,12 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
   };
 
   const headerLabelClassName = cn(
-    "inline-flex h-full items-center gap-1.5 font-normal text-[0.8125rem] text-secondary-foreground/80 leading-[calc(1.125/0.8125)] [&_svg]:size-3.5 [&_svg]:opacity-60",
+    "text-secondary-foreground/80 inline-flex h-full items-center gap-1.5 text-[0.8125rem] leading-[calc(1.125/0.8125)] font-normal [&_svg]:size-3.5 [&_svg]:opacity-60",
     className,
   );
 
   const headerButtonClassName = cn(
-    "h-6 rounded-lg px-2 font-normal text-secondary-foreground/80 hover:bg-secondary hover:text-foreground data-[state=open]:bg-secondary data-[state=open]:text-foreground",
+    "text-secondary-foreground/80 hover:bg-secondary hover:text-foreground data-[state=open]:bg-secondary data-[state=open]:text-foreground h-6 rounded-lg px-2 font-normal",
     className,
   );
 
@@ -238,7 +238,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
         >
           <ArrowUpIcon className="size-3.5!" />
           <span className="grow">{i18n.labels.sortAscending}</span>
-          {isSorted === "asc" && <CheckIcon className="size-4 text-primary opacity-100!" />}
+          {isSorted === "asc" && <CheckIcon className="text-primary size-4 opacity-100!" />}
         </DropdownMenuItem>,
         <DropdownMenuItem
           key="sort-desc"
@@ -253,7 +253,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
         >
           <ArrowDownIcon className="size-3.5!" />
           <span className="grow">{i18n.labels.sortDescending}</span>
-          {isSorted === "desc" && <CheckIcon className="size-4 text-primary opacity-100!" />}
+          {isSorted === "desc" && <CheckIcon className="text-primary size-4 opacity-100!" />}
         </DropdownMenuItem>,
       );
       hasPreviousSection = true;
@@ -271,7 +271,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
         >
           <ArrowLeftToLineIcon className="size-3.5!" aria-hidden="true" />
           <span className="grow">{i18n.labels.pinColumnStart}</span>
-          {isPinned === "start" && <CheckIcon className="size-4 text-primary opacity-100!" />}
+          {isPinned === "start" && <CheckIcon className="text-primary size-4 opacity-100!" />}
         </DropdownMenuItem>,
         <DropdownMenuItem
           key="pin-right"
@@ -279,7 +279,7 @@ function DataGridColumnHeaderInner<TData extends object, TValue>({
         >
           <ArrowRightToLineIcon className="size-3.5!" aria-hidden="true" />
           <span className="grow">{i18n.labels.pinColumnEnd}</span>
-          {isPinned === "end" && <CheckIcon className="size-4 text-primary opacity-100!" />}
+          {isPinned === "end" && <CheckIcon className="text-primary size-4 opacity-100!" />}
         </DropdownMenuItem>,
       );
       hasPreviousSection = true;

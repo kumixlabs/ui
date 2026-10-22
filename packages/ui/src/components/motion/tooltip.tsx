@@ -619,7 +619,7 @@ export function TooltipContent({
                 onPointerLeave={onContentLeave}
                 style={{ pointerEvents: isPresent && !followCursor ? "auto" : "none" }}
                 className={cn(
-                  "wrap-break-word max-w-[min(20rem,calc(100vw-16px))] whitespace-normal",
+                  "max-w-[min(20rem,calc(100vw-16px))] wrap-break-word whitespace-normal",
                   arrow && "relative",
                   className,
                 )}

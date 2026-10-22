@@ -34,21 +34,21 @@ export function PriceTargetFanTooltip({
           ? children(overlay)
           : (children ?? (
               <>
-                <span className="block text-[10px] text-muted-foreground">{overlay.title}</span>
+                <span className="text-muted-foreground block text-[10px]">{overlay.title}</span>
                 <span className="mt-1.5 flex flex-col gap-1">
                   {overlay.metrics.map((metric) => (
                     <span
                       key={metric.label}
                       className="flex items-center justify-between gap-3 text-xs"
                     >
-                      <span className="font-medium text-foreground">{metric.label}</span>
-                      <span className="font-mono text-foreground tabular-nums">{metric.value}</span>
+                      <span className="text-foreground font-medium">{metric.label}</span>
+                      <span className="text-foreground font-mono tabular-nums">{metric.value}</span>
                     </span>
                   ))}
                 </span>
                 {overlay.accent ? (
-                  <span className="mt-1.5 flex items-center justify-between gap-3 border-border border-t pt-1.5 text-xs">
-                    <span className="font-medium text-foreground">{overlay.accent.label}</span>
+                  <span className="border-border mt-1.5 flex items-center justify-between gap-3 border-t pt-1.5 text-xs">
+                    <span className="text-foreground font-medium">{overlay.accent.label}</span>
                     <span
                       className="font-mono tabular-nums"
                       style={{ color: ink(overlay.accent.color) }}

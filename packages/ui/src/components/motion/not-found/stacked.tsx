@@ -45,20 +45,20 @@ export function NotFoundStacked({
         <motion.div
           variants={{ rest: { y: 0 }, hover: { y: -6 } }}
           transition={SPRING_PANEL}
-          className="absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-3xl border border-border bg-card shadow-md"
+          className="border-border bg-card absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-3xl border shadow-md"
         >
-          <h1 className="select-none font-bold text-[clamp(3.5rem,9vw,5rem)] text-foreground leading-none tracking-tighter">
+          <h1 className="text-foreground text-[clamp(3.5rem,9vw,5rem)] leading-none font-bold tracking-tighter select-none">
             {code}
           </h1>
-          <span className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+          <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
             out of the deck
           </span>
         </motion.div>
       </motion.div>
 
       <div className="flex flex-col items-center gap-2">
-        <p className="font-semibold text-foreground text-lg">{title}</p>
-        <p className="max-w-sm text-muted-foreground text-sm">{description}</p>
+        <p className="text-foreground text-lg font-semibold">{title}</p>
+        <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
       </div>
 
       <NotFoundActions

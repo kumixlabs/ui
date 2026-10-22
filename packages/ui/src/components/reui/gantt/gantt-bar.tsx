@@ -143,7 +143,7 @@ function GanttBar<TData = unknown>({
       )}
       <span className="truncate font-medium">{event.title}</span>
       {!occurrence.allDay && segment.isStart && (
-        <span className="@[8rem]:inline hidden truncate text-muted-foreground">
+        <span className="text-muted-foreground hidden truncate @[8rem]:inline">
           {settings.i18n.functions.formatEventTime(
             toZoned(occurrence.start, settings.timeZone),
             toZoned(occurrence.end, settings.timeZone),
@@ -222,10 +222,10 @@ function GanttBar<TData = unknown>({
           // grip hugs the start edge (justify-start + tight inset) so the
           // indicator reads as "resize this end", not a centered pill.
           // pointer-coarse keeps it visible on touch, where hover never fires
-          className="absolute inset-y-0 start-0.5 flex w-2 cursor-ew-resize items-center justify-start opacity-0 pointer-coarse:opacity-100 group-hover/gantt-bar-group:opacity-100"
+          className="absolute inset-y-0 start-0.5 flex w-2 cursor-ew-resize items-center justify-start opacity-0 group-hover/gantt-bar-group:opacity-100 pointer-coarse:opacity-100"
           onPointerDown={(e) => gestures.beginResize(e, segment, "start")}
         >
-          <span aria-hidden className="h-2.5 w-0.5 rounded-full bg-foreground/40" />
+          <span aria-hidden className="bg-foreground/40 h-2.5 w-0.5 rounded-full" />
         </span>
       )}
       {segment.isEnd && (
@@ -235,10 +235,10 @@ function GanttBar<TData = unknown>({
           // grip hugs the end edge (justify-end + tight inset) so the
           // indicator reads as "resize this end", not a centered pill.
           // pointer-coarse keeps it visible on touch, where hover never fires
-          className="absolute inset-y-0 end-0.5 flex w-2 cursor-ew-resize items-center justify-end opacity-0 pointer-coarse:opacity-100 group-hover/gantt-bar-group:opacity-100"
+          className="absolute inset-y-0 end-0.5 flex w-2 cursor-ew-resize items-center justify-end opacity-0 group-hover/gantt-bar-group:opacity-100 pointer-coarse:opacity-100"
           onPointerDown={(e) => gestures.beginResize(e, segment, "end")}
         >
-          <span aria-hidden className="h-2.5 w-0.5 rounded-full bg-foreground/40" />
+          <span aria-hidden className="bg-foreground/40 h-2.5 w-0.5 rounded-full" />
         </span>
       )}
     </>
@@ -286,8 +286,8 @@ function GanttBar<TData = unknown>({
       settings.onEventDoubleClick?.(occurrence, e);
     },
     className: cn(
-      "group/gantt-bar-group @container relative flex w-full min-w-0 cursor-pointer touch-none select-none items-center gap-1.5 overflow-hidden rounded-sm px-1.5 py-0.5 text-start text-foreground leading-normal",
-      "outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+      "group/gantt-bar-group text-foreground @container relative flex w-full min-w-0 cursor-pointer touch-none items-center gap-1.5 overflow-hidden rounded-sm px-1.5 py-0.5 text-start leading-normal select-none",
+      "focus-visible:ring-ring/50 outline-none focus-visible:ring-2",
       // the unfilled remainder has to be legible on its own - at /12 a bar
       // with a progress fill read as a floating segment with no basement
       "bg-(--gantt-event-color)/20 hover:bg-(--gantt-event-color)/30",
@@ -317,7 +317,7 @@ function GanttBar<TData = unknown>({
             data-slot="gantt-bar-milestone"
             className={cn(
               "size-2.5 shrink-0 rotate-45 rounded-[2px] border border-(--gantt-event-color) bg-(--gantt-event-color)/80",
-              isSelected && "ring-2 ring-ring/50",
+              isSelected && "ring-ring/50 ring-2",
             )}
           />
         )}
@@ -329,7 +329,7 @@ function GanttBar<TData = unknown>({
           <span
             aria-hidden
             data-slot="gantt-bar-progress"
-            className="pointer-events-none absolute inset-y-0 start-0 border-(--gantt-event-color)/65 border-e bg-(--gantt-event-color)/40 data-full:border-e-0"
+            className="pointer-events-none absolute inset-y-0 start-0 border-e border-(--gantt-event-color)/65 bg-(--gantt-event-color)/40 data-full:border-e-0"
             data-full={progress === 100 || undefined}
             style={{ width: `${progress}%` }}
           />

@@ -88,7 +88,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
         </div>
         <div className="max-h-[300px] overflow-y-auto">
           {filteredOptions.length === 0 ? (
-            <div className="py-6 text-center text-muted-foreground text-sm">
+            <div className="text-muted-foreground py-6 text-center text-sm">
               {i18n.labels.filterNoResults}
             </div>
           ) : (
@@ -119,13 +119,13 @@ function DataGridColumnFilter<TData extends object, TValue>({
                       }
                     }}
                     className={cn(
-                      "relative flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-hidden",
+                      "relative flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-hidden select-none",
                       "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                     )}
                   >
                     <div
                       className={cn(
-                        "flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                        "border-primary flex h-4 w-4 items-center justify-center rounded-sm border",
                         isSelected
                           ? "bg-primary text-primary-foreground"
                           : "opacity-50 [&_svg]:invisible",
@@ -133,7 +133,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
                     >
                       <CheckIcon className="h-4 w-4" />
                     </div>
-                    {option.icon && <option.icon className="h-4 w-4 text-muted-foreground" />}
+                    {option.icon && <option.icon className="text-muted-foreground h-4 w-4" />}
                     <span>{option.label}</span>
                     {facetCount !== undefined && (
                       <span className="ms-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
@@ -147,7 +147,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
           )}
           {selectedValues.size > 0 && (
             <>
-              <div className="-mx-1 my-1 h-px bg-border" />
+              <div className="bg-border -mx-1 my-1 h-px" />
               <div className="p-1">
                 <div
                   role="button"
@@ -159,7 +159,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
                       column?.setFilterValue(undefined);
                     }
                   }}
-                  className="relative flex cursor-pointer select-none items-center justify-center rounded-md px-2 py-1.5 text-sm outline-hidden hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                  className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground relative flex cursor-pointer items-center justify-center rounded-md px-2 py-1.5 text-sm outline-hidden select-none"
                 >
                   {i18n.labels.filterClear}
                 </div>

@@ -248,7 +248,7 @@ export function ImageViewerThumbnail({
         if (!event.defaultPrevented && !disabled) select(image.id);
       }}
       className={cn(
-        "relative overflow-hidden rounded-2xl bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "bg-muted focus-visible:ring-ring relative overflow-hidden rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         className,
       )}
     >
@@ -629,7 +629,7 @@ function LightboxFrame({
                       onPointerCancel={() => {
                         swipe.current = null;
                       }}
-                      className="block h-full w-full select-none object-contain"
+                      className="block h-full w-full object-contain select-none"
                       style={{
                         x,
                         y,

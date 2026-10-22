@@ -189,7 +189,7 @@ export function AgentActivity({
         <div
           id={triggerId}
           role="status"
-          className="flex h-7 min-w-0 items-center text-muted-foreground"
+          className="text-muted-foreground flex h-7 min-w-0 items-center"
         >
           {renderWorkingStatus ? (
             renderWorkingStatus({ label: liveLabel, duration })
@@ -204,7 +204,7 @@ export function AgentActivity({
           aria-expanded={expanded}
           aria-controls={contentId}
           onClick={toggle}
-          className="group flex h-7 min-w-0 items-center gap-1.5 rounded-md text-left font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="group text-muted-foreground hover:text-foreground focus-visible:ring-ring focus-visible:ring-offset-background flex h-7 min-w-0 items-center gap-1.5 rounded-md text-left font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
           <span className="truncate">
             {renderCompletedStatus
@@ -215,7 +215,7 @@ export function AgentActivity({
             aria-hidden="true"
             animate={{ rotate: expanded ? 180 : 0 }}
             transition={reduce ? { duration: 0 } : SPRING_SWAP}
-            className="inline-flex shrink-0 text-muted-foreground/70 group-hover:text-foreground"
+            className="text-muted-foreground/70 group-hover:text-foreground inline-flex shrink-0"
           >
             <ChevronDown className="size-3.5" />
           </motion.span>

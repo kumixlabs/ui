@@ -8,8 +8,8 @@ export function CompositionTooltipContent({ className }: { className?: string })
   const { column, formatValue } = useCompositionChart();
   if (!column) return null;
   return (
-    <span className={cn("block w-72 min-w-0 max-w-full", className)}>
-      <span className="mb-2 block font-medium text-xs">{column.id}</span>
+    <span className={cn("block w-72 max-w-full min-w-0", className)}>
+      <span className="mb-2 block text-xs font-medium">{column.id}</span>
       {column.valid ? (
         <span className="grid gap-2">
           {column.segments.map((row) => (
@@ -21,7 +21,7 @@ export function CompositionTooltipContent({ className }: { className?: string })
               />
               <span className="min-w-0 flex-1 truncate">{row.name}</span>
               <span
-                className="max-w-28 shrink-0 truncate text-muted-foreground tabular-nums"
+                className="text-muted-foreground max-w-28 shrink-0 truncate tabular-nums"
                 title={formatValue(row.value ?? 0)}
               >
                 <NumberTicker
@@ -48,7 +48,7 @@ export function CompositionTooltipContent({ className }: { className?: string })
           ))}
         </span>
       ) : (
-        <span className="block text-muted-foreground text-xs">
+        <span className="text-muted-foreground block text-xs">
           No complete data for this period.
         </span>
       )}

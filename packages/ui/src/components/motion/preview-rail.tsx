@@ -51,15 +51,15 @@ function DefaultPreview({ item }: { item: PreviewRailItem }) {
   return (
     <div
       data-slot="preview-rail-card"
-      className="rounded-2xl border border-border bg-card p-4 shadow-sm"
+      className="border-border bg-card rounded-2xl border p-4 shadow-sm"
     >
-      <p data-slot="preview-rail-title" className="font-medium text-card-foreground">
+      <p data-slot="preview-rail-title" className="text-card-foreground font-medium">
         {item.label}
       </p>
       {item.description ? (
         <div
           data-slot="preview-rail-description"
-          className="mt-1 text-muted-foreground text-sm leading-6"
+          className="text-muted-foreground mt-1 text-sm leading-6"
         >
           {item.description}
         </div>
@@ -181,7 +181,7 @@ export function PreviewRail({
           );
 
           const sharedClassName = cn(
-            "relative flex text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            "text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-background relative flex focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
             isHorizontal ? "h-12 w-6 items-end justify-center" : "h-6 w-12 items-center",
           );
           const sharedStyle = isHorizontal ? { width: itemSize } : { height: itemSize };

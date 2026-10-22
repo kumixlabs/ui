@@ -188,7 +188,7 @@ function RowAction({
         <span
           role="status"
           aria-label={`Removing ${label}`}
-          className="grid size-9 shrink-0 place-items-center rounded-xl text-muted-foreground"
+          className="text-muted-foreground grid size-9 shrink-0 place-items-center rounded-xl"
         >
           <motion.span
             animate={reduce ? undefined : { rotate: 360 }}
@@ -213,7 +213,7 @@ function RowAction({
           <span
             role="status"
             aria-label={`Upload failed for ${label}`}
-            className="grid size-9 shrink-0 place-items-center rounded-xl text-destructive"
+            className="text-destructive grid size-9 shrink-0 place-items-center rounded-xl"
           >
             <AlertCircle className="size-4" />
           </span>
@@ -229,7 +229,7 @@ function RowAction({
           onClick={onClick}
           whileTap={reduce ? undefined : { scale: 0.92 }}
           transition={SPRING_PRESS}
-          className="grid size-9 shrink-0 place-items-center rounded-xl text-destructive outline-none transition-colors hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-ring"
+          className="text-destructive hover:bg-destructive/10 focus-visible:ring-ring grid size-9 shrink-0 place-items-center rounded-xl transition-colors outline-none focus-visible:ring-2"
         >
           <RotateCcw className="size-4" />
         </motion.button>
@@ -245,7 +245,7 @@ function RowAction({
         onClick={onClick}
         whileTap={reduce ? undefined : { scale: 0.92 }}
         transition={SPRING_PRESS}
-        className="grid size-9 shrink-0 place-items-center rounded-xl text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        className="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring grid size-9 shrink-0 place-items-center rounded-xl transition-colors outline-none focus-visible:ring-2"
       >
         <X className="size-4" />
       </motion.button>
@@ -270,7 +270,7 @@ function ImageThumbnail({
     return (
       <span
         aria-hidden="true"
-        className="grid size-8 shrink-0 place-items-center rounded-lg bg-muted text-muted-foreground"
+        className="bg-muted text-muted-foreground grid size-8 shrink-0 place-items-center rounded-lg"
       >
         <FileImage className="size-4" />
       </span>
@@ -285,7 +285,7 @@ function ImageThumbnail({
       content={
         <span className="block w-32">
           <img src={src} alt="" className="h-20 w-full rounded-lg object-cover" />
-          <span className="block px-1 pt-1 pb-0.5 text-center font-medium text-[10px] text-muted-foreground">
+          <span className="text-muted-foreground block px-1 pt-1 pb-0.5 text-center text-[10px] font-medium">
             Click to preview
           </span>
         </span>
@@ -300,7 +300,7 @@ function ImageThumbnail({
         }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={SPRING_PRESS}
-        className="group/image relative size-9 shrink-0 overflow-hidden rounded-[10px] bg-muted outline-none ring-1 ring-border/70 focus-visible:ring-2 focus-visible:ring-ring"
+        className="group/image bg-muted ring-border/70 focus-visible:ring-ring relative size-9 shrink-0 overflow-hidden rounded-[10px] ring-1 outline-none focus-visible:ring-2"
       >
         <motion.img
           layoutId={layoutId}
@@ -407,7 +407,7 @@ function ImagePreviewDialog({
                   exit={reduce ? undefined : { opacity: 0, scale: 0.8 }}
                   whileTap={reduce ? undefined : { scale: 0.92 }}
                   transition={SPRING_PRESS}
-                  className="absolute -top-3 -right-3 grid size-9 place-items-center rounded-full bg-background text-foreground shadow-xl outline-none ring-1 ring-border/70 transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+                  className="bg-background text-foreground ring-border/70 hover:bg-muted focus-visible:ring-ring absolute -top-3 -right-3 grid size-9 place-items-center rounded-full shadow-xl ring-1 transition-colors outline-none focus-visible:ring-2"
                 >
                   <X className="size-4" />
                 </motion.button>
@@ -511,13 +511,13 @@ function AttachmentRow({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={reduce ? undefined : { opacity: 0, y: -4 }}
       transition={rowTransition}
-      className={cn("flex min-h-14 items-center gap-1 rounded-2xl bg-muted/70 p-1", className)}
+      className={cn("bg-muted/70 flex min-h-14 items-center gap-1 rounded-2xl p-1", className)}
     >
-      <div className="relative isolate flex min-w-0 flex-1 items-center gap-3 self-stretch overflow-hidden rounded-xl bg-background px-2 py-1">
+      <div className="bg-background relative isolate flex min-w-0 flex-1 items-center gap-3 self-stretch overflow-hidden rounded-xl px-2 py-1">
         {failed ? (
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 -z-10 bg-destructive/10"
+            className="bg-destructive/10 pointer-events-none absolute inset-0 -z-10"
           />
         ) : null}
 
@@ -531,7 +531,7 @@ function AttachmentRow({
         ) : (
           <span
             aria-hidden="true"
-            className="grid size-7 shrink-0 place-items-center text-muted-foreground"
+            className="text-muted-foreground grid size-7 shrink-0 place-items-center"
           >
             <AttachmentIcon kind={item.kind} />
           </span>
@@ -539,7 +539,7 @@ function AttachmentRow({
 
         {item.kind === "audio" ? (
           <>
-            <span className="w-9 shrink-0 text-muted-foreground text-xs tabular-nums">
+            <span className="text-muted-foreground w-9 shrink-0 text-xs tabular-nums">
               {formatDuration(item.currentTime)}
             </span>
             <span
@@ -566,7 +566,7 @@ function AttachmentRow({
                 />
               ))}
             </span>
-            <span className="w-9 shrink-0 text-right text-muted-foreground text-xs tabular-nums">
+            <span className="text-muted-foreground w-9 shrink-0 text-right text-xs tabular-nums">
               {formatDuration(item.duration)}
             </span>
             <motion.button
@@ -575,7 +575,7 @@ function AttachmentRow({
               onClick={() => onAudioToggle?.(item)}
               whileTap={{ scale: 0.94 }}
               transition={SPRING_PRESS}
-              className="grid size-9 shrink-0 place-items-center rounded-full bg-foreground text-background outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="bg-foreground text-background focus-visible:ring-ring focus-visible:ring-offset-background grid size-9 shrink-0 place-items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
@@ -597,16 +597,16 @@ function AttachmentRow({
         ) : (
           <>
             <span className="min-w-0 flex-1">
-              <span className="block truncate font-medium text-foreground text-sm">
+              <span className="text-foreground block truncate text-sm font-medium">
                 {item.name}
               </span>
               {failed ? (
-                <span className="block truncate text-[11px] text-destructive">
+                <span className="text-destructive block truncate text-[11px]">
                   {item.error ?? "Upload failed"}
                 </span>
               ) : null}
             </span>
-            <span className="shrink-0 text-muted-foreground text-xs">
+            <span className="text-muted-foreground shrink-0 text-xs">
               {item.kind === "link" ? "Web" : size}
             </span>
             {item.kind === "link" && item.href ? (
@@ -615,7 +615,7 @@ function AttachmentRow({
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label={`Open ${item.name}`}
-                className="grid size-8 shrink-0 place-items-center rounded-lg text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+                className="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring grid size-8 shrink-0 place-items-center rounded-lg transition-colors outline-none focus-visible:ring-2"
               >
                 <ExternalLink className="size-4" />
               </a>
@@ -901,9 +901,9 @@ export function AttachmentUpload({
             addFiles(Array.from(event.dataTransfer.files));
           }}
           className={cn(
-            "group relative isolate flex min-h-52 w-full flex-col items-center justify-center overflow-hidden rounded-[2rem] bg-muted/65 p-2 text-center outline-none",
-            "transition-colors duration-200 hover:bg-muted/85",
-            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            "group bg-muted/65 relative isolate flex min-h-52 w-full flex-col items-center justify-center overflow-hidden rounded-[2rem] p-2 text-center outline-none",
+            "hover:bg-muted/85 transition-colors duration-200",
+            "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
             "data-[dragging=true]:bg-muted",
             "disabled:pointer-events-none disabled:opacity-55",
             classNames?.dropzone,
@@ -911,7 +911,7 @@ export function AttachmentUpload({
         >
           <span
             aria-hidden="true"
-            className="absolute inset-2 -z-10 rounded-[1.5rem] border border-muted-foreground/25 border-dashed bg-background transition-[border-color,background-color] duration-200 group-hover:border-muted-foreground/45 group-data-[dragging=true]:border-foreground/65 group-data-[dragging=true]:bg-muted/20"
+            className="border-muted-foreground/25 bg-background group-hover:border-muted-foreground/45 group-data-[dragging=true]:border-foreground/65 group-data-[dragging=true]:bg-muted/20 absolute inset-2 -z-10 rounded-[1.5rem] border border-dashed transition-[border-color,background-color] duration-200"
           />
           <motion.span
             aria-hidden="true"
@@ -924,14 +924,14 @@ export function AttachmentUpload({
                   }
             }
             transition={ITEM_TRANSITION}
-            className="mb-3 grid size-11 place-items-center rounded-2xl bg-muted text-foreground transition-colors duration-200 group-hover:bg-muted/80 group-data-[dragging=true]:bg-foreground group-data-[dragging=true]:text-background"
+            className="bg-muted text-foreground group-hover:bg-muted/80 group-data-[dragging=true]:bg-foreground group-data-[dragging=true]:text-background mb-3 grid size-11 place-items-center rounded-2xl transition-colors duration-200"
           >
             <Upload className="size-[18px]" />
           </motion.span>
-          <span className="font-semibold text-foreground text-sm tracking-[-0.01em]">
+          <span className="text-foreground text-sm font-semibold tracking-[-0.01em]">
             {maxReached ? "Attachment limit reached" : title}
           </span>
-          <span className="mt-1 text-muted-foreground text-xs leading-5">
+          <span className="text-muted-foreground mt-1 text-xs leading-5">
             {maxReached
               ? `${items.length} of ${maxFiles} attachments added`
               : (description ?? `Maximum ${formatMaxSize(maxFileSize)} file size`)}
@@ -940,7 +940,7 @@ export function AttachmentUpload({
 
         {items.length > 0 ? (
           <section className="mt-8" aria-labelledby={`${inputId}-attachments`}>
-            <h3 id={`${inputId}-attachments`} className="font-semibold text-foreground text-sm">
+            <h3 id={`${inputId}-attachments`} className="text-foreground text-sm font-semibold">
               {attachmentsLabel}
             </h3>
 

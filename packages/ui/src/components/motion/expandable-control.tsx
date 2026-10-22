@@ -113,7 +113,7 @@ export function ExpandableButton({
         aria-expanded={isExpanded}
         disabled={disabled}
         className={cn(
-          "relative inline-flex h-11 min-w-11 items-center overflow-hidden rounded-full border border-border bg-transparent p-1 pr-1 font-medium text-foreground text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:pointer-events-none disabled:opacity-50",
+          "border-border text-foreground focus-visible:ring-ring relative inline-flex h-11 min-w-11 items-center overflow-hidden rounded-full border bg-transparent p-1 pr-1 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset disabled:pointer-events-none disabled:opacity-50",
           className,
         )}
         style={{ borderRadius: 9999 }}
@@ -139,7 +139,7 @@ export function ExpandableButton({
               animate={reduce ? { opacity: 1 } : "visible"}
               exit={reduce ? { opacity: 0 } : "exit"}
               transition={transition}
-              className="relative inline-flex w-max items-center whitespace-nowrap pr-3"
+              className="relative inline-flex w-max items-center pr-3 whitespace-nowrap"
               aria-hidden="true"
             >
               {label}
@@ -188,7 +188,7 @@ export function ExpandableChip({
       <motion.div
         layout
         className={cn(
-          "inline-flex h-10 items-center overflow-hidden rounded-full border border-border bg-transparent text-foreground text-sm has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-inset",
+          "border-border text-foreground has-focus-visible:ring-ring inline-flex h-10 items-center overflow-hidden rounded-full border bg-transparent text-sm has-focus-visible:ring-2 has-focus-visible:ring-inset",
           className,
         )}
         style={{ borderRadius: 9999 }}
@@ -201,7 +201,7 @@ export function ExpandableChip({
           aria-expanded={isExpanded}
           disabled={disabled}
           className={cn(
-            "h-full whitespace-nowrap py-0 pl-3 font-medium outline-none disabled:pointer-events-none disabled:opacity-50",
+            "h-full py-0 pl-3 font-medium whitespace-nowrap outline-none disabled:pointer-events-none disabled:opacity-50",
             isExpanded ? "pr-1" : "pr-3",
             labelClassName,
           )}
@@ -226,7 +226,7 @@ export function ExpandableChip({
             aria-label={actionLabel}
             disabled={disabled || !isExpanded}
             className={cn(
-              "flex h-10 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:text-foreground disabled:pointer-events-none",
+              "text-muted-foreground hover:text-foreground flex h-10 w-8 shrink-0 items-center justify-center rounded-full transition-colors outline-none disabled:pointer-events-none",
               disabled && "opacity-50",
               actionClassName,
             )}

@@ -380,7 +380,7 @@ export function MorphingSearch({
                 <motion.div
                   layoutId={shellLayoutId}
                   aria-hidden="true"
-                  className="fixed z-10 rounded-xl bg-background/90 backdrop-blur-xl"
+                  className="bg-background/90 fixed z-10 rounded-xl backdrop-blur-xl"
                   style={{
                     top: anchorRect.top,
                     left: anchorRect.left,
@@ -426,12 +426,12 @@ export function MorphingSearch({
                 >
                   <div
                     className={cn(
-                      "flex h-12 items-center gap-2.5 border-border border-b",
+                      "border-border flex h-12 items-center gap-2.5 border-b",
                       iconOnly ? "px-4" : "px-3.5",
                     )}
                   >
                     <span className="shrink-0">
-                      <Search className="size-4 text-muted-foreground" />
+                      <Search className="text-muted-foreground size-4" />
                     </span>
                     <div className="flex h-10 min-w-0 flex-1 items-center">
                       <input
@@ -447,10 +447,10 @@ export function MorphingSearch({
                           filteredItems.length > 0 ? `${uid}-option-${activeIndex}` : undefined
                         }
                         placeholder={placeholder}
-                        className="size-full bg-transparent text-foreground text-sm outline-none placeholder:text-muted-foreground"
+                        className="text-foreground placeholder:text-muted-foreground size-full bg-transparent text-sm outline-none"
                       />
                     </div>
-                    <kbd className="flex h-7 shrink-0 items-center rounded-md border border-border px-2 text-muted-foreground text-xs">
+                    <kbd className="border-border text-muted-foreground flex h-7 shrink-0 items-center rounded-md border px-2 text-xs">
                       Esc
                     </kbd>
                   </div>
@@ -507,24 +507,24 @@ export function MorphingSearch({
                             onMouseMove={() => moveTo(item.id)}
                             onFocus={() => moveTo(item.id)}
                             onClick={() => selectItem(item)}
-                            className="relative flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                            className="focus-visible:ring-ring relative flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset"
                           >
                             {active ? (
                               <motion.span
                                 layoutId={`${uid}-active-result`}
-                                className="absolute inset-0 rounded-lg bg-foreground/5"
+                                className="bg-foreground/5 absolute inset-0 rounded-lg"
                                 transition={transition}
                               />
                             ) : null}
                             {Icon ? (
-                              <Icon className="relative size-4 shrink-0 text-muted-foreground" />
+                              <Icon className="text-muted-foreground relative size-4 shrink-0" />
                             ) : null}
                             <span className="relative min-w-0">
-                              <span className="block truncate font-medium text-foreground text-sm">
+                              <span className="text-foreground block truncate text-sm font-medium">
                                 {item.title}
                               </span>
                               {item.description ? (
-                                <span className="block truncate text-muted-foreground text-xs">
+                                <span className="text-muted-foreground block truncate text-xs">
                                   {item.description}
                                 </span>
                               ) : null}
@@ -533,7 +533,7 @@ export function MorphingSearch({
                         );
                       })
                     ) : (
-                      <p className="px-3 py-8 text-center text-muted-foreground text-sm">
+                      <p className="text-muted-foreground px-3 py-8 text-center text-sm">
                         {emptyMessage}
                       </p>
                     )}
@@ -568,7 +568,7 @@ export function MorphingSearch({
               boxShadow: "inset 0 0 0 1px var(--search-trigger-stroke)",
             }}
             className={cn(
-              "flex size-full items-center rounded-xl bg-background/60 text-left outline-none backdrop-blur-md [--search-trigger-stroke:var(--color-border)] focus-visible:ring-2 focus-visible:ring-ring hover:[--search-trigger-stroke:var(--color-border-strong)]",
+              "bg-background/60 focus-visible:ring-ring flex size-full items-center rounded-xl text-left backdrop-blur-md outline-none [--search-trigger-stroke:var(--color-border)] hover:[--search-trigger-stroke:var(--color-border-strong)] focus-visible:ring-2",
               iconOnly ? "cursor-pointer justify-center" : "cursor-text px-3.5",
             )}
           />
@@ -592,14 +592,14 @@ export function MorphingSearch({
             iconOnly ? "justify-center" : "gap-2.5 px-3.5",
           )}
         >
-          <Search className="size-4 shrink-0 text-muted-foreground" />
+          <Search className="text-muted-foreground size-4 shrink-0" />
           {iconOnly ? null : (
             <>
-              <span className="min-w-0 flex-1 truncate text-muted-foreground text-sm">
+              <span className="text-muted-foreground min-w-0 flex-1 truncate text-sm">
                 {placeholder}
               </span>
               {shortcut ? (
-                <kbd className="flex h-7 min-w-7 shrink-0 items-center justify-center rounded-md border border-border px-2 text-muted-foreground text-xs">
+                <kbd className="border-border text-muted-foreground flex h-7 min-w-7 shrink-0 items-center justify-center rounded-md border px-2 text-xs">
                   {shortcut.toUpperCase()}
                 </kbd>
               ) : null}

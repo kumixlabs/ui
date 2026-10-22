@@ -17,12 +17,12 @@ export function NotFoundTerminal({
 }: NotFoundProps) {
   return (
     <NotFoundStage className={className}>
-      <div className="w-full max-w-md overflow-hidden rounded-xl border border-border bg-neutral-950 text-left shadow-lg">
-        <div className="flex items-center gap-1.5 border-white/10 border-b px-4 py-3">
+      <div className="border-border w-full max-w-md overflow-hidden rounded-xl border bg-neutral-950 text-left shadow-lg">
+        <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-3">
           <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
           <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
           <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-          <span className="ml-2 text-white/40 text-xs">~/beui</span>
+          <span className="ml-2 text-xs text-white/40">~/beui</span>
         </div>
         <div className="space-y-1.5 p-4 font-mono text-sm leading-relaxed">
           <TextReveal
@@ -63,8 +63,8 @@ export function NotFoundTerminal({
       </div>
 
       <div className="flex flex-col items-center gap-2">
-        <p className="font-semibold text-foreground text-lg">{title}</p>
-        <p className="max-w-sm text-muted-foreground text-sm">{description}</p>
+        <p className="text-foreground text-lg font-semibold">{title}</p>
+        <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
       </div>
 
       <NotFoundActions

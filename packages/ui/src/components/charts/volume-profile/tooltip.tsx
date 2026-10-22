@@ -80,7 +80,7 @@ export function VolumeProfileTooltip({
                   </span>
                   <span className="inline-flex flex-wrap items-center gap-1">
                     <TooltipNumber value={active.volume} format={formatVolume} /> {unit}
-                    <span className="inline-flex items-center gap-1 text-muted-foreground">
+                    <span className="text-muted-foreground inline-flex items-center gap-1">
                       <span>·</span>
                       <TooltipNumber value={active.share * 100} format={formatShare} />
                     </span>

@@ -112,13 +112,13 @@ export function Card({
         data-slot="card"
         data-selected={selected || undefined}
         className={cn(
-          "relative flex flex-col rounded-2xl border text-card-foreground",
+          "text-card-foreground relative flex flex-col rounded-2xl border",
           "transition-[border-color,box-shadow,background-color] duration-200",
           VARIANT_CLASS[variant],
           ROOT_SIZE_CLASS[size],
           interactive &&
-            "cursor-pointer hover:border-border-strong has-focus-visible:outline-2 has-focus-visible:outline-foreground has-focus-visible:outline-offset-2",
-          selected && "border-primary shadow-[0_0_0_1px_var(--primary)] hover:border-primary",
+            "hover:border-border-strong has-focus-visible:outline-foreground cursor-pointer has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
+          selected && "border-primary hover:border-primary shadow-[0_0_0_1px_var(--primary)]",
           className,
         )}
       >
@@ -157,7 +157,7 @@ export function CardTitle({ as: Tag = "div", className, ...props }: CardTitlePro
     <Tag
       {...props}
       data-slot="card-title"
-      className={cn("font-semibold text-[15px] text-foreground leading-snug", className)}
+      className={cn("text-foreground text-[15px] leading-snug font-semibold", className)}
     />
   );
 }

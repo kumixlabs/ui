@@ -82,8 +82,8 @@ export const ExpandingArrowButton = forwardRef<HTMLButtonElement, ExpandingArrow
         whileTap={reduce || disabled ? undefined : { scale: 0.97 }}
         transition={SPRING_PRESS}
         className={cn(
-          "relative inline-flex h-16 min-w-72 select-none items-center overflow-hidden rounded-[22px] bg-neutral-950 p-1.5 text-white",
-          "outline-none focus-visible:ring-2 focus-visible:ring-lime-300 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "relative inline-flex h-16 min-w-72 items-center overflow-hidden rounded-[22px] bg-neutral-950 p-1.5 text-white select-none",
+          "focus-visible:ring-offset-background outline-none focus-visible:ring-2 focus-visible:ring-lime-300 focus-visible:ring-offset-2",
           "disabled:pointer-events-none disabled:opacity-50",
           className,
         )}
@@ -139,7 +139,7 @@ export const ExpandingArrowButton = forwardRef<HTMLButtonElement, ExpandingArrow
           }}
           transition={{ duration: reduce ? 0 : 0.12, ease: EASE_OUT }}
           className={cn(
-            "relative z-0 mr-5 ml-[76px] whitespace-nowrap font-medium text-lg tracking-[-0.02em]",
+            "relative z-0 mr-5 ml-[76px] text-lg font-medium tracking-[-0.02em] whitespace-nowrap",
             labelClassName,
           )}
         >

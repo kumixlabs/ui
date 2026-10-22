@@ -77,7 +77,7 @@ export function WaveSlider({ bars = BARS, className, ...options }: WaveSliderPro
       <button
         type="button"
         {...sliderProps}
-        className="absolute inset-0 touch-none rounded-xl outline-none ring-foreground/30 focus-visible:ring-4"
+        className="ring-foreground/30 absolute inset-0 touch-none rounded-xl outline-none focus-visible:ring-4"
       />
     </div>
   );

@@ -475,7 +475,7 @@ export function TabsList({
     <div
       ref={rootRef}
       className={cn(
-        "relative isolate flex w-full min-w-0 max-w-full items-center",
+        "relative isolate flex w-full max-w-full min-w-0 items-center",
         edges.overflow && surfaceClass,
         wrapperClassName,
       )}
@@ -497,7 +497,7 @@ export function TabsList({
         id={viewportId}
         layoutScroll
         className={cn(
-          "w-full min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "w-full min-w-0 [scrollbar-width:none] overflow-x-auto [&::-webkit-scrollbar]:hidden",
           edges.overflow && "rounded-[inherit]",
         )}
         style={
@@ -525,13 +525,13 @@ export function TabsList({
       {edges.overflow && edges.left && (
         <span
           aria-hidden="true"
-          className="mask-[linear-gradient(to_right,black,transparent)] pointer-events-none absolute inset-y-0 left-0 z-10 w-10 rounded-l-[inherit] backdrop-blur-[2px]"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 rounded-l-[inherit] mask-[linear-gradient(to_right,black,transparent)] backdrop-blur-[2px]"
         />
       )}
       {edges.overflow && edges.right && (
         <span
           aria-hidden="true"
-          className="mask-[linear-gradient(to_left,black,transparent)] pointer-events-none absolute inset-y-0 right-0 z-10 w-10 rounded-r-[inherit] backdrop-blur-[2px]"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 rounded-r-[inherit] mask-[linear-gradient(to_left,black,transparent)] backdrop-blur-[2px]"
         />
       )}
       {edges.overflow && (
@@ -651,7 +651,7 @@ export function TabsTrigger({
           if (!event.defaultPrevented) setValue(value);
         }}
         className={cn(
-          "relative isolate -mb-px inline-flex min-h-[44px] shrink-0 items-center whitespace-nowrap px-3 pt-1 pb-2.5 font-medium text-sm transition-colors",
+          "relative isolate -mb-px inline-flex min-h-[44px] shrink-0 items-center px-3 pt-1 pb-2.5 text-sm font-medium whitespace-nowrap transition-colors",
           active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
           className,
         )}
@@ -661,7 +661,7 @@ export function TabsTrigger({
           <motion.span
             layoutId={layoutId}
             layout
-            className={cn("absolute right-0 bottom-0 left-0 h-px bg-primary", indicatorClassName)}
+            className={cn("bg-primary absolute right-0 bottom-0 left-0 h-px", indicatorClassName)}
           />
         ) : null}
       </button>
@@ -684,7 +684,7 @@ export function TabsTrigger({
           key="tracked"
           data-tabs-indicator=""
           style={{ ...track, borderRadius: variant === "pill" ? 9999 : 8 }}
-          className={cn("absolute top-0 left-0 bg-primary", radius, indicatorClassName)}
+          className={cn("bg-primary absolute top-0 left-0", radius, indicatorClassName)}
         />
       ) : active ? (
         <motion.span
@@ -693,7 +693,7 @@ export function TabsTrigger({
           layoutId={layoutId}
           layout
           style={{ borderRadius: variant === "pill" ? 9999 : 8 }}
-          className={cn("absolute inset-0 bg-primary", radius, indicatorClassName)}
+          className={cn("bg-primary absolute inset-0", radius, indicatorClassName)}
         />
       ) : null}
       <button
@@ -709,7 +709,7 @@ export function TabsTrigger({
           if (!event.defaultPrevented) setValue(value);
         }}
         className={cn(
-          "relative z-10 inline-flex items-center justify-center whitespace-nowrap bg-transparent px-3.5 py-1.5 font-medium text-sm outline-none",
+          "relative z-10 inline-flex items-center justify-center bg-transparent px-3.5 py-1.5 text-sm font-medium whitespace-nowrap outline-none",
           "text-muted-foreground hover:text-foreground",
           radius,
           className,
@@ -720,7 +720,7 @@ export function TabsTrigger({
           data-tabs-label=""
           aria-hidden="true"
           inert
-          className="pointer-events-none absolute inset-0 inline-flex items-center justify-center gap-[inherit] p-[inherit] text-primary-foreground"
+          className="text-primary-foreground pointer-events-none absolute inset-0 inline-flex items-center justify-center gap-[inherit] p-[inherit]"
           style={{ clipPath: initialClip }}
         >
           {content}
@@ -771,7 +771,7 @@ export function TabsContent({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.18, ease: EASE_OUT }}
       className={cn(
-        "mt-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+        "focus-visible:ring-ring/40 mt-4 rounded-md outline-none focus-visible:ring-2",
         className,
       )}
     >

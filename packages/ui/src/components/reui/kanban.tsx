@@ -733,7 +733,7 @@ function KanbanColumnHandle({
     className: cn(
       /* Keyboard focus shows it too. focus-within would also match the focus
          a mousedown gives the handle, so it would stay shown after a drag. */
-      "opacity-0 transition-opacity focus-visible:opacity-100 group-hover/kanban-column:opacity-100 has-focus-visible:opacity-100",
+      "opacity-0 transition-opacity group-hover/kanban-column:opacity-100 focus-visible:opacity-100 has-focus-visible:opacity-100",
       cursor && (isDragging ? "cursor-grabbing!" : "cursor-grab!"),
       className,
     ),

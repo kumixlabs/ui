@@ -467,7 +467,7 @@ export function MorphingSearchChips({
   const panel = (
     <>
       <div className="flex h-9 items-center justify-between px-3">
-        <span className="font-medium text-muted-foreground text-xs">
+        <span className="text-muted-foreground text-xs font-medium">
           {trimmed ? "Suggestions" : "Recent"}
         </span>
         {!trimmed && recents.length > 0 ? (
@@ -478,7 +478,7 @@ export function MorphingSearchChips({
               announce("Cleared recent searches");
               inputRef.current?.focus();
             }}
-            className="rounded-md px-1.5 py-0.5 text-muted-foreground text-xs outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-md px-1.5 py-0.5 text-xs transition-colors outline-none focus-visible:ring-2"
           >
             Clear
           </button>
@@ -490,7 +490,7 @@ export function MorphingSearchChips({
           role="listbox"
           aria-label={trimmed ? "Suggestions" : "Recent searches"}
           aria-busy={loading || undefined}
-          className="max-h-[min(20rem,45vh)] overflow-y-auto overscroll-contain [scrollbar-width:thin]"
+          className="max-h-[min(20rem,45vh)] [scrollbar-width:thin] overflow-y-auto overscroll-contain"
         >
           {rows.map((row, index) => {
             const selected = index === activeIndex;
@@ -505,24 +505,24 @@ export function MorphingSearchChips({
                 onPointerDown={(event) => event.preventDefault()}
                 onPointerMove={() => moveTo(row.id)}
                 onClick={() => addChip(row.label)}
-                className="relative flex h-11 cursor-pointer items-center gap-3 rounded-2xl px-3 text-foreground text-sm"
+                className="text-foreground relative flex h-11 cursor-pointer items-center gap-3 rounded-2xl px-3 text-sm"
               >
                 {selected ? (
                   <motion.span
                     layoutId={`${id}-active`}
                     transition={layout}
-                    className="absolute inset-0 rounded-2xl bg-foreground/6"
+                    className="bg-foreground/6 absolute inset-0 rounded-2xl"
                   />
                 ) : null}
                 {row.kind === "recent" ? (
                   <Clock
                     aria-hidden="true"
-                    className="relative size-4 shrink-0 text-muted-foreground"
+                    className="text-muted-foreground relative size-4 shrink-0"
                   />
                 ) : (
                   <Search
                     aria-hidden="true"
-                    className="relative size-4 shrink-0 text-muted-foreground"
+                    className="text-muted-foreground relative size-4 shrink-0"
                   />
                 )}
                 <span className="relative min-w-0 flex-1 truncate">
@@ -541,7 +541,7 @@ export function MorphingSearchChips({
                       event.stopPropagation();
                       removeRecent(row.label);
                     }}
-                    className="relative grid size-7 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
+                    className="text-muted-foreground hover:bg-foreground/10 hover:text-foreground relative grid size-7 shrink-0 place-items-center rounded-full transition-colors"
                   >
                     <X className="size-3.5" />
                   </span>
@@ -551,10 +551,10 @@ export function MorphingSearchChips({
           })}
         </div>
       ) : !trimmed && emptyState != null ? (
-        <div className="px-3 pt-1 pb-2 text-muted-foreground text-sm">{emptyState}</div>
+        <div className="text-muted-foreground px-3 pt-1 pb-2 text-sm">{emptyState}</div>
       ) : null}
       {loading ? (
-        <div className="flex h-11 items-center gap-3 px-3 text-muted-foreground text-sm">
+        <div className="text-muted-foreground flex h-11 items-center gap-3 px-3 text-sm">
           <LoaderCircle aria-hidden="true" className="size-4 motion-safe:animate-spin" />
           Searching…
         </div>
@@ -648,7 +648,7 @@ export function MorphingSearchChips({
           open ? "w-full" : "w-fit max-w-full",
         )}
       >
-        <Search aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
+        <Search aria-hidden="true" className="text-muted-foreground size-5 shrink-0" />
         <div
           ref={chipsRef}
           // The padding at each end is where a scrolled chip fades out; with
@@ -656,9 +656,9 @@ export function MorphingSearchChips({
           // invisible. Relative, so a leaving chip popped out of flow stays
           // inside the scrolling row.
           className={cn(
-            "relative flex min-w-0 items-center gap-1.5 overflow-x-auto [scrollbar-width:none]",
+            "relative flex min-w-0 [scrollbar-width:none] items-center gap-1.5 overflow-x-auto",
             chips.length > 0 &&
-              "mask-[linear-gradient(to_right,transparent,#000_12px,#000_calc(100%-12px),transparent)] -mx-1.5 px-3",
+              "-mx-1.5 mask-[linear-gradient(to_right,transparent,#000_12px,#000_calc(100%-12px),transparent)] px-3",
           )}
         >
           <AnimatePresence initial={false} mode="popLayout">
@@ -678,10 +678,10 @@ export function MorphingSearchChips({
                 // chip reads as unrolling out of the one before it.
                 style={{ transformOrigin: rtl ? "right center" : "left center" }}
                 className={cn(
-                  "flex h-9 shrink-0 items-center gap-1 rounded-full ps-3 pe-1 text-foreground text-sm transition-[background-color,box-shadow] duration-150",
+                  "text-foreground flex h-9 shrink-0 items-center gap-1 rounded-full ps-3 pe-1 text-sm transition-[background-color,box-shadow] duration-150",
                   marked === chip
                     ? // Inset: the chip fills its scrolling row, which clips anything drawn outside it.
-                      "bg-foreground/12 ring-2 ring-foreground/40 ring-inset"
+                      "bg-foreground/12 ring-foreground/40 ring-2 ring-inset"
                     : "bg-foreground/[0.07]",
                 )}
               >
@@ -693,7 +693,7 @@ export function MorphingSearchChips({
                   disabled={disabled}
                   aria-label={`Remove filter ${chip}`}
                   onClick={() => removeChip(chip)}
-                  className="grid size-7 shrink-0 place-items-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-foreground/10 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none"
+                  className="text-muted-foreground hover:bg-foreground/10 hover:text-foreground focus-visible:ring-ring grid size-7 shrink-0 place-items-center rounded-full transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none"
                 >
                   <X aria-hidden="true" className="size-3.5" />
                 </button>
@@ -732,7 +732,7 @@ export function MorphingSearchChips({
           style={open ? undefined : { width: `${Math.max(placeholder.length, 6) + 2}ch` }}
           className={cn(
             // On a narrow screen the chips scroll first; the field keeps room to type.
-            "h-9 min-w-24 text-ellipsis bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed",
+            "text-foreground placeholder:text-muted-foreground h-9 min-w-24 bg-transparent text-base text-ellipsis outline-none disabled:cursor-not-allowed",
             open && "flex-1",
           )}
         />

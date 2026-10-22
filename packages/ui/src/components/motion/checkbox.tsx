@@ -70,8 +70,8 @@ export function Checkbox({
         transition={SPRING_PRESS}
         data-state={checked ? "checked" : indeterminate ? "indeterminate" : "unchecked"}
         className={cn(
-          "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 outline-none transition-colors duration-200",
-          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors duration-200 outline-none",
+          "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
           "disabled:cursor-not-allowed disabled:opacity-60",
           showMark
             ? "border-primary bg-primary text-primary-foreground"
@@ -116,7 +116,7 @@ export function Checkbox({
         </AnimatePresence>
       </motion.button>
       {label || description ? (
-        <span className={cn("flex min-w-0 select-none flex-col gap-0.5", disabled && "opacity-60")}>
+        <span className={cn("flex min-w-0 flex-col gap-0.5 select-none", disabled && "opacity-60")}>
           {label ? (
             <span
               id={labelId}

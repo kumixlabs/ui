@@ -77,5 +77,5 @@ export function useRowCursor(rows: readonly { id: string }[], query: string) {
     });
   }, []);
 
-  return { activeIndex: cursorRow < 0 ? 0 : cursorRow, moveTo, moveActive };
+  return { activeIndex: Math.max(cursorRow, 0), moveTo, moveActive };
 }

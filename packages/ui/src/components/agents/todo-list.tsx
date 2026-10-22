@@ -81,7 +81,7 @@ function TodoHeaderIcon({ complete }: { complete: boolean }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.72 }}
             transition={reduce ? { duration: 0 } : SPRING_SWAP}
-            className="absolute grid place-items-center text-muted-foreground"
+            className="text-muted-foreground absolute grid place-items-center"
           >
             <ListTodo className="size-4" />
           </motion.span>
@@ -102,7 +102,7 @@ function TodoStatusIcon({ status, progress }: { status: TodoItemStatus; progress
       viewBox="0 0 24 24"
       initial={false}
       className={cn(
-        "mx-0.5 size-5 shrink-0 overflow-visible text-muted-foreground",
+        "text-muted-foreground mx-0.5 size-5 shrink-0 overflow-visible",
         status === "in-progress" && "text-foreground",
         status === "cancelled" && "text-rose-600 dark:text-rose-400",
       )}
@@ -237,7 +237,7 @@ export function TodoList({
   return (
     <section
       aria-label="Agent task list"
-      className={cn("w-full overflow-hidden rounded-2xl border border-border/70", className)}
+      className={cn("border-border/70 w-full overflow-hidden rounded-2xl border", className)}
     >
       <button
         id={triggerId}
@@ -245,13 +245,13 @@ export function TodoList({
         aria-expanded={currentOpen}
         aria-controls={contentId}
         onClick={() => setOpen(!currentOpen)}
-        className="group flex h-11 w-full items-center gap-2.5 rounded-2xl px-3.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="group focus-visible:ring-ring flex h-11 w-full items-center gap-2.5 rounded-2xl px-3.5 text-left outline-none focus-visible:ring-2"
       >
         <TodoHeaderIcon complete={allComplete} />
-        <h3 className="min-w-0 flex-1 truncate font-medium text-foreground/90 text-sm">{title}</h3>
+        <h3 className="text-foreground/90 min-w-0 flex-1 truncate text-sm font-medium">{title}</h3>
         <span
           className={cn(
-            "shrink-0 font-medium text-muted-foreground text-xs tabular-nums",
+            "text-muted-foreground shrink-0 text-xs font-medium tabular-nums",
             allComplete && "text-emerald-600 dark:text-emerald-400",
           )}
         >
@@ -268,7 +268,7 @@ export function TodoList({
           aria-hidden="true"
           animate={{ rotate: currentOpen ? 180 : 0 }}
           transition={reduce ? { duration: 0 } : SPRING_SWAP}
-          className="text-muted-foreground/50 transition-colors group-hover:text-muted-foreground"
+          className="text-muted-foreground/50 group-hover:text-muted-foreground transition-colors"
         >
           <ChevronDown className="size-3.5" />
         </motion.span>
@@ -333,7 +333,7 @@ export function TodoList({
                         </span>
                       </span>
                       {item.detail ? (
-                        <span className="shrink-0 text-muted-foreground/55 text-sm">
+                        <span className="text-muted-foreground/55 shrink-0 text-sm">
                           {item.detail}
                         </span>
                       ) : null}
@@ -343,7 +343,7 @@ export function TodoList({
               </AnimatePresence>
             </ol>
           ) : (
-            <p className="px-1.5 py-2 text-muted-foreground text-sm">No tasks yet</p>
+            <p className="text-muted-foreground px-1.5 py-2 text-sm">No tasks yet</p>
           )}
         </div>
       </AgentDisclosure>

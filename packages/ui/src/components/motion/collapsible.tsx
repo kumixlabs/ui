@@ -217,7 +217,7 @@ export function CollapsibleTrigger({
       layout={context.reduce ? false : "position"}
       transition={{ layout: SPRING_LAYOUT }}
       className={cn(
-        "flex min-h-10 w-full items-center gap-3 rounded-xl px-3 py-2 text-left font-medium text-sm outline-none transition-colors hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+        "hover:bg-muted/60 focus-visible:ring-ring flex min-h-10 w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
     >
@@ -312,7 +312,7 @@ export function CollapsibleIndicator({ className, children, ...props }: Collapsi
       animate={{ transform: `rotate(${open ? 180 : 0}deg)` }}
       transition={reduce ? { duration: 0 } : SPRING_LAYOUT}
       className={cn(
-        "ml-auto inline-flex shrink-0 items-center justify-center text-muted-foreground",
+        "text-muted-foreground ml-auto inline-flex shrink-0 items-center justify-center",
         className,
       )}
     >

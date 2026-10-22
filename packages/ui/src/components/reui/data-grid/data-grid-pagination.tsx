@@ -216,7 +216,7 @@ function DataGridPagination(props: DataGridPaginationProps): JSX.Element {
           mergedProps.infoSkeleton
         ) : (
           <>
-            <div className="order-2 text-nowrap text-muted-foreground text-sm sm:order-1">
+            <div className="text-muted-foreground order-2 text-sm text-nowrap sm:order-1">
               {paginationInfo}
             </div>
             {pageCount > 1 && (

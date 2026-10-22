@@ -37,7 +37,7 @@ export function IconButton({
       whileTap={reduce || disabled ? undefined : { scale: 0.86 }}
       transition={SPRING_PRESS}
       className={cn(
-        "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40",
+        "text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-40",
         className,
       )}
     >

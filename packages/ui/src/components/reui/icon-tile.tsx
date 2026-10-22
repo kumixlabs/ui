@@ -30,23 +30,23 @@ const iconTileVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center align-middle",
     "size-(--icon-tile-size) rounded-[var(--icon-tile-radius,min(var(--radius-md),calc(var(--icon-tile-size)/3)))]",
-    "[&_svg:not([class*=size-])]:size-(--icon-tile-icon-size) [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-(--icon-tile-icon-size)",
   ],
   {
     variants: {
       variant: {
         /** Plain bordered surface. The quiet default for list rows and toolbars. */
-        outline: "border border-border bg-background dark:bg-input/32",
+        outline: "border-border bg-background dark:bg-input/32 border",
         /** Raised muted fill with a background-colored ring. Reads as a physical chip. */
         elevated:
-          "border-2 border-background bg-muted text-accent-foreground shadow-[0_1px_3px_0_rgb(0_0_0/0.14)] dark:border",
+          "border-background bg-muted text-accent-foreground border-2 shadow-[0_1px_3px_0_rgb(0_0_0/0.14)] dark:border",
         /**
          * Tinted double container: an opacity-filled outer ring with no border
          * around a bordered inner card, all derived from `currentColor`. The
          * quiet, colorful sibling of `frame`. Retint with a text color class.
          */
         soft: [
-          "isolate bg-current/10 p-(--icon-tile-inset) text-primary",
+          "text-primary isolate bg-current/10 p-(--icon-tile-inset)",
           "after:absolute after:inset-(--icon-tile-inset) after:-z-10",
           "after:rounded-[calc(var(--icon-tile-radius,min(var(--radius-md),calc(var(--icon-tile-size)/3)))-var(--icon-tile-inset))]",
           "after:border after:border-current/20 after:bg-current/5",
@@ -55,10 +55,10 @@ const iconTileVariants = cva(
         solid: "bg-primary text-primary-foreground",
         /** Double container - a muted ring around an inset card, matching Frame. */
         frame: [
-          "isolate border border-border bg-muted/50 p-(--icon-tile-inset)",
+          "border-border bg-muted/50 isolate border p-(--icon-tile-inset)",
           "after:absolute after:inset-(--icon-tile-inset) after:-z-10",
           "after:rounded-[calc(var(--icon-tile-radius,min(var(--radius-md),calc(var(--icon-tile-size)/3)))-var(--icon-tile-inset))]",
-          "after:border after:border-border after:bg-card after:shadow-xs",
+          "after:border-border after:bg-card after:border after:shadow-xs",
         ],
       },
       size: {

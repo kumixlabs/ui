@@ -48,10 +48,10 @@ export function DonutChartLegend({ renderDetail, renderValue, className }: Donut
                 rows?.[(index + step + placed.length) % placed.length]?.focus();
               }}
               className={cn(
-                "w-full rounded-xl px-3 py-2 text-left outline-none transition-colors duration-150",
-                "focus-visible:ring-2 focus-visible:ring-ring",
+                "w-full rounded-xl px-3 py-2 text-left transition-colors duration-150 outline-none",
+                "focus-visible:ring-ring focus-visible:ring-2",
                 focused ? "bg-muted" : "hover:bg-muted/60",
-                selectedId === segment.id && "ring-1 ring-border",
+                selectedId === segment.id && "ring-border ring-1",
               )}
             >
               <span className="flex items-center gap-3">
@@ -60,14 +60,14 @@ export function DonutChartLegend({ renderDetail, renderValue, className }: Donut
                   className="size-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: segment.color }}
                 />
-                <span className="min-w-0 flex-1 truncate font-medium text-sm">{segment.name}</span>
+                <span className="min-w-0 flex-1 truncate text-sm font-medium">{segment.name}</span>
                 <span className="shrink-0 text-right text-sm tabular-nums">
                   {renderValue ? (
                     renderValue(segment)
                   ) : (
                     <>
                       <span className="font-medium">{(segment.share * 100).toFixed(1)}%</span>
-                      <span className="ml-2 text-muted-foreground">
+                      <span className="text-muted-foreground ml-2">
                         {formatValue(segment.value)}
                       </span>
                     </>
@@ -75,13 +75,13 @@ export function DonutChartLegend({ renderDetail, renderValue, className }: Donut
                 </span>
               </span>
               {renderDetail ? (
-                <span className="mt-0.5 block pl-5.5 text-muted-foreground text-xs">
+                <span className="text-muted-foreground mt-0.5 block pl-5.5 text-xs">
                   {renderDetail(segment)}
                 </span>
               ) : null}
               <span
                 aria-hidden="true"
-                className="mt-2 ml-5.5 block h-1 overflow-hidden rounded-full bg-muted"
+                className="bg-muted mt-2 ml-5.5 block h-1 overflow-hidden rounded-full"
               >
                 <motion.span
                   className="block h-full origin-left rounded-full"

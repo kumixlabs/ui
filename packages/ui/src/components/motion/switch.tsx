@@ -61,24 +61,24 @@ export function Switch({
           initial={false}
           data-state={checked ? "checked" : "unchecked"}
           className={cn(
-            "group peer inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full px-1 outline-none transition-colors duration-200",
-            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            "group peer inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full px-1 transition-colors duration-200 outline-none",
+            "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
             "disabled:cursor-not-allowed disabled:opacity-60",
-            checked ? "justify-end bg-primary" : "justify-start bg-muted-foreground/60",
+            checked ? "bg-primary justify-end" : "bg-muted-foreground/60 justify-start",
           )}
         >
           <motion.div
             ref={thumbRef}
             layout
             animate={{ scale: squish ? 0.9 : 1 }}
-            className="pointer-events-none block h-5 w-5 rounded-full bg-background shadow-md"
+            className="bg-background pointer-events-none block h-5 w-5 rounded-full shadow-md"
           >
             {/* Stretch toward the destination while active. */}
             <div className={cn("size-5", squish && (checked ? "ml-1" : "mr-1"))} />
           </motion.div>
         </motion.button>
         {label ? (
-          <label htmlFor={id} className="cursor-pointer text-foreground text-sm">
+          <label htmlFor={id} className="text-foreground cursor-pointer text-sm">
             {label}
           </label>
         ) : null}

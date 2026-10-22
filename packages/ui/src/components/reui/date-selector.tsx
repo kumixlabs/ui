@@ -815,7 +815,7 @@ function DateSelectorPeriodGrid({
     <div className={cn("w-full space-y-6", className)}>
       {years.map((year) => (
         <div key={year}>
-          <div className="mb-3 font-medium text-muted-foreground text-sm">{year}</div>
+          <div className="text-muted-foreground mb-3 text-sm font-medium">{year}</div>
           <div
             className="grid gap-2"
             style={{
@@ -1103,7 +1103,7 @@ export function DateSelector({
       <div className={cn("w-full space-y-4 sm:w-[470px]", className)}>
         <div className="flex flex-wrap items-center gap-3">
           {label && (
-            <h3 className="font-medium text-sm" data-slot="data-selector-label">
+            <h3 className="text-sm font-medium" data-slot="data-selector-label">
               {label}
             </h3>
           )}
@@ -1135,7 +1135,7 @@ export function DateSelector({
                   // Visual States
                   "opacity-70 transition-opacity hover:opacity-100",
                   // Focus States
-                  "ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                  "ring-offset-background focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
                 )}
               >
                 <XIcon className="size-4" />

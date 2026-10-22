@@ -29,6 +29,7 @@ import type { Cell, Header, Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import { GripVerticalIcon } from "lucide-react";
 
+import { cn } from "@kumix/utils";
 import { Button } from "../../ui/button";
 import type { DataGridFeatures, DataGridTableInstance } from "./data-grid";
 import { getDataGridHeaderSpans, useDataGrid } from "./data-grid";
@@ -122,7 +123,10 @@ function DataGridTableDndHeader<TData extends object>({
           <Button
             size="icon-sm"
             variant="ghost"
-            className={`-ms-2 size-6 ${isDragging ? "cursor-grabbing" : "cursor-grab active:cursor-grabbing"}`}
+            className={cn(
+              "-ms-2 size-6",
+              isDragging ? "cursor-grabbing" : "cursor-grab active:cursor-grabbing",
+            )}
             {...attributes}
             {...listeners}
             aria-label={i18n.labels.dragToReorder}

@@ -12,7 +12,7 @@ import { cn } from "@kumix/utils";
  */
 const frameVariants = cva(
   [
-    "relative flex flex-col gap-(--frame-gap) rounded-(--frame-radius) bg-muted/50 px-(--frame-px) py-(--frame-py)",
+    "bg-muted/50 relative flex flex-col gap-(--frame-gap) rounded-(--frame-radius) px-(--frame-px) py-(--frame-py)",
     // Each rung is the radius that style's own shadcn Card resolves through, so
     // a Frame and a Card side by side agree. lyra/sera are 0px, NOT
     // var(--radius-none): no such token exists, and it only reached 0 by being
@@ -35,7 +35,7 @@ const frameVariants = cva(
       variant: {
         default: "border border-[var(--frame-border-color)] bg-clip-padding",
         inverse:
-          "border border-[var(--frame-border-color)] bg-background bg-clip-padding [--frame-panel-bg:color-mix(in_oklch,var(--color-muted)_40%,transparent)]",
+          "bg-background border border-[var(--frame-border-color)] bg-clip-padding [--frame-panel-bg:color-mix(in_oklch,var(--color-muted)_40%,transparent)]",
         ghost: "[--frame-panel-radius:calc(var(--frame-radius)-var(--frame-px))]",
       },
       // Bars read as chrome, not a second content block: py runs 0.5/1.5/2/2.5
@@ -65,7 +65,7 @@ const frameVariants = cva(
       dense: {
         // Parent selectors, not CSS vars: these are positional. Panels are
         // pulled flush (-mx-px), so corners align with the frame's own radius.
-        true: "gap-0 border-[var(--frame-border-color)] p-0 [--frame-panel-radius:var(--frame-radius)] [&:not(:has([data-slot=frame-panel-header]))_[data-slot=frame-panel]:is(:first-child)]:-mt-px [&_[data-slot=frame-panel]:last-child]:-mb-px [&_[data-slot=frame-panel]]:-mx-px [&_[data-slot=frame-panel]]:before:hidden",
+        true: "gap-0 border-[var(--frame-border-color)] p-0 [--frame-panel-radius:var(--frame-radius)] [&_[data-slot=frame-panel]]:-mx-px [&_[data-slot=frame-panel]]:before:hidden [&_[data-slot=frame-panel]:last-child]:-mb-px [&:not(:has([data-slot=frame-panel-header]))_[data-slot=frame-panel]:is(:first-child)]:-mt-px",
         false: "",
       },
     },
@@ -131,7 +131,7 @@ function FrameHeader({ className, ...props }: React.ComponentProps<"header">) {
 function FrameTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("font-semibold text-sm", className)}
+      className={cn("text-sm font-semibold", className)}
       data-slot="frame-panel-title"
       {...props}
     />

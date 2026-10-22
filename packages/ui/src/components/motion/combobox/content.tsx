@@ -120,7 +120,7 @@ export function ComboboxContent({
         } as CSSProperties
       }
       className={cn(
-        "fixed z-[9999] w-(--combobox-trigger-width) overflow-hidden rounded-xl border border-border bg-background text-popover-foreground outline-none will-change-[height,transform]",
+        "border-border bg-background text-popover-foreground fixed z-[9999] w-(--combobox-trigger-width) overflow-hidden rounded-xl border will-change-[height,transform] outline-none",
         className,
       )}
     >

@@ -181,7 +181,7 @@ export function TableHeader<T>({
       <thead>
         <tr style={{ height: rowHeight }}>
           {selectable ? (
-            <th className="sticky top-0 z-10 border-border border-b bg-muted">
+            <th className="border-border bg-muted sticky top-0 z-10 border-b">
               <div className="flex items-center justify-center">
                 <Checkbox
                   checked={allSelected}
@@ -214,9 +214,9 @@ export function TableHeader<T>({
                   dragKey ? dropIndex === columns.length && index === columns.length - 1 : undefined
                 }
                 className={cn(
-                  "group sticky top-0 z-10 border-border border-b bg-muted p-0 font-medium text-muted-foreground",
-                  "data-[drop=true]:before:absolute data-[drop=true]:before:inset-y-0 data-[drop=true]:before:left-0 data-[drop=true]:before:w-0.5 data-[drop=true]:before:bg-primary",
-                  "data-[dropend=true]:after:absolute data-[dropend=true]:after:inset-y-0 data-[dropend=true]:after:right-0 data-[dropend=true]:after:w-0.5 data-[dropend=true]:after:bg-primary",
+                  "group border-border bg-muted text-muted-foreground sticky top-0 z-10 border-b p-0 font-medium",
+                  "data-[drop=true]:before:bg-primary data-[drop=true]:before:absolute data-[drop=true]:before:inset-y-0 data-[drop=true]:before:left-0 data-[drop=true]:before:w-0.5",
+                  "data-[dropend=true]:after:bg-primary data-[dropend=true]:after:absolute data-[dropend=true]:after:inset-y-0 data-[dropend=true]:after:right-0 data-[dropend=true]:after:w-0.5",
                 )}
               >
                 <motion.div
@@ -240,7 +240,7 @@ export function TableHeader<T>({
                       onPointerMove={onReorderMove}
                       onPointerUp={onReorderEnd}
                       className={cn(
-                        "flex h-full w-6 cursor-grab touch-none items-center justify-center text-muted-foreground/60 transition-colors hover:text-foreground active:cursor-grabbing",
+                        "text-muted-foreground/60 hover:text-foreground flex h-full w-6 cursor-grab touch-none items-center justify-center transition-colors active:cursor-grabbing",
                         // The grip owns the whole press, so iOS must not open its
                         // callout out of the same one and cancel the drag.
                         TOUCH_GESTURE_CLASS,
@@ -254,7 +254,7 @@ export function TableHeader<T>({
                       type="button"
                       onClick={() => onToggleSort(column.key)}
                       className={cn(
-                        "flex h-full min-w-0 flex-1 select-none items-center gap-1 px-4 transition-colors hover:text-foreground",
+                        "hover:text-foreground flex h-full min-w-0 flex-1 items-center gap-1 px-4 transition-colors select-none",
                         alignFlex(column.align),
                         active && "text-foreground",
                       )}
@@ -279,7 +279,7 @@ export function TableHeader<T>({
                       size={1}
                       onChange={(e) => onColumnRename(column.key, e.target.value)}
                       className={cn(
-                        "min-w-0 flex-1 appearance-none truncate rounded-md border-0 bg-transparent px-4 font-medium text-muted-foreground outline-none transition-colors focus:bg-muted focus:text-foreground",
+                        "text-muted-foreground focus:bg-muted focus:text-foreground min-w-0 flex-1 appearance-none truncate rounded-md border-0 bg-transparent px-4 font-medium transition-colors outline-none",
                         alignText(column.align),
                       )}
                     />
@@ -298,7 +298,7 @@ export function TableHeader<T>({
                     onPointerMove={onResizeMove}
                     onPointerUp={onResizeEnd}
                     className={cn(
-                      "absolute top-0 right-0 h-full w-1.5 cursor-col-resize touch-none bg-transparent transition-colors hover:bg-muted",
+                      "hover:bg-muted absolute top-0 right-0 h-full w-1.5 cursor-col-resize touch-none bg-transparent transition-colors",
                       // Same for the resize drag: the handle drives it end to end.
                       TOUCH_GESTURE_CLASS,
                     )}
@@ -307,7 +307,7 @@ export function TableHeader<T>({
               </th>
             );
           })}
-          <th aria-hidden className="sticky top-0 z-10 border-border border-b bg-muted" />
+          <th aria-hidden className="border-border bg-muted sticky top-0 z-10 border-b" />
         </tr>
       </thead>
     </>

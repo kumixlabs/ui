@@ -340,10 +340,10 @@ export function FileTree({
                 if (isFolder) toggleFolder(row.item.value);
               }}
               className={cn(
-                "group/file-tree relative flex h-9 w-full items-center gap-2 overflow-hidden rounded-lg pr-2 text-left text-muted-foreground text-sm outline-none",
-                "transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+                "group/file-tree text-muted-foreground relative flex h-9 w-full items-center gap-2 overflow-hidden rounded-lg pr-2 text-left text-sm outline-none",
+                "hover:text-foreground focus-visible:ring-ring transition-colors focus-visible:ring-2 focus-visible:ring-inset",
                 "aria-disabled:cursor-not-allowed",
-                isSelected && "bg-muted font-medium text-foreground",
+                isSelected && "bg-muted text-foreground font-medium",
                 classNames?.item,
                 row.item.className,
               )}
@@ -356,7 +356,7 @@ export function FileTree({
                   animate={{ opacity: 1, scaleY: 1 }}
                   exit={{ opacity: 0, scaleY: 0 }}
                   transition={reduce ? { duration: 0 } : BRANCH_DRAW}
-                  className="absolute top-0 bottom-0 w-px origin-top bg-border/70"
+                  className="bg-border/70 absolute top-0 bottom-0 w-px origin-top"
                   style={{ left: 16 + (row.depth - 1) * indent }}
                 />
               ) : null}
@@ -376,7 +376,7 @@ export function FileTree({
               <span
                 aria-hidden="true"
                 className={cn(
-                  "relative z-10 grid size-4 shrink-0 place-items-center text-muted-foreground transition-colors group-hover/file-tree:text-foreground",
+                  "text-muted-foreground group-hover/file-tree:text-foreground relative z-10 grid size-4 shrink-0 place-items-center transition-colors",
                   isFolder && isOpen && "text-foreground",
                   classNames?.icon,
                 )}

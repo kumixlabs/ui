@@ -85,7 +85,7 @@ export function TableMenu({
               <div className="fixed inset-0 z-40" onPointerDown={() => setCoords(null)} />
               <motion.div
                 role="menu"
-                className="fixed z-50 overflow-hidden rounded-xl border border-border bg-background p-1 shadow-xl"
+                className="border-border bg-background fixed z-50 overflow-hidden rounded-xl border p-1 shadow-xl"
                 style={{ top: coords.top, left: coords.left, width: MENU_WIDTH }}
                 initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: -4 }}
                 animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}

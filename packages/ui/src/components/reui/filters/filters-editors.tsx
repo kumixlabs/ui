@@ -417,7 +417,7 @@ export function FilterTextEditor<V, O>({
     // for an email, and `w-80` was the widest control in a bar of compact
     // chips. Capped at the viewport because `w-80` is 320px and a 360px phone
     // has 40px to spare. A `w-*` on the field wins.
-    <EditorPanel className={cn("w-72 min-w-0 max-w-[calc(100vw-2rem)]", field.className)}>
+    <EditorPanel className={cn("w-72 max-w-[calc(100vw-2rem)] min-w-0", field.className)}>
       <ButtonGroup className={EDITOR_FIELD_GROUP}>
         <Input
           {...autoFocusProps}
@@ -858,14 +858,14 @@ export function FilterMenu({
             /* Full bleed, over the per-style `--cascader-list-pad` the shell
                publishes: a rule stopping at the row's inset box reads as a gap.
                Centred in the 8px the row gives back above itself, not `top-0`. */
-            className="absolute inset-x-[calc(var(--cascader-list-pad,4px)*-1)] -top-1 h-px bg-border"
+            className="bg-border absolute inset-x-[calc(var(--cascader-list-pad,4px)*-1)] -top-1 h-px"
           />
         ) : null}
 
         {node.icon ? (
           <span
             data-slot="filter-menu-icon"
-            className="flex shrink-0 items-center justify-center text-muted-foreground"
+            className="text-muted-foreground flex shrink-0 items-center justify-center"
           >
             {node.icon}
           </span>
@@ -874,7 +874,7 @@ export function FilterMenu({
         <span className="flex min-w-0 flex-1 flex-col items-start gap-0.5">
           <span className="w-full truncate text-start">{node.label}</span>
           {node.description ? (
-            <span className="w-full truncate text-start text-muted-foreground text-xs">
+            <span className="text-muted-foreground w-full truncate text-start text-xs">
               {node.description}
             </span>
           ) : null}

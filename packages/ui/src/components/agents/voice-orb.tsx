@@ -150,7 +150,7 @@ export function VoiceOrb({
       style={style}
     >
       {error ? (
-        <div className="flex size-full items-center justify-center rounded-full border border-border bg-card p-8 text-center text-muted-foreground text-xs">
+        <div className="border-border bg-card text-muted-foreground flex size-full items-center justify-center rounded-full border p-8 text-center text-xs">
           Orb rendering unavailable
         </div>
       ) : (

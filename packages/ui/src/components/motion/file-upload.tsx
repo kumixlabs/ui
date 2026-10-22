@@ -243,14 +243,14 @@ function FileUploadRow({
       exit={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(-6px)" }}
       transition={ROW_TRANSITION}
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-border bg-background p-3",
+        "border-border bg-background relative overflow-hidden rounded-2xl border p-3",
         classNames?.item,
       )}
     >
       <div className="flex items-center gap-3">
         <div
           className={cn(
-            "grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-muted text-muted-foreground",
+            "bg-muted text-muted-foreground grid h-11 w-11 shrink-0 place-items-center rounded-xl",
             classNames?.leading,
           )}
         >
@@ -260,10 +260,10 @@ function FileUploadRow({
         <div className={cn("min-w-0 flex-1", classNames?.content)}>
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <p className={cn("truncate font-medium text-foreground text-sm", classNames?.name)}>
+              <p className={cn("text-foreground truncate text-sm font-medium", classNames?.name)}>
                 {item.name}
               </p>
-              <p className={cn("mt-0.5 text-muted-foreground text-xs", classNames?.meta)}>
+              <p className={cn("text-muted-foreground mt-0.5 text-xs", classNames?.meta)}>
                 {fileKind(item)} · {formatBytes(item.size)}
                 {status === "error" && item.error ? ` · ${item.error}` : null}
               </p>
@@ -277,7 +277,7 @@ function FileUploadRow({
                   onClick={() => onRetry(item)}
                   aria-label={`Retry ${item.name}`}
                   className={cn(
-                    "grid h-7 w-7 place-items-center rounded-full text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-foreground active:scale-95",
+                    "text-muted-foreground hover:bg-muted hover:text-foreground grid h-7 w-7 place-items-center rounded-full transition-colors duration-150 active:scale-95",
                     classNames?.action,
                   )}
                 >
@@ -289,7 +289,7 @@ function FileUploadRow({
                 onClick={() => onRemove(item)}
                 aria-label={`Remove ${item.name}`}
                 className={cn(
-                  "grid h-7 w-7 place-items-center rounded-full text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-foreground active:scale-95",
+                  "text-muted-foreground hover:bg-muted hover:text-foreground grid h-7 w-7 place-items-center rounded-full transition-colors duration-150 active:scale-95",
                   classNames?.action,
                 )}
               >
@@ -306,7 +306,7 @@ function FileUploadRow({
               aria-valuenow={Math.round(progress)}
               aria-label={`${item.name} upload progress`}
               className={cn(
-                "mt-3 h-1.5 overflow-hidden rounded-full bg-muted",
+                "bg-muted mt-3 h-1.5 overflow-hidden rounded-full",
                 classNames?.progress,
               )}
             >
@@ -465,9 +465,9 @@ export function FileUpload({
           addFiles(Array.from(event.dataTransfer.files));
         }}
         className={cn(
-          "group relative flex w-full overflow-hidden rounded-3xl border border-border border-dashed bg-background outline-none",
+          "group border-border bg-background relative flex w-full overflow-hidden rounded-3xl border border-dashed outline-none",
           "transition-[border-color,transform] duration-200 active:scale-[0.99]",
-          "hover:border-foreground/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "hover:border-foreground/40 focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
           "data-[dragging=true]:border-foreground",
           "disabled:pointer-events-none disabled:opacity-55",
           centered
@@ -479,9 +479,9 @@ export function FileUpload({
         <motion.span
           aria-hidden="true"
           className={cn(
-            "grid shrink-0 place-items-center bg-muted text-foreground",
+            "bg-muted text-foreground grid shrink-0 place-items-center",
             centered
-              ? "h-16 w-16 rounded-[1.35rem] border border-border"
+              ? "border-border h-16 w-16 rounded-[1.35rem] border"
               : "h-14 w-14 rounded-[1.25rem]",
           )}
           animate={
@@ -499,7 +499,7 @@ export function FileUpload({
         <span className={cn("min-w-0", centered ? "max-w-xs" : "flex-1")}>
           <span
             className={cn(
-              "block font-semibold text-foreground",
+              "text-foreground block font-semibold",
               centered ? "text-base" : "text-sm",
             )}
           >
@@ -507,7 +507,7 @@ export function FileUpload({
           </span>
           <span
             className={cn(
-              "block text-muted-foreground text-xs",
+              "text-muted-foreground block text-xs",
               centered ? "mt-1 leading-5" : "mt-0.5",
             )}
           >
@@ -517,7 +517,7 @@ export function FileUpload({
 
         <span
           className={cn(
-            "shrink-0 rounded-full border border-border font-medium text-foreground text-xs transition-colors duration-150 group-hover:bg-muted",
+            "border-border text-foreground group-hover:bg-muted shrink-0 rounded-full border text-xs font-medium transition-colors duration-150",
             centered ? "mt-1 px-4 py-2" : "px-3.5 py-2",
           )}
         >

@@ -1679,7 +1679,7 @@ function Gantt<TData = unknown>({
     // color) and the type scale: every gantt label inherits the root's text
     // size, so one class here (or on the consumer's className) rescales the
     // whole component - e.g. className="text-sm" for a roomier grid
-    className: cn("flex min-h-0 min-w-0 flex-col text-foreground text-xs", className),
+    className: cn("text-foreground flex min-h-0 min-w-0 flex-col text-xs", className),
     children: (
       <>
         {children}

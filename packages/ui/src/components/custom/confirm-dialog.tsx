@@ -45,11 +45,11 @@ export function ConfirmDialog({
     >
       <AlertDialogContent>
         <div className="flex items-start gap-3 py-1">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-destructive/10 dark:bg-destructive/10">
-            <CircleAlertIcon className="size-5 text-destructive" />
+          <div className="bg-destructive/10 dark:bg-destructive/10 flex size-10 shrink-0 items-center justify-center rounded-full">
+            <CircleAlertIcon className="text-destructive size-5" />
           </div>
           <div className="flex flex-col justify-center gap-1">
-            <AlertDialogTitle className="font-semibold text-sm">{title}</AlertDialogTitle>
+            <AlertDialogTitle className="text-sm font-semibold">{title}</AlertDialogTitle>
             <AlertDialogDescription className="text-muted-foreground text-sm">
               {description}
             </AlertDialogDescription>
@@ -97,17 +97,17 @@ export function ConfirmSignOut({
           <AlertDialogMedia className="size-12 rounded-full bg-violet-50 text-violet-500 dark:bg-violet-950 dark:text-violet-400">
             <ShieldQuestionMarkIcon className="size-6" />
           </AlertDialogMedia>
-          <AlertDialogTitle className="text-center font-semibold text-base">
+          <AlertDialogTitle className="text-center text-base font-semibold">
             {title}
           </AlertDialogTitle>
-          <AlertDialogDescription className="p-0 text-center font-medium text-sm">
+          <AlertDialogDescription className="p-0 text-center text-sm font-medium">
             {description}
           </AlertDialogDescription>
         </div>
         <AlertDialogFooter className="grid flex-none grid-cols-2 gap-0 divide-x border-t pt-0">
           <AlertDialogCancel
             variant="ghost"
-            className="h-12 flex-1 rounded-none border-0 border-border border-r p-0"
+            className="border-border h-12 flex-1 rounded-none border-0 border-r p-0"
             disabled={loading}
           >
             {cancelText}

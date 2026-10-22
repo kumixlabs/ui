@@ -218,9 +218,9 @@ function DitherField({
       initial={false}
       animate={{ opacity: OVERLAY_OPACITY[status] }}
       transition={{ duration: reduce ? 0 : 0.4, ease: EASE_OUT }}
-      className="absolute inset-0 overflow-hidden bg-muted"
+      className="bg-muted absolute inset-0 overflow-hidden"
     >
-      <canvas ref={canvasRef} className="absolute inset-0 size-full text-foreground" />
+      <canvas ref={canvasRef} className="text-foreground absolute inset-0 size-full" />
     </motion.div>
   );
 }
@@ -259,7 +259,7 @@ export function ImageGeneration({
           role="img"
           aria-label={resolvedLabel}
           style={{ aspectRatio }}
-          className="relative isolate w-full overflow-hidden rounded-xl bg-muted"
+          className="bg-muted relative isolate w-full overflow-hidden rounded-xl"
         >
           <motion.div
             aria-hidden={children ? undefined : true}
@@ -298,7 +298,7 @@ export function ImageGeneration({
           </AnimatePresence>
 
           {resolution ? (
-            <span className="absolute top-2 right-2 z-10 rounded-full bg-background/75 px-2 py-0.5 font-mono text-[10px] text-muted-foreground tabular-nums">
+            <span className="bg-background/75 text-muted-foreground absolute top-2 right-2 z-10 rounded-full px-2 py-0.5 font-mono text-[10px] tabular-nums">
               {resolution}
             </span>
           ) : null}
@@ -310,7 +310,7 @@ export function ImageGeneration({
               <div
                 aria-live="polite"
                 className={cn(
-                  "flex min-h-5 items-center gap-2 font-medium text-foreground text-sm",
+                  "text-foreground flex min-h-5 items-center gap-2 text-sm font-medium",
                   status === "error" && "text-destructive",
                   statusClassName,
                 )}
@@ -333,7 +333,7 @@ export function ImageGeneration({
               </div>
             ) : null}
             {prompt ? (
-              <p className="mt-0.5 truncate text-muted-foreground text-xs">“{prompt}”</p>
+              <p className="text-muted-foreground mt-0.5 truncate text-xs">“{prompt}”</p>
             ) : null}
           </div>
         ) : null}
@@ -344,7 +344,7 @@ export function ImageGeneration({
             onClick={onRetry}
             whileTap={reduce ? undefined : { scale: 0.96 }}
             transition={SPRING_PRESS}
-            className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-full px-3 font-medium text-foreground text-sm outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-foreground hover:bg-muted focus-visible:ring-ring mt-3 inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2"
           >
             <RotateCcw aria-hidden="true" className="size-4" />
             Try again

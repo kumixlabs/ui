@@ -105,7 +105,7 @@ export function DateRangePickerCalendar({
       {...props}
       aria-label={props["aria-label"] ?? ctx.label}
       className={cn(
-        "w-80 max-w-full rounded-2xl border border-border bg-background p-3.5",
+        "border-border bg-background w-80 max-w-full rounded-2xl border p-3.5",
         className,
       )}
     >
@@ -142,26 +142,26 @@ export function DateRangePickerSummary({ className, ...props }: DateRangePickerS
     <div
       {...props}
       className={cn(
-        "mb-2.5 grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2",
+        "border-border bg-muted/30 mb-2.5 grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-lg border px-3 py-2",
         className,
       )}
     >
       <div className="min-w-0">
-        <p className="mb-1 font-medium text-[10px] text-muted-foreground uppercase tracking-wider">
+        <p className="text-muted-foreground mb-1 text-[10px] font-medium tracking-wider uppercase">
           Start date
         </p>
-        <p className="font-medium text-[13px] tabular-nums">
+        <p className="text-[13px] font-medium tabular-nums">
           {value ? shortFormat.format(parse(value.from)) : "Select date"}
         </p>
       </div>
       <ArrowRight size={14} className="text-muted-foreground/60" aria-hidden="true" />
       <div className="min-w-0">
-        <p className="mb-1 font-medium text-[10px] text-muted-foreground uppercase tracking-wider">
+        <p className="text-muted-foreground mb-1 text-[10px] font-medium tracking-wider uppercase">
           End date
         </p>
         <p
           className={cn(
-            "font-medium text-[13px] tabular-nums",
+            "text-[13px] font-medium tabular-nums",
             !value?.to && "text-muted-foreground",
           )}
         >
@@ -202,7 +202,7 @@ export function DateRangePickerHeader({ className, ...props }: DateRangePickerHe
           disabled={disabled}
           onClick={() => openChoices("months")}
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 font-semibold text-[13px] transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40",
+            "hover:bg-muted focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40",
             view === "years" && "hidden",
           )}
         >
@@ -221,7 +221,7 @@ export function DateRangePickerHeader({ className, ...props }: DateRangePickerHe
           aria-controls={view === "years" ? choicesId : undefined}
           disabled={disabled}
           onClick={() => openChoices("years")}
-          className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 font-medium text-[13px] text-muted-foreground tabular-nums transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40"
+          className="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-medium tabular-nums transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40"
         >
           {view === "years" ? `${yearPage}–${yearPageEnd}` : year}
           <ChevronDown
@@ -368,7 +368,7 @@ export function DateRangePickerGrid({
                           key={day}
                           scope="col"
                           abbr={day}
-                          className="h-6 pb-1.5 text-center font-medium text-[11px] text-muted-foreground"
+                          className="text-muted-foreground h-6 pb-1.5 text-center text-[11px] font-medium"
                         >
                           {new Intl.DateTimeFormat(locale, {
                             weekday: "short",
@@ -431,7 +431,7 @@ export function DateRangePickerGrid({
                                 // Range scrubbing follows immediately: independent cell
                                 // fades leave stale highlights behind a moving pointer.
                                 className={cn(
-                                  "pointer-events-none absolute inset-y-0 rounded-[inherit] bg-foreground/8",
+                                  "bg-foreground/8 pointer-events-none absolute inset-y-0 rounded-[inherit]",
                                   inRange ? "opacity-100" : "opacity-0",
                                 )}
                                 style={{
@@ -464,9 +464,9 @@ export function DateRangePickerGrid({
                                 }}
                                 onKeyDown={(event) => onKey(event, date)}
                                 className={cn(
-                                  "relative mx-auto flex h-8 w-full max-w-8 items-center justify-center rounded-full text-xs tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-30",
+                                  "focus-visible:ring-ring relative mx-auto flex h-8 w-full max-w-8 items-center justify-center rounded-full text-xs tabular-nums focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-30",
                                   endpoint
-                                    ? "bg-foreground font-medium text-background"
+                                    ? "bg-foreground text-background font-medium"
                                     : canHover &&
                                         !unavailable(date) &&
                                         !inRange &&
@@ -529,7 +529,7 @@ export function DateRangePickerClear({
       aria-label={props["aria-label"] ?? "Clear date range"}
       disabled={disabled || ctx.disabled || !ctx.value}
       className={cn(
-        "rounded-md px-1.5 py-1 text-muted-foreground text-xs transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30",
+        "text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded-md px-1.5 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-30",
         className,
       )}
       onClick={(event) => {
@@ -549,7 +549,7 @@ export function DateRangePickerFooter({
   ...props
 }: DateRangePickerFooterProps) {
   return (
-    <div {...props} className={cn("mt-2.5 border-border border-t pt-2.5", className)}>
+    <div {...props} className={cn("border-border mt-2.5 border-t pt-2.5", className)}>
       {children === undefined ? (
         <>
           <div className="flex items-center justify-between gap-2">
@@ -610,7 +610,7 @@ export function DateRangePickerPreset({
       aria-pressed={selected}
       disabled={disabled || !ctx.rangeAvailable(value)}
       className={cn(
-        "rounded-lg px-3 py-1.5 font-medium text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40",
+        "focus-visible:ring-ring rounded-lg px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40",
         selected
           ? "bg-foreground text-background"
           : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -667,7 +667,7 @@ export function DateRangePickerTrigger({
         disabled={disabled || ctx.disabled}
         aria-label={props["aria-label"] ?? `${ctx.label}: ${summary}`}
         className={cn(
-          "inline-flex h-9 w-fit max-w-full items-center gap-2 rounded-xl border border-border bg-background px-3 font-medium text-[13px] text-foreground transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40",
+          "border-border bg-background text-foreground hover:bg-muted/40 focus-visible:ring-ring inline-flex h-9 w-fit max-w-full items-center gap-2 rounded-xl border px-3 text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40",
           className,
         )}
       >
@@ -684,7 +684,7 @@ export function DateRangePickerTrigger({
             <motion.span
               layout={ctx.reduce ? false : "position"}
               transition={{ layout: SPRING_LAYOUT }}
-              className="shrink-0 text-muted-foreground"
+              className="text-muted-foreground shrink-0"
               aria-hidden="true"
             >
               <CalendarDays size={15} />
@@ -699,7 +699,7 @@ export function DateRangePickerTrigger({
             <motion.span
               layout={ctx.reduce ? false : "position"}
               transition={{ layout: SPRING_LAYOUT }}
-              className="shrink-0 text-muted-foreground"
+              className="text-muted-foreground shrink-0"
               aria-hidden="true"
             >
               <ChevronDown size={13} className={cn(ctx.open && "rotate-180")} />
@@ -874,9 +874,9 @@ function CalendarChoices({
           whileTap={reduce ? undefined : { scale: 0.96 }}
           transition={SPRING_PRESS}
           className={cn(
-            "flex h-13 items-center justify-center rounded-xl px-1 text-[13px] tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-25",
+            "focus-visible:ring-ring flex h-13 items-center justify-center rounded-xl px-1 text-[13px] tabular-nums transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-25",
             choice.id === selected
-              ? "bg-foreground font-medium text-background"
+              ? "bg-foreground text-background font-medium"
               : "bg-muted/40 hover:bg-muted",
           )}
         >

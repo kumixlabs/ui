@@ -32,10 +32,10 @@ export function Field({
   const usdValue = (Number(amount) || 0) * (token.usd ?? 0);
 
   return (
-    <div className="relative rounded-2xl border border-border/50 bg-background/40 p-3.5">
+    <div className="border-border/50 bg-background/40 relative rounded-2xl border p-3.5">
       <label
         htmlFor={id}
-        className="mb-2 block font-medium text-[11px] text-muted-foreground uppercase tracking-wider"
+        className="text-muted-foreground mb-2 block text-[11px] font-medium tracking-wider uppercase"
       >
         {side === "from" ? "You pay" : "You get"}
       </label>
@@ -49,10 +49,10 @@ export function Field({
               value={amount}
               onChange={(e) => onAmount?.(sanitizeAmount(e.target.value))}
               placeholder="0"
-              className="w-full bg-transparent font-semibold text-2xl text-foreground tabular-nums tracking-tight outline-none placeholder:text-muted-foreground/60"
+              className="text-foreground placeholder:text-muted-foreground/60 w-full bg-transparent text-2xl font-semibold tracking-tight tabular-nums outline-none"
             />
           ) : (
-            <div className="flex h-9 items-center gap-2 font-semibold text-2xl tabular-nums tracking-tight">
+            <div className="flex h-9 items-center gap-2 text-2xl font-semibold tracking-tight tabular-nums">
               <motion.span
                 animate={{
                   opacity: quoting ? 0.55 : 1,
@@ -71,13 +71,13 @@ export function Field({
                     exit={{ opacity: 0, scale: 0.85 }}
                     transition={{ duration: 0.14, ease: EASE }}
                   >
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                    <Loader2 className="text-muted-foreground h-4 w-4 animate-spin" />
                   </motion.span>
                 ) : null}
               </AnimatePresence>
             </div>
           )}
-          <p className="mt-1 text-[11px] text-muted-foreground tabular-nums">
+          <p className="text-muted-foreground mt-1 text-[11px] tabular-nums">
             ≈ ${formatAmount(usdValue, 2)}
           </p>
         </div>
@@ -85,15 +85,15 @@ export function Field({
         <button
           type="button"
           onClick={onOpenPicker}
-          className="group inline-flex h-10 items-center gap-2 rounded-full border border-border bg-card pr-2.5 pl-1 font-semibold text-foreground text-sm transition-transform hover:border-border active:scale-[0.97]"
+          className="group border-border bg-card text-foreground hover:border-border inline-flex h-10 items-center gap-2 rounded-full border pr-2.5 pl-1 text-sm font-semibold transition-transform active:scale-[0.97]"
         >
           <TokenDot token={token} chain={chain} />
           <span>{token.symbol}</span>
-          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+          <ChevronDown className="text-muted-foreground h-3.5 w-3.5" />
         </button>
       </div>
 
-      <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
+      <div className="text-muted-foreground mt-2 flex items-center justify-between text-[11px]">
         <span className="inline-flex items-center gap-1">
           <Wallet className="h-3 w-3" />
           <span className="tabular-nums">
@@ -105,7 +105,7 @@ export function Field({
           <button
             type="button"
             onClick={() => onAmount?.(String(token.balance))}
-            className="rounded px-1.5 py-0.5 font-semibold text-[10px] text-muted-foreground uppercase tracking-wider hover:bg-muted/60 hover:text-foreground"
+            className="text-muted-foreground hover:bg-muted/60 hover:text-foreground rounded px-1.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase"
           >
             Max
           </button>

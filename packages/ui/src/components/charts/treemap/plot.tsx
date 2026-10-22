@@ -93,7 +93,7 @@ export function TreemapPlot({ className, tileClassName, renderTile }: TreemapPlo
         tabIndex={-1}
         data-slot="treemap-plot"
         className={cn(
-          "relative h-80 w-full min-w-0 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "focus-visible:ring-ring relative h-80 w-full min-w-0 rounded-lg outline-none focus-visible:ring-2",
           className,
         )}
         onKeyDown={onKeyDown}
@@ -120,7 +120,7 @@ export function TreemapPlot({ className, tileClassName, renderTile }: TreemapPlo
           ))}
         </AnimatePresence>
         {!tiles.length ? (
-          <p className="flex h-full items-center justify-center text-muted-foreground text-sm">
+          <p className="text-muted-foreground flex h-full items-center justify-center text-sm">
             {items.length ? "No positive values" : "No treemap data"}
           </p>
         ) : null}

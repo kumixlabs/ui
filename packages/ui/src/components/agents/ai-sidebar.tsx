@@ -282,7 +282,7 @@ function ResourceMenuAction({
     <button
       type="button"
       onClick={onSelect}
-      className="flex h-8 w-full items-center gap-2 rounded-lg px-2.5 text-left text-foreground text-xs outline-none transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+      className="text-foreground hover:bg-muted focus-visible:bg-muted focus-visible:ring-ring flex h-8 w-full items-center gap-2 rounded-lg px-2.5 text-left text-xs transition-colors outline-none focus-visible:ring-2"
     >
       <Icon aria-hidden="true" className="size-3.5 shrink-0" />
       <span className="min-w-0 truncate">{children}</span>
@@ -382,7 +382,7 @@ function ResourceRow({
         Rename
       </ResourceMenuAction>
       {moves.up || moves.down || moves.into || moves.out ? (
-        <div aria-hidden="true" className="my-1 h-px bg-border" />
+        <div aria-hidden="true" className="bg-border my-1 h-px" />
       ) : null}
       {moves.up ? (
         <ResourceMenuAction icon={ArrowUp} onSelect={runFromMenu(moves.up)}>
@@ -450,13 +450,13 @@ function ResourceRow({
       onDrop={onDrop}
       className={cn(
         "group/resource relative flex min-h-9 min-w-0 cursor-pointer items-center gap-2.5 rounded-xl pr-3 text-sm outline-none",
-        "text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-        "focus-visible:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+        "text-muted-foreground hover:bg-muted hover:text-foreground transition-colors",
+        "focus-visible:bg-muted/70 focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-inset",
         "data-[menu-open=true]:bg-muted data-[menu-open=true]:text-foreground",
         "data-[dragging=true]:opacity-40",
-        "data-[drop=inside]:bg-muted data-[drop=inside]:ring-1 data-[drop=inside]:ring-primary/45",
-        "data-[drop=before]:before:absolute data-[drop=before]:before:-top-0.5 data-[drop=before]:before:right-2 data-[drop=before]:before:left-2 data-[drop=before]:before:h-0.5 data-[drop=before]:before:rounded-full data-[drop=before]:before:bg-primary",
-        "data-[drop=after]:after:absolute data-[drop=after]:after:right-2 data-[drop=after]:after:-bottom-0.5 data-[drop=after]:after:left-2 data-[drop=after]:after:h-0.5 data-[drop=after]:after:rounded-full data-[drop=after]:after:bg-primary",
+        "data-[drop=inside]:bg-muted data-[drop=inside]:ring-primary/45 data-[drop=inside]:ring-1",
+        "data-[drop=before]:before:bg-primary data-[drop=before]:before:absolute data-[drop=before]:before:-top-0.5 data-[drop=before]:before:right-2 data-[drop=before]:before:left-2 data-[drop=before]:before:h-0.5 data-[drop=before]:before:rounded-full",
+        "data-[drop=after]:after:bg-primary data-[drop=after]:after:absolute data-[drop=after]:after:right-2 data-[drop=after]:after:-bottom-0.5 data-[drop=after]:after:left-2 data-[drop=after]:after:h-0.5 data-[drop=after]:after:rounded-full",
         !acceptsChildren && active && "bg-muted text-foreground",
         row.item.disabled && "cursor-not-allowed opacity-45",
       )}
@@ -489,7 +489,7 @@ function ResourceRow({
               onRenameCancel();
             }
           }}
-          className="mx-1 h-7 min-w-0 flex-1 rounded-md border border-border bg-background px-2 text-foreground text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="border-border bg-background text-foreground focus-visible:ring-ring mx-1 h-7 min-w-0 flex-1 rounded-md border px-2 text-sm outline-none focus-visible:ring-2"
         />
       ) : (
         <MarqueeLabel active={hovered || menuOpen}>{row.item.label}</MarqueeLabel>
@@ -505,7 +505,7 @@ function ResourceRow({
               aria-label={`Actions for ${row.item.label}`}
               onClick={(event) => event.stopPropagation()}
               className={cn(
-                "grid size-7 shrink-0 place-items-center rounded-lg outline-none transition-opacity hover:bg-foreground/5 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring group-hover/resource:opacity-100 group-data-[menu-open=true]/resource:opacity-100",
+                "hover:bg-foreground/5 focus-visible:ring-ring grid size-7 shrink-0 place-items-center rounded-lg transition-opacity outline-none group-hover/resource:opacity-100 group-data-[menu-open=true]/resource:opacity-100 focus-visible:opacity-100 focus-visible:ring-2",
                 // A finger never hovers, and this menu is the only path to
                 // rename and move without a drag — keep it on screen there.
                 canTouch ? "opacity-100" : "opacity-0",
@@ -824,7 +824,7 @@ export function AISidebar({
         }}
         className={cn(
           "relative flex min-w-0 flex-col gap-0.5 [overflow-anchor:none] group-data-[state=collapsed]/sidebar:hidden",
-          draggingId && "select-none pb-9",
+          draggingId && "pb-9 select-none",
           className,
         )}
       >
@@ -915,7 +915,7 @@ export function AISidebar({
           <div
             aria-hidden="true"
             data-active={dropTarget?.id === null || undefined}
-            className="absolute inset-x-1 bottom-0 flex h-8 items-center justify-center rounded-lg border border-border border-dashed text-[10px] text-muted-foreground data-[active=true]:border-primary/50 data-[active=true]:bg-muted data-[active=true]:text-foreground"
+            className="border-border text-muted-foreground data-[active=true]:border-primary/50 data-[active=true]:bg-muted data-[active=true]:text-foreground absolute inset-x-1 bottom-0 flex h-8 items-center justify-center rounded-lg border border-dashed text-[10px]"
           >
             Move to top level
           </div>

@@ -430,7 +430,7 @@ export function PullToRefresh({
         if (gestureRef.current.pointerId === event.pointerId) finishPull();
       }}
       className={cn(
-        "relative w-full overflow-y-auto overscroll-contain bg-background",
+        "bg-background relative w-full overflow-y-auto overscroll-contain",
         // No `touch-none` here — this element is the scroller, and the pull
         // only takes over once the content is already at the top. The callout
         // has to be off from the first frame though: iOS decides on it while
@@ -453,7 +453,7 @@ export function PullToRefresh({
             : { opacity: indicatorOpacity, scale: indicatorScale }
         }
         className={cn(
-          "pointer-events-none absolute inset-x-0 top-0 z-20 flex h-[4.25rem] flex-col items-center justify-center gap-0.5 bg-linear-to-b from-background via-background/95 to-transparent font-medium text-[11px] text-muted-foreground",
+          "from-background via-background/95 text-muted-foreground pointer-events-none absolute inset-x-0 top-0 z-20 flex h-[4.25rem] flex-col items-center justify-center gap-0.5 bg-linear-to-b to-transparent text-[11px] font-medium",
           indicatorClassName,
         )}
       >

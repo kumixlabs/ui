@@ -133,7 +133,7 @@ export function AgentCode({ code, language = "bash", className }: AgentCodeProps
   return (
     <pre
       className={cn(
-        "m-0 overflow-x-auto whitespace-pre font-mono text-foreground/85 text-xs leading-5",
+        "text-foreground/85 m-0 overflow-x-auto font-mono text-xs leading-5 whitespace-pre",
         className,
       )}
     >

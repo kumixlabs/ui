@@ -407,7 +407,7 @@ const CascaderItem = React.memo(function CascaderItem({
       className: cn(
         ROW_SHELL_CLASS,
         ROW_FLUSH_CLASS,
-        "justify-center gap-1.5 text-muted-foreground text-xs",
+        "text-muted-foreground justify-center gap-1.5 text-xs",
         !error && !loading && "hover:text-foreground",
         mode === "tree" && "ps-[calc(var(--cascader-row-inset,8px)_+_var(--cascader-indent,0px))]!",
         className,
@@ -420,7 +420,7 @@ const CascaderItem = React.memo(function CascaderItem({
         <span>{text}</span>
         {/* TEXT, not a button: a focusable element inside a `role="option"`
             row is a `nested-interactive` violation. */}
-        {error ? <span className="font-medium text-foreground">{labels.retry}</span> : null}
+        {error ? <span className="text-foreground font-medium">{labels.retry}</span> : null}
       </>
     );
 
@@ -490,7 +490,7 @@ const CascaderItem = React.memo(function CascaderItem({
   const checkbox = (
     <span
       data-slot="cascader-item-checkbox"
-      className="flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input in-data-indeterminate:border-primary in-data-selected:border-primary in-data-indeterminate:bg-primary in-data-selected:bg-primary in-data-indeterminate:text-primary-foreground in-data-selected:text-primary-foreground transition-colors"
+      className="border-input in-data-indeterminate:border-primary in-data-selected:border-primary in-data-indeterminate:bg-primary in-data-selected:bg-primary in-data-indeterminate:text-primary-foreground in-data-selected:text-primary-foreground flex size-4 shrink-0 items-center justify-center rounded-[4px] border transition-colors"
     >
       {/* Colour declared ON THE ICON with `!`; see `CHECKBOX_MARK_CLASS`. */}
       {indeterminate ? (
@@ -498,7 +498,7 @@ const CascaderItem = React.memo(function CascaderItem({
       ) : (
         <CheckIcon
           data-slot="cascader-item-tick"
-          className={cn(CHECKBOX_MARK_CLASS, "size-3 in-data-selected:opacity-100 opacity-0")}
+          className={cn(CHECKBOX_MARK_CLASS, "size-3 opacity-0 in-data-selected:opacity-100")}
         />
       )}
     </span>
@@ -584,7 +584,7 @@ const CascaderItem = React.memo(function CascaderItem({
       {node.icon ? (
         <span
           data-slot="cascader-item-icon"
-          className="flex shrink-0 items-center justify-center text-muted-foreground"
+          className="text-muted-foreground flex shrink-0 items-center justify-center"
         >
           {node.icon}
         </span>
@@ -599,7 +599,7 @@ const CascaderItem = React.memo(function CascaderItem({
             {node.description ? (
               <span
                 data-slot="cascader-item-description"
-                className="w-full truncate text-start text-muted-foreground text-xs"
+                className="text-muted-foreground w-full truncate text-start text-xs"
               >
                 {node.description}
               </span>
@@ -621,7 +621,7 @@ const CascaderItem = React.memo(function CascaderItem({
         <span
           data-slot="cascader-item-trailing"
           aria-hidden="true"
-          className="ms-auto flex shrink-0 items-center gap-1 text-muted-foreground text-xs tabular-nums"
+          className="text-muted-foreground ms-auto flex shrink-0 items-center gap-1 text-xs tabular-nums"
         >
           {showCount ? (
             <span
@@ -670,7 +670,7 @@ const CascaderItem = React.memo(function CascaderItem({
           /* The count is spoken by the sr-only details span instead. */
           aria-hidden="true"
           className={cn(
-            "ms-auto shrink-0 text-muted-foreground text-xs tabular-nums",
+            "text-muted-foreground ms-auto shrink-0 text-xs tabular-nums",
             showsSelectedCount && "text-primary!",
           )}
         >
@@ -814,7 +814,7 @@ function CascaderItemPath({ node }: { node: CascaderNode }) {
   return (
     <span
       data-slot="cascader-item-path"
-      className="flex w-full items-center gap-0.5 truncate text-start text-muted-foreground text-xs"
+      className="text-muted-foreground flex w-full items-center gap-0.5 truncate text-start text-xs"
     >
       {ancestors.map((ancestor, i) => (
         <React.Fragment key={ancestor.value}>

@@ -88,7 +88,7 @@ function NotificationCardContent({
   return (
     <span className={cn("flex min-w-0 flex-col gap-1.5 py-4", classNames?.content)}>
       <span className="flex min-w-0 items-start justify-between gap-3">
-        <span className={cn("min-w-0 font-medium text-sm leading-snug", classNames?.title)}>
+        <span className={cn("min-w-0 text-sm leading-snug font-medium", classNames?.title)}>
           {item.title}
         </span>
         {item.trailing ? (
@@ -162,7 +162,7 @@ export function NotificationStack({
     return (
       <div
         className={cn(
-          "flex w-full max-w-[22rem] items-center justify-center gap-2 rounded-3xl bg-muted/70 px-5 py-8 font-medium text-muted-foreground text-sm",
+          "bg-muted/70 text-muted-foreground flex w-full max-w-[22rem] items-center justify-center gap-2 rounded-3xl px-5 py-8 text-sm font-medium",
           className,
         )}
       >
@@ -245,8 +245,8 @@ export function NotificationStack({
       onKeyDown={handleKeyDown}
       onClick={handleClick}
       className={cn(
-        "relative z-10 block w-full max-w-[22rem] cursor-pointer rounded-3xl text-left text-foreground outline-none",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "text-foreground relative z-10 block w-full max-w-[22rem] cursor-pointer rounded-3xl text-left outline-none",
+        "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
         className,
       )}
     >
@@ -268,7 +268,7 @@ export function NotificationStack({
           layout
           initial={false}
           transition={backgroundTransition}
-          className="absolute inset-0 rounded-3xl bg-muted"
+          className="bg-muted absolute inset-0 rounded-3xl"
         />
         <span className={cn("relative z-10 grid gap-1", !isExpanded && "pb-2", classNames?.stack)}>
           {visibleItems.map((item, index) => {
@@ -287,7 +287,7 @@ export function NotificationStack({
                 }}
                 transition={cardTransition}
                 className={cn(
-                  "block rounded-2xl border border-border/60 bg-background px-4",
+                  "border-border/60 bg-background block rounded-2xl border px-4",
                   classNames?.card,
                 )}
                 style={{
@@ -314,13 +314,13 @@ export function NotificationStack({
         >
           <span
             className={cn(
-              "grid size-7 shrink-0 place-items-center rounded-full bg-orange-600 font-medium text-white text-xs shadow-[inset_0_1px_2px_rgb(0_0_0/0.2),inset_0_-1px_0_rgb(255_255_255/0.16)] dark:bg-orange-500",
+              "grid size-7 shrink-0 place-items-center rounded-full bg-orange-600 text-xs font-medium text-white shadow-[inset_0_1px_2px_rgb(0_0_0/0.2),inset_0_-1px_0_rgb(255_255_255/0.16)] dark:bg-orange-500",
               classNames?.count,
             )}
           >
             {items.length}
           </span>
-          <span className="flex items-center font-medium text-sm">
+          <span className="flex items-center text-sm font-medium">
             <ActionSwapText value={isExpanded ? "expanded" : "collapsed"} animation="roll">
               {isExpanded ? (
                 <span className="inline-flex items-center gap-1">

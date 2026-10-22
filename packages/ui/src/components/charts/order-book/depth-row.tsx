@@ -110,7 +110,7 @@ export function OrderBookDepthRow({
             onClick={onSelect}
             onFocus={() => onInspect?.(true)}
             onBlur={() => onInspect?.(false)}
-            className="relative rounded-sm outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"
+            className="focus-visible:ring-ring relative rounded-sm outline-none hover:underline focus-visible:ring-2"
           >
             {formatPrice(row.price)}
           </button>
@@ -118,8 +118,8 @@ export function OrderBookDepthRow({
           <span className="relative">{formatPrice(row.price)}</span>
         )}
       </td>
-      <td className="relative px-4 py-0 text-right text-foreground">{formatSize(row.size)}</td>
-      <td className="relative px-4 py-0 text-right text-muted-foreground">
+      <td className="text-foreground relative px-4 py-0 text-right">{formatSize(row.size)}</td>
+      <td className="text-muted-foreground relative px-4 py-0 text-right">
         {formatSize(row.total)}
       </td>
     </motion.tr>

@@ -22,7 +22,7 @@ export function ComboboxList({ children, ariaLabel = "Options", className }: Com
       role="listbox"
       aria-label={ariaLabel}
       className={cn(
-        "scrollbar-none relative isolate max-h-64 overflow-y-auto overscroll-contain p-1.5 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+        "relative isolate max-h-64 scrollbar-none overflow-y-auto overscroll-contain p-1.5 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
         className,
       )}
     >
@@ -59,7 +59,7 @@ export interface ComboboxLabelProps {
 export function ComboboxLabel({ children, className }: ComboboxLabelProps) {
   const groupId = useContext(ComboboxGroupContext);
   const labelClassName = cn(
-    "w-full px-2 py-1.5 font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.12em]",
+    "text-muted-foreground w-full px-2 py-1.5 text-[0.68rem] font-medium tracking-[0.12em] uppercase",
     className,
   );
   return groupId ? (
@@ -140,7 +140,7 @@ export function ComboboxItem({
         context.select(value);
       }}
       className={cn(
-        "relative flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm outline-none transition-colors duration-150",
+        "relative flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm transition-colors duration-150 outline-none",
         active ? "text-foreground" : "text-muted-foreground",
         "disabled:pointer-events-none disabled:opacity-45",
         className,
@@ -150,7 +150,7 @@ export function ComboboxItem({
         <motion.span
           aria-hidden
           layoutId={context.activeLayoutId}
-          className="absolute inset-0 -z-10 rounded-lg bg-muted"
+          className="bg-muted absolute inset-0 -z-10 rounded-lg"
           transition={context.reduce ? { duration: 0 } : SPRING_LAYOUT}
         />
       ) : null}
@@ -163,7 +163,7 @@ export function ComboboxItem({
           transform: selected ? "scale(1)" : "scale(0.82)",
         }}
         transition={context.reduce ? { duration: 0 } : { duration: 0.14, ease: EASE_OUT }}
-        className="grid size-5 shrink-0 place-items-center text-foreground"
+        className="text-foreground grid size-5 shrink-0 place-items-center"
       >
         <Check className="size-4" />
       </motion.span>
@@ -182,7 +182,7 @@ export function ComboboxEmpty({ children = "No options found.", className }: Com
   return (
     <div
       role="status"
-      className={cn("px-3 py-8 text-center text-muted-foreground text-sm", className)}
+      className={cn("text-muted-foreground px-3 py-8 text-center text-sm", className)}
     >
       {children}
     </div>
@@ -194,5 +194,5 @@ export interface ComboboxSeparatorProps {
 }
 
 export function ComboboxSeparator({ className }: ComboboxSeparatorProps) {
-  return <div aria-hidden className={cn("-mx-1 my-1 h-px bg-border", className)} />;
+  return <div aria-hidden className={cn("bg-border -mx-1 my-1 h-px", className)} />;
 }

@@ -62,7 +62,7 @@ export function AccountSwitcher({
           {accounts.map((account) => (
             <span
               key={account.id}
-              className="col-start-1 row-start-1 whitespace-nowrap font-medium text-sm"
+              className="col-start-1 row-start-1 text-sm font-medium whitespace-nowrap"
             >
               {account.name}
             </span>
@@ -86,7 +86,7 @@ export function AccountSwitcher({
               HEAD,
               // shifted left by the padding so the avatar sits flush with the
               // card content edge (aligned with the balance + buttons below).
-              "absolute top-0 -left-2 z-20 max-w-full outline-none transition-colors hover:bg-muted/60",
+              "hover:bg-muted/60 absolute top-0 -left-2 z-20 max-w-full transition-colors outline-none",
             )}
           >
             {activeAccount ? (
@@ -94,7 +94,7 @@ export function AccountSwitcher({
                 <AccountAvatar account={activeAccount} />
                 <motion.span
                   layout="position"
-                  className="truncate font-medium text-foreground text-sm"
+                  className="text-foreground truncate text-sm font-medium"
                 >
                   {activeAccount.name}
                 </motion.span>
@@ -115,7 +115,7 @@ export function AccountSwitcher({
             role="listbox"
             transition={morph}
             style={{ borderRadius: 16 }}
-            className="absolute top-0 -right-2 -left-2 z-30 overflow-hidden border border-border/30 bg-background backdrop-blur-md"
+            className="border-border/30 bg-background absolute top-0 -right-2 -left-2 z-30 overflow-hidden border backdrop-blur-md"
           >
             <button
               type="button"
@@ -125,7 +125,7 @@ export function AccountSwitcher({
               {activeAccount ? <AccountAvatar account={activeAccount} /> : null}
               <motion.span
                 layout="position"
-                className="min-w-0 flex-1 truncate font-medium text-foreground text-sm"
+                className="text-foreground min-w-0 flex-1 truncate text-sm font-medium"
               >
                 {activeAccount?.name ?? "Select account"}
               </motion.span>
@@ -174,11 +174,11 @@ export function AccountSwitcher({
                       <AccountAvatar account={account} />
                       <span className="flex min-w-0 flex-1 flex-col">
                         <span className="truncate font-medium">{account.name}</span>
-                        <span className="truncate text-muted-foreground text-xs">
+                        <span className="text-muted-foreground truncate text-xs">
                           {truncateAddress(account.address)}
                         </span>
                       </span>
-                      {selected ? <Check className="h-4 w-4 shrink-0 text-foreground" /> : null}
+                      {selected ? <Check className="text-foreground h-4 w-4 shrink-0" /> : null}
                     </button>
                     <CopyButton value={account.address} />
                   </motion.li>

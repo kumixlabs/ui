@@ -231,7 +231,7 @@ function EventCalendarTimeGrid({
         <div
           className={cn(
             "flex border-b pe-(--ec-scrollbar-w,0px)",
-            !contained && "sticky top-(--ec-sticky-offset,0px) z-20 bg-background",
+            !contained && "bg-background sticky top-(--ec-sticky-offset,0px) z-20",
             viewConfig.classNames?.timeGridHeader,
           )}
         >
@@ -262,7 +262,7 @@ function EventCalendarTimeGrid({
                     // is one bar-row tall and centers the label so it sits on
                     // the SAME baseline as the first all-day chip and stays top-
                     // aligned when the chips wrap onto more lanes
-                    "w-(--ec-gutter-width,4.5rem) shrink-0 border-e ps-2 pe-2.5 pt-1.5 text-muted-foreground",
+                    "text-muted-foreground w-(--ec-gutter-width,4.5rem) shrink-0 border-e ps-2 pe-2.5 pt-1.5",
                     viewConfig.classNames?.allDayLabel,
                   )}
                 >
@@ -317,7 +317,7 @@ function EventCalendarDayHeader({ day, view }: { day: Date; view: CalendarView }
       data-slot="event-calendar-day-header"
       data-today={isToday || undefined}
       className={cn(
-        "min-w-0 truncate border-e px-2 py-1.5 font-medium last:border-e-0 data-today:text-primary",
+        "data-today:text-primary min-w-0 truncate border-e px-2 py-1.5 font-medium last:border-e-0",
         isToday && viewConfig.todayClassName,
       )}
     >
@@ -601,7 +601,7 @@ function EventCalendarAllDayBars({
                       continuesAfter: !dragGhost.isEnd,
                     }}
                     className={cn(
-                      "inset-ring-0 h-full",
+                      "h-full inset-ring-0",
                       !dragGhost.valid && EVENT_CALENDAR_GHOST.invalidContent,
                     )}
                   />
@@ -781,7 +781,7 @@ function EventCalendarTimeGutter({
             {label != null && (
               <span
                 className={cn(
-                  "absolute end-2.5 -top-2 text-muted-foreground",
+                  "text-muted-foreground absolute end-2.5 -top-2",
                   viewConfig.classNames?.timeGutterLabel,
                 )}
               >
@@ -1041,7 +1041,7 @@ function EventCalendarDayColumn({
             <EventCalendarEvent
               segment={segment}
               className={cn(
-                columnCount > 1 && "ring-1 ring-background",
+                columnCount > 1 && "ring-background ring-1",
                 // short chips: single centered row, exact-fit line height so
                 // the title never slices mid-glyph
                 endMin - startMin < viewConfig.compactEventMinutes
@@ -1186,7 +1186,7 @@ function EventCalendarNowIndicator({
       style={{ top: `calc(var(--ec-hour-height) * ${top})` }}
     >
       {/* hairline across the content columns only (clear of the time gutter) */}
-      <div className="absolute start-(--ec-gutter-width,4.5rem) end-0 h-px bg-destructive/40" />
+      <div className="bg-destructive/40 absolute start-(--ec-gutter-width,4.5rem) end-0 h-px" />
       {/* stronger segment + dot over today's column */}
       <div
         className="absolute h-px"
@@ -1195,11 +1195,11 @@ function EventCalendarNowIndicator({
           width: `calc((100% - var(--ec-gutter-width, 4.5rem)) * ${columnWidthPct / 100})`,
         }}
       >
-        <div className="absolute inset-x-0 top-0 h-px bg-destructive" />
+        <div className="bg-destructive absolute inset-x-0 top-0 h-px" />
         {/* dot leads the line at today's column-start border: pulled 1px left of
             center (-start-1 = -4px vs the 6px/size-1.5 circle) so it reads as a
             distinct bullet instead of merging into the line to its right */}
-        <div className="absolute -start-1 top-0 size-1.5 -translate-y-1/2 rounded-full bg-destructive" />
+        <div className="bg-destructive absolute -start-1 top-0 size-1.5 -translate-y-1/2 rounded-full" />
       </div>
     </div>
   );

@@ -66,7 +66,7 @@ export function NotFoundGlitch({
 }: NotFoundProps) {
   return (
     <NotFoundStage className={className}>
-      <div className="group relative select-none font-bold font-mono text-[clamp(5rem,18vw,11rem)] text-foreground leading-none tracking-tighter">
+      <div className="group text-foreground relative font-mono text-[clamp(5rem,18vw,11rem)] leading-none font-bold tracking-tighter select-none">
         {/* Chromatic ghost layers, nudged apart on hover. */}
         <span
           aria-hidden
@@ -86,8 +86,8 @@ export function NotFoundGlitch({
       </div>
 
       <div className="flex flex-col items-center gap-2">
-        <p className="font-semibold text-foreground text-lg">{title}</p>
-        <p className="max-w-sm text-muted-foreground text-sm">{description}</p>
+        <p className="text-foreground text-lg font-semibold">{title}</p>
+        <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
       </div>
 
       <NotFoundActions

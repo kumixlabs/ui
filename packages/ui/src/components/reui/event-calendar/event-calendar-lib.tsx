@@ -39,6 +39,15 @@ function zonedStartOfDay(date: Date, timeZone: string): TZDate {
   return startOfDay(toZoned(date, timeZone));
 }
 
+/** Math.max/min keep Date types (the built-ins collapse them to numbers). */
+export function maxDate(a: Date, b: Date): Date {
+  return a < b ? b : a;
+}
+
+export function minDate(a: Date, b: Date): Date {
+  return a < b ? a : b;
+}
+
 /** Stable per-day key in the display time zone. */
 function getDayKey(date: Date, timeZone: string): string {
   return format(toZoned(date, timeZone), "yyyy-MM-dd");
@@ -167,8 +176,8 @@ function segmentOccurrence<TData>(
   const occEnd = occurrence.end;
   const isZeroLength = occEnd.getTime() === occStart.getTime();
 
-  const clampStart = occStart > range.start ? occStart : range.start;
-  const clampEnd = occEnd < range.end ? occEnd : range.end;
+  const clampStart = maxDate(occStart, range.start);
+  const clampEnd = minDate(occEnd, range.end);
   if (clampEnd < clampStart) return [];
   if (clampEnd.getTime() === clampStart.getTime() && !isZeroLength) return [];
 
@@ -177,8 +186,8 @@ function segmentOccurrence<TData>(
 
   while (cursor < clampEnd || (isZeroLength && segments.length === 0)) {
     const next = zonedStartOfDay(addDays(toZoned(cursor, timeZone), 1), timeZone);
-    const segStart = clampStart > cursor ? clampStart : cursor;
-    const segEnd = clampEnd < next ? clampEnd : next;
+    const segStart = maxDate(clampStart, cursor);
+    const segEnd = minDate(clampEnd, next);
 
     const emptySeg = segEnd.getTime() <= segStart.getTime();
     if (!emptySeg || isZeroLength) {

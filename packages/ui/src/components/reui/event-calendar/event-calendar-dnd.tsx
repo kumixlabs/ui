@@ -8,7 +8,7 @@ import {
   useEventCalendar,
   useEventCalendarViewConfig,
 } from "./event-calendar";
-import { snapMinutes, toZoned, zonedStartOfDay } from "./event-calendar-lib";
+import { maxDate, minDate, snapMinutes, toZoned, zonedStartOfDay } from "./event-calendar-lib";
 import type { EventCalendarProposedUpdate, EventCalendarSegment } from "./event-calendar-types";
 
 /**
@@ -429,8 +429,8 @@ function beginGesture<TData>(config: BeginGestureConfig<TData>) {
         const anchor = zonedStartOfDay(config.createDay!, timeZone);
         const cell = findCell(surface, e.clientX, e.clientY);
         const target = cell ? zonedStartOfDay(cell.day, timeZone) : anchor;
-        const start = anchor <= target ? anchor : target;
-        const end = addDays(anchor <= target ? target : anchor, 1);
+        const start = minDate(anchor, target);
+        const end = addDays(maxDate(anchor, target), 1);
         return { start, end, allDay: true, dayGranular: true };
       }
       const col = findColumn(surface, startX);

@@ -187,7 +187,7 @@ export function OverflowActions({
         layout
         transition={transition}
         className={cn(
-          "relative inline-flex items-center overflow-hidden rounded-full border border-border bg-card",
+          "border-border bg-card relative inline-flex items-center overflow-hidden rounded-full border",
           TRACK_SIZE_CLASS[size],
           classNames?.track,
         )}
@@ -257,8 +257,8 @@ export function OverflowActions({
           whileHover={reduce || !canHover ? undefined : { scale: 1.03 }}
           transition={transition}
           className={cn(
-            "relative inline-grid shrink-0 place-items-center rounded-full bg-primary text-primary-foreground outline-none disabled:pointer-events-none disabled:opacity-50",
-            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            "bg-primary text-primary-foreground relative inline-grid shrink-0 place-items-center rounded-full outline-none disabled:pointer-events-none disabled:opacity-50",
+            "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
             TOGGLE_SIZE_CLASS[size],
             classNames?.toggle,
           )}
@@ -334,9 +334,9 @@ function ActionButton({
         title={label}
         onClick={() => onAction(item)}
         className={cn(
-          "inline-flex shrink-0 items-center justify-center rounded-full bg-background font-medium text-foreground outline-none",
+          "bg-background text-foreground inline-flex shrink-0 items-center justify-center rounded-full font-medium outline-none",
           "disabled:pointer-events-none disabled:opacity-45",
-          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
           ACTION_SIZE_CLASS[size],
           className,
         )}

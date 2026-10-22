@@ -190,7 +190,7 @@ function EventCalendarEvent<TData = unknown>({
       {!occurrence.allDay &&
         segment.isStart &&
         (view === "month" ? (
-          <span className="shrink-0 text-muted-foreground">
+          <span className="text-muted-foreground shrink-0">
             {format(toZoned(occurrence.start, settings.timeZone), settings.i18n.formats.eventTime, {
               locale: settings.locale,
             })}
@@ -198,7 +198,7 @@ function EventCalendarEvent<TData = unknown>({
         ) : (
           <span
             className={cn(
-              "@[8rem]:inline hidden text-muted-foreground",
+              "text-muted-foreground hidden @[8rem]:inline",
               stackedBlock ? EVENT_CALENDAR_FADE_TRUNCATE : "truncate",
             )}
           >
@@ -249,7 +249,7 @@ function EventCalendarEvent<TData = unknown>({
   // Agenda default row: time column, color-dot badge, plain title
   const agendaDefaultContent = (
     <>
-      <span className="w-40 shrink-0 truncate text-muted-foreground tabular-nums">
+      <span className="text-muted-foreground w-40 shrink-0 truncate tabular-nums">
         {agendaTimeText}
       </span>
       <span
@@ -259,7 +259,7 @@ function EventCalendarEvent<TData = unknown>({
       />
       <span className="truncate text-sm">{event.title}</span>
       {occurrence.isRecurring && (
-        <RepeatIcon className="size-2.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+        <RepeatIcon className="text-muted-foreground size-2.5 shrink-0" aria-hidden="true" />
       )}
     </>
   );
@@ -321,7 +321,7 @@ function EventCalendarEvent<TData = unknown>({
       aria-hidden
       data-slot="event-calendar-resize-grip"
       className={cn(
-        "rounded-full bg-foreground/40",
+        "bg-foreground/40 rounded-full",
         timedBlock ? "h-0.5 w-2.5" : "h-2.5 w-0.5",
         viewConfig.classNames?.resizeGrip,
       )}
@@ -434,8 +434,8 @@ function EventCalendarEvent<TData = unknown>({
       settings.onEventDoubleClick?.(occurrence, e);
     },
     className: cn(
-      "group/ec-event relative flex w-full min-w-0 cursor-pointer touch-none select-none items-center overflow-hidden text-start text-foreground",
-      "outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+      "group/ec-event text-foreground relative flex w-full min-w-0 cursor-pointer touch-none items-center overflow-hidden text-start select-none",
+      "focus-visible:ring-ring/50 outline-none focus-visible:ring-2",
       preview && "pointer-events-none",
       view === "agenda"
         ? // plain list row: color lives in the dot badge, not a tinted pill;
@@ -452,7 +452,7 @@ function EventCalendarEvent<TData = unknown>({
             "inset-ring inset-ring-(--ec-event-color)/15",
             "transition-[background-color,box-shadow] duration-150",
             "data-dragging:opacity-40",
-            "data-selected:inset-ring-(--ec-event-color)/40 data-selected:bg-(--ec-event-color)/30",
+            "data-selected:bg-(--ec-event-color)/30 data-selected:inset-ring-(--ec-event-color)/40",
             segment.continuesBefore && "rounded-s-none",
             segment.continuesAfter && "rounded-e-none",
           ),

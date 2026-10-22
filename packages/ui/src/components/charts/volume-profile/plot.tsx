@@ -63,7 +63,7 @@ export function VolumeProfilePlot({
   };
   if (!rows.length)
     return (
-      <p className={cn("py-12 text-center text-muted-foreground text-sm", className)}>
+      <p className={cn("text-muted-foreground py-12 text-center text-sm", className)}>
         No volume data
       </p>
     );
@@ -73,7 +73,7 @@ export function VolumeProfilePlot({
         {showAxes ? (
           <div
             aria-hidden="true"
-            className="relative shrink-0 text-right font-mono text-[10px] text-muted-foreground tabular-nums sm:text-xs"
+            className="text-muted-foreground relative shrink-0 text-right font-mono text-[10px] tabular-nums sm:text-xs"
           >
             {[1, 0.75, 0.5, 0.25, 0].map((position) => (
               <span key={position}>
@@ -92,13 +92,13 @@ export function VolumeProfilePlot({
         ) : null}
         <div
           ref={plotRef}
-          className="relative min-w-0 flex-1 rounded-sm has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-offset-4"
+          className="has-focus-visible:outline-ring relative min-w-0 flex-1 rounded-sm has-focus-visible:outline-2 has-focus-visible:outline-offset-4"
         >
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
             {[0, 0.25, 0.5, 0.75, 1].map((position) => (
               <span
                 key={position}
-                className="absolute inset-y-0 border-border/60 border-l"
+                className="border-border/60 absolute inset-y-0 border-l"
                 style={{ left: `${position * 100}%` }}
               />
             ))}
@@ -128,7 +128,7 @@ export function VolumeProfilePlot({
                   }}
                 />
                 <motion.div
-                  className="absolute inset-0 bg-foreground/5"
+                  className="bg-foreground/5 absolute inset-0"
                   initial={false}
                   animate={{ opacity: tooltipOpen && activeIndex === i ? 1 : 0 }}
                   transition={{ duration: 0.1, ease: EASE_OUT }}
@@ -138,7 +138,7 @@ export function VolumeProfilePlot({
                     className="absolute inset-x-0 top-1/2 border-t border-dashed"
                     style={{ borderColor: pocColor }}
                   >
-                    <span className="absolute right-0 -translate-y-1/2 rounded bg-background px-1.5 py-0.5 font-medium font-mono text-[10px] text-foreground">
+                    <span className="bg-background text-foreground absolute right-0 -translate-y-1/2 rounded px-1.5 py-0.5 font-mono text-[10px] font-medium">
                       POC
                     </span>
                   </span>
@@ -221,7 +221,7 @@ export function VolumeProfilePlot({
           {showAxes ? (
             <div
               aria-hidden="true"
-              className="absolute inset-x-0 top-full mt-2 flex justify-between font-mono text-[10px] text-muted-foreground tabular-nums sm:text-xs"
+              className="text-muted-foreground absolute inset-x-0 top-full mt-2 flex justify-between font-mono text-[10px] tabular-nums sm:text-xs"
             >
               <span>0</span>
               <span>{formatVolume(maxVolume / 2)}</span>

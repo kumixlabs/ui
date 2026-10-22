@@ -157,7 +157,7 @@ function GanttTitle({ className, render, format: formatTitle, ...props }: GanttT
   const defaultProps = {
     "data-slot": "gantt-title",
     "aria-live": "polite" as const,
-    className: cn("min-w-0 truncate font-semibold text-sm", className),
+    className: cn("min-w-0 truncate text-sm font-semibold", className),
     children: formatTitle?.({ title }) ?? title,
   };
   return useRender({
@@ -254,7 +254,7 @@ function GanttScaleSwitcher({
       <DropdownMenuContent align="start" className="min-w-36">
         {/* Base UI contract: GroupLabel must live inside Menu.Group */}
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="font-normal text-muted-foreground">
+          <DropdownMenuLabel className="text-muted-foreground font-normal">
             {labels.selectView}
           </DropdownMenuLabel>
           {scales.map((value) => (
@@ -353,7 +353,7 @@ function GanttNav({ className, render, children, ...props }: GanttNavProps) {
       // px so the toolbar controls do not hug the container edge; border-b
       // separates the toolbar from the column header below it
       "flex min-w-0 flex-wrap items-center gap-2 border-b px-3 py-2",
-      viewConfig.stickyNav && "sticky top-0 z-30 bg-background",
+      viewConfig.stickyNav && "bg-background sticky top-0 z-30",
       viewConfig.classNames?.nav,
       className,
     ),

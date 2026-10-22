@@ -156,7 +156,7 @@ function SwipeActionButton({
       onClick={() => onAction(action, side)}
       className={cn(
         "group flex h-full shrink-0 items-center justify-center outline-none",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
         "disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
@@ -164,7 +164,7 @@ function SwipeActionButton({
     >
       <span
         className={cn(
-          "grid h-9 w-9 place-items-center rounded-full transition-[background-color,color,transform] duration-150 group-hover:bg-background group-active:scale-95",
+          "group-hover:bg-background grid h-9 w-9 place-items-center rounded-full transition-[background-color,color,transform] duration-150 group-active:scale-95",
           ACTION_TONE_CLASS[action.tone ?? "neutral"],
         )}
       >
@@ -373,20 +373,20 @@ function SwipeableListRow({
       ) : null}
       <div className={cn("min-w-0 flex-1", classNames?.content)}>
         {item.title ? (
-          <div className={cn("truncate font-medium text-foreground text-sm", classNames?.title)}>
+          <div className={cn("text-foreground truncate text-sm font-medium", classNames?.title)}>
             {item.title}
           </div>
         ) : null}
         {item.description ? (
           <div
-            className={cn("mt-0.5 truncate text-muted-foreground text-xs", classNames?.description)}
+            className={cn("text-muted-foreground mt-0.5 truncate text-xs", classNames?.description)}
           >
             {item.description}
           </div>
         ) : null}
       </div>
       {item.meta ? (
-        <div className={cn("shrink-0 font-medium text-muted-foreground text-xs", classNames?.meta)}>
+        <div className={cn("text-muted-foreground shrink-0 text-xs font-medium", classNames?.meta)}>
           {item.meta}
         </div>
       ) : null}
@@ -396,7 +396,7 @@ function SwipeableListRow({
   return (
     <div
       className={cn(
-        "relative isolate overflow-hidden rounded-2xl bg-muted",
+        "bg-muted relative isolate overflow-hidden rounded-2xl",
         item.disabled && "opacity-60",
         classNames?.item,
       )}
@@ -448,7 +448,7 @@ function SwipeableListRow({
         className={cn(
           // `touch-pan-y`, not `touch-none`: the row owns the horizontal
           // swipe, the page keeps the vertical scroll through it.
-          "relative z-10 min-h-[72px] cursor-grab touch-pan-y rounded-2xl border border-border bg-card px-4 py-3 shadow-sm active:cursor-grabbing",
+          "border-border bg-card relative z-10 min-h-[72px] cursor-grab touch-pan-y rounded-2xl border px-4 py-3 shadow-sm active:cursor-grabbing",
           // The swipe is the row's, but what it carries is the consumer's:
           // selection is only suppressed where the platform runs its own press
           // gestures, so a mouse can still select and copy the row's text.
@@ -472,8 +472,8 @@ function SwipeableListRow({
             }
             onKeyDown={onToggleKeyDown}
             className={cn(
-              "sr-only grid place-items-center rounded-full bg-muted text-muted-foreground outline-none",
-              "focus-visible:not-sr-only focus-visible:absolute focus-visible:top-1/2 focus-visible:right-3 focus-visible:h-8 focus-visible:w-8 focus-visible:-translate-y-1/2 focus-visible:ring-2 focus-visible:ring-ring",
+              "bg-muted text-muted-foreground sr-only grid place-items-center rounded-full outline-none",
+              "focus-visible:ring-ring focus-visible:not-sr-only focus-visible:absolute focus-visible:top-1/2 focus-visible:right-3 focus-visible:h-8 focus-visible:w-8 focus-visible:-translate-y-1/2 focus-visible:ring-2",
             )}
           >
             <Ellipsis aria-hidden className="h-4 w-4" />

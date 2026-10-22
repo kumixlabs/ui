@@ -2237,7 +2237,7 @@ function CascaderTrigger({
     >
       {children}
       {showIcon ? (
-        <ChevronDownIcon className={`${TRIGGER_ICON_CLASS} pointer-events-none shrink-0`} />
+        <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0" />
       ) : null}
     </ComboboxPrimitive.Trigger>
   );
@@ -2250,9 +2250,6 @@ function CascaderTrigger({
 /* The eight registry styles each state a combobox surface differently, so the
  * classes below spell every one out with `style-<name>:` variants. Nothing
  * depends on ReUI's theme CSS; `build-registry` flattens one in on install. */
-
-/** Icon size for a combobox surface: 14px in mira and sera, 16px elsewhere. */
-const TRIGGER_ICON_CLASS = "text-muted-foreground size-4";
 
 /** The same ladder, applied only to trigger children that carry no size. */
 const TRIGGER_ICON_FALLBACK_CLASS = "[&_svg:not([class*='size-'])]:size-4";
@@ -2371,7 +2368,7 @@ function CascaderChips({
     >
       {content ??
         (nodes.length === 0 ? (
-          <span data-slot="cascader-chips-placeholder" className="truncate text-muted-foreground">
+          <span data-slot="cascader-chips-placeholder" className="text-muted-foreground truncate">
             {placeholder}
           </span>
         ) : (
@@ -2589,7 +2586,7 @@ function CascaderContent({
           initialFocus={initialFocus}
           className={cn(
             CONTENT_SURFACE_CLASS,
-            "group/combobox-content relative flex max-h-(--available-height) min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) flex-col",
+            "group/combobox-content relative flex max-h-(--available-height) max-w-(--available-width) min-w-(--anchor-width) origin-(--transform-origin) flex-col",
             className,
           )}
           {...props}
@@ -2780,7 +2777,7 @@ function CascaderEmpty({
             if (query.trim() && searchState?.error) retrySearch();
             else retryLevel(levelKey);
           }}
-          className="rounded-md px-2 py-0.5 font-medium text-foreground outline-hidden transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/50"
+          className="text-foreground hover:bg-accent focus-visible:ring-ring/50 rounded-md px-2 py-0.5 font-medium outline-hidden transition-colors focus-visible:ring-2"
         >
           {labels.retry}
         </button>

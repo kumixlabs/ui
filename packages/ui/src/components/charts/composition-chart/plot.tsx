@@ -27,7 +27,7 @@ export function CompositionChartPlot({ className }: { className?: string }) {
     return (
       <p
         className={cn(
-          "flex min-h-64 items-center justify-center text-muted-foreground text-sm",
+          "text-muted-foreground flex min-h-64 items-center justify-center text-sm",
           className,
         )}
       >
@@ -36,7 +36,7 @@ export function CompositionChartPlot({ className }: { className?: string }) {
     );
   return (
     <div className={cn("min-w-0 space-y-3", className)}>
-      <div className="flex justify-between text-[11px] text-muted-foreground">
+      <div className="text-muted-foreground flex justify-between text-[11px]">
         <span>
           {column?.id}
           {column?.valid ? "" : " · No data"}
@@ -46,7 +46,7 @@ export function CompositionChartPlot({ className }: { className?: string }) {
       <div
         ref={anchorRef}
         onPointerLeave={() => setTooltipOpen(false)}
-        className="relative h-64 has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-offset-4 sm:h-80"
+        className="has-focus-visible:outline-ring relative h-64 has-focus-visible:outline-2 has-focus-visible:outline-offset-4 sm:h-80"
         onPointerEnter={(event) => {
           if (event.pointerType !== "touch" && !event.buttons) {
             inspectPointer(event);
@@ -178,7 +178,7 @@ export function CompositionChartPlot({ className }: { className?: string }) {
         className="max-w-[calc(100vw-1rem)]"
         content={<CompositionTooltipContent />}
       />
-      <div className="flex justify-between gap-4 text-[11px] text-muted-foreground">
+      <div className="text-muted-foreground flex justify-between gap-4 text-[11px]">
         <span>{columns[0].id}</span>
         <span>{columns.at(-1)?.id}</span>
       </div>

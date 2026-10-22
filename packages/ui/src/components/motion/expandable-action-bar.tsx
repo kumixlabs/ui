@@ -243,7 +243,7 @@ export function ExpandableActionBar({
             // Labelled actions can outgrow the space the bar sits in — the pill
             // stays inside it and scrolls its rail rather than running off the
             // edge, where the last action is unreachable.
-            "scrollbar-hide relative inline-flex max-w-full items-center overflow-x-auto overflow-y-hidden rounded-full border border-border bg-card/90 shadow-2xl backdrop-blur-xl",
+            "scrollbar-hide border-border bg-card/90 relative inline-flex max-w-full items-center overflow-x-auto overflow-y-hidden rounded-full border shadow-2xl backdrop-blur-xl",
             SIZE_CLASS[size],
             classNames?.track,
           )}
@@ -302,7 +302,7 @@ export function ExpandableActionBar({
                 whileTap={reduce || item.disabled ? undefined : { scale: 0.96 }}
                 transition={ITEM_TRANSITION}
                 className={cn(
-                  "relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full font-medium text-muted-foreground outline-none transition-[color,background-color] duration-150 ease-out",
+                  "text-muted-foreground relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full font-medium transition-[color,background-color] duration-150 ease-out outline-none",
                   "focus-visible:text-foreground disabled:pointer-events-none disabled:opacity-40",
                   isHighlighted && "text-foreground",
                   ITEM_SIZE_CLASS[size],
@@ -313,7 +313,7 @@ export function ExpandableActionBar({
                 {isHighlighted ? (
                   <motion.span
                     layoutId="action-bar-highlight"
-                    className="absolute inset-0 -z-10 rounded-full bg-muted/80"
+                    className="bg-muted/80 absolute inset-0 -z-10 rounded-full"
                     transition={ITEM_TRANSITION}
                   />
                 ) : null}
@@ -370,7 +370,7 @@ export function ExpandableActionBar({
                         }}
                         transition={LABEL_TRANSITION}
                         className={cn(
-                          "hidden overflow-hidden whitespace-nowrap text-[10px] text-muted-foreground sm:inline-block",
+                          "text-muted-foreground hidden overflow-hidden text-[10px] whitespace-nowrap sm:inline-block",
                           classNames?.shortcut,
                         )}
                       >
@@ -381,7 +381,7 @@ export function ExpandableActionBar({
                     {item.badge ? (
                       <span
                         className={cn(
-                          "ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] text-primary-foreground leading-none",
+                          "bg-destructive text-primary-foreground ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] leading-none",
                           !isExpanded && "absolute top-0.5 right-0.5",
                           classNames?.badge,
                         )}

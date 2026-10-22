@@ -76,7 +76,7 @@ export function WheelPicker({
   const indexOf = useCallback(
     (v: string | undefined) => {
       const i = options.findIndex((o) => optionValue(o) === v);
-      return i < 0 ? 0 : i;
+      return Math.max(i, 0);
     },
     [options],
   );
@@ -462,19 +462,19 @@ export function WheelPicker({
     return (
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl border border-border bg-card",
+          "border-border bg-card relative overflow-hidden rounded-2xl border",
           disabled && "pointer-events-none opacity-50",
           className,
         )}
         style={{ height }}
       >
         <div
-          className="pointer-events-none absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 border-border border-y bg-foreground/4"
+          className="border-border bg-foreground/4 pointer-events-none absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 border-y"
           style={{ height: itemHeight }}
         />
         <ul
           className={cn(
-            "h-full snap-y snap-mandatory overflow-y-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+            "h-full snap-y snap-mandatory [scrollbar-width:none] overflow-y-auto scroll-smooth [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
             maskFade,
           )}
           style={{ paddingTop: pad, paddingBottom: pad }}
@@ -515,7 +515,7 @@ export function WheelPicker({
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       className={cn(
-        "relative touch-none overflow-hidden rounded-2xl border border-border bg-card outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
+        "border-border bg-card focus-visible:ring-foreground/20 relative touch-none overflow-hidden rounded-2xl border outline-none focus-visible:ring-2",
         // The drum owns the whole gesture; iOS must not open its callout or
         // start a drag out of the same press and cancel ours.
         TOUCH_GESTURE_CLASS,
@@ -530,13 +530,13 @@ export function WheelPicker({
       <ul
         ref={drumRef}
         aria-hidden
-        className="backface-hidden transform-3d absolute inset-x-0 top-1/2 m-0 h-0 list-none p-0 will-change-transform"
+        className="absolute inset-x-0 top-1/2 m-0 h-0 list-none p-0 will-change-transform backface-hidden transform-3d"
       >
         {options.map((option, i) => (
           <li
             key={optionValue(option)}
             data-index={i}
-            className="absolute inset-x-0 flex items-center justify-center font-medium text-muted-foreground"
+            className="text-muted-foreground absolute inset-x-0 flex items-center justify-center font-medium"
             style={{
               top: -itemHeight / 2,
               height: itemHeight,
@@ -552,19 +552,19 @@ export function WheelPicker({
           Its own perspective, centred on the container middle, matches the main
           drum's projection so the two copies register exactly. */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 overflow-hidden rounded-md bg-foreground/4"
+        className="bg-foreground/4 pointer-events-none absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 overflow-hidden rounded-md"
         style={{ height: itemHeight, perspective: 1000 }}
       >
         <ul
           ref={bandRef}
           aria-hidden
-          className="backface-hidden transform-3d absolute inset-x-0 top-1/2 m-0 h-0 list-none p-0 will-change-transform"
+          className="absolute inset-x-0 top-1/2 m-0 h-0 list-none p-0 will-change-transform backface-hidden transform-3d"
         >
           {options.map((option, i) => (
             <li
               key={optionValue(option)}
               data-index={i}
-              className="absolute inset-x-0 flex items-center justify-center font-medium text-foreground"
+              className="text-foreground absolute inset-x-0 flex items-center justify-center font-medium"
               style={{
                 top: -itemHeight / 2,
                 height: itemHeight,

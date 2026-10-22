@@ -97,19 +97,19 @@ export function CodeBlock({
     <div
       data-state={status}
       aria-busy={streaming}
-      className={cn("w-full overflow-hidden rounded-2xl bg-muted/80 text-sm", className)}
+      className={cn("bg-muted/80 w-full overflow-hidden rounded-2xl text-sm", className)}
     >
       <div className="flex h-10 items-center gap-2.5 px-3">
-        <FileCode2 aria-hidden="true" className="size-3.5 shrink-0 text-muted-foreground/70" />
+        <FileCode2 aria-hidden="true" className="text-muted-foreground/70 size-3.5 shrink-0" />
         {filename ? (
-          <span className="min-w-0 truncate font-mono text-foreground/80 text-xs">{filename}</span>
+          <span className="text-foreground/80 min-w-0 truncate font-mono text-xs">{filename}</span>
         ) : null}
-        <span className="font-medium text-[10px] text-muted-foreground/55 uppercase tracking-wide">
+        <span className="text-muted-foreground/55 text-[10px] font-medium tracking-wide uppercase">
           {language}
         </span>
         <span
           className={cn(
-            "ml-auto inline-flex shrink-0 items-center gap-1 font-medium text-[10px]",
+            "ml-auto inline-flex shrink-0 items-center gap-1 text-[10px] font-medium",
             streaming
               ? "text-blue-600 dark:text-blue-400"
               : "text-emerald-600 dark:text-emerald-400",
@@ -130,7 +130,7 @@ export function CodeBlock({
             onClick={handleCopy}
             whileTap={reduce ? undefined : { scale: 0.9 }}
             transition={SPRING_PRESS}
-            className="grid size-7 shrink-0 place-items-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-background/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-muted-foreground hover:bg-background/70 hover:text-foreground focus-visible:ring-ring grid size-7 shrink-0 place-items-center rounded-full transition-colors outline-none focus-visible:ring-2"
           >
             {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
           </motion.button>
@@ -141,10 +141,10 @@ export function CodeBlock({
         ref={viewportRef}
         role={streaming ? "log" : undefined}
         aria-live={streaming ? "polite" : undefined}
-        className="scrollbar-hide overflow-auto border-foreground/6 border-t py-2"
+        className="scrollbar-hide border-foreground/6 overflow-auto border-t py-2"
         style={{ maxHeight }}
       >
-        <pre className="m-0 min-w-max font-mono text-foreground/85 text-xs leading-5">
+        <pre className="text-foreground/85 m-0 min-w-max font-mono text-xs leading-5">
           <code>
             {lines.map((line, index) => {
               const lineNumber = index + 1;
@@ -158,7 +158,7 @@ export function CodeBlock({
                   )}
                 >
                   {showLineNumbers ? (
-                    <span className="select-none pr-3 text-right text-muted-foreground/35 tabular-nums">
+                    <span className="text-muted-foreground/35 pr-3 text-right tabular-nums select-none">
                       {lineNumber}
                     </span>
                   ) : null}

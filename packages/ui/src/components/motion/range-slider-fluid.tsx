@@ -67,14 +67,14 @@ export function FluidSlider({
       animate={reduce ? undefined : { scale: dragging ? 1.03 : 1 }}
       transition={SPRING_PRESS}
       className={cn(
-        "relative flex h-12 w-full touch-none overflow-hidden rounded-full bg-muted",
+        "bg-muted relative flex h-12 w-full touch-none overflow-hidden rounded-full",
         TOUCH_GESTURE_CLASS,
         options.disabled ? "pointer-events-none opacity-50" : "cursor-grab active:cursor-grabbing",
         className,
       )}
     >
       {/* uncovered label — sits on the muted track */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-5 font-medium text-foreground text-sm">
+      <div className="text-foreground pointer-events-none absolute inset-0 flex items-center justify-between px-5 text-sm font-medium">
         {row}
       </div>
 
@@ -82,8 +82,8 @@ export function FluidSlider({
           as the fill covers it and lines up glyph for glyph with the copy
           underneath. The clip's rounded right edge is the liquid cap. */}
       <motion.div className="absolute inset-0" style={{ clipPath }}>
-        <div className="absolute inset-0 bg-foreground" />
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-5 font-medium text-background text-sm">
+        <div className="bg-foreground absolute inset-0" />
+        <div className="text-background pointer-events-none absolute inset-0 flex items-center justify-between px-5 text-sm font-medium">
           {row}
         </div>
       </motion.div>
@@ -93,7 +93,7 @@ export function FluidSlider({
       <button
         type="button"
         {...sliderProps}
-        className="absolute inset-0 touch-none rounded-full outline-none ring-foreground/40 ring-inset focus-visible:ring-4"
+        className="ring-foreground/40 absolute inset-0 touch-none rounded-full outline-none ring-inset focus-visible:ring-4"
       />
     </motion.div>
   );

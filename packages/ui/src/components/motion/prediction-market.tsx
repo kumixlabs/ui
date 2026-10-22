@@ -274,7 +274,7 @@ function AnimatedAmountInput({
         <span
           aria-hidden
           className={cn(
-            "shrink-0 font-semibold text-muted-foreground/65 tabular-nums leading-none tracking-normal transition-[font-size] duration-200",
+            "text-muted-foreground/65 shrink-0 leading-none font-semibold tracking-normal tabular-nums transition-[font-size] duration-200",
             inputSize,
           )}
         >
@@ -293,8 +293,8 @@ function AnimatedAmountInput({
           aria-label={label}
           autoComplete="off"
           className={cn(
-            "w-[calc((var(--amount-chars)+1)*0.62em)] min-w-[0.8em] max-w-[260px] bg-transparent text-left font-semibold text-transparent tabular-nums leading-none tracking-normal outline-none",
-            "caret-foreground transition-[font-size] duration-200 selection:bg-foreground/10 placeholder:text-transparent disabled:cursor-not-allowed",
+            "w-[calc((var(--amount-chars)+1)*0.62em)] max-w-[260px] min-w-[0.8em] bg-transparent text-left leading-none font-semibold tracking-normal text-transparent tabular-nums outline-none",
+            "caret-foreground selection:bg-foreground/10 transition-[font-size] duration-200 placeholder:text-transparent disabled:cursor-not-allowed",
             inputSize,
           )}
           style={inputStyle}
@@ -302,7 +302,7 @@ function AnimatedAmountInput({
         <div
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-0 flex min-w-0 items-center justify-start overflow-hidden font-semibold text-foreground tabular-nums leading-none tracking-normal transition-[font-size] duration-200",
+            "text-foreground pointer-events-none absolute inset-0 flex min-w-0 items-center justify-start overflow-hidden leading-none font-semibold tracking-normal tabular-nums transition-[font-size] duration-200",
             !value && "text-muted-foreground/55",
             inputSize,
           )}
@@ -443,7 +443,7 @@ export function PredictionMarket({
   return (
     <div
       className={cn(
-        "w-full max-w-[400px] overflow-hidden rounded-3xl border border-border bg-background",
+        "border-border bg-background w-full max-w-[400px] overflow-hidden rounded-3xl border",
         className,
         classNames?.root,
       )}
@@ -466,7 +466,7 @@ export function PredictionMarket({
                 <TabsTrigger
                   key={mode.id}
                   value={mode.id}
-                  className="px-0 pt-0 pb-3 font-semibold text-2xl"
+                  className="px-0 pt-0 pb-3 text-2xl font-semibold"
                   indicatorClassName="h-0.5 bg-foreground"
                 >
                   {mode.label}
@@ -478,7 +478,7 @@ export function PredictionMarket({
           <button
             type="button"
             disabled={status === "placing"}
-            className="mb-3 inline-flex items-center gap-2 font-semibold text-foreground text-xl transition-opacity disabled:opacity-50"
+            className="text-foreground mb-3 inline-flex items-center gap-2 text-xl font-semibold transition-opacity disabled:opacity-50"
           >
             {orderTypeLabel}
             <ChevronDown className="h-5 w-5" />
@@ -507,7 +507,7 @@ export function PredictionMarket({
                     isNo ? "bg-red-500/10 dark:bg-red-500/15" : "bg-emerald-500/20"
                   }
                   className={cn(
-                    "h-14 w-full rounded-[1.35rem] px-0 py-0 font-semibold text-base active:scale-[0.99]",
+                    "h-14 w-full rounded-[1.35rem] px-0 py-0 text-base font-semibold active:scale-[0.99]",
                     isNo
                       ? selected
                         ? "text-red-300 dark:text-red-300"
@@ -524,9 +524,9 @@ export function PredictionMarket({
           </TabsList>
         </Tabs>
 
-        <div ref={amountRef} className={cn("rounded-3xl bg-card p-4", classNames?.amount)}>
+        <div ref={amountRef} className={cn("bg-card rounded-3xl p-4", classNames?.amount)}>
           <div className="flex min-h-24 flex-col items-center justify-center gap-5 text-center">
-            <label htmlFor={inputId} className="mr-6 font-medium text-foreground text-xl">
+            <label htmlFor={inputId} className="text-foreground mr-6 text-xl font-medium">
               {order.mode === "buy" ? "Amount" : "Shares"}
             </label>
 
@@ -550,7 +550,7 @@ export function PredictionMarket({
                 type="button"
                 disabled={status === "placing"}
                 onClick={() => addAmount(amount)}
-                className="h-9 rounded-xl bg-background px-3.5 font-semibold text-foreground text-sm transition-[background-color,transform] duration-150 active:scale-95 disabled:pointer-events-none disabled:opacity-50"
+                className="bg-background text-foreground h-9 rounded-xl px-3.5 text-sm font-semibold transition-[background-color,transform] duration-150 active:scale-95 disabled:pointer-events-none disabled:opacity-50"
               >
                 +{order.mode === "buy" ? formatCompactCurrency(amount) : amount}
               </button>
@@ -559,7 +559,7 @@ export function PredictionMarket({
               type="button"
               disabled={status === "placing"}
               onClick={setMax}
-              className="h-9 rounded-xl bg-background px-3.5 font-semibold text-foreground text-sm transition-[background-color,transform] duration-150 active:scale-95 disabled:pointer-events-none disabled:opacity-50"
+              className="bg-background text-foreground h-9 rounded-xl px-3.5 text-sm font-semibold transition-[background-color,transform] duration-150 active:scale-95 disabled:pointer-events-none disabled:opacity-50"
             >
               Max
             </button>
@@ -571,11 +571,11 @@ export function PredictionMarket({
         <div className={cn("border-border/80 border-t px-4 py-4", classNames?.footer)}>
           <div className="mb-4 flex items-end justify-between gap-3">
             <div className="min-w-0 shrink">
-              <div className="flex items-center gap-2 font-semibold text-foreground text-xl">
+              <div className="text-foreground flex items-center gap-2 text-xl font-semibold">
                 {order.mode === "buy" ? "To win" : "To receive"}
                 <Banknote className="h-5 w-5 text-emerald-500" />
               </div>
-              <p className="font-medium text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-sm font-medium">
                 Avg. Price {formatCents(quote.price)}
               </p>
             </div>
@@ -586,7 +586,7 @@ export function PredictionMarket({
               stagger={0}
               blur
               className={cn(
-                "ml-auto min-w-0 shrink-0 justify-end whitespace-nowrap text-right font-semibold text-emerald-500 tabular-nums leading-none tracking-tight transition-[font-size] duration-200",
+                "ml-auto min-w-0 shrink-0 justify-end text-right leading-none font-semibold tracking-tight whitespace-nowrap text-emerald-500 tabular-nums transition-[font-size] duration-200",
                 payoutSize,
               )}
               format={(cents) => formatCurrency(cents / 100)}
@@ -602,7 +602,7 @@ export function PredictionMarket({
             loadingText="Trading"
             successText="Trade filled"
             errorText={quote.error ?? "Enter an amount"}
-            className={cn("h-12 w-full rounded-2xl font-semibold text-base", classNames?.action)}
+            className={cn("h-12 w-full rounded-2xl text-base font-semibold", classNames?.action)}
           >
             Trade
           </StatefulButton>
@@ -615,7 +615,7 @@ export function PredictionMarket({
             size="lg"
             pressScale={0.98}
             onClick={submit}
-            className={cn("h-14 w-full rounded-2xl font-semibold text-base", classNames?.action)}
+            className={cn("h-14 w-full rounded-2xl text-base font-semibold", classNames?.action)}
           >
             Connect
           </StatefulButton>

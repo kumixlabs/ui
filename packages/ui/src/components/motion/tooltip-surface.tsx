@@ -36,7 +36,7 @@ export function TooltipSurface({
       exit={{ ...closed, transition: { duration: 0.12, ease: EASE_OUT } }}
       style={{ transformOrigin: "var(--tooltip-origin, center)", ...style }}
       className={cn(
-        "block whitespace-nowrap rounded-lg border border-border bg-background px-2.5 py-1 font-medium text-foreground text-xs shadow-lg",
+        "border-border bg-background text-foreground block rounded-lg border px-2.5 py-1 text-xs font-medium whitespace-nowrap shadow-lg",
         className,
       )}
       {...props}

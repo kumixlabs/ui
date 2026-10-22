@@ -485,7 +485,7 @@ function DataGridScrollArea({
             >
               <div
                 className={cn(
-                  "absolute end-px w-[calc(var(--data-grid-scrollbar-size,0.625rem)-0.1875rem)] bg-border",
+                  "bg-border absolute end-px w-[calc(var(--data-grid-scrollbar-size,0.625rem)-0.1875rem)]",
                   "top-(--data-grid-scrollbar-thumb-top) h-(--data-grid-scrollbar-thumb-height)",
                   "rounded-full before:absolute before:-inset-0.5",
                 )}

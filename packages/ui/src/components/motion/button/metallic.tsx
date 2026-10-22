@@ -47,9 +47,9 @@ export const MetallicButton = forwardRef<HTMLButtonElement, MetallicButtonProps>
           onHoverEnd?.(event, info);
         }}
         className={cn(
-          "group relative isolate overflow-hidden border-0 bg-transparent text-foreground",
-          "hover:bg-transparent hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "group text-foreground relative isolate overflow-hidden border-0 bg-transparent",
+          "hover:text-foreground hover:bg-transparent",
+          "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
           "shadow-[0_8px_22px_rgba(0,0,0,0.16)]",
           size === "icon" && "rounded-full",
           className,
@@ -72,7 +72,7 @@ export const MetallicButton = forwardRef<HTMLButtonElement, MetallicButtonProps>
 
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-[2px] z-2 rounded-[inherit] bg-background transition-colors group-hover:bg-muted/40"
+          className="bg-background group-hover:bg-muted/40 pointer-events-none absolute inset-[2px] z-2 rounded-[inherit] transition-colors"
         />
 
         <span

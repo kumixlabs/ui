@@ -217,7 +217,7 @@ export function FeedbackWidget({
         transition={surfaceTransition}
         style={{ transformOrigin: left ? "bottom left" : "bottom right" }}
         className={cn(
-          "pointer-events-auto absolute bottom-0 overflow-hidden border border-border bg-background text-foreground shadow-lg",
+          "border-border bg-background text-foreground pointer-events-auto absolute bottom-0 overflow-hidden border shadow-lg",
           open ? "w-[min(86vw,320px)] p-2" : "h-12 w-12 p-0",
           left ? "left-0" : "right-0",
         )}
@@ -258,7 +258,7 @@ export function FeedbackWidget({
                       animate={viewAnimate}
                       exit={viewExit}
                     >
-                      <div className="flex flex-col items-center justify-center gap-1.5 rounded-[20px] bg-border/60 px-4 py-6 text-center">
+                      <div className="bg-border/60 flex flex-col items-center justify-center gap-1.5 rounded-[20px] px-4 py-6 text-center">
                         <div className="relative mb-1 flex h-12 w-12 items-center justify-center">
                           {reduce
                             ? null
@@ -314,7 +314,7 @@ export function FeedbackWidget({
                             </motion.svg>
                           </motion.div>
                         </div>
-                        <h3 className="font-semibold text-foreground text-sm">Thanks!</h3>
+                        <h3 className="text-foreground text-sm font-semibold">Thanks!</h3>
                         <p className="text-muted-foreground text-xs leading-relaxed">
                           Your feedback helps us build something better.
                         </p>
@@ -329,15 +329,15 @@ export function FeedbackWidget({
                     >
                       <div
                         role="alert"
-                        className="rounded-[20px] bg-border/60 px-4 py-5 text-center"
+                        className="bg-border/60 rounded-[20px] px-4 py-5 text-center"
                       >
-                        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                        <div className="bg-destructive/10 text-destructive mx-auto flex h-12 w-12 items-center justify-center rounded-full">
                           <AlertCircle className="h-5 w-5" />
                         </div>
-                        <h3 className="mt-3 font-semibold text-foreground text-sm">
+                        <h3 className="text-foreground mt-3 text-sm font-semibold">
                           Something went wrong
                         </h3>
-                        <p className="mt-1 text-muted-foreground text-xs leading-relaxed">
+                        <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
                           We couldn&apos;t send your feedback. Please try again.
                         </p>
                         <Button size="sm" onClick={submit} className="mt-4">
@@ -352,16 +352,16 @@ export function FeedbackWidget({
                       animate={viewAnimate}
                       exit={viewExit}
                     >
-                      <div className="min-h-[150px] rounded-[20px] bg-border/60 px-4 py-3.5">
+                      <div className="bg-border/60 min-h-[150px] rounded-[20px] px-4 py-3.5">
                         <div className="flex items-start justify-between gap-3">
-                          <h3 id={titleId} className="font-semibold text-foreground text-sm">
+                          <h3 id={titleId} className="text-foreground text-sm font-semibold">
                             {title}
                           </h3>
                           <button
                             type="button"
                             onClick={close}
                             aria-label="Close"
-                            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-foreground/[0.07] text-muted-foreground transition-colors hover:text-foreground"
+                            className="bg-foreground/[0.07] text-muted-foreground hover:text-foreground flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-colors"
                           >
                             <X className="h-3 w-3" />
                           </button>
@@ -374,7 +374,7 @@ export function FeedbackWidget({
                           placeholder={placeholder}
                           disabled={busy}
                           rows={3}
-                          className="mt-2 w-full resize-none bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground/60 md:text-sm"
+                          className="text-foreground placeholder:text-muted-foreground/60 mt-2 w-full resize-none bg-transparent text-base outline-none md:text-sm"
                         />
                       </div>
 
@@ -384,7 +384,7 @@ export function FeedbackWidget({
                           size="md"
                           onClick={close}
                           disabled={busy}
-                          className="flex-1 bg-border text-muted-foreground hover:text-foreground"
+                          className="bg-border text-muted-foreground hover:text-foreground flex-1"
                         >
                           Cancel
                         </Button>
@@ -394,7 +394,7 @@ export function FeedbackWidget({
                           size="md"
                           onClick={submit}
                           disabled={busy || message.trim().length === 0}
-                          className="flex-1 bg-foreground text-background hover:bg-foreground/90"
+                          className="bg-foreground text-background hover:bg-foreground/90 flex-1"
                         >
                           Submit
                         </StatefulButton>
@@ -436,7 +436,7 @@ export function FeedbackWidget({
               aria-haspopup="dialog"
               whileTap={reduce ? undefined : { scale: 0.92 }}
               className={cn(
-                "absolute bottom-0 flex h-12 w-12 items-center justify-center bg-transparent text-foreground",
+                "text-foreground absolute bottom-0 flex h-12 w-12 items-center justify-center bg-transparent",
                 left ? "left-0" : "right-0",
               )}
             >

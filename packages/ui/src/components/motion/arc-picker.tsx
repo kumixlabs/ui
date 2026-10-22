@@ -128,7 +128,7 @@ function ArcOption({
         if (!event.defaultPrevented) onSelect();
       }}
       className={cn(
-        "absolute whitespace-nowrap rounded-md px-2 py-1 font-light text-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-35",
+        "focus-visible:ring-ring absolute rounded-md px-2 py-1 text-2xl font-light whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-35",
         horizontal && "text-center",
         !horizontal && (side === "left" ? "text-right" : "text-left"),
         selected ? "text-primary" : "text-muted-foreground",
@@ -180,7 +180,7 @@ function ArcSelectionFrame({
     <div
       aria-hidden="true"
       data-slot="arc-picker-selection-frame"
-      className="pointer-events-none absolute h-0 w-0 font-light text-2xl text-primary"
+      className="text-primary pointer-events-none absolute h-0 w-0 text-2xl font-light"
       style={{
         top: horizontal ? (side === "top" ? 36 : "calc(100% - 36px)") : "50%",
         left: horizontal ? "50%" : verticalAnchor,
@@ -657,7 +657,7 @@ export function ArcPicker({
       data-slot="arc-picker"
       data-side={side}
       className={cn(
-        "relative w-full min-w-0 cursor-grab select-none overflow-hidden active:cursor-grabbing",
+        "relative w-full min-w-0 cursor-grab overflow-hidden select-none active:cursor-grabbing",
         disabled && "cursor-default opacity-50",
         className,
       )}
@@ -776,7 +776,7 @@ export function ArcPicker({
         visible={selectedValue !== undefined}
       />
       {!options.length && (
-        <span className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm">
+        <span className="text-muted-foreground absolute inset-0 flex items-center justify-center text-sm">
           No options
         </span>
       )}

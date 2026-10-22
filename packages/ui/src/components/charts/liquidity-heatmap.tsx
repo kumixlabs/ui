@@ -111,7 +111,7 @@ export function LiquidityHeatmapPlot({ className }: { className?: string }) {
     .join(" ");
   if (!prices.length || !columns.length)
     return (
-      <p className={cn("py-16 text-center text-muted-foreground text-sm", className)}>
+      <p className={cn("text-muted-foreground py-16 text-center text-sm", className)}>
         No liquidity data
       </p>
     );
@@ -150,7 +150,7 @@ export function LiquidityHeatmapPlot({ className }: { className?: string }) {
                           tabIndex={key === validCursor ? 0 : -1}
                           aria-label={`${column.label}, ${formatPrice(price)}: ${value === undefined ? "No data" : `${formatSize(value)} ${unit}`}`}
                           aria-describedby={key === active ? tooltipId : undefined}
-                          className="relative block h-6 w-full rounded-[2px] bg-muted/30 outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-foreground"
+                          className="bg-muted/30 focus-visible:ring-foreground relative block h-6 w-full rounded-[2px] outline-none focus-visible:z-10 focus-visible:ring-2"
                           onPointerEnter={(event) => {
                             if (event.pointerType !== "touch") {
                               anchor.current = event.currentTarget;
@@ -218,7 +218,7 @@ export function LiquidityHeatmapPlot({ className }: { className?: string }) {
           </table>
           <div
             aria-hidden="true"
-            className="absolute top-0 -right-[72px] bottom-0 flex w-16 flex-col justify-around text-right font-mono text-[10px] text-muted-foreground tabular-nums"
+            className="text-muted-foreground absolute top-0 -right-[72px] bottom-0 flex w-16 flex-col justify-around text-right font-mono text-[10px] tabular-nums"
           >
             {prices.map((price) => (
               <span key={price}>{formatPrice(price)}</span>
@@ -262,7 +262,7 @@ export function LiquidityHeatmapPlot({ className }: { className?: string }) {
         </div>
         <div
           aria-hidden="true"
-          className="mt-3 flex justify-between font-mono text-[10px] text-muted-foreground"
+          className="text-muted-foreground mt-3 flex justify-between font-mono text-[10px]"
         >
           {columns
             .filter(
@@ -319,7 +319,7 @@ export function LiquidityHeatmapLegend({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-between gap-3 text-[10px] text-muted-foreground",
+        "text-muted-foreground flex flex-wrap items-center justify-between gap-3 text-[10px]",
         className,
       )}
     >

@@ -66,7 +66,7 @@ export function Citation({ citationId, index, idPrefix, label, className }: Cita
       href={`#${citationTargetId(idPrefix, citationId)}`}
       aria-label={label ?? `View citation ${index}`}
       className={cn(
-        "mx-0.5 inline-flex min-w-4 -translate-y-0.5 items-center justify-center rounded-md bg-muted/60 px-1 py-0.5 font-semibold text-[10px] text-muted-foreground leading-none no-underline outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+        "bg-muted/60 text-muted-foreground hover:text-foreground focus-visible:ring-ring mx-0.5 inline-flex min-w-4 -translate-y-0.5 items-center justify-center rounded-md px-1 py-0.5 text-[10px] leading-none font-semibold no-underline transition-colors outline-none focus-visible:ring-2",
         className,
       )}
     >
@@ -91,7 +91,7 @@ export function CitationFavicon({
     <span
       aria-hidden="true"
       className={cn(
-        "grid size-5 shrink-0 place-items-center text-muted-foreground [&>svg]:size-3.5",
+        "text-muted-foreground grid size-5 shrink-0 place-items-center [&>svg]:size-3.5",
         className,
       )}
     >
@@ -122,7 +122,7 @@ export function CitationStack({ citations, limit = 3, className }: CitationStack
           key={citation.id}
           url={citation.url}
           icon={citation.icon}
-          className="size-6 rounded-full bg-background ring-2 ring-background"
+          className="bg-background ring-background size-6 rounded-full ring-2"
         />
       ))}
     </span>
@@ -142,21 +142,21 @@ function CitationRow({
     <>
       <CitationFavicon url={citation.url} icon={citation.icon} />
       <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2 gap-y-0.5">
-        <span className="truncate font-medium text-foreground/80 text-sm transition-colors group-hover/citation:text-foreground">
+        <span className="text-foreground/80 group-hover/citation:text-foreground truncate text-sm font-medium transition-colors">
           {citation.title}
         </span>
         {citation.domain ? (
-          <span className="min-w-0 truncate text-muted-foreground/60 text-xs">
+          <span className="text-muted-foreground/60 min-w-0 truncate text-xs">
             {citation.domain}
           </span>
         ) : null}
       </span>
       <span className="flex shrink-0 items-center gap-1.5">
-        <span className="grid size-5 place-items-center rounded-md bg-foreground/5 font-semibold text-[10px] text-muted-foreground tabular-nums">
+        <span className="bg-foreground/5 text-muted-foreground grid size-5 place-items-center rounded-md text-[10px] font-semibold tabular-nums">
           {index}
         </span>
         {citation.url ? (
-          <ExternalLink className="size-3.5 text-muted-foreground/40 transition-colors group-hover/citation:text-muted-foreground" />
+          <ExternalLink className="text-muted-foreground/40 group-hover/citation:text-muted-foreground size-3.5 transition-colors" />
         ) : null}
       </span>
     </>
@@ -239,11 +239,11 @@ export function Citations({
         aria-expanded={currentOpen}
         aria-controls={contentId}
         onClick={() => setOpen(!currentOpen)}
-        className="group -ml-1 flex min-h-8 items-center gap-2 rounded-lg px-1 text-left text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        className="group text-muted-foreground hover:text-foreground focus-visible:ring-ring -ml-1 flex min-h-8 items-center gap-2 rounded-lg px-1 text-left transition-colors outline-none focus-visible:ring-2"
       >
         <BookOpenText className="size-4" />
         <span className="font-medium">{title}</span>
-        <span className="rounded-full bg-muted px-1.5 py-0.5 font-semibold text-[10px] tabular-nums">
+        <span className="bg-muted rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums">
           {citations.length}
         </span>
         <motion.span

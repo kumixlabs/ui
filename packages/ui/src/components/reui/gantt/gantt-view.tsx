@@ -2062,7 +2062,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
           65px height, matching the timeline. */}
       <div
         data-slot="gantt-tree-header"
-        className="sticky top-0 z-30 box-content h-16 shrink-0 border-b border-b-transparent bg-background"
+        className="bg-background sticky top-0 z-30 box-content h-16 shrink-0 border-b border-b-transparent"
       >
         <div className="flex h-8 border-b">
           <div className="flex h-full min-w-0 flex-1">
@@ -2073,7 +2073,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
                 paddingInlineStart: namePaddingStart,
               }}
             >
-              <span className="truncate font-medium text-muted-foreground">
+              <span className="text-muted-foreground truncate font-medium">
                 {settings.i18n.labels.resources}
               </span>
             </div>
@@ -2083,7 +2083,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
                 data-slot="gantt-column-header"
                 data-column={column.id}
                 className={cn(
-                  "flex h-full shrink-0 items-center px-2 font-medium text-muted-foreground",
+                  "text-muted-foreground flex h-full shrink-0 items-center px-2 font-medium",
                   column.align === "center" && "justify-center",
                   column.align === "end" && "justify-end",
                   column.className,
@@ -2100,7 +2100,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
               data-slot="gantt-columns-menu"
               // gradient lead-in: scrolled column headers dissolve into this
               // sticky control instead of hard-clipping against its background
-              className="sticky end-0 z-10 flex h-full shrink-0 items-center bg-background ps-1.5 pe-2.5 before:pointer-events-none before:absolute before:inset-y-0 before:-start-5 before:w-5 before:bg-linear-to-l before:from-background before:to-transparent rtl:before:bg-linear-to-r"
+              className="bg-background before:from-background sticky end-0 z-10 flex h-full shrink-0 items-center ps-1.5 pe-2.5 before:pointer-events-none before:absolute before:inset-y-0 before:-start-5 before:w-5 before:bg-linear-to-l before:to-transparent rtl:before:bg-linear-to-r"
             >
               {viewConfig.columnsMenu}
             </div>
@@ -2130,7 +2130,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
             // mirror the tree row's left structure so the + lands in the same
             // column as the row toggle chevrons, and the label lines up with
             // the task titles above
-            className="flex h-10 w-full shrink-0 items-center border-b ps-3 pe-3 text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+            className="text-muted-foreground hover:bg-muted/40 hover:text-foreground flex h-10 w-full shrink-0 items-center border-b ps-3 pe-3"
             onClick={() =>
               settings.onCreateTask?.({
                 parentId: null,
@@ -2167,7 +2167,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
       {/* Two-row grouped header; also the drag-to-pan surface */}
       <div
         data-slot="gantt-timeline-header"
-        className="sticky top-0 z-30 shrink-0 border-b bg-background"
+        className="bg-background sticky top-0 z-30 shrink-0 border-b"
         style={{ minWidth: trackWidth }}
         onPointerDown={beginHeaderPan}
       >
@@ -2180,7 +2180,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
                 data-slot="gantt-axis-group"
                 // no `truncate` here: overflow-hidden would make this the
                 // sticky label's scrollport and the stick would never fire
-                className="flex min-w-0 items-center ps-3 pe-2 text-muted-foreground"
+                className="text-muted-foreground flex min-w-0 items-center ps-3 pe-2"
                 style={{ flex: `${group.span} 0 0px` }}
               >
                 {/* Pure-CSS sticky: the label rides the leading edge for as
@@ -2204,7 +2204,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
             <span
               key={fraction}
               aria-hidden
-              className="absolute inset-y-0 w-px bg-border"
+              className="bg-border absolute inset-y-0 w-px"
               style={{ insetInlineStart: `calc(${fraction * 100}% - 1px)` }}
             />
           ))}
@@ -2242,13 +2242,13 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
                 className={cn(
                   "flex min-w-0 items-center justify-center truncate px-1.5 text-center",
                   "text-muted-foreground",
-                  unit.isToday && "font-medium text-primary",
+                  unit.isToday && "text-primary font-medium",
                 )}
                 style={{ flex: `${unit.weight} 0 0px` }}
               >
                 {/* today reads as a soft pill, not just tinted text */}
                 {unit.isToday ? (
-                  <span className="truncate rounded-full bg-primary/10 px-1.5 py-px">
+                  <span className="bg-primary/10 truncate rounded-full px-1.5 py-px">
                     {unit.label}
                   </span>
                 ) : (
@@ -2308,7 +2308,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
               {unit.isToday && scale !== "day" && (
                 <span
                   data-today=""
-                  className="absolute inset-y-0 bg-primary/5"
+                  className="bg-primary/5 absolute inset-y-0"
                   style={{
                     insetInlineStart: `${start * 100}%`,
                     width: `${width * 100}%`,
@@ -2380,7 +2380,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
         {rows.length === 0 && viewConfig.renderNoResources && (
           <div
             data-slot="gantt-no-resources"
-            className="flex grow items-center justify-center p-6 text-muted-foreground text-sm"
+            className="text-muted-foreground flex grow items-center justify-center p-6 text-sm"
           >
             {viewConfig.renderNoResources()}
           </div>
@@ -2404,7 +2404,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
       // end-0 runs the strip (bg + top border) to the pane's right edge instead
       // of stopping short by the corner width - the vertical scrollbar is inset
       // to end above this strip, so nothing collides in the bottom-right corner.
-      className="end-0! z-40 h-4! rounded-none border-t-border! bg-background py-1"
+      className="border-t-border! bg-background end-0! z-40 h-4! rounded-none py-1"
     />
   );
 
@@ -2457,7 +2457,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
             <div
               aria-hidden
               data-slot="gantt-tree-scrollbar-rail"
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-4 border-t border-t-border bg-background"
+              className="border-t-border bg-background pointer-events-none absolute inset-x-0 bottom-0 h-4 border-t"
             />
           )}
           {/* Reorder insertion indicator, pinned to the visible pane */}
@@ -2472,7 +2472,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
                   indicator sits above the row carry overlay (z 100) */}
               <span
                 className={cn(
-                  "ms-0.5 size-0 shrink-0 border-y-4 border-y-transparent border-s-8",
+                  "ms-0.5 size-0 shrink-0 border-y-4 border-s-8 border-y-transparent",
                   reorder.valid ? "border-s-primary" : "border-s-destructive",
                 )}
               />
@@ -2500,8 +2500,8 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
             tabIndex={0}
             data-slot="gantt-splitter"
             className={cn(
-              "group/gantt-splitter relative z-30 w-px shrink-0 cursor-col-resize touch-none bg-border outline-none hover:bg-primary/60 data-resizing:bg-primary",
-              "focus-visible:ring-2 focus-visible:ring-ring/50",
+              "group/gantt-splitter bg-border hover:bg-primary/60 data-resizing:bg-primary relative z-30 w-px shrink-0 cursor-col-resize touch-none outline-none",
+              "focus-visible:ring-ring/50 focus-visible:ring-2",
               "after:absolute after:inset-y-0 after:-start-1 after:-end-1",
             )}
             onPointerDown={beginSplit}
@@ -2524,11 +2524,11 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
             <span
               aria-hidden
               data-slot="gantt-splitter-grip"
-              className="absolute top-1/2 left-1/2 h-6 w-0.75 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/60 opacity-0 transition-opacity duration-150 group-hover/gantt-splitter:opacity-100 group-focus-visible/gantt-splitter:opacity-100 group-data-resizing/gantt-splitter:bg-primary group-data-resizing/gantt-splitter:opacity-100"
+              className="bg-primary/60 group-data-resizing/gantt-splitter:bg-primary absolute top-1/2 left-1/2 h-6 w-0.75 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-150 group-hover/gantt-splitter:opacity-100 group-focus-visible/gantt-splitter:opacity-100 group-data-resizing/gantt-splitter:opacity-100"
             />
           </div>
         ) : (
-          <div aria-hidden className="w-px shrink-0 bg-border" />
+          <div aria-hidden className="bg-border w-px shrink-0" />
         )}
         {/* Timeline pane */}
         <div
@@ -2543,7 +2543,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
                  pass: the control glides inward while a chip occupies its
                  band, because the chips' position IS their meaning and this
                  corner spot is merely a habit */
-              className="absolute end-[calc(0.75rem+var(--gantt-zoom-shift,0px))] bottom-5 z-40 flex flex-col rounded-md border bg-background shadow-sm transition-[inset-inline-end] duration-200"
+              className="bg-background absolute end-[calc(0.75rem+var(--gantt-zoom-shift,0px))] bottom-5 z-40 flex flex-col rounded-md border shadow-sm transition-[inset-inline-end] duration-200"
             >
               {/* aria-disabled instead of disabled: the not-allowed cursor
                   must still show at the zoom limits */}
@@ -2556,7 +2556,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
                         size="icon-xs"
                         aria-label={settings.i18n.labels.zoomIn}
                         aria-disabled={!canZoomIn || undefined}
-                        className="size-5! rounded-b-none text-muted-foreground hover:text-foreground aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-transparent"
+                        className="text-muted-foreground hover:text-foreground size-5! rounded-b-none aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-transparent"
                         onClick={() => {
                           if (!canZoomIn) return;
                           // controlled zoom anchors via fineCenterRef when
@@ -2580,7 +2580,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
                         size="icon-xs"
                         aria-label={settings.i18n.labels.zoomOut}
                         aria-disabled={!canZoomOut || undefined}
-                        className="size-5! rounded-t-none border-t text-muted-foreground hover:text-foreground aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-transparent"
+                        className="text-muted-foreground hover:text-foreground size-5! rounded-t-none border-t aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-transparent"
                         onClick={() => {
                           if (!canZoomOut) return;
                           if (viewConfig.zoom === undefined) anchorZoomCenter();
@@ -2635,7 +2635,7 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
             <div
               aria-hidden
               data-slot="gantt-timeline-scrollbar-rail"
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-4 border-t border-t-border bg-background"
+              className="border-t-border bg-background pointer-events-none absolute inset-x-0 bottom-0 h-4 border-t"
             />
           )}
           {viewConfig.offscreenIndicators && (
@@ -2650,9 +2650,9 @@ function GanttView({ className, render, interval: intervalProp, ...props }: Gant
         {loading && (
           <div
             data-slot="gantt-loading"
-            className="absolute inset-0 z-50 flex items-center justify-center bg-background/60"
+            className="bg-background/60 absolute inset-0 z-50 flex items-center justify-center"
           >
-            <span className="animate-pulse text-muted-foreground text-sm">
+            <span className="text-muted-foreground animate-pulse text-sm">
               {settings.i18n.labels.loading}
             </span>
           </div>
@@ -2686,7 +2686,7 @@ function GanttNowLine({ rangeStartMs, rangeEndMs }: { rangeStartMs: number; rang
       data-slot="gantt-now-indicator"
       // comet tail: solid at the cap, dissolving toward the bottom -
       // present without ruling a hard line through every row
-      className="absolute inset-y-0 z-10 w-px bg-linear-to-b from-destructive/80 via-destructive/45 to-destructive/15"
+      className="from-destructive/80 via-destructive/45 to-destructive/15 absolute inset-y-0 z-10 w-px bg-linear-to-b"
       style={{ insetInlineStart: `${fraction * 100}%` }}
     />
   );
@@ -2705,7 +2705,7 @@ function GanttNowDot({ rangeStartMs, rangeEndMs }: { rangeStartMs: number; range
     <span
       aria-hidden
       data-slot="gantt-now-dot"
-      className="absolute -bottom-0.75 z-10 size-1.5 -translate-x-1/2 rounded-full bg-destructive"
+      className="bg-destructive absolute -bottom-0.75 z-10 size-1.5 -translate-x-1/2 rounded-full"
       style={{ insetInlineStart: `${fraction * 100}%` }}
     />
   );
@@ -2816,7 +2816,7 @@ const GanttDependencyLayer = memo(function GanttDependencyLayer({
       // non-uniform scale is neutralized on strokes below; arrowheads
       // lengthen slightly with the fill, which tracks the bars.
       className={cn(
-        "pointer-events-none absolute start-0 top-0 w-full overflow-visible text-muted-foreground/70 rtl:-scale-x-100",
+        "text-muted-foreground/70 pointer-events-none absolute start-0 top-0 w-full overflow-visible rtl:-scale-x-100",
         viewConfig.classNames?.dependencies,
       )}
       style={{ height: `${totalRem}rem` }}
@@ -2917,7 +2917,7 @@ const GanttTreeRow = memo(function GanttTreeRow({
       data-gantt-row-id={row.resource.id}
       data-selected={selected || undefined}
       className={cn(
-        "group/gantt-row flex border-b data-selected:data-hover:bg-primary/5 data-hover:bg-muted/40 data-selected:bg-primary/5",
+        "group/gantt-row data-selected:data-hover:bg-primary/5 data-hover:bg-muted/40 data-selected:bg-primary/5 flex border-b",
         dimmed && "opacity-50",
       )}
       style={{ height: `${heightRem}rem` }}
@@ -2966,7 +2966,7 @@ const GanttTreeRow = memo(function GanttTreeRow({
                 // gap before the checkbox so it's easy to grab without catching
                 // the checkbox; the equal start/end margins keep the grip's
                 // footprint net-zero, so the title stays aligned with the header.
-                className="-ms-1.5 me-1.5 flex w-3.5 shrink-0 cursor-grab touch-none items-center justify-center text-muted-foreground/60 opacity-0 pointer-coarse:opacity-100 hover:text-foreground focus-visible:opacity-100 group-hover/gantt-row:opacity-100 group-data-hover/gantt-row:opacity-100"
+                className="text-muted-foreground/60 hover:text-foreground -ms-1.5 me-1.5 flex w-3.5 shrink-0 cursor-grab touch-none items-center justify-center opacity-0 group-hover/gantt-row:opacity-100 group-data-hover/gantt-row:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100"
                 onPointerDown={(e) => onGripPointerDown(e, row)}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -3008,7 +3008,7 @@ const GanttTreeRow = memo(function GanttTreeRow({
                     }
                     aria-label={row.resource.title}
                     className={cn(
-                      "size-3.5 opacity-0 transition-opacity focus-visible:opacity-100 group-hover/gantt-row:opacity-100 group-data-hover/gantt-row:opacity-100",
+                      "size-3.5 opacity-0 transition-opacity group-hover/gantt-row:opacity-100 group-data-hover/gantt-row:opacity-100 focus-visible:opacity-100",
                       selected && "opacity-100",
                     )}
                   />
@@ -3311,7 +3311,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
       data-drop-target={dragTarget ?? undefined}
       data-selected={selected || undefined}
       className={cn(
-        "relative w-full min-w-0 data-selected:data-hover:bg-primary/5 data-hover:bg-muted/30 data-selected:bg-primary/5",
+        "data-selected:data-hover:bg-primary/5 data-hover:bg-muted/30 data-selected:bg-primary/5 relative w-full min-w-0",
         // The ring is pointer-events-none, so a cursor set on IT can never be
         // reached - the row is the element actually under the pointer, so the
         // cursor belongs here. Gated on the same flag as the ring: wherever the
@@ -3633,7 +3633,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
                   data-slot="gantt-bar-label"
                   data-placement={placement}
                   className={cn(
-                    "pointer-events-none absolute top-1/2 z-10 max-w-60 -translate-y-1/2 truncate font-medium text-foreground",
+                    "text-foreground pointer-events-none absolute top-1/2 z-10 max-w-60 -translate-y-1/2 truncate font-medium",
                     // one label at a time: the resize ghost carries it while
                     // this bar is the faded placeholder
                     "group-data-[drag-kind^=resize]/gantt-seg:opacity-0",
@@ -3676,23 +3676,23 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
                 {/* envelope end caps: the classic PM rollup silhouette, muted */}
                 <span
                   aria-hidden
-                  className="absolute start-0 top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-full bg-muted-foreground/50"
+                  className="bg-muted-foreground/50 absolute start-0 top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-full"
                 />
                 <span
                   aria-hidden
-                  className="absolute end-0 top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-full bg-muted-foreground/50"
+                  className="bg-muted-foreground/50 absolute end-0 top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-full"
                 />
-                <div className="relative h-1.5 overflow-hidden rounded-full bg-muted-foreground/20">
+                <div className="bg-muted-foreground/20 relative h-1.5 overflow-hidden rounded-full">
                   {bars.summary.progress !== null && (
                     <div
                       data-slot="gantt-summary-progress"
-                      className="absolute inset-y-0 start-0 rounded-full bg-muted-foreground/50"
+                      className="bg-muted-foreground/50 absolute inset-y-0 start-0 rounded-full"
                       style={{ width: `${bars.summary.progress}%` }}
                     />
                   )}
                 </div>
                 {bars.summary.progress !== null && (
-                  <span className="absolute start-full top-1/2 ms-2 -translate-y-1/2 whitespace-nowrap text-muted-foreground">
+                  <span className="text-muted-foreground absolute start-full top-1/2 ms-2 -translate-y-1/2 whitespace-nowrap">
                     {bars.summary.progress}%
                   </span>
                 )}
@@ -3720,7 +3720,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
                 "border-(--gantt-event-color)/50 bg-(--gantt-event-color)/8",
               ghost.valid &&
                 ghost.kind !== "move" &&
-                "border-(--gantt-event-color)/70 bg-(--gantt-event-color)/22 text-foreground",
+                "text-foreground border-(--gantt-event-color)/70 bg-(--gantt-event-color)/22",
               /* a milestone's landing marker keeps the milestone's SHAPE: the
                  wrapper sheds its own dashed box and centers a dashed diamond
                  instead - a dashed rectangle read as a different object */
@@ -3777,7 +3777,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
             // the bar it is going under - as a tint that read as a smudge over
             // the bar's own label. Punched out of the backdrop it reads as a
             // distinct object sliding underneath, which is what it is.
-            className="pointer-events-none absolute z-40 overflow-hidden rounded-sm border border-primary border-dashed bg-background"
+            className="border-primary bg-background pointer-events-none absolute z-40 overflow-hidden rounded-sm border border-dashed"
             style={{
               insetInlineStart: `${draft.from * 100}%`,
               width: `${Math.max((draft.to - draft.from) * 100, 0.5)}%`,
@@ -3790,7 +3790,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
           >
             {/* the accent tint, over the opaque base rather than over whatever
                 happens to be beneath the row */}
-            <span aria-hidden className="absolute inset-0 bg-primary/15" />
+            <span aria-hidden className="bg-primary/15 absolute inset-0" />
           </div>
         )}
       </div>
@@ -3811,7 +3811,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
             height: `${laneHeightRem}rem`,
           }}
         >
-          <span className="absolute start-full top-1/2 ms-2 inline-flex w-max -translate-y-1/2 items-center whitespace-nowrap rounded-md bg-foreground px-2 py-1 font-medium text-background text-xs">
+          <span className="bg-foreground text-background absolute start-full top-1/2 ms-2 inline-flex w-max -translate-y-1/2 items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap">
             {draftLabel}
             {/* Same arrow as every other bubble, one size down. A 45-degree
                 square is symmetric, so size-2.5 spans ~14px whichever edge it
@@ -3821,7 +3821,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
                 arrow reads the same weight as the ones above and below. */}
             <span
               aria-hidden
-              className="absolute start-0 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[1px] bg-foreground"
+              className="bg-foreground absolute start-0 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[1px]"
             />
           </span>
         </div>
@@ -3887,7 +3887,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
                 // KEYBOARD use - pointer-events never blocks Enter/Space.
                 // No cursor class here: pointer-events-none makes it unreachable.
                 // The row carries it (see `hintVisible`).
-                className="pointer-events-none block size-5 rounded-full border-2 border-primary bg-transparent ring-1 ring-background/80"
+                className="border-primary ring-background/80 pointer-events-none block size-5 rounded-full border-2 bg-transparent ring-1"
                 onPointerDown={(e) => {
                   // with drag-create on the press belongs to the row's create
                   // gesture; a sub-threshold press still ends as this click
@@ -3904,7 +3904,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
               <span
                 data-slot="gantt-schedule-hint-bubble"
                 className={cn(
-                  "absolute start-1/2 inline-flex w-max -translate-x-1/2 items-center whitespace-nowrap rounded-md bg-foreground px-2 py-1 font-medium text-background text-xs",
+                  "bg-foreground text-background absolute start-1/2 inline-flex w-max -translate-x-1/2 items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap",
                   rowIndex === 0 ? "top-full mt-2" : "bottom-full mb-2",
                 )}
               >
@@ -3912,7 +3912,7 @@ const GanttTimelineRow = memo(function GanttTimelineRow({
                 <span
                   aria-hidden
                   className={cn(
-                    "absolute start-1/2 size-2.5 -translate-x-1/2 rotate-45 rounded-[2px] bg-foreground",
+                    "bg-foreground absolute start-1/2 size-2.5 -translate-x-1/2 rotate-45 rounded-[2px]",
                     rowIndex === 0 ? "-top-1" : "-bottom-1",
                   )}
                 />
@@ -4085,7 +4085,7 @@ function GanttOffscreenChips({
                   data-slot="gantt-offscreen-chip"
                   data-side={chip.side}
                   aria-label={settings.i18n.labels.jumpToBar(chip.label)}
-                  className="pointer-events-auto absolute flex size-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border bg-background text-muted-foreground shadow-xs hover:text-foreground"
+                  className="bg-background text-muted-foreground hover:text-foreground pointer-events-auto absolute flex size-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border shadow-xs"
                   style={{
                     top: chip.top,
                     ...(chip.side === "start"
@@ -4103,7 +4103,7 @@ function GanttOffscreenChips({
               )}
               <span
                 aria-hidden
-                className="absolute -end-px -top-px size-1.5 rounded-full ring-1 ring-background"
+                className="ring-background absolute -end-px -top-px size-1.5 rounded-full ring-1"
                 style={{ background: chip.color ?? "var(--color-primary)" }}
               />
             </TooltipTrigger>

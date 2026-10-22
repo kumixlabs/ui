@@ -252,7 +252,7 @@ export function MorphSelectTrigger({ className, children }: MorphSelectTriggerPr
     <>
       {/* invisible sizer reserves the closed height (the morph surface is
           absolute, so this keeps surrounding layout from shifting) */}
-      <div aria-hidden inert className={cn(ROW, "invisible rounded-xl border border-border")}>
+      <div aria-hidden inert className={cn(ROW, "border-border invisible rounded-xl border")}>
         {children}
         <ChevronDown className="h-4 w-4" />
       </div>
@@ -280,8 +280,8 @@ export function MorphSelectTrigger({ className, children }: MorphSelectTriggerPr
             style={{ borderRadius: 12 }}
             className={cn(
               ROW,
-              "absolute inset-x-0 top-0 z-10 border border-border bg-background text-foreground outline-none transition-colors",
-              "hover:border-(--color-border-strong) focus-visible:ring-2 focus-visible:ring-foreground/20",
+              "border-border bg-background text-foreground absolute inset-x-0 top-0 z-10 border transition-colors outline-none",
+              "focus-visible:ring-foreground/20 hover:border-(--color-border-strong) focus-visible:ring-2",
               "disabled:pointer-events-none disabled:opacity-50",
               className,
             )}
@@ -330,7 +330,7 @@ export function MorphSelectContent({ className, children }: MorphSelectContentPr
             transition={ctx.reduce ? { duration: 0 } : MORPH}
             style={{ borderRadius: 12 }}
             className={cn(
-              "absolute inset-x-0 top-0 z-30 overflow-hidden border border-border bg-background shadow-lg",
+              "border-border bg-background absolute inset-x-0 top-0 z-30 overflow-hidden border shadow-lg",
               className,
             )}
           >
@@ -364,7 +364,7 @@ export function MorphSelectContent({ className, children }: MorphSelectContentPr
               </motion.span>
             </motion.button>
 
-            <div className="h-px bg-border" />
+            <div className="bg-border h-px" />
 
             <ActiveOptionContext.Provider value={activeId}>
               <motion.ul
@@ -432,7 +432,7 @@ export function MorphSelectItem({
         data-listbox-id={value}
         onClick={() => ctx.select(value)}
         className={cn(
-          "flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-left text-sm outline-none transition-colors",
+          "flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-left text-sm transition-colors outline-none",
           selected
             ? "bg-muted text-foreground"
             : "text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:bg-muted",

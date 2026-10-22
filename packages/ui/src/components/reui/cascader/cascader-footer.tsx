@@ -99,7 +99,7 @@ function CascaderFooter({ className, children, onKeyDown, ...props }: CascaderFo
       aria-label={labels.actionsLabel}
       onKeyDown={handleKeyDown}
       className={cn(
-        "flex shrink-0 flex-col gap-0.5 border-border/60 border-t",
+        "border-border/60 flex shrink-0 flex-col gap-0.5 border-t",
         /* The LIST's padding, not a flat `p-1`: with a padding of its own the
            two columns of text were 2px out in luma and sera and 4px out in
            lyra. It also gives a separator in here a number to cancel. */
@@ -288,7 +288,7 @@ function CascaderAction({
       {icon ? (
         <span
           data-slot="cascader-action-icon"
-          className="flex shrink-0 items-center justify-center text-muted-foreground"
+          className="text-muted-foreground flex shrink-0 items-center justify-center"
         >
           {icon}
         </span>
@@ -506,7 +506,7 @@ function CascaderSubmenuTrigger({
       {icon ? (
         <span
           data-slot="cascader-action-icon"
-          className="flex shrink-0 items-center justify-center text-muted-foreground"
+          className="text-muted-foreground flex shrink-0 items-center justify-center"
         >
           {icon}
         </span>
@@ -516,7 +516,7 @@ function CascaderSubmenuTrigger({
       <span className="sr-only">, {labels.submenuAffordance}</span>
       <ChevronRightIcon
         aria-hidden="true"
-        className="-me-0.5 size-4 shrink-0 text-muted-foreground rtl:-scale-x-100"
+        className="text-muted-foreground -me-0.5 size-4 shrink-0 rtl:-scale-x-100"
       />
     </PopoverPrimitive.Trigger>
   );
@@ -662,7 +662,7 @@ function CascaderSubmenuContent({
           data-menu-target=""
           className={cn(
             FLYOUT_SURFACE_CLASS,
-            "flex min-w-48 max-w-(--available-width) flex-col gap-0.5 outline-hidden",
+            "flex max-w-(--available-width) min-w-48 flex-col gap-0.5 outline-hidden",
             CASCADER_LIST_PAD_CLASS,
             "p-(--cascader-list-pad,4px)",
             className,

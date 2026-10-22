@@ -204,7 +204,7 @@ function EventCalendarMonthView({
               key={day.getTime()}
               role="columnheader"
               className={cn(
-                "truncate px-2 py-1.5 font-medium text-muted-foreground",
+                "text-muted-foreground truncate px-2 py-1.5 font-medium",
                 viewConfig.classNames?.monthDayHeader,
               )}
             >
@@ -220,7 +220,7 @@ function EventCalendarMonthView({
                       locale: settings.locale,
                     })}
                   </span>
-                  <span className="@max-[36rem]:inline hidden">
+                  <span className="hidden @max-[36rem]:inline">
                     {format(
                       toZoned(day, settings.timeZone),
                       settings.i18n.formats.monthDayHeaderNarrow,
@@ -428,7 +428,7 @@ function EventCalendarMonthWeek({
           role="rowheader"
           data-slot="event-calendar-week-number"
           className={cn(
-            "border-e px-2 pt-1 text-muted-foreground tabular-nums",
+            "text-muted-foreground border-e px-2 pt-1 tabular-nums",
             viewConfig.classNames?.weekNumber,
           )}
         >
@@ -549,7 +549,7 @@ function EventCalendarMonthWeek({
                       continuesAfter: !dragGhost.isEnd,
                     }}
                     className={cn(
-                      "inset-ring-0 h-full",
+                      "h-full inset-ring-0",
                       !dragGhost.valid && EVENT_CALENDAR_GHOST.invalidContent,
                     )}
                   />
@@ -852,7 +852,7 @@ function EventCalendarMonthCell({
             aria-label={settings.i18n.labels.addEvent}
             // a different icon/markup is a renderMonthCell job
             className={cn(
-              "flex size-5 cursor-pointer items-center justify-center rounded-sm bg-primary text-primary-foreground opacity-0 transition-opacity focus-visible:opacity-100 group-hover/ec-cell:opacity-100",
+              "bg-primary text-primary-foreground flex size-5 cursor-pointer items-center justify-center rounded-sm opacity-0 transition-opacity group-hover/ec-cell:opacity-100 focus-visible:opacity-100",
               viewConfig.classNames?.dayAddButton,
             )}
             onClick={(e) => {
@@ -873,7 +873,7 @@ function EventCalendarMonthCell({
             // Same font-size as every other day; a lighter weight cancels the
             // way white digits on the filled circle read bolder/larger than the
             // dark-on-light numbers around them.
-            isToday && "bg-primary font-light text-primary-foreground",
+            isToday && "bg-primary text-primary-foreground font-light",
             viewConfig.classNames?.monthDayNumber,
           )}
         >
@@ -921,7 +921,7 @@ function EventCalendarMonthCell({
         isOutside && !settings.showOutsideDays && "invisible",
         isOff && offClassName,
         isToday &&
-          cn("relative border-b-2 border-b-primary/40 bg-primary/3", viewConfig.todayClassName),
+          cn("border-b-primary/40 bg-primary/3 relative border-b-2", viewConfig.todayClassName),
         viewConfig.dayClassName?.(day),
         // No drop-target bg fill on move/resize - the dragged bar + not-allowed
         // cursor carry the feedback; a cell-wide color wash is too distracting.
@@ -1016,7 +1016,7 @@ function EventCalendarMoreIndicator({
         data-drop-into={dropInto ? "" : undefined}
         data-drop-invalid={dropInto && !dropInto.valid ? "" : undefined}
         className={cn(
-          "cursor-pointer truncate rounded-sm px-1.5 text-start text-muted-foreground hover:text-foreground",
+          "text-muted-foreground hover:text-foreground cursor-pointer truncate rounded-sm px-1.5 text-start",
           // While a dragged chip will land in this overflow bucket, the "+N more"
           // link itself becomes the drop placeholder: dashed, event-tinted, one
           // chip tall, so the drop target is unmistakable.
@@ -1024,7 +1024,7 @@ function EventCalendarMoreIndicator({
             cn(
               "flex shrink-0 items-center border border-dashed",
               dropInto.valid
-                ? "border-(--ec-event-color)/50 bg-(--ec-event-color)/8 text-foreground"
+                ? "text-foreground border-(--ec-event-color)/50 bg-(--ec-event-color)/8"
                 : "border-destructive/70 bg-destructive/10 text-destructive",
             ),
           viewConfig.classNames?.moreIndicator,
@@ -1106,7 +1106,7 @@ function EventCalendarMoreDefaultContent({
       <div
         id={headerId}
         className={cn(
-          "px-1 py-1 font-medium text-muted-foreground text-xs",
+          "text-muted-foreground px-1 py-1 text-xs font-medium",
           viewConfig.classNames?.morePopoverHeader,
         )}
       >

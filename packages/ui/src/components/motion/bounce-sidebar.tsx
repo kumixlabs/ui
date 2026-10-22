@@ -161,7 +161,7 @@ export function BounceSidebar({
             <span
               ref={dot}
               className={cn(
-                "absolute top-0 left-3 h-1.5 w-1.5 rounded-full bg-primary",
+                "bg-primary absolute top-0 left-3 h-1.5 w-1.5 rounded-full",
                 indicatorClassName,
               )}
             />
@@ -181,8 +181,8 @@ export function BounceSidebar({
             </>
           );
           const interactiveClasses = cn(
-            "flex min-h-9 w-full items-center gap-2 rounded-lg px-2 text-left font-medium text-sm outline-none transition-colors",
-            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            "flex min-h-9 w-full items-center gap-2 rounded-lg px-2 text-left text-sm font-medium transition-colors outline-none",
+            "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
             active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
             item.disabled ? "cursor-not-allowed opacity-40" : undefined,
             itemClassName,

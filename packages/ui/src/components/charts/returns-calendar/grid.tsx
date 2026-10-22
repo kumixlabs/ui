@@ -106,11 +106,11 @@ export function ReturnsCalendarGrid({
                   onBlur={() => setHover(null)}
                   onClick={press(y, m)}
                   onKeyDown={clearOnEscape}
-                  className="absolute -inset-0.5 block rounded-[5px] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="focus-visible:ring-ring absolute -inset-0.5 block rounded-[5px] outline-none focus-visible:ring-2"
                   whileTap={reduce ? undefined : { scale: 0.92, transition: SPRING_PRESS }}
                 >
                   <motion.span
-                    className="pointer-events-none absolute inset-0.5 grid place-items-center rounded-[4px] font-medium font-mono text-[9px] tabular-nums"
+                    className="pointer-events-none absolute inset-0.5 grid place-items-center rounded-[4px] font-mono text-[9px] font-medium tabular-nums"
                     style={{
                       background: tint(v, range, on),
                       color: `color-mix(in srgb, var(--foreground) ${Math.round(85 + Math.min(Math.abs(v) / range, 1) * 15)}%, transparent)`,
@@ -190,11 +190,11 @@ export function ReturnsCalendarGrid({
               onBlur={() => setHover(null)}
               onClick={press(y, YEAR)}
               onKeyDown={clearOnEscape}
-              className="absolute -inset-0.5 block rounded-[5px] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="focus-visible:ring-ring absolute -inset-0.5 block rounded-[5px] outline-none focus-visible:ring-2"
               whileTap={reduce ? undefined : { scale: 0.96, transition: SPRING_PRESS }}
             >
               <motion.span
-                className="pointer-events-none absolute inset-0.5 grid place-items-center rounded-[4px] font-medium font-mono text-[11px] tabular-nums"
+                className="pointer-events-none absolute inset-0.5 grid place-items-center rounded-[4px] font-mono text-[11px] font-medium tabular-nums"
                 // a neutral cell under the colored number: the tint of the same hue ate its contrast
                 style={{
                   background: same(hot, y, YEAR)

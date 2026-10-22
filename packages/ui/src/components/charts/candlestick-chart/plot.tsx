@@ -104,7 +104,7 @@ export function CandlestickChartPlot({ height = 320, className }: CandlestickCha
       onKeyDown={onKeyDown}
       onBlur={() => setActive(null)}
       className={cn(
-        "relative w-full cursor-crosshair touch-pan-y select-none rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "focus-visible:ring-ring relative w-full cursor-crosshair touch-pan-y rounded-xl outline-none select-none focus-visible:ring-2",
         className,
       )}
       style={{ height }}
@@ -232,7 +232,7 @@ export function CandlestickChartPlot({ height = 320, className }: CandlestickCha
         ? ticks.map((tick) => (
             <span
               key={tick}
-              className="pointer-events-none absolute right-0 -translate-y-1/2 pr-1 font-mono text-muted-foreground text-xs tabular-nums"
+              className="text-muted-foreground pointer-events-none absolute right-0 -translate-y-1/2 pr-1 font-mono text-xs tabular-nums"
               style={{ top: y(tick) }}
             >
               {formatPrice(tick)}
@@ -246,14 +246,14 @@ export function CandlestickChartPlot({ height = 320, className }: CandlestickCha
           animate={{ y: y(lastPrice) }}
           transition={spring}
         >
-          <span className="block -translate-y-1/2 rounded-md bg-foreground px-1.5 py-0.5 font-mono text-background text-xs tabular-nums">
+          <span className="bg-foreground text-background block -translate-y-1/2 rounded-md px-1.5 py-0.5 font-mono text-xs tabular-nums">
             {formatPrice(lastPrice)}
           </span>
         </motion.div>
       ) : null}
       {width > 0 && pointerY !== null ? (
         <span
-          className="pointer-events-none absolute right-0 -translate-y-1/2 rounded-md bg-muted px-1.5 py-0.5 font-mono text-foreground text-xs tabular-nums"
+          className="bg-muted text-foreground pointer-events-none absolute right-0 -translate-y-1/2 rounded-md px-1.5 py-0.5 font-mono text-xs tabular-nums"
           style={{ top: pointerY }}
         >
           {formatPrice(priceAt(pointerY))}

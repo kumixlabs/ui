@@ -263,7 +263,7 @@ export function CenterMorphModalContent({
                 }}
                 onClick={() => context.setOpen(false)}
                 className={cn(
-                  "pointer-events-auto fixed inset-0 z-100 h-full w-full cursor-default bg-background/10 backdrop-blur-sm",
+                  "bg-background/10 pointer-events-auto fixed inset-0 z-100 h-full w-full cursor-default backdrop-blur-sm",
                   backdropClassName,
                 )}
               />
@@ -311,7 +311,7 @@ export function CenterMorphModalContent({
                       reduce ? { duration: 0.14, ease: EASE_OUT } : CENTER_UNFOLD_TRANSITION
                     }
                     className={cn(
-                      "pointer-events-auto relative w-full max-w-[26rem] origin-center overflow-hidden rounded-[30px] border border-border bg-background will-change-[clip-path]",
+                      "border-border bg-background pointer-events-auto relative w-full max-w-[26rem] origin-center overflow-hidden rounded-[30px] border will-change-[clip-path]",
                       className,
                     )}
                   >
@@ -334,7 +334,7 @@ export function CenterMorphModalContent({
                           duration: reduce ? 0.12 : 0.2,
                           ease: EASE_OUT,
                         }}
-                        className="absolute top-4 right-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-foreground/5 text-muted-foreground transition-colors hover:bg-foreground/8 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="bg-foreground/5 text-muted-foreground hover:bg-foreground/8 hover:text-foreground focus-visible:ring-ring absolute top-4 right-4 inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none"
                       >
                         <X className="h-4 w-4" aria-hidden="true" />
                       </motion.button>

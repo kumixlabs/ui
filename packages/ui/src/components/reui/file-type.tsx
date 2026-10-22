@@ -741,7 +741,7 @@ const SQUARE = "[display:var(--file-type-square,none)]";
  */
 const fileTypeVariants = cva(
   [
-    "@container relative inline-block shrink-0 select-none align-middle leading-none",
+    "@container relative inline-block shrink-0 align-middle leading-none select-none",
     "size-(--file-type-size)",
     "[--file-type-foreground:white]",
   ],
@@ -922,7 +922,7 @@ function FileType({
         aria-hidden="true"
         focusable="false"
         className={cn(
-          "absolute inset-0 size-full overflow-visible @max-[21px]:[--file-type-outline:var(--file-type-border,color-mix(in_oklab,var(--muted-foreground)_65%,transparent))] [--file-type-outline:var(--file-type-border,color-mix(in_oklab,var(--muted-foreground)_40%,transparent))] [stroke-width:var(--file-type-stroke,max(1px,2.5cqw))]",
+          "absolute inset-0 size-full overflow-visible [stroke-width:var(--file-type-stroke,max(1px,2.5cqw))] [--file-type-outline:var(--file-type-border,color-mix(in_oklab,var(--muted-foreground)_40%,transparent))] @max-[21px]:[--file-type-outline:var(--file-type-border,color-mix(in_oklab,var(--muted-foreground)_65%,transparent))]",
           "[--file-type-round:inline]",
           "[--file-type-square:none]",
         )}
@@ -952,7 +952,7 @@ function FileType({
             data-slot="file-type-glyph"
             stroke="currentColor"
             className={cn(
-              "origin-[12px_15px] @max-[21px]:scale-100 scale-75",
+              "origin-[12px_15px] scale-75 @max-[21px]:scale-100",
               GLYPH_CLASS[variant],
             )}
           >
@@ -965,7 +965,7 @@ function FileType({
           data-slot="file-type-custom-icon"
           aria-hidden="true"
           className={cn(
-            "-translate-1/2 absolute top-[62.5%] left-1/2 flex @max-[21px]:size-[50cqw] size-[37.5cqw] items-center justify-center [&>svg]:size-full",
+            "absolute top-[62.5%] left-1/2 flex size-[37.5cqw] -translate-1/2 items-center justify-center @max-[21px]:size-[50cqw] [&>svg]:size-full",
             GLYPH_CLASS[variant],
           )}
         >
@@ -981,10 +981,10 @@ function FileType({
             } as CSSProperties
           }
           className={cn(
-            "absolute top-(--file-type-label-y) left-[5%] flex h-(--file-type-label-h) max-w-[95%] items-center justify-center overflow-hidden whitespace-nowrap rounded-(--file-type-radius,var(--file-type-label-radius,10cqw)) px-(--file-type-label-px,7cqw) font-medium",
+            "absolute top-(--file-type-label-y) left-[5%] flex h-(--file-type-label-h) max-w-[95%] items-center justify-center overflow-hidden rounded-(--file-type-radius,var(--file-type-label-radius,10cqw)) px-(--file-type-label-px,7cqw) font-medium whitespace-nowrap",
             "text-[min(24cqw,calc((95cqw-2*var(--file-type-label-px,7cqw))/(var(--file-type-chars)*0.72)))] [--file-type-label-h:35%] [--file-type-label-y:45%]",
             "supports-[margin:round(1cap,1px)]:mt-[calc(round(nearest,calc(var(--file-type-label-y)+(var(--file-type-label-h)+1cap)/2),1px)-var(--file-type-label-y)-(var(--file-type-label-h)+1cap)/2)]",
-            "@max-[21px]:px-[4cqw] @max-[21px]:font-semibold @max-[21px]:text-[min(32.5cqw,5.8px,calc(87cqw/(var(--file-type-chars)*0.88)))] @max-[21px]:[--file-type-label-h:45%] @max-[21px]:[--file-type-label-y:40%]",
+            "@max-[21px]:px-[4cqw] @max-[21px]:text-[min(32.5cqw,5.8px,calc(87cqw/(var(--file-type-chars)*0.88)))] @max-[21px]:font-semibold @max-[21px]:[--file-type-label-h:45%] @max-[21px]:[--file-type-label-y:40%]",
             "[--file-type-label-radius:10cqw]",
             "[--file-type-label-px:7cqw]",
             LABEL_CLASS[variant],
@@ -993,7 +993,7 @@ function FileType({
         >
           <span
             className={cn(
-              "@max-[21px]:max-w-full max-w-[min(95cqw,calc(100%+2*max(0px,var(--file-type-label-px,7cqw)-7cqw)))] shrink-0 truncate py-[0.25em] [text-box:trim-both_cap_alphabetic]",
+              "max-w-[min(95cqw,calc(100%+2*max(0px,var(--file-type-label-px,7cqw)-7cqw)))] shrink-0 truncate py-[0.25em] [text-box:trim-both_cap_alphabetic] @max-[21px]:max-w-full",
               LABEL_TEXT_CLASS[variant],
             )}
           >

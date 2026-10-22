@@ -112,8 +112,8 @@ export function SlideActionButton({
     <div
       ref={trackRef}
       className={cn(
-        "relative h-16 w-72 overflow-hidden rounded-[22px] bg-muted p-1",
-        "ring-1 ring-primary/10",
+        "bg-muted relative h-16 w-72 overflow-hidden rounded-[22px] p-1",
+        "ring-primary/10 ring-1",
         // The track only carries the label — the slide starts on the thumb,
         // which suppresses selection for the whole gesture on its own.
         TOUCH_GESTURE_CONTENT_CLASS,
@@ -125,7 +125,7 @@ export function SlideActionButton({
         aria-hidden="true"
         style={{ scaleX: fillProgress }}
         className={cn(
-          "absolute inset-0 origin-left bg-primary will-change-transform",
+          "bg-primary absolute inset-0 origin-left will-change-transform",
           fillClassName,
         )}
       />
@@ -133,7 +133,7 @@ export function SlideActionButton({
       <motion.span
         aria-hidden="true"
         style={{ opacity: labelOpacity }}
-        className="pointer-events-none absolute inset-0 grid place-items-center pl-10 font-medium text-foreground text-sm"
+        className="text-foreground pointer-events-none absolute inset-0 grid place-items-center pl-10 text-sm font-medium"
       >
         {children}
       </motion.span>
@@ -142,7 +142,7 @@ export function SlideActionButton({
         aria-live="polite"
         animate={{ opacity: completed ? 1 : 0 }}
         transition={{ duration: reduce ? 0 : 0.15, ease: EASE_OUT }}
-        className="pointer-events-none absolute inset-0 grid place-items-center font-medium text-primary-foreground text-sm"
+        className="text-primary-foreground pointer-events-none absolute inset-0 grid place-items-center text-sm font-medium"
       >
         {completed ? completeLabel : null}
       </motion.span>
@@ -164,10 +164,10 @@ export function SlideActionButton({
         whileTap={reduce || completed ? undefined : { scale: 0.94 }}
         transition={SPRING_PRESS}
         className={cn(
-          "relative z-10 grid size-14 cursor-grab touch-none place-items-center rounded-[18px] bg-primary text-primary-foreground shadow-sm",
+          "bg-primary text-primary-foreground relative z-10 grid size-14 cursor-grab touch-none place-items-center rounded-[18px] shadow-sm",
           TOUCH_GESTURE_CLASS,
-          "outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:cursor-grabbing",
-          completed && "cursor-default bg-background text-foreground",
+          "focus-visible:ring-primary focus-visible:ring-offset-background outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:cursor-grabbing",
+          completed && "bg-background text-foreground cursor-default",
           thumbClassName,
         )}
       >

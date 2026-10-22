@@ -119,7 +119,7 @@ export function AvailabilityScheduler({
 
   return (
     <LayoutGroup id={groupId}>
-      <div className={cn("w-full max-w-xl divide-y divide-border", className)}>
+      <div className={cn("divide-border w-full max-w-xl divide-y", className)}>
         {WEEKDAYS.map(({ key, label }) => (
           <DayRow
             key={key}

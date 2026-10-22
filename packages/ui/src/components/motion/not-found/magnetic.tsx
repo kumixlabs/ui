@@ -20,7 +20,7 @@ export function NotFoundMagnetic({
     <NotFoundStage className={className}>
       <h1
         aria-label={code}
-        className="flex select-none items-center justify-center font-bold text-[clamp(5rem,18vw,12rem)] text-foreground leading-none tracking-tighter"
+        className="text-foreground flex items-center justify-center text-[clamp(5rem,18vw,12rem)] leading-none font-bold tracking-tighter select-none"
       >
         {chars.map((ch, i) => (
           <Magnetic key={i} strength={0.6} className={cn(i > 0 && "-ml-2")}>
@@ -32,8 +32,8 @@ export function NotFoundMagnetic({
       </h1>
 
       <div className="flex flex-col items-center gap-2">
-        <p className="font-semibold text-foreground text-lg">{title}</p>
-        <p className="max-w-sm text-muted-foreground text-sm">{description}</p>
+        <p className="text-foreground text-lg font-semibold">{title}</p>
+        <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
       </div>
 
       <NotFoundActions

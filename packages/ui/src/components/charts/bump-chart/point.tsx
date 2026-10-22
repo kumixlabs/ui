@@ -51,18 +51,18 @@ export function BumpChartPoint({
           className="min-w-[156px]"
           content={
             <>
-              <span className="flex items-center justify-between gap-4 text-[10px] text-muted-foreground">
+              <span className="text-muted-foreground flex items-center justify-between gap-4 text-[10px]">
                 <span>{row.name}</span>
                 <span>{period}</span>
               </span>
               <span className="mt-2 flex items-baseline justify-between gap-4">
-                <span className="font-medium font-mono text-lg" style={{ color: row.color }}>
+                <span className="font-mono text-lg font-medium" style={{ color: row.color }}>
                   #{rank}
                 </span>
                 <span className="text-xs">{changeLabel}</span>
               </span>
               {previous != null && (
-                <span className="mt-1 block text-[10px] text-muted-foreground">
+                <span className="text-muted-foreground mt-1 block text-[10px]">
                   Previously #{previous} in {periods[index - 1]}
                 </span>
               )}
@@ -87,7 +87,7 @@ export function BumpChartPoint({
             animate={{ transform: "scale(1)", opacity: dimmed ? 0.22 : 1 }}
             transition={{ transform: SPRING_PRESS, opacity: { duration: 0.18, ease: EASE_OUT } }}
             whileHover={canHover && !reduce ? { transform: "scale(1.12)" } : undefined}
-            className="relative flex size-7 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+            className="focus-visible:outline-ring relative flex size-7 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
             style={{ color: row.color }}
           >
             <motion.span
@@ -98,7 +98,7 @@ export function BumpChartPoint({
               transition={{ duration: 0.15, ease: EASE_OUT }}
             />
             <motion.span
-              className="relative flex size-5 items-center justify-center rounded-full border-[1.5px] border-current bg-background font-medium font-mono text-[9px]"
+              className="bg-background relative flex size-5 items-center justify-center rounded-full border-[1.5px] border-current font-mono text-[9px] font-medium"
               initial={reduce ? false : { transform: "scale(0.85)" }}
               animate={{ transform: "scale(1)" }}
               transition={{

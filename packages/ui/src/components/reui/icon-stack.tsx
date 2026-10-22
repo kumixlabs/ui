@@ -9,7 +9,7 @@ function IconStack({ className, children, style, ...props }: IconStackProps) {
     <div
       data-slot="icon-stack"
       className={cn(
-        "relative h-20 w-18 text-foreground **:data-[slot=icon-stack-layer]:fill-background",
+        "text-foreground **:data-[slot=icon-stack-layer]:fill-background relative h-20 w-18",
         className,
       )}
       style={
@@ -45,7 +45,7 @@ function IconStack({ className, children, style, ...props }: IconStackProps) {
       {children ? (
         <div
           data-slot="icon-stack-content"
-          className="pointer-events-none absolute top-(--icon-stack-content-y) left-(--icon-stack-content-x) flex -translate-x-1/2 -translate-y-1/2 -skew-y-26 scale-x-90 items-center justify-center text-muted-foreground"
+          className="text-muted-foreground pointer-events-none absolute top-(--icon-stack-content-y) left-(--icon-stack-content-x) flex -translate-x-1/2 -translate-y-1/2 scale-x-90 -skew-y-26 items-center justify-center"
         >
           {children}
         </div>

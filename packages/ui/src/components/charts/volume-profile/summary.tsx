@@ -10,18 +10,18 @@ export function VolumeProfileSummary({ className }: { className?: string }) {
   return (
     <dl
       className={cn(
-        "grid grid-cols-2 gap-x-4 gap-y-4 border-border border-t pt-4 text-xs sm:grid-cols-3",
+        "border-border grid grid-cols-2 gap-x-4 gap-y-4 border-t pt-4 text-xs sm:grid-cols-3",
         className,
       )}
     >
       <div className="space-y-1.5">
         <dt className="text-muted-foreground">Total volume</dt>
-        <dd className="font-medium font-mono tabular-nums">
+        <dd className="font-mono font-medium tabular-nums">
           {formatVolume(totalVolume)} {unit}
         </dd>
       </div>
       <div className="space-y-1.5">
-        <dt className="flex items-center gap-1.5 text-muted-foreground">
+        <dt className="text-muted-foreground flex items-center gap-1.5">
           <span
             aria-hidden="true"
             className="size-1.5 rounded-full"
@@ -29,11 +29,11 @@ export function VolumeProfileSummary({ className }: { className?: string }) {
           />
           Point of control
         </dt>
-        <dd className="font-medium font-mono tabular-nums">{poc ? formatPrice(poc.price) : "—"}</dd>
+        <dd className="font-mono font-medium tabular-nums">{poc ? formatPrice(poc.price) : "—"}</dd>
       </div>
       {valueArea ? (
         <div className="col-span-2 space-y-1.5 sm:col-span-1">
-          <dt className="flex items-center gap-1.5 text-muted-foreground">
+          <dt className="text-muted-foreground flex items-center gap-1.5">
             <span
               aria-hidden="true"
               className="size-1.5 rounded-full"
@@ -41,7 +41,7 @@ export function VolumeProfileSummary({ className }: { className?: string }) {
             />
             Value area · {Math.round(valueArea.target * 100)}% target
           </dt>
-          <dd className="font-medium font-mono tabular-nums">
+          <dd className="font-mono font-medium tabular-nums">
             {formatPrice(valueArea.priceLow)} – {formatPrice(valueArea.priceHigh)}
           </dd>
           <dd className="text-muted-foreground">{(valueArea.share * 100).toFixed(1)}% of volume</dd>

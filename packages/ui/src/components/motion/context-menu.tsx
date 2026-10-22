@@ -465,7 +465,7 @@ export function ContextMenuContent({
       inert={!context.open}
       style={{ left: position.x, top: position.y }}
       className={cn(
-        "filter-[drop-shadow(0_18px_28px_rgba(0,0,0,0.2))] fixed z-100",
+        "fixed z-100 filter-[drop-shadow(0_18px_28px_rgba(0,0,0,0.2))]",
         context.open ? "pointer-events-auto" : "pointer-events-none",
       )}
     >
@@ -503,7 +503,7 @@ export function ContextMenuContent({
         onKeyDown={onKeyDown}
         onContextMenu={(event) => event.preventDefault()}
         className={cn(
-          "min-w-56 overflow-hidden rounded-xl border border-border bg-card p-1.5 text-foreground outline-none",
+          "border-border bg-card text-foreground min-w-56 overflow-hidden rounded-xl border p-1.5 outline-none",
           className,
         )}
       >
@@ -568,8 +568,8 @@ function ContextMenuItemBase({
         if (closeOnSelect) context.setOpen(false);
       }}
       className={cn(
-        "relative isolate flex w-full select-none items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] outline-none",
-        "focus-visible:ring-2 focus-visible:ring-foreground/15",
+        "relative isolate flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] outline-none select-none",
+        "focus-visible:ring-foreground/15 focus-visible:ring-2",
         "disabled:pointer-events-none disabled:opacity-40",
         inset && "pl-8",
         tone === "destructive" ? "text-destructive" : "text-foreground",
@@ -702,7 +702,7 @@ export function ContextMenuLabel({ children, inset = false, className }: Context
   return (
     <div
       className={cn(
-        "px-2.5 pt-1.5 pb-1 font-semibold text-[10px] text-muted-foreground uppercase tracking-[0.12em]",
+        "text-muted-foreground px-2.5 pt-1.5 pb-1 text-[10px] font-semibold tracking-[0.12em] uppercase",
         inset && "pl-8",
         className,
       )}
@@ -717,7 +717,7 @@ export interface ContextMenuSeparatorProps {
 }
 
 export function ContextMenuSeparator({ className }: ContextMenuSeparatorProps) {
-  return <hr className={cn("-mx-1 my-1 h-px border-0 bg-border", className)} />;
+  return <hr className={cn("bg-border -mx-1 my-1 h-px border-0", className)} />;
 }
 
 export interface ContextMenuShortcutProps {
@@ -730,7 +730,7 @@ export function ContextMenuShortcut({ children, className }: ContextMenuShortcut
     <span
       aria-hidden="true"
       className={cn(
-        "ml-auto pl-4 font-medium text-[10px] text-muted-foreground tracking-wide",
+        "text-muted-foreground ml-auto pl-4 text-[10px] font-medium tracking-wide",
         className,
       )}
     >

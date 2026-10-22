@@ -129,7 +129,7 @@ export function DayRow({
             ariaLabel={`Toggle ${label} availability`}
             className="scale-90"
           />
-          <span className="font-medium text-foreground text-sm">{label}</span>
+          <span className="text-foreground text-sm font-medium">{label}</span>
         </div>
         <div className="flex items-center gap-1 sm:hidden">{actions}</div>
       </div>
@@ -191,7 +191,7 @@ export function DayRow({
               animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4 }}
               transition={SPRING_LAYOUT}
-              className="py-1 text-muted-foreground text-sm sm:py-2"
+              className="text-muted-foreground py-1 text-sm sm:py-2"
             >
               Unavailable
             </motion.span>

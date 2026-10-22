@@ -19,7 +19,7 @@ export function BumpChartPlot({ className }: { className?: string }) {
   );
   if (!periods.length || !ranks.length)
     return (
-      <div className={cn("py-16 text-center text-muted-foreground text-sm", className)}>
+      <div className={cn("text-muted-foreground py-16 text-center text-sm", className)}>
         No rankings yet
       </div>
     );
@@ -31,7 +31,7 @@ export function BumpChartPlot({ className }: { className?: string }) {
       // biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard users need to scroll this overflow region.
       tabIndex={0}
       className={cn(
-        "overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-ring",
+        "focus-visible:outline-ring overflow-x-auto rounded-lg focus-visible:outline-2",
         className,
       )}
     >

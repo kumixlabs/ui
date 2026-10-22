@@ -245,7 +245,7 @@ export function AlertTitle({ className, ...props }: AlertTitleProps) {
     <div
       {...props}
       data-slot="alert-title"
-      className={cn("text-pretty font-medium leading-5", className)}
+      className={cn("leading-5 font-medium text-pretty", className)}
     />
   );
 }
@@ -258,7 +258,7 @@ export function AlertDescription({ className, ...props }: AlertDescriptionProps)
       {...props}
       data-slot="alert-description"
       className={cn(
-        "text-pretty text-muted-foreground leading-relaxed [&_a]:underline [&_a]:underline-offset-4",
+        "text-muted-foreground leading-relaxed text-pretty [&_a]:underline [&_a]:underline-offset-4",
         className,
       )}
     />
@@ -293,7 +293,7 @@ export function AlertClose({ className, children, onClick, ...props }: AlertClos
       transition={SPRING_PRESS}
       whileTap={reduce ? undefined : { scale: 0.94 }}
       className={cn(
-        "-m-1.5 inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground outline-none transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+        "text-muted-foreground hover:bg-foreground/5 hover:text-foreground focus-visible:ring-ring -m-1.5 inline-flex size-8 shrink-0 items-center justify-center rounded-lg transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
       onClick={(event) => {

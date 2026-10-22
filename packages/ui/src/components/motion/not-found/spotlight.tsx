@@ -39,12 +39,12 @@ export function NotFoundSpotlight({
       <motion.div
         ref={ref}
         onMouseMove={onMove}
-        className="relative isolate flex aspect-16/9 w-full max-w-xl items-center justify-center overflow-hidden rounded-3xl border border-border bg-neutral-950"
+        className="border-border relative isolate flex aspect-16/9 w-full max-w-xl items-center justify-center overflow-hidden rounded-3xl border bg-neutral-950"
       >
         {/* Dim base layer. */}
         <span
           aria-hidden
-          className="select-none font-bold text-[clamp(5rem,16vw,10rem)] text-white/10 leading-none tracking-tighter"
+          className="text-[clamp(5rem,16vw,10rem)] leading-none font-bold tracking-tighter text-white/10 select-none"
         >
           {code}
         </span>
@@ -53,7 +53,7 @@ export function NotFoundSpotlight({
           aria-label={code}
           style={enabled ? { WebkitMaskImage: mask, maskImage: mask } : undefined}
           className={cn(
-            "absolute select-none font-bold text-[clamp(5rem,16vw,10rem)] text-white leading-none tracking-tighter",
+            "absolute text-[clamp(5rem,16vw,10rem)] leading-none font-bold tracking-tighter text-white select-none",
             !enabled && "text-white/90",
           )}
         >
@@ -62,8 +62,8 @@ export function NotFoundSpotlight({
       </motion.div>
 
       <div className="flex flex-col items-center gap-2">
-        <p className="font-semibold text-foreground text-lg">{title}</p>
-        <p className="max-w-sm text-muted-foreground text-sm">{description}</p>
+        <p className="text-foreground text-lg font-semibold">{title}</p>
+        <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
       </div>
 
       <NotFoundActions

@@ -76,7 +76,7 @@ export function ToolApprovalCode({ code, language = "bash", className }: ToolApp
       className={cn(
         // Parameter values sit in a narrow grid column with nowhere to scroll
         // on touch, so they wrap instead of clipping (as ToolResultOutput does).
-        "wrap-break-word whitespace-pre-wrap rounded-lg border border-border/50 bg-muted/30 px-2.5 py-2",
+        "border-border/50 bg-muted/30 rounded-lg border px-2.5 py-2 wrap-break-word whitespace-pre-wrap",
         className,
       )}
     />
@@ -126,7 +126,7 @@ export function ToolApproval({
       data-state={status}
       aria-busy={busy}
       className={cn(
-        "w-full overflow-hidden rounded-2xl border border-border/60 bg-muted/20 text-sm",
+        "border-border/60 bg-muted/20 w-full overflow-hidden rounded-2xl border text-sm",
         className,
       )}
     >
@@ -134,7 +134,7 @@ export function ToolApproval({
         <span
           aria-hidden="true"
           className={cn(
-            "mt-0.5 grid size-8 shrink-0 place-items-center rounded-xl border border-border/60 bg-background text-muted-foreground",
+            "border-border/60 bg-background text-muted-foreground mt-0.5 grid size-8 shrink-0 place-items-center rounded-xl border",
             error && "text-destructive",
           )}
         >
@@ -154,12 +154,12 @@ export function ToolApproval({
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 items-start justify-between gap-3">
             <div className="min-w-0">
-              <div className="font-medium text-foreground">{title}</div>
-              <div className="mt-0.5 truncate font-mono text-muted-foreground text-xs">{tool}</div>
+              <div className="text-foreground font-medium">{title}</div>
+              <div className="text-muted-foreground mt-0.5 truncate font-mono text-xs">{tool}</div>
             </div>
             <span
               className={cn(
-                "shrink-0 rounded-full border px-2 py-0.5 font-medium text-[11px] transition-colors",
+                "shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium transition-colors",
                 getStatusBadgeClass(status),
               )}
             >
@@ -167,7 +167,7 @@ export function ToolApproval({
             </span>
           </div>
           {description ? (
-            <p className="mt-2 text-muted-foreground leading-5">{description}</p>
+            <p className="text-muted-foreground mt-2 leading-5">{description}</p>
           ) : null}
 
           {parameters.length ? (
@@ -176,7 +176,7 @@ export function ToolApproval({
               aria-expanded={currentOpen}
               aria-controls={detailsId}
               onClick={() => setOpen(!currentOpen)}
-              className="mt-2 inline-flex items-center gap-1 rounded-md font-medium text-muted-foreground text-xs outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              className="text-muted-foreground hover:text-foreground focus-visible:ring-ring mt-2 inline-flex items-center gap-1 rounded-md text-xs font-medium transition-colors outline-none focus-visible:ring-2"
             >
               View details
               <motion.span
@@ -192,14 +192,14 @@ export function ToolApproval({
       </div>
 
       <AgentDisclosure id={detailsId} open={currentOpen}>
-        <dl className="mx-4 mb-4 grid gap-2 rounded-xl border border-border/50 bg-background/70 p-3">
+        <dl className="border-border/50 bg-background/70 mx-4 mb-4 grid gap-2 rounded-xl border p-3">
           {parameters.map((parameter) => (
             <div
               key={parameter.id}
               className="grid grid-cols-[minmax(0,7rem)_minmax(0,1fr)] items-center gap-3 text-xs"
             >
               <dt className="text-muted-foreground">{parameter.label}</dt>
-              <dd className="wrap-break-word min-w-0 font-mono text-foreground/85">
+              <dd className="text-foreground/85 min-w-0 font-mono wrap-break-word">
                 {parameter.value}
               </dd>
             </div>
@@ -214,14 +214,14 @@ export function ToolApproval({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduce ? 0.12 : 0.22, ease: EASE_OUT }}
-            className="flex flex-wrap items-center gap-2 border-border/60 border-t px-4 py-3"
+            className="border-border/60 flex flex-wrap items-center gap-2 border-t px-4 py-3"
           >
             <motion.button
               type="button"
               onClick={onApprove}
               whileTap={reduce ? undefined : { scale: 0.97 }}
               transition={SPRING_PRESS}
-              className="rounded-xl bg-foreground px-3 py-1.5 font-medium text-background text-xs outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="bg-foreground text-background focus-visible:ring-ring rounded-xl px-3 py-1.5 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             >
               Allow once
             </motion.button>
@@ -231,7 +231,7 @@ export function ToolApproval({
                 onClick={onAlwaysAllow}
                 whileTap={reduce ? undefined : { scale: 0.97 }}
                 transition={SPRING_PRESS}
-                className="rounded-xl border border-border/60 bg-background px-3 py-1.5 font-medium text-foreground text-xs outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+                className="border-border/60 bg-background text-foreground hover:bg-muted focus-visible:ring-ring rounded-xl border px-3 py-1.5 text-xs font-medium transition-colors outline-none focus-visible:ring-2"
               >
                 Always allow
               </motion.button>
@@ -239,7 +239,7 @@ export function ToolApproval({
             <button
               type="button"
               onClick={onDeny}
-              className="rounded-xl px-3 py-1.5 font-medium text-muted-foreground text-xs outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              className="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded-xl px-3 py-1.5 text-xs font-medium transition-colors outline-none focus-visible:ring-2"
             >
               Deny
             </button>

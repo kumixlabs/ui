@@ -282,7 +282,7 @@ export function SortableListItem({
         aria-posinset={context.ids.indexOf(id) + 1}
         aria-setsize={context.ids.length}
         className={cn(
-          "relative flex items-center gap-3 rounded-2xl border border-border bg-background p-3",
+          "border-border bg-background relative flex items-center gap-3 rounded-2xl border p-3",
           dragging && "shadow-lg",
           context.itemClassName,
           className,
@@ -344,7 +344,7 @@ export function SortableListHandle({
         }
       }}
       className={cn(
-        "flex size-9 shrink-0 touch-none items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-40",
+        "text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring flex size-9 shrink-0 touch-none items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40",
         className,
       )}
       style={{
@@ -377,7 +377,7 @@ export function SortableListUndo({
       type="button"
       disabled={disabled || context.disabled || !context.canUndo}
       className={cn(
-        "mt-4 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-muted-foreground text-xs transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40",
+        "text-muted-foreground hover:text-foreground focus-visible:ring-ring mt-4 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40",
         className,
       )}
       onClick={(event) => {

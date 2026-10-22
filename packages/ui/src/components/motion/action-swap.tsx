@@ -184,7 +184,7 @@ export function ActionSwapText({
   return (
     <span
       className={cn(
-        "relative -my-[0.08em] inline-block max-w-full whitespace-nowrap py-[0.08em] align-bottom",
+        "relative -my-[0.08em] inline-block max-w-full py-[0.08em] align-bottom whitespace-nowrap",
         className,
       )}
       style={{
@@ -365,7 +365,7 @@ export function ActionSwapButton({
           layout="position"
           layoutDependency={activeItem.id}
           transition={layoutTransition}
-          className="inline-flex min-w-0 max-w-full"
+          className="inline-flex max-w-full min-w-0"
         >
           <ActionSwapText value={activeItem.id} animation={animation}>
             {activeItem.label}

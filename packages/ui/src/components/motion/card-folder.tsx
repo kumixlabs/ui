@@ -138,7 +138,7 @@ export function CardFolder({
       data-open={isOpen ? "true" : "false"}
       data-details-visible={areDetailsVisible ? "true" : "false"}
       className={cn(
-        "perspective-[1200px] relative aspect-1029/592 w-96 max-w-full select-none",
+        "relative aspect-1029/592 w-96 max-w-full select-none perspective-[1200px]",
         className,
       )}
     >
@@ -150,7 +150,7 @@ export function CardFolder({
         onClick={handleClick}
         whileTap={reduce || disabled ? undefined : { scale: 0.96 }}
         transition={reduce ? { duration: 0 } : SPRING_PRESS}
-        className="absolute inset-0 block rounded-2xl text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
+        className="focus-visible:ring-ring focus-visible:ring-offset-background absolute inset-0 block rounded-2xl text-left outline-none focus-visible:ring-2 focus-visible:ring-offset-4 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <motion.span
           data-slot="card-folder-back"
@@ -159,7 +159,7 @@ export function CardFolder({
           animate={reduce ? { opacity: isOpen ? 0 : 1 } : undefined}
           transition={PURSE_REDUCED_TRANSITION}
           style={reduce ? undefined : { opacity: purseOpacity, transform: backTransform }}
-          className="absolute inset-x-0 top-[10%] bottom-0 origin-[center_bottom] rounded-2xl border border-foreground/10 bg-background"
+          className="border-foreground/10 bg-background absolute inset-x-0 top-[10%] bottom-0 origin-[center_bottom] rounded-2xl border"
         />
 
         <motion.span
@@ -168,7 +168,7 @@ export function CardFolder({
           animate={reduce ? { transform: "translateY(0%) scale(1)" } : undefined}
           style={reduce ? undefined : { transform: cardTransform }}
           className={cn(
-            "absolute top-0 right-[4.7%] left-[4.7%] z-10 aspect-[1.586/1] origin-[center_bottom] overflow-hidden rounded-xl border border-foreground/10 bg-background will-change-transform",
+            "border-foreground/10 bg-background absolute top-0 right-[4.7%] left-[4.7%] z-10 aspect-[1.586/1] origin-[center_bottom] overflow-hidden rounded-xl border will-change-transform",
             cardClassName,
           )}
         >
@@ -183,7 +183,7 @@ export function CardFolder({
         animate={reduce ? { opacity: isOpen ? 0 : 1 } : undefined}
         transition={PURSE_REDUCED_TRANSITION}
         style={reduce ? undefined : { opacity: purseOpacity, transform: frontTransform }}
-        className="backface-hidden pointer-events-none absolute inset-x-0 top-1/2 bottom-0 z-20 origin-[center_bottom]"
+        className="pointer-events-none absolute inset-x-0 top-1/2 bottom-0 z-20 origin-[center_bottom] backface-hidden"
       >
         <svg
           aria-hidden="true"
@@ -222,7 +222,7 @@ export function CardFolder({
               whileTap={reduce || disabled ? undefined : { scale: 0.96 }}
               transition={reduce ? { duration: 0.12 } : SPRING_PRESS}
               className={cn(
-                "z-30 flex size-10 shrink-0 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50",
+                "text-muted-foreground hover:text-foreground focus-visible:ring-ring z-30 flex size-10 shrink-0 items-center justify-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50",
                 isOpen ? "pointer-events-none" : "pointer-events-auto",
               )}
             >
@@ -250,26 +250,26 @@ export function CardFolder({
 
             <span className="flex shrink-0 items-end gap-3.5 pt-2">
               <span className="flex flex-col gap-0.5">
-                <span className="font-medium text-[9px] text-muted-foreground/65 uppercase tracking-[0.12em]">
+                <span className="text-muted-foreground/65 text-[9px] font-medium tracking-[0.12em] uppercase">
                   Expiry
                 </span>
-                <span className="font-medium text-foreground text-xs tabular-nums">{expiry}</span>
+                <span className="text-foreground text-xs font-medium tabular-nums">{expiry}</span>
               </span>
               <span className="flex flex-col gap-0.5">
-                <span className="font-medium text-[9px] text-muted-foreground/65 uppercase tracking-[0.12em]">
+                <span className="text-muted-foreground/65 text-[9px] font-medium tracking-[0.12em] uppercase">
                   CVV
                 </span>
                 <DigitSwap
                   value={areDetailsVisible ? cvv : maskedCvv}
                   animationKey={areDetailsVisible ? "revealed" : "masked"}
                   direction={areDetailsVisible ? "up" : "down"}
-                  className="font-medium text-foreground text-xs tabular-nums"
+                  className="text-foreground text-xs font-medium tabular-nums"
                 />
               </span>
             </span>
           </span>
           <span className="flex min-w-0 items-baseline justify-between gap-4">
-            <span className="truncate font-medium text-foreground text-lg leading-tight">
+            <span className="text-foreground truncate text-lg leading-tight font-medium">
               {title}
             </span>
             <DigitSwap
@@ -279,7 +279,7 @@ export function CardFolder({
               suffixLength={4}
               glyphClassName={areDetailsVisible ? "text-foreground" : "text-muted-foreground"}
               suffixClassName="text-foreground"
-              className="truncate font-mono text-xs tabular-nums tracking-[0.08em]"
+              className="truncate font-mono text-xs tracking-[0.08em] tabular-nums"
             />
           </span>
         </span>
@@ -294,7 +294,7 @@ export function CardFolder({
           animate={{ y: isOpen && !reduce ? -14 : 0 }}
           whileTap={reduce || disabled ? undefined : { scale: 0.96 }}
           transition={transition}
-          className="absolute top-[10%] right-[2.6%] z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full text-white/65 outline-none transition-colors hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="absolute top-[10%] right-[2.6%] z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full text-white/65 transition-colors outline-none hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white disabled:cursor-not-allowed disabled:opacity-50"
         >
           <EllipsisVertical className="size-4" aria-hidden="true" />
         </motion.button>

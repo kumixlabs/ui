@@ -139,7 +139,7 @@ function FilterPathSeparator() {
     <ChevronRightIcon
       aria-hidden="true"
       data-slot="filter-path-separator"
-      className="mx-[3px] inline-block size-3 shrink-0 self-center align-[calc(0.3635em-0.375rem)] text-muted-foreground"
+      className="text-muted-foreground mx-[3px] inline-block size-3 shrink-0 self-center align-[calc(0.3635em-0.375rem)]"
     />
   );
 }
@@ -161,7 +161,7 @@ function FilterPathEllipsis({ full }: { full: string }) {
                  is all that parts a name from the next, and this used to STACK
                  an `mx` on it. Plain inline, no `vertical-align`: `middle` sat
                  the dots 1.7px low and inline-block grew the run to 21.17px. */
-              className="shrink-0 self-center text-muted-foreground"
+              className="text-muted-foreground shrink-0 self-center"
             >
               ...
             </span>
@@ -929,7 +929,7 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
         /* Dropped while the path is collapsed: the ellipsis inside carries the
            same sentence as a tooltip, and the two would stack. */
         title={pathCollapsed ? undefined : pathText}
-        className="cursor-default gap-1.5 bg-background dark:bg-input/30"
+        className="bg-background dark:bg-input/30 cursor-default gap-1.5"
       >
         {field.icon}
         {/* Zero gap INSIDE the path, so the separator's own margin is the only
@@ -944,7 +944,7 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
           <ButtonGroupText
             render={<button type="button" />}
             className={cn(
-              "cursor-default bg-background hover:bg-accent dark:bg-input/30",
+              "bg-background hover:bg-accent dark:bg-input/30 cursor-default",
               /* The operator is connective tissue between the field and the
                  value, so it reads quieter than either - unless it is still
                  the prompt "Select condition", the one thing to act on. */
@@ -976,7 +976,7 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
                  more to say than the segment already says. */
               title={valueFullText === valueText ? undefined : valueFullText}
               className={cn(
-                "cursor-default bg-background hover:bg-accent dark:bg-input/30",
+                "bg-background hover:bg-accent dark:bg-input/30 cursor-default",
                 valueEmpty && "text-muted-foreground",
               )}
               onPointerDown={() => focusSegment("value")}

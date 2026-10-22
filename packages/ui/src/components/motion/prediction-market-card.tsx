@@ -86,7 +86,7 @@ export function PredictionMarketCard({
     <article
       aria-labelledby={titleId}
       className={cn(
-        "flex h-full w-full min-w-0 flex-col overflow-hidden rounded-3xl bg-card text-foreground",
+        "bg-card text-foreground flex h-full w-full min-w-0 flex-col overflow-hidden rounded-3xl",
         className,
       )}
     >
@@ -94,7 +94,7 @@ export function PredictionMarketCard({
         {icon && (
           <div
             aria-hidden
-            className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-background text-foreground"
+            className="border-border bg-background text-foreground flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full border"
           >
             {icon}
           </div>
@@ -102,11 +102,11 @@ export function PredictionMarketCard({
         <div className="min-w-0 flex-1">
           <h3
             id={titleId}
-            className="wrap-break-word font-display font-medium text-base leading-snug tracking-tight"
+            className="font-display text-base leading-snug font-medium tracking-tight wrap-break-word"
           >
             {title}
           </h3>
-          <p className="mt-1 flex flex-wrap items-center gap-1.5 text-muted-foreground text-xs">
+          <p className="text-muted-foreground mt-1 flex flex-wrap items-center gap-1.5 text-xs">
             {status && (
               <span className={cn("inline-flex items-center gap-1.5", live && "text-rose-500")}>
                 {live && <span aria-hidden className="size-1.5 rounded-full bg-current" />}
@@ -119,7 +119,7 @@ export function PredictionMarketCard({
         </div>
       </header>
 
-      <div className="mx-2 mb-2 flex flex-1 flex-col rounded-3xl bg-background px-4 py-3">
+      <div className="bg-background mx-2 mb-2 flex flex-1 flex-col rounded-3xl px-4 py-3">
         <div className="flex flex-1 flex-col justify-center gap-3">
           {outcomes.map((outcome, index) => (
             <div key={outcome.id} className="space-y-1">
@@ -127,22 +127,22 @@ export function PredictionMarketCard({
                 {outcome.icon && (
                   <span
                     aria-hidden
-                    className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted"
+                    className="bg-muted flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full"
                   >
                     {outcome.icon}
                   </span>
                 )}
-                <span className="wrap-break-word min-w-0 flex-1 font-medium text-sm">
+                <span className="min-w-0 flex-1 text-sm font-medium wrap-break-word">
                   {outcome.label}
                 </span>
                 <Tooltip
                   content="Potential payout per $1 if this outcome wins, including your stake. Before fees; based on the displayed price."
-                  className="w-44 whitespace-normal text-center leading-relaxed"
+                  className="w-44 text-center leading-relaxed whitespace-normal"
                 >
                   <button
                     type="button"
                     aria-label={`Potential payout for ${outcome.label}`}
-                    className="shrink-0 rounded-md py-2 text-muted-foreground text-sm tabular-nums focus-visible:outline-2 focus-visible:outline-ring"
+                    className="text-muted-foreground focus-visible:outline-ring shrink-0 rounded-md py-2 text-sm tabular-nums focus-visible:outline-2"
                   >
                     {probability(outcome.probability) > 0
                       ? `${(1 / probability(outcome.probability)).toFixed(1)}×`
@@ -168,7 +168,7 @@ export function PredictionMarketCard({
           ))}
         </div>
 
-        <footer className="mt-2 flex shrink-0 items-center gap-2 text-muted-foreground text-xs">
+        <footer className="text-muted-foreground mt-2 flex shrink-0 items-center gap-2 text-xs">
           {chartPoints && (
             <svg
               aria-hidden="true"
@@ -204,7 +204,7 @@ export function PredictionMarketCard({
             whileTap={reduce ? undefined : { scale: 0.85 }}
             transition={SPRING_PRESS}
             className={cn(
-              "ml-auto flex size-9 shrink-0 items-center justify-center rounded-xl transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring",
+              "hover:bg-muted focus-visible:outline-ring ml-auto flex size-9 shrink-0 items-center justify-center rounded-xl transition-colors focus-visible:outline-2",
               saved && "text-foreground",
             )}
           >
@@ -250,7 +250,7 @@ function MarketOddsButton({
       whileTap={reduce ? undefined : { scale: 0.96 }}
       transition={SPRING_PRESS}
       className={cn(
-        "relative flex min-h-10 min-w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-background px-3 font-semibold text-foreground text-sm shadow-[0_3px_0] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
+        "border-border bg-background text-foreground hover:bg-muted focus-visible:outline-ring relative flex min-h-10 min-w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border px-3 text-sm font-semibold shadow-[0_3px_0] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
         positive &&
           "border-emerald-500/25 bg-emerald-500/10 text-emerald-700 shadow-emerald-500/20 hover:bg-emerald-500/15 dark:text-emerald-400",
         !positive &&

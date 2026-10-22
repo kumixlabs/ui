@@ -335,8 +335,8 @@ export const dataGridCellSelectionCellClasses = cn(
   // start/end
   // so RTL mirrors for free; a separate override rule cannot do this,
   // equal-specificity variants leave shorthand-vs-longhand to sort order.
-  "data-[cell-selected]:before:pointer-events-none data-[cell-selected]:before:absolute data-[cell-selected]:before:start-[var(--data-grid-overlay-start,-1px)] data-[cell-selected]:before:end-[var(--data-grid-overlay-end,-1px)] data-[cell-selected]:before:top-[var(--data-grid-overlay-top,-1px)] data-[cell-selected]:before:bottom-[var(--data-grid-overlay-bottom,-1px)] data-[cell-selected]:before:border-primary data-[cell-selected]:before:content-['']",
-  "data-[cell-focused]:before:pointer-events-none data-[cell-focused]:before:absolute data-[cell-focused]:before:start-[var(--data-grid-overlay-start,-1px)] data-[cell-focused]:before:end-[var(--data-grid-overlay-end,-1px)] data-[cell-focused]:before:top-[var(--data-grid-overlay-top,-1px)] data-[cell-focused]:before:bottom-[var(--data-grid-overlay-bottom,-1px)] data-[cell-focused]:before:border-primary data-[cell-focused]:before:content-['']",
+  "data-[cell-selected]:before:border-primary data-[cell-selected]:before:pointer-events-none data-[cell-selected]:before:absolute data-[cell-selected]:before:start-[var(--data-grid-overlay-start,-1px)] data-[cell-selected]:before:end-[var(--data-grid-overlay-end,-1px)] data-[cell-selected]:before:top-[var(--data-grid-overlay-top,-1px)] data-[cell-selected]:before:bottom-[var(--data-grid-overlay-bottom,-1px)] data-[cell-selected]:before:content-['']",
+  "data-[cell-focused]:before:border-primary data-[cell-focused]:before:pointer-events-none data-[cell-focused]:before:absolute data-[cell-focused]:before:start-[var(--data-grid-overlay-start,-1px)] data-[cell-focused]:before:end-[var(--data-grid-overlay-end,-1px)] data-[cell-focused]:before:top-[var(--data-grid-overlay-top,-1px)] data-[cell-focused]:before:bottom-[var(--data-grid-overlay-bottom,-1px)] data-[cell-focused]:before:content-['']",
   // Interior dividers: selected cells repaint their own end and bottom
   // gridlines on the overlay, so gridline-less grids still divide a range.
   // The gray color is guarded by not- variants (higher specificity), so a
@@ -352,7 +352,7 @@ export const dataGridCellSelectionCellClasses = cn(
   // Edge sides are logical (border-e/border-s): the feature derives edges
   // from display-order column indexes, which mirror in RTL.
   "data-[cell-focused]:not-data-[cell-selected]:before:border",
-  "data-[cell-edge-left]:before:border-s data-[cell-edge-right]:before:border-e data-[cell-edge-top]:before:border-t data-[cell-edge-bottom]:before:border-b",
+  "data-[cell-edge-bottom]:before:border-b data-[cell-edge-left]:before:border-s data-[cell-edge-right]:before:border-e data-[cell-edge-top]:before:border-t",
   // While a fill drag is live the preview border is the ONE painter for
   // the whole pending region, so the source cells' own chrome rests -
   // otherwise its lines double against the region border at every shared

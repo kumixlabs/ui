@@ -136,7 +136,7 @@ export function OrderBook({ children, className, label = "Order book", ...props 
       <section
         aria-label={label}
         className={cn(
-          "w-full max-w-[560px] overflow-hidden rounded-2xl border border-border bg-background font-mono text-xs tabular-nums",
+          "border-border bg-background w-full max-w-[560px] overflow-hidden rounded-2xl border font-mono text-xs tabular-nums",
           className,
         )}
       >
@@ -162,7 +162,7 @@ export function OrderBookHeader({ className }: { className?: string }) {
     <div
       aria-hidden="true"
       className={cn(
-        "grid grid-cols-3 py-3 text-[10px] text-muted-foreground uppercase tracking-wider",
+        "text-muted-foreground grid grid-cols-3 py-3 text-[10px] tracking-wider uppercase",
         className,
       )}
     >
@@ -205,7 +205,7 @@ export function OrderBookSide({ side, className }: { side: "bid" | "ask"; classN
       <tbody onPointerLeave={() => setActiveLevel(null)}>
         {rows.length === 0 ? (
           <tr>
-            <td colSpan={3} className="px-4 py-6 text-center text-muted-foreground">
+            <td colSpan={3} className="text-muted-foreground px-4 py-6 text-center">
               No {side === "ask" ? "asks" : "bids"}
             </td>
           </tr>
@@ -239,15 +239,15 @@ export function OrderBookSpread({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "my-1 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-border border-y bg-muted/40 px-4 py-3",
+        "border-border bg-muted/40 my-1 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-y px-4 py-3",
         className,
       )}
     >
-      <span className="font-medium text-base tracking-tight">
+      <span className="text-base font-medium tracking-tight">
         <span className="sr-only">Reference price: </span>
         {price == null ? "—" : formatPrice(price)}
       </span>
-      <span className="text-[10px] text-muted-foreground">
+      <span className="text-muted-foreground text-[10px]">
         {spread == null || midpoint == null
           ? "Spread unavailable"
           : spread < 0
@@ -264,7 +264,7 @@ export function OrderBookBalance({ className }: { className?: string }) {
   const total = bidTotal + askTotal;
   const ratio = total ? bidTotal / total : 0.5;
   return (
-    <div className={cn("space-y-2 border-border border-t px-4 pt-3 pb-3", className)}>
+    <div className={cn("border-border space-y-2 border-t px-4 pt-3 pb-3", className)}>
       <div className="flex justify-between text-[10px]">
         <span className="text-emerald-700 dark:text-emerald-400">
           Bids {total ? `${(ratio * 100).toFixed(1)}%` : "—"}
@@ -305,7 +305,7 @@ export function OrderBookDepthSummary({
     <p
       aria-live="polite"
       className={cn(
-        "flex min-h-10 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-border border-t px-4 py-2 text-muted-foreground",
+        "border-border text-muted-foreground flex min-h-10 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t px-4 py-2",
         className,
       )}
     >

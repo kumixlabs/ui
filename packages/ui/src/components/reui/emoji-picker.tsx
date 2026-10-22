@@ -2031,7 +2031,7 @@ export function EmojiPickerPanel({ className, style, children, ...props }: Emoji
       className={cn(
         /* Sized from the columns: the list hides its scrollbar, so nothing
            else takes width. */
-        "flex min-h-0 w-[calc(var(--emoji-picker-columns)*var(--emoji-picker-cell)+var(--emoji-picker-gutter)*2)] min-w-0 max-w-full flex-col data-disabled:pointer-events-none data-[columns=auto]:w-full data-disabled:opacity-50",
+        "flex min-h-0 w-[calc(var(--emoji-picker-columns)*var(--emoji-picker-cell)+var(--emoji-picker-gutter)*2)] max-w-full min-w-0 flex-col data-disabled:pointer-events-none data-disabled:opacity-50 data-[columns=auto]:w-full",
         /* The sticky headers paint the surface they sit on: an inline panel
            belongs in a Card, a popup is the popover. */
         inline
@@ -2771,7 +2771,7 @@ export function EmojiPickerPreview({ className, ...props }: EmojiPickerPreviewPr
     <div
       aria-hidden="true"
       data-slot="emoji-picker-preview"
-      className={cn("flex min-w-0 flex-1 select-none items-center gap-2", className)}
+      className={cn("flex min-w-0 flex-1 items-center gap-2 select-none", className)}
       {...props}
     >
       {emoji ? (
@@ -2781,7 +2781,7 @@ export function EmojiPickerPreview({ className, ...props }: EmojiPickerPreviewPr
               the shortcode wraps onto a second, clipped line rather than
               truncating to a stray colon; a long name truncates. */}
           <span className="flex h-5 min-w-0 flex-1 flex-wrap items-baseline gap-x-2 overflow-hidden">
-            <span className="max-w-full truncate font-medium text-sm leading-5">
+            <span className="max-w-full truncate text-sm leading-5 font-medium">
               {functions.formatLabel(emoji.label)}
             </span>
             {shortcode && (
@@ -2791,10 +2791,10 @@ export function EmojiPickerPreview({ className, ...props }: EmojiPickerPreviewPr
         </>
       ) : (
         <>
-          <span className="flex size-[22px] shrink-0 items-center justify-center text-muted-foreground [&_svg]:size-5">
+          <span className="text-muted-foreground flex size-[22px] shrink-0 items-center justify-center [&_svg]:size-5">
             {TRIGGER_ICON}
           </span>
-          <span className="truncate text-muted-foreground text-sm">{labels.preview}</span>
+          <span className="text-muted-foreground truncate text-sm">{labels.preview}</span>
         </>
       )}
     </div>
