@@ -71,9 +71,9 @@ CI (PR / release): **build → lint → types:check**. No unit test suite.
 packages/ui/src/
   components/ui/       # shadcn
   components/reui/     # reui (data-grid w/ spreadsheet cell selection & i18n, event-calendar, gantt, code-block, …)
-  components/motion/   # beui (tilt-card, morphing-modal, morphing-tabs, breadcrumb, card, color-selector, color-picker, morphing-search-chips, loader, shader-background, file-tree, multi-select, adaptive-stepper, liquid, not-found/*, …)
+  components/motion/   # beui (tilt-card, morphing-modal, morphing-tabs, breadcrumb, card, color-selector, color-picker, morphing-search-chips, loader, shader-background, file-tree, multi-select, adaptive-stepper, liquid, timeline, avatar-group, card-dealer, pagination, not-found/*, …)
   components/agents/   # beui AI agents (prompt-input, message-scroller, todo-list, code-block, …)
-  components/charts/   # charts (bump, candlestick, composition, donut, funnel, heatmap, order-book, price-target-fan, …)
+  components/charts/   # charts (bar, bump, candlestick, composition, donut, funnel, heatmap, line, order-book, price-target-fan, sankey, sparkline, …)
   components/custom/   # hand-written (confirm-dialog, toast, …)
   hooks/
   lib/                 # shared utils (ease, tick-sound, text-shimmer, favicon, presence-gate, touch, command-search, highlighter)
