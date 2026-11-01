@@ -1,5 +1,5 @@
 ---
-"@kumix/ui": path
+"@kumix/ui": patch
 ---
 
 New charts: `bar-chart` (grouped/stacked layouts, vertical/horizontal orientation), `line-chart` (line/area variants, curve options), `sankey-chart` (flow diagram), `sparkline` (inline mini-trend with gap handling for missing values), plus shared `xy/` model/scale/axis/tooltip/inspection infrastructure consumed by them (no public entry).
