@@ -287,9 +287,8 @@ export function BreadcrumbEllipsis({
             type="button"
             aria-label={label}
             className="text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:ring-ring inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none"
-            onClick={(event) => {
-              focusOnOpen.current = event.detail === 0;
-            }}
+            // Enter and Space open through MorphPopoverTrigger, which moves
+            // focus to the first path itself. ArrowDown opens without a click.
             onKeyDown={(event) => {
               if (event.key === "ArrowDown") {
                 event.preventDefault();

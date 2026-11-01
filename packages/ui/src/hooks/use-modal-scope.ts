@@ -2,8 +2,8 @@
 
 import { type RefObject, useEffect, useLayoutEffect, useRef } from "react";
 
-const FOCUSABLE =
-  'button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
+import { FOCUSABLE_SELECTOR } from "../lib/focusable";
+
 const inertOwners = new Map<HTMLElement, { count: number; previous: boolean }>();
 let scrollOwners = 0;
 let previousOverflow = "";
@@ -41,7 +41,7 @@ export function useModalScope(
       document.body.style.overflow = "hidden";
     }
     const focusables = () =>
-      Array.from(panel.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []).filter(
+      Array.from(panel.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR) ?? []).filter(
         (element) => element.tabIndex >= 0 && !element.closest("[inert]"),
       );
     const focusFirst = () => (focusables()[0] ?? panel.current)?.focus({ preventScroll: true });
