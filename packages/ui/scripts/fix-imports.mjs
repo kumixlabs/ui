@@ -44,11 +44,11 @@ function normalize(p) {
 }
 
 const targetDirs = [
-  { dir: join(SRC_DIR, "components", "ui"), exts: [".tsx"] },
-  { dir: join(SRC_DIR, "components", "reui"), exts: [".tsx"] },
-  { dir: join(SRC_DIR, "components", "motion"), exts: [".tsx"] },
-  { dir: join(SRC_DIR, "components", "agents"), exts: [".tsx"] },
-  { dir: join(SRC_DIR, "components", "charts"), exts: [".tsx"] },
+  { dir: join(SRC_DIR, "components", "ui"), exts: [".tsx", ".ts"] },
+  { dir: join(SRC_DIR, "components", "reui"), exts: [".tsx", ".ts"] },
+  { dir: join(SRC_DIR, "components", "motion"), exts: [".tsx", ".ts"] },
+  { dir: join(SRC_DIR, "components", "agents"), exts: [".tsx", ".ts"] },
+  { dir: join(SRC_DIR, "components", "charts"), exts: [".tsx", ".ts"] },
   { dir: join(SRC_DIR, "hooks"), exts: [".ts", ".tsx"] },
 ];
 
@@ -85,7 +85,11 @@ for (const filePath of allFiles) {
   const fileDir = dirname(filePath);
 
   if (!content.startsWith('"use client"') && !content.startsWith("'use client'")) {
-    content = `"use client";\n\n${content}`;
+    // Skip files that already carry the directive after a biome-ignore comment.
+    const afterIgnore = content.replace(/^(\/\*\* biome-ignore[\s\S]*?\*\/\s*)/, "");
+    if (!afterIgnore.startsWith('"use client"') && !afterIgnore.startsWith("'use client'")) {
+      content = `"use client";\n\n${content}`;
+    }
   }
 
   content = content
