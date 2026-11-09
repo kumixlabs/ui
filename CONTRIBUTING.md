@@ -9,6 +9,7 @@ This project and everyone participating in it is governed by our [Code of Conduc
 ## Why Contribute?
 
 This package is community-driven. Your contributions help:
+
 - Improve developer experience and documentation
 - Fix issues and enhance reliability
 - Extend tooling and workflow capabilities
@@ -110,6 +111,7 @@ bun run format
 ### Branch Naming
 
 Use descriptive branch names:
+
 - `feature/add-new-capability` - For new features
 - `fix/build-script-bug` - For bug fixes
 - `docs/update-readme` - For documentation
@@ -130,6 +132,7 @@ test(package): add basic type check script
 **Format**: `type(scope): description`
 
 **Types**:
+
 - `feat` or `feature`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -159,6 +162,7 @@ bun run format
 ```
 
 Make sure:
+
 - All TypeScript types are correct
 - No build errors or warnings
 - Code follows the style guide
@@ -239,6 +243,7 @@ Import examples: `@kumix/ui/ui/button`, `@kumix/ui/reui/kanban`, `@kumix/ui/hook
 ### Publishing Packages (Maintainers Only)
 
 This project uses [Changesets](https://github.com/changesets/changesets) for version management:
+
 1. **Create a changeset**:
 
    ```bash
@@ -272,6 +277,7 @@ If you discover a security vulnerability, please report it privately as describe
 ## Questions and Support
 
 If you have questions or need help:
+
 - Check the [documentation](./README.md) and package READMEs
 - Open an issue in your repository
 - Start a discussion in your repository
