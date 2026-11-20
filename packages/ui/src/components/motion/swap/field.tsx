@@ -4,7 +4,9 @@ import { useId } from "react";
 import { ChevronDown, Loader2, Wallet } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
+import { useMessages } from "../../../lib/i18n";
 import { EASE } from "./constants";
+import { type SwapMessages, swapMessages } from "./messages";
 import { TokenDot } from "./token-badges";
 import type { Chain, Token, TokenSide } from "./types";
 import { formatAmount, sanitizeAmount } from "./utils";
@@ -18,6 +20,7 @@ export function Field({
   editable,
   quoting,
   onOpenPicker,
+  labels,
 }: {
   side: TokenSide;
   token: Token;
@@ -27,7 +30,9 @@ export function Field({
   editable: boolean;
   quoting: boolean;
   onOpenPicker: () => void;
+  labels?: Partial<SwapMessages>;
 }) {
+  const t = useMessages("swap", swapMessages, labels);
   const id = useId();
   const usdValue = (Number(amount) || 0) * (token.usd ?? 0);
 
@@ -37,7 +42,7 @@ export function Field({
         htmlFor={id}
         className="text-muted-foreground mb-2 block text-[11px] font-medium tracking-wider uppercase"
       >
-        {side === "from" ? "You pay" : "You get"}
+        {side === "from" ? t("youPay") : t("youGet")}
       </label>
 
       <div className="flex items-center justify-between gap-3">
@@ -107,7 +112,7 @@ export function Field({
             onClick={() => onAmount?.(String(token.balance))}
             className="text-muted-foreground hover:bg-muted/60 hover:text-foreground rounded px-1.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase"
           >
-            Max
+            {t("max")}
           </button>
         ) : null}
       </div>

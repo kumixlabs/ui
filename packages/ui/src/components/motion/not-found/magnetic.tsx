@@ -2,18 +2,26 @@
 
 import { cn } from "@kumix/utils";
 import { Magnetic } from "../magnetic";
-import { NOT_FOUND_DEFAULTS, NotFoundActions, type NotFoundProps, NotFoundStage } from "./shared";
+import {
+  NOT_FOUND_DEFAULTS,
+  NotFoundActions,
+  type NotFoundProps,
+  NotFoundStage,
+  useNotFoundMessages,
+} from "./shared";
 
 export function NotFoundMagnetic({
   className,
   code = NOT_FOUND_DEFAULTS.code,
-  title = NOT_FOUND_DEFAULTS.title,
-  description = NOT_FOUND_DEFAULTS.description,
+  title,
+  description,
   homeHref,
   homeLabel,
   browseHref,
   browseLabel,
+  labels,
 }: NotFoundProps) {
+  const t = useNotFoundMessages(labels);
   const chars = code.split("");
 
   return (
@@ -32,8 +40,8 @@ export function NotFoundMagnetic({
       </h1>
 
       <div className="flex flex-col items-center gap-2">
-        <p className="text-foreground text-lg font-semibold">{title}</p>
-        <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
+        <p className="text-foreground text-lg font-semibold">{title ?? t("title")}</p>
+        <p className="text-muted-foreground max-w-sm text-sm">{description ?? t("description")}</p>
       </div>
 
       <NotFoundActions
@@ -41,6 +49,7 @@ export function NotFoundMagnetic({
         homeLabel={homeLabel}
         browseHref={browseHref}
         browseLabel={browseLabel}
+        labels={labels}
       />
     </NotFoundStage>
   );

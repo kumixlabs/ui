@@ -24,6 +24,7 @@ import { cn } from "@kumix/utils";
 import { useOnOpen } from "../../hooks/use-on-open";
 import { useRowCursor } from "../../hooks/use-row-cursor";
 import { EASE_OUT, SPRING_LAYOUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 
 // Keeps the Wallet Card feel with a little more time to read the morph.
 const SEARCH_MORPH: Transition = {
@@ -48,6 +49,17 @@ export type MorphingSearchItem = {
   onSelect?: () => void;
 };
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const morphingSearchMessages = {
+  placeholder: "Search",
+  empty: "No results found.",
+  close: "Close search",
+  dialog: "Search",
+  results: "Search results",
+};
+
+export type MorphingSearchMessages = typeof morphingSearchMessages;
+
 export interface MorphingSearchProps {
   items: MorphingSearchItem[];
   placeholder?: string;
@@ -60,6 +72,8 @@ export interface MorphingSearchProps {
   onOpenChange?: (open: boolean) => void;
   onQueryChange?: (query: string) => void;
   onSelect?: (item: MorphingSearchItem) => void;
+  /** Override any built-in string. */
+  labels?: Partial<MorphingSearchMessages>;
   className?: string;
 }
 
@@ -81,17 +95,21 @@ function isEditableTarget(target: EventTarget | null) {
 
 export function MorphingSearch({
   items,
-  placeholder = "Search",
+  placeholder: placeholderProp,
   shortcut = "f",
   iconOnly = false,
-  emptyMessage = "No results found.",
+  emptyMessage: emptyMessageProp,
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
   onQueryChange,
   onSelect,
+  labels,
   className,
 }: MorphingSearchProps) {
+  const t = useMessages("morphingSearch", morphingSearchMessages, labels);
+  const placeholder = placeholderProp ?? t("placeholder");
+  const emptyMessage = emptyMessageProp ?? t("empty");
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [query, setQuery] = useState("");
   const [mounted, setMounted] = useState(false);
@@ -131,7 +149,6 @@ export function MorphingSearch({
 
   const openSearch = useCallback(() => {
     measureAnchor();
-    setBackgroundScrollLocked(true);
     previousFocusRef.current =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOpen(true);
@@ -312,6 +329,7 @@ export function MorphingSearch({
     }
 
     if (event.key === "Enter") {
+      if (event.nativeEvent.isComposing || event.keyCode === 229) return;
       event.preventDefault();
       const item = filteredItems[activeIndex];
       if (item) selectItem(item);
@@ -372,7 +390,7 @@ export function MorphingSearch({
               <motion.div key="morphing-search-overlay" className="fixed top-0 left-0 size-0">
                 <button
                   type="button"
-                  aria-label="Close search"
+                  aria-label={t("close")}
                   className="pointer-events-auto fixed inset-0 cursor-default bg-transparent"
                   onClick={closeSearch}
                 />
@@ -395,7 +413,7 @@ export function MorphingSearch({
                   ref={dialogRef}
                   role="dialog"
                   aria-modal="true"
-                  aria-label="Search"
+                  aria-label={t("dialog")}
                   onKeyDown={handleDialogKeyDown}
                   initial={reduce ? false : { opacity: 0, clipPath: collapsedContentClip }}
                   animate={{ opacity: 1, clipPath: expandedContentClip }}
@@ -459,7 +477,7 @@ export function MorphingSearch({
                     ref={listRef}
                     id={listboxId}
                     role="listbox"
-                    aria-label="Search results"
+                    aria-label={t("results")}
                     transition={reduce ? { duration: 0 } : undefined}
                     variants={
                       reduce
@@ -504,7 +522,9 @@ export function MorphingSearch({
                             role="option"
                             aria-selected={active}
                             data-index={index}
-                            onMouseMove={() => moveTo(item.id)}
+                            onMouseMove={() => {
+                              if (!active) moveTo(item.id);
+                            }}
                             onFocus={() => moveTo(item.id)}
                             onClick={() => selectItem(item)}
                             className="focus-visible:ring-ring relative flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset"
@@ -556,7 +576,6 @@ export function MorphingSearch({
         {!open ? (
           <motion.button
             ref={triggerRef}
-            key="morphing-search-trigger"
             layoutId={shellLayoutId}
             type="button"
             aria-haspopup="dialog"

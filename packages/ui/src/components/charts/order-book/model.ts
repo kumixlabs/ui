@@ -1,3 +1,5 @@
+"use client";
+
 export type DepthLevel = { price: number; size: number; total: number };
 type Level = { price: number; size: number };
 

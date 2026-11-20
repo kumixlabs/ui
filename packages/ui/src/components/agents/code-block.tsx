@@ -14,9 +14,22 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { type AgentCodeLanguage, AgentCodeLine, useAgentCodeTokens } from "./agent-code";
 
+export const codeBlockMessages = {
+  writing: "Writing",
+  ready: "Ready",
+  copy: "Copy code",
+  copied: "Copied",
+};
+
+export type CodeBlockMessages = typeof codeBlockMessages;
+
 export type CodeBlockStatus = "streaming" | "complete";
+
+/** One identity for the default, so the highlighted-line Set stays memoized. */
+const NO_LINES: number[] = [];
 
 export interface CodeBlockProps {
   code: string;
@@ -30,6 +43,8 @@ export interface CodeBlockProps {
   copyable?: boolean;
   onCopy?: () => void | Promise<void>;
   className?: string;
+  /** Override any built-in string. */
+  labels?: Partial<CodeBlockMessages>;
 }
 
 export function CodeBlock({
@@ -38,13 +53,15 @@ export function CodeBlock({
   filename,
   status = "complete",
   showLineNumbers = true,
-  highlightLines = [],
+  highlightLines = NO_LINES,
   maxHeight = 280,
   wrap = false,
   copyable = true,
   onCopy,
   className,
+  labels,
 }: CodeBlockProps) {
+  const t = useMessages("codeBlock", codeBlockMessages, labels);
   const reduce = useReducedMotion() ?? false;
   const viewportRef = useRef<HTMLDivElement>(null);
   const copyTimer = useRef<number | undefined>(undefined);
@@ -120,13 +137,13 @@ export function CodeBlock({
           ) : (
             <Check className="size-3" />
           )}
-          {streaming ? "Writing" : "Ready"}
+          {streaming ? t("writing") : t("ready")}
         </span>
         {copyable || onCopy ? (
           <motion.button
             type="button"
-            aria-label={copied ? "Copied" : "Copy code"}
-            title={copied ? "Copied" : "Copy code"}
+            aria-label={copied ? t("copied") : t("copy")}
+            title={copied ? t("copied") : t("copy")}
             onClick={handleCopy}
             whileTap={reduce ? undefined : { scale: 0.9 }}
             transition={SPRING_PRESS}

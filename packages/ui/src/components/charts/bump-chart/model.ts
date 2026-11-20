@@ -1,3 +1,5 @@
+"use client";
+
 export interface BumpSeries {
   id: string;
   name: string;

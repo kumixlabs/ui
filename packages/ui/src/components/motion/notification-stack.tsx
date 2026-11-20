@@ -17,7 +17,19 @@ import { useDismiss } from "../../hooks/use-dismiss";
 import { useHoverGesture } from "../../hooks/use-hover-gesture";
 import { useTapGesture } from "../../hooks/use-tap-gesture";
 import { EASE_OUT, SPRING_LAYOUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { ActionSwapText } from "./action-swap";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const notificationStackMessages = {
+  collapsedLabel: "Notifications",
+  expandedLabel: "View all",
+  emptyLabel: "All caught up",
+  collapsedAria: "Notifications: {count}. Expand notifications.",
+  expandedAria: "Notifications: {count}. {label}.",
+};
+
+export type NotificationStackMessages = typeof notificationStackMessages;
 
 export type NotificationStackItem = {
   id: string;
@@ -47,6 +59,8 @@ export interface NotificationStackProps {
   collapsedLabel?: string;
   expandedLabel?: string;
   emptyLabel?: string;
+  /** Override any built-in string. `{count}` and `{label}` fill the stack's accessible names. */
+  labels?: Partial<NotificationStackMessages>;
   className?: string;
   classNames?: NotificationStackClassNames;
 }
@@ -113,12 +127,17 @@ export function NotificationStack({
   onExpandedChange,
   onViewAll,
   maxVisible = 3,
-  collapsedLabel = "Notifications",
-  expandedLabel = "View all",
-  emptyLabel = "All caught up",
+  collapsedLabel: collapsedLabelProp,
+  expandedLabel: expandedLabelProp,
+  emptyLabel: emptyLabelProp,
+  labels,
   className,
   classNames,
 }: NotificationStackProps) {
+  const t = useMessages("notificationStack", notificationStackMessages, labels);
+  const collapsedLabel = collapsedLabelProp ?? t("collapsedLabel");
+  const expandedLabel = expandedLabelProp ?? t("expandedLabel");
+  const emptyLabel = emptyLabelProp ?? t("emptyLabel");
   const reduce = useReducedMotion();
   const hasFocus = useRef(false);
   const rootRef = useRef<HTMLButtonElement>(null);
@@ -218,8 +237,8 @@ export function NotificationStack({
       aria-expanded={isExpanded}
       aria-label={
         isExpanded
-          ? `${items.length} notifications. ${expandedLabel}.`
-          : `${items.length} notifications. Expand notifications.`
+          ? t("expandedAria", { count: items.length, label: expandedLabel })
+          : t("collapsedAria", { count: items.length })
       }
       // A tap reports as a hover on its way past — enter, leave, then click —
       // so an unfiltered hover path expands, collapses and expands again in

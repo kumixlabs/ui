@@ -1,30 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { SPRING_PRESS } from "../../../lib/ease";
+import { useLocale } from "../../../lib/i18n";
 import { Checkbox } from "../checkbox";
 import { MorphPopover, MorphPopoverContent } from "../popover-morph";
 import { Tooltip } from "../tooltip";
 import { IconButton } from "./icon-button";
-import { type DayKey, WEEKDAYS } from "./types";
+import type { AvailabilitySchedulerTranslate } from "./messages";
+import { type DayKey, WEEKDAYS, weekdayLabel } from "./types";
 
 // Copy this day's hours to other days: a morph popover with a day picker.
 export function CopyMenu({
+  from,
   fromLabel,
+  t,
   reduce,
   onApply,
 }: {
+  from: DayKey;
   fromLabel: string;
+  t: AvailabilitySchedulerTranslate;
   reduce: boolean;
   onApply: (targets: DayKey[]) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [picked, setPicked] = useState<Set<DayKey>>(new Set());
-  const others = WEEKDAYS.filter((d) => d.label !== fromLabel);
+  const { locale } = useLocale();
+  const copiedTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(copiedTimer.current), []);
+  const others = WEEKDAYS.flatMap((d, index) =>
+    d.key === from ? [] : [{ key: d.key, label: weekdayLabel(index, locale) }],
+  );
 
   const toggle = (k: DayKey) =>
     setPicked((prev) => {
@@ -40,14 +51,15 @@ export function CopyMenu({
     setOpen(false);
     setPicked(new Set());
     setCopied(true);
-    window.setTimeout(() => setCopied(false), 1200);
+    window.clearTimeout(copiedTimer.current);
+    copiedTimer.current = window.setTimeout(() => setCopied(false), 1200);
   };
 
   return (
     <MorphPopover open={open} onOpenChange={setOpen}>
-      <Tooltip content="Copy times">
+      <Tooltip content={t("copyTimes")}>
         <IconButton
-          label={`Copy ${fromLabel} hours to other days`}
+          label={t("copyDay", { day: fromLabel })}
           reduce={reduce}
           expanded={open}
           onClick={() => setOpen(!open)}
@@ -80,7 +92,7 @@ export function CopyMenu({
       </Tooltip>
 
       <MorphPopoverContent align="end" className="w-52 p-2">
-        <p className="text-muted-foreground px-2 py-1.5 text-xs font-medium">Copy times to</p>
+        <p className="text-muted-foreground px-2 py-1.5 text-xs font-medium">{t("copyTo")}</p>
         <div className="flex flex-col">
           {others.map((d) => (
             <Checkbox
@@ -98,7 +110,7 @@ export function CopyMenu({
             onClick={() => apply(others.map((d) => d.key))}
             className="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:bg-muted flex-1 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors outline-none"
           >
-            Every day
+            {t("everyDay")}
           </button>
           <button
             type="button"
@@ -106,7 +118,7 @@ export function CopyMenu({
             disabled={picked.size === 0}
             className="bg-primary text-primary-foreground focus-visible:ring-ring flex-1 rounded-lg px-2 py-1.5 text-xs font-semibold transition-opacity outline-none hover:opacity-90 focus-visible:ring-2 disabled:opacity-40"
           >
-            Apply
+            {t("apply")}
           </button>
         </div>
       </MorphPopoverContent>

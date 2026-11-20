@@ -4,6 +4,8 @@ import { createContext, type ReactNode, useContext, useMemo, useState } from "re
 import { useReducedMotion } from "motion/react";
 
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
+import { useMessages } from "../../../lib/i18n";
+import { type CompositionChartMessages, compositionChartMessages } from "./messages";
 import { buildComposition, type CompositionSeries } from "./model";
 
 export interface CompositionChartProps {
@@ -16,6 +18,8 @@ export interface CompositionChartProps {
   onPeriodChange?: (period: string) => void;
   formatValue?: (value: number) => string;
   label?: string;
+  /** Override any built-in string. */
+  labels?: Partial<CompositionChartMessages>;
   className?: string;
   children?: ReactNode;
 }
@@ -29,8 +33,11 @@ export function useCompositionModel({
   defaultPeriod,
   onPeriodChange,
   formatValue = (value) => number.format(value),
-  label = "Composition over time",
+  label: customLabel,
+  labels,
 }: CompositionChartProps) {
+  const t = useMessages("compositionChart", compositionChartMessages, labels);
+  const label = customLabel ?? t("label");
   const model = useMemo(() => buildComposition(series, periods), [series, periods]);
   const [internal, setInternal] = useState(defaultPeriod);
   const [pinned, setPinned] = useState<string | null>(null);
@@ -57,6 +64,7 @@ export function useCompositionModel({
     select,
     view,
     label,
+    t,
     formatValue,
     pinned,
     setPinned,

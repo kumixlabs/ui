@@ -21,6 +21,7 @@ import { createPortal } from "react-dom";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
+import { useLocale, useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
 import { Tooltip } from "./tooltip";
 
@@ -66,9 +67,47 @@ export interface AttachmentUploadProps {
   title?: string;
   description?: string;
   attachmentsLabel?: string;
+  /** Override any built-in string. `{name}` fills the per-attachment labels; `{count}` and `{max}` fill `limitDescription`; `{size}` fills `description`. */
+  labels?: Partial<AttachmentUploadMessages>;
   className?: string;
   classNames?: AttachmentUploadClassNames;
 }
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const attachmentUploadMessages = {
+  title: "Drag and drop or browse files",
+  description: "Maximum {size} file size",
+  attachments: "Attachments",
+  input: "Upload attachments",
+  limitTitle: "Attachment limit reached",
+  limitDescription: "{count} of {max} attachments added",
+  uploading: "Uploading {name}",
+  uploadComplete: "Upload complete",
+  uploadCompleteFor: "Upload complete for {name}",
+  removingAttachment: "Removing attachment",
+  removing: "Removing {name}",
+  uploadFailed: "Upload failed",
+  uploadFailedFor: "Upload failed for {name}",
+  retryUpload: "Retry upload",
+  retry: "Retry {name}",
+  removeAttachment: "Remove attachment",
+  remove: "Remove {name}",
+  clickToPreview: "Click to preview",
+  preview: "Preview {name}",
+  previewOf: "Preview of {name}",
+  closePreview: "Close image preview",
+  play: "Play {name}",
+  pause: "Pause {name}",
+  open: "Open {name}",
+  web: "Web",
+};
+
+export type AttachmentUploadMessages = typeof attachmentUploadMessages;
+
+type Translate = (
+  key: keyof AttachmentUploadMessages,
+  values?: Record<string, string | number>,
+) => string;
 
 const ITEM_TRANSITION = { duration: 0.2, ease: EASE_OUT } as const;
 const DEFAULT_MAX_FILE_SIZE = 500 * 1024 * 1024;
@@ -105,16 +144,28 @@ function useControllableList<T>({
   return [items, setItems] as const;
 }
 
-function formatBytes(bytes: number | undefined) {
+const UNITS = ["byte", "kilobyte", "megabyte", "gigabyte"] as const;
+
+/** `locale` localizes digits and unit names; without it the English `KB`/`MB` form stays. */
+function formatUnit(value: number, unit: number, digits: number, locale?: string) {
+  if (!locale) return `${value.toFixed(digits)} ${["B", "KB", "MB", "GB"][unit]}`;
+  return new Intl.NumberFormat(locale, {
+    style: "unit",
+    unit: UNITS[unit],
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(value);
+}
+
+function formatBytes(bytes: number | undefined, locale?: string) {
   if (bytes === undefined || !Number.isFinite(bytes) || bytes <= 0) {
     return null;
   }
 
-  const units = ["B", "KB", "MB", "GB"];
-  const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), UNITS.length - 1);
   const value = bytes / 1024 ** exponent;
 
-  return `${value >= 10 || exponent === 0 ? value.toFixed(0) : value.toFixed(1)} ${units[exponent]}`;
+  return formatUnit(value, exponent, value >= 10 || exponent === 0 ? 0 : 1, locale);
 }
 
 function formatDuration(seconds: number | undefined) {
@@ -123,9 +174,9 @@ function formatDuration(seconds: number | undefined) {
   return `${minutes}:${String(safeSeconds % 60).padStart(2, "0")}`;
 }
 
-function formatMaxSize(bytes: number) {
+function formatMaxSize(bytes: number, locale?: string) {
   const megabytes = bytes / (1024 * 1024);
-  return `${Number.isInteger(megabytes) ? megabytes : megabytes.toFixed(1)} MB`;
+  return formatUnit(megabytes, 2, Number.isInteger(megabytes) ? 0 : 1, locale);
 }
 
 function inferKind(file: File): AttachmentUploadKind {
@@ -154,8 +205,10 @@ function RowAction({
   state,
   retryable = false,
   reduce = false,
+  t,
 }: {
   label: string;
+  t: Translate;
   onClick: () => void;
   state: RowActionState;
   retryable?: boolean;
@@ -167,10 +220,10 @@ function RowAction({
 
   if (state === "complete") {
     return (
-      <Tooltip content="Upload complete" side="top" delay={100}>
+      <Tooltip content={t("uploadComplete")} side="top" delay={100}>
         <motion.span
           role="status"
-          aria-label={`Upload complete for ${label}`}
+          aria-label={t("uploadCompleteFor", { name: label })}
           initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.75 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={ITEM_TRANSITION}
@@ -184,10 +237,10 @@ function RowAction({
 
   if (state === "removing") {
     return (
-      <Tooltip content="Removing attachment" side="top" delay={100}>
+      <Tooltip content={t("removingAttachment")} side="top" delay={100}>
         <span
           role="status"
-          aria-label={`Removing ${label}`}
+          aria-label={t("removing", { name: label })}
           className="text-muted-foreground grid size-9 shrink-0 place-items-center rounded-xl"
         >
           <motion.span
@@ -209,10 +262,10 @@ function RowAction({
   if (state === "failed") {
     if (!retryable) {
       return (
-        <Tooltip content="Upload failed" side="top" delay={100}>
+        <Tooltip content={t("uploadFailed")} side="top" delay={100}>
           <span
             role="status"
-            aria-label={`Upload failed for ${label}`}
+            aria-label={t("uploadFailedFor", { name: label })}
             className="text-destructive grid size-9 shrink-0 place-items-center rounded-xl"
           >
             <AlertCircle className="size-4" />
@@ -222,10 +275,10 @@ function RowAction({
     }
 
     return (
-      <Tooltip content="Retry upload" side="top" delay={100}>
+      <Tooltip content={t("retryUpload")} side="top" delay={100}>
         <motion.button
           type="button"
-          aria-label={`Retry ${label}`}
+          aria-label={t("retry", { name: label })}
           onClick={onClick}
           whileTap={reduce ? undefined : { scale: 0.92 }}
           transition={SPRING_PRESS}
@@ -238,10 +291,10 @@ function RowAction({
   }
 
   return (
-    <Tooltip content="Remove attachment" side="top" delay={100}>
+    <Tooltip content={t("removeAttachment")} side="top" delay={100}>
       <motion.button
         type="button"
-        aria-label={`Remove ${label}`}
+        aria-label={t("remove", { name: label })}
         onClick={onClick}
         whileTap={reduce ? undefined : { scale: 0.92 }}
         transition={SPRING_PRESS}
@@ -258,11 +311,13 @@ function ImageThumbnail({
   layoutId,
   onPreview,
   reduce,
+  t,
 }: {
   item: AttachmentUploadItem;
   layoutId?: string;
   onPreview: (item: AttachmentUploadItem) => void;
   reduce: boolean;
+  t: Translate;
 }) {
   const src = imageSource(item);
 
@@ -286,14 +341,14 @@ function ImageThumbnail({
         <span className="block w-32">
           <img src={src} alt="" className="h-20 w-full rounded-lg object-cover" />
           <span className="text-muted-foreground block px-1 pt-1 pb-0.5 text-center text-[10px] font-medium">
-            Click to preview
+            {t("clickToPreview")}
           </span>
         </span>
       }
     >
       <motion.button
         type="button"
-        aria-label={`Preview ${item.name}`}
+        aria-label={t("preview", { name: item.name })}
         onClick={(event) => {
           event.currentTarget.blur();
           onPreview(item);
@@ -319,11 +374,13 @@ function ImagePreviewDialog({
   layoutId,
   onClose,
   reduce,
+  t,
 }: {
   item: AttachmentUploadItem | null;
   layoutId?: string;
   onClose: () => void;
   reduce: boolean;
+  t: Translate;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -367,7 +424,7 @@ function ImagePreviewDialog({
           <div inert={!isPresent} className="pointer-events-none fixed top-0 left-0 z-10000 size-0">
             <motion.button
               type="button"
-              aria-label="Close image preview"
+              aria-label={t("closePreview")}
               tabIndex={-1}
               className="pointer-events-auto fixed inset-0 size-full cursor-default bg-black/45 backdrop-blur-xl"
               initial={{ opacity: 0 }}
@@ -382,7 +439,7 @@ function ImagePreviewDialog({
               <motion.div
                 role="dialog"
                 aria-modal="true"
-                aria-label={`Preview of ${item.name}`}
+                aria-label={t("previewOf", { name: item.name })}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={reduce ? undefined : { opacity: 0 }}
@@ -400,7 +457,7 @@ function ImagePreviewDialog({
                 <motion.button
                   ref={closeRef}
                   type="button"
-                  aria-label="Close image preview"
+                  aria-label={t("closePreview")}
                   onClick={onClose}
                   initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -439,6 +496,7 @@ function AttachmentRow({
   onRetry,
   reduce,
   className,
+  t,
 }: {
   item: AttachmentUploadItem;
   playing: boolean;
@@ -454,8 +512,10 @@ function AttachmentRow({
   onRetry?: (item: AttachmentUploadItem) => void;
   reduce: boolean;
   className?: string;
+  t: Translate;
 }) {
-  const size = formatBytes(item.size);
+  const { locale } = useLocale();
+  const size = formatBytes(item.size, locale);
   const progress =
     item.duration && item.duration > 0
       ? Math.min(1, Math.max(0, (item.currentTime ?? 0) / item.duration))
@@ -486,7 +546,7 @@ function AttachmentRow({
   const uploadProgress = (
     <motion.span
       role="progressbar"
-      aria-label={`Uploading ${item.name}`}
+      aria-label={t("uploading", { name: item.name })}
       className="pointer-events-none absolute inset-0 -z-10 origin-left bg-emerald-400/25 dark:bg-emerald-500/20"
       initial={{ opacity: 1, scaleX: 0 }}
       animate={{ opacity: 1, scaleX: 1 }}
@@ -527,6 +587,7 @@ function AttachmentRow({
             layoutId={imageLayoutId}
             onPreview={onImagePreview}
             reduce={reduce}
+            t={t}
           />
         ) : (
           <span
@@ -571,9 +632,9 @@ function AttachmentRow({
             </span>
             <motion.button
               type="button"
-              aria-label={`${playing ? "Pause" : "Play"} ${item.name}`}
+              aria-label={t(playing ? "pause" : "play", { name: item.name })}
               onClick={() => onAudioToggle?.(item)}
-              whileTap={{ scale: 0.94 }}
+              whileTap={reduce ? undefined : { scale: 0.94 }}
               transition={SPRING_PRESS}
               className="bg-foreground text-background focus-visible:ring-ring focus-visible:ring-offset-background grid size-9 shrink-0 place-items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             >
@@ -602,19 +663,19 @@ function AttachmentRow({
               </span>
               {failed ? (
                 <span className="text-destructive block truncate text-[11px]">
-                  {item.error ?? "Upload failed"}
+                  {item.error ?? t("uploadFailed")}
                 </span>
               ) : null}
             </span>
             <span className="text-muted-foreground shrink-0 text-xs">
-              {item.kind === "link" ? "Web" : size}
+              {item.kind === "link" ? t("web") : size}
             </span>
             {item.kind === "link" && item.href ? (
               <a
                 href={item.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                aria-label={`Open ${item.name}`}
+                aria-label={t("open", { name: item.name })}
                 className="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring grid size-8 shrink-0 place-items-center rounded-lg transition-colors outline-none focus-visible:ring-2"
               >
                 <ExternalLink className="size-4" />
@@ -644,6 +705,7 @@ function AttachmentRow({
         state={actionState}
         retryable={onRetry !== undefined}
         reduce={reduce}
+        t={t}
       />
     </motion.li>
   );
@@ -664,12 +726,15 @@ export function AttachmentUpload({
   maxFiles = 12,
   maxFileSize = DEFAULT_MAX_FILE_SIZE,
   disabled = false,
-  title = "Drag and drop or browse files",
+  title,
   description,
-  attachmentsLabel = "Attachments",
+  attachmentsLabel,
+  labels,
   className,
   classNames,
 }: AttachmentUploadProps) {
+  const t = useMessages("attachmentUpload", attachmentUploadMessages, labels);
+  const { locale } = useLocale();
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const dragDepthRef = useRef(0);
@@ -856,7 +921,7 @@ export function AttachmentUpload({
           ref={inputRef}
           id={inputId}
           type="file"
-          aria-label="Upload attachments"
+          aria-label={t("input")}
           accept={accept}
           multiple={multiple}
           disabled={disabled || maxReached}
@@ -929,19 +994,19 @@ export function AttachmentUpload({
             <Upload className="size-[18px]" />
           </motion.span>
           <span className="text-foreground text-sm font-semibold tracking-[-0.01em]">
-            {maxReached ? "Attachment limit reached" : title}
+            {maxReached ? t("limitTitle") : (title ?? t("title"))}
           </span>
           <span className="text-muted-foreground mt-1 text-xs leading-5">
             {maxReached
-              ? `${items.length} of ${maxFiles} attachments added`
-              : (description ?? `Maximum ${formatMaxSize(maxFileSize)} file size`)}
+              ? t("limitDescription", { count: items.length, max: maxFiles })
+              : (description ?? t("description", { size: formatMaxSize(maxFileSize, locale) }))}
           </span>
         </motion.button>
 
         {items.length > 0 ? (
           <section className="mt-8" aria-labelledby={`${inputId}-attachments`}>
             <h3 id={`${inputId}-attachments`} className="text-foreground text-sm font-semibold">
-              {attachmentsLabel}
+              {attachmentsLabel ?? t("attachments")}
             </h3>
 
             {items.length > 0 ? (
@@ -964,6 +1029,7 @@ export function AttachmentUpload({
                       onRetry={onRetry}
                       reduce={reduce}
                       className={classNames?.row}
+                      t={t}
                     />
                   ))}
                 </AnimatePresence>
@@ -977,6 +1043,7 @@ export function AttachmentUpload({
           layoutId={reduce ? undefined : previewLayoutId}
           onClose={closePreview}
           reduce={reduce}
+          t={t}
         />
       </div>
     </LayoutGroup>

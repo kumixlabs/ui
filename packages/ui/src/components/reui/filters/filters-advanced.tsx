@@ -1710,7 +1710,7 @@ export function FiltersAdvancedPanel<V, O>({
           <span
             aria-hidden="true"
             /* `rounded-full` is the one radius literal safe in every
-                                                   style, square or round. */
+                                                       style, square or round. */
             className="bg-muted text-muted-foreground mb-1 flex size-9 items-center justify-center rounded-full [&_svg]:size-4"
           >
             <ListFilterIcon />

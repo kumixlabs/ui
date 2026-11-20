@@ -1,3 +1,5 @@
+"use client";
+
 export const STEPS = [0, 24, 46, 70, 94] as const;
 
 export const EMPTY = "color-mix(in srgb, var(--foreground) 6%, transparent)";
@@ -31,17 +33,14 @@ export const addDays = (d: Date, n: number) => {
 /** Monday on or before `d`, so every column reads Mon to Sun, top to bottom. */
 export const mondayOf = (d: Date) => addDays(startOfDay(d), -((d.getUTCDay() + 6) % 7));
 
-export const fmtDay = new Intl.DateTimeFormat("en-US", {
-  timeZone: "UTC",
-  weekday: "short",
-  month: "short",
-  day: "numeric",
-});
-
-export const fmtMonth = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short" });
-
-export const fmtRange = new Intl.DateTimeFormat("en-US", {
-  timeZone: "UTC",
-  month: "short",
-  day: "numeric",
+/** Without a locale, dates stay in English so server and client render the same text. */
+export const dateFormats = (locale = "en-US") => ({
+  day: new Intl.DateTimeFormat(locale, {
+    timeZone: "UTC",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }),
+  month: new Intl.DateTimeFormat(locale, { timeZone: "UTC", month: "short" }),
+  range: new Intl.DateTimeFormat(locale, { timeZone: "UTC", month: "short", day: "numeric" }),
 });

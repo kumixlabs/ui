@@ -12,7 +12,16 @@ import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "../../lib/touch";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const holdActionButtonMessages = {
+  holding: "Keep holding",
+  complete: "Done",
+};
+
+export type HoldActionButtonMessages = typeof holdActionButtonMessages;
 
 export interface HoldActionButtonProps
   extends Omit<
@@ -36,6 +45,8 @@ export interface HoldActionButtonProps
   onHoldComplete?: () => void;
   fillClassName?: string;
   labelClassName?: string;
+  /** Override any built-in string. */
+  labels?: Partial<HoldActionButtonMessages>;
 }
 
 export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonProps>(
@@ -43,18 +54,21 @@ export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonPr
     {
       children,
       type = "vertical",
-      holdingLabel = "Keep holding",
-      completeLabel = "Done",
+      holdingLabel,
+      completeLabel,
       holdDuration = 1600,
       onHoldComplete,
       fillClassName,
       labelClassName,
       className,
       disabled,
+      labels,
+      onBlur,
       ...rest
     },
     ref,
   ) {
+    const t = useMessages("holdActionButton", holdActionButtonMessages, labels);
     const reduce = useReducedMotion();
     const completedRef = useRef(false);
     const [holding, setHolding] = useState(false);
@@ -131,6 +145,7 @@ export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonPr
       onHoldComplete?.();
     };
 
+    const accessibleName = typeof children === "string" ? children : undefined;
     const active = holding || completed;
     const activeTransform = type === "horizontal" ? "translateX(0%)" : "translateY(0%)";
     const idleTransform = type === "horizontal" ? "translateX(-100%)" : "translateY(115%)";
@@ -140,7 +155,7 @@ export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonPr
         ref={ref}
         type="button"
         disabled={disabled}
-        aria-label={typeof children === "string" ? children : undefined}
+        aria-label={accessibleName}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -148,6 +163,11 @@ export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonPr
         onPointerLeave={handlePointerLeave}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
+        onBlur={(event) => {
+          // A key held while focus leaves never delivers its keyup here.
+          cancelHold();
+          onBlur?.(event);
+        }}
         onContextMenu={(event) => event.preventDefault()}
         whileTap={reduce || disabled ? undefined : { scale: 0.98 }}
         transition={SPRING_PRESS}
@@ -257,7 +277,7 @@ export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonPr
             transition={{ duration: reduce ? 0 : 0.12, ease: EASE_OUT }}
             className="col-start-1 row-start-1"
           >
-            {holdingLabel}
+            {holdingLabel ?? t("holding")}
           </motion.span>
           <motion.span
             aria-hidden={!completed}
@@ -265,7 +285,7 @@ export const HoldActionButton = forwardRef<HTMLButtonElement, HoldActionButtonPr
             transition={{ duration: reduce ? 0 : 0.12, ease: EASE_OUT }}
             className="col-start-1 row-start-1"
           >
-            {completeLabel}
+            {completeLabel ?? t("complete")}
           </motion.span>
         </span>
       </motion.button>

@@ -14,6 +14,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
+import { formatNumber, useLocale, useMessages } from "../../lib/i18n";
 import { ActionSwapRollText } from "../motion/action-swap-roll";
 import { AgentDisclosure } from "./agent-disclosure";
 
@@ -27,6 +28,27 @@ export interface TodoItem {
   detail?: ReactNode;
 }
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const todoListMessages = {
+  title: "To-dos",
+  label: "Agent task list",
+  progress: "{completed} of {total} tasks completed",
+  empty: "No tasks yet",
+  pending: "Pending",
+  inProgress: "In progress",
+  completed: "Completed",
+  cancelled: "Cancelled",
+};
+
+export type TodoListMessages = typeof todoListMessages;
+
+const STATUS_MESSAGE = {
+  pending: "pending",
+  "in-progress": "inProgress",
+  completed: "completed",
+  cancelled: "cancelled",
+} as const satisfies Record<TodoItemStatus, keyof TodoListMessages>;
+
 export interface TodoListProps {
   items: TodoItem[];
   title?: ReactNode;
@@ -35,14 +57,9 @@ export interface TodoListProps {
   onOpenChange?: (open: boolean) => void;
   collapseOnComplete?: boolean;
   maxHeight?: number;
+  /** Override any built-in string. `{completed}` and `{total}` fill `progress`. */
+  labels?: Partial<TodoListMessages>;
   className?: string;
-}
-
-function statusLabel(status: TodoItemStatus) {
-  if (status === "in-progress") return "In progress";
-  if (status === "completed") return "Completed";
-  if (status === "cancelled") return "Cancelled";
-  return "Pending";
 }
 
 function TodoHeaderIcon({ complete }: { complete: boolean }) {
@@ -178,15 +195,18 @@ function TodoStatusIcon({ status, progress }: { status: TodoItemStatus; progress
 
 export function TodoList({
   items,
-  title = "To-dos",
+  title,
   open,
   defaultOpen = true,
   onOpenChange,
   collapseOnComplete = true,
   maxHeight = 248,
+  labels,
   className,
 }: TodoListProps) {
   const reduce = useReducedMotion() ?? false;
+  const t = useMessages("todoList", todoListMessages, labels);
+  const { locale } = useLocale();
   const baseId = useId();
   const triggerId = `${baseId}-trigger`;
   const contentId = `${baseId}-content`;
@@ -236,7 +256,7 @@ export function TodoList({
 
   return (
     <section
-      aria-label="Agent task list"
+      aria-label={t("label")}
       className={cn("border-border/70 w-full overflow-hidden rounded-2xl border", className)}
     >
       <button
@@ -245,23 +265,25 @@ export function TodoList({
         aria-expanded={currentOpen}
         aria-controls={contentId}
         onClick={() => setOpen(!currentOpen)}
-        className="group focus-visible:ring-ring flex h-11 w-full items-center gap-2.5 rounded-2xl px-3.5 text-left outline-none focus-visible:ring-2"
+        className="group focus-visible:ring-ring flex h-11 w-full items-center gap-2.5 rounded-2xl px-3.5 text-start outline-none focus-visible:ring-2"
       >
         <TodoHeaderIcon complete={allComplete} />
-        <h3 className="text-foreground/90 min-w-0 flex-1 truncate text-sm font-medium">{title}</h3>
+        <h3 className="text-foreground/90 min-w-0 flex-1 truncate text-sm font-medium">
+          {title ?? t("title")}
+        </h3>
         <span
           className={cn(
             "text-muted-foreground shrink-0 text-xs font-medium tabular-nums",
             allComplete && "text-emerald-600 dark:text-emerald-400",
           )}
         >
-          <span className="sr-only">
-            {completed} of {items.length} tasks completed
-          </span>
+          <span className="sr-only">{t("progress", { completed, total: items.length })}</span>
           <span aria-hidden="true" className="inline-flex">
-            <ActionSwapRollText value={String(completed)}>{completed}</ActionSwapRollText>
+            <ActionSwapRollText value={String(completed)}>
+              {formatNumber(completed, locale)}
+            </ActionSwapRollText>
             <span>/</span>
-            <span>{items.length}</span>
+            <span>{formatNumber(items.length, locale)}</span>
           </span>
         </span>
         <motion.span
@@ -304,7 +326,7 @@ export function TodoList({
                       className="flex min-h-9 items-center gap-2.5 rounded-xl px-1.5 py-1"
                     >
                       <TodoStatusIcon status={status} progress={item.progress} />
-                      <span className="sr-only">{statusLabel(status)}: </span>
+                      <span className="sr-only">{t(STATUS_MESSAGE[status])}: </span>
                       <span
                         className={cn(
                           "min-w-0 flex-1 truncate text-sm leading-5",
@@ -328,7 +350,7 @@ export function TodoList({
                                 ? { duration: 0 }
                                 : { duration: 0.28, ease: EASE_OUT, delay: 0.06 }
                             }
-                            className="absolute inset-x-0 top-1/2 h-px origin-left bg-current"
+                            className="absolute inset-x-0 top-1/2 h-px origin-left bg-current rtl:origin-right"
                           />
                         </span>
                       </span>
@@ -343,7 +365,7 @@ export function TodoList({
               </AnimatePresence>
             </ol>
           ) : (
-            <p className="text-muted-foreground px-1.5 py-2 text-sm">No tasks yet</p>
+            <p className="text-muted-foreground px-1.5 py-2 text-sm">{t("empty")}</p>
           )}
         </div>
       </AgentDisclosure>

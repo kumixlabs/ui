@@ -15,6 +15,8 @@ import { useReducedMotion } from "motion/react";
 
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
 import { useRowCursor } from "../../../hooks/use-row-cursor";
+import { useMessages } from "../../../lib/i18n";
+import { type TreemapMessages, treemapMessages } from "./messages";
 import { buildTreemap, layoutTreemap, TREEMAP_COLORS, type TreemapNode } from "./model";
 
 const defaultFormat = (value: number) =>
@@ -31,18 +33,23 @@ export interface TreemapProps extends ComponentProps<"section"> {
   activeId?: string | null;
   defaultActiveId?: string | null;
   onActiveChange?: (id: string | null) => void;
+  /** Override any built-in string. */
+  labels?: Partial<TreemapMessages>;
 }
 
 export function useTreemapModel({
   data,
-  label = "Treemap",
+  label: customLabel,
   formatValue = defaultFormat,
   colors = TREEMAP_COLORS,
   textColor = "#ffffff",
   activeId,
   defaultActiveId = null,
   onActiveChange,
+  labels,
 }: TreemapProps) {
+  const t = useMessages("treemap", treemapMessages, labels);
+  const label = customLabel ?? t("label");
   const model = useMemo(() => buildTreemap(data, colors, textColor), [data, colors, textColor]);
   const [size, setSize] = useState({ width: 1000, height: 625 });
   const tiles = useMemo(
@@ -77,6 +84,7 @@ export function useTreemapModel({
     size,
     setSize,
     label,
+    t,
     formatValue,
     active,
     setActive,

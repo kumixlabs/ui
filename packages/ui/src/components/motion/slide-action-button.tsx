@@ -13,7 +13,16 @@ import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { TOUCH_GESTURE_CLASS, TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const slideActionButtonMessages = {
+  complete: "Complete",
+  thumbLabel: "Slide action",
+};
+
+export type SlideActionButtonMessages = typeof slideActionButtonMessages;
 
 export interface SlideActionButtonProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
   children: ReactNode;
@@ -23,19 +32,23 @@ export interface SlideActionButtonProps extends Omit<HTMLAttributes<HTMLDivEleme
   onComplete?: () => void;
   thumbClassName?: string;
   fillClassName?: string;
+  /** Override any built-in string. */
+  labels?: Partial<SlideActionButtonMessages>;
 }
 
 export function SlideActionButton({
   children,
-  completeLabel = "Complete",
+  completeLabel,
   threshold = 0.82,
   resetDelay = 1200,
   onComplete,
   thumbClassName,
   fillClassName,
   className,
+  labels,
   ...rest
 }: SlideActionButtonProps) {
+  const t = useMessages("slideActionButton", slideActionButtonMessages, labels);
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLButtonElement>(null);
@@ -46,7 +59,6 @@ export function SlideActionButton({
   const [completed, setCompleted] = useState(false);
   const safeDistance = Math.max(maxDistance, 1);
   const dragProgress = useTransform(x, [0, safeDistance], [0, 1]);
-  const fillProgress = useTransform(x, [0, safeDistance], [0, 1]);
   const labelOpacity = useTransform(x, [0, safeDistance * 0.35, safeDistance * 0.65], [1, 0.75, 0]);
   const iconPath = useTransform(
     dragProgress,
@@ -123,7 +135,7 @@ export function SlideActionButton({
     >
       <motion.span
         aria-hidden="true"
-        style={{ scaleX: fillProgress }}
+        style={{ scaleX: dragProgress }}
         className={cn(
           "bg-primary absolute inset-0 origin-left will-change-transform",
           fillClassName,
@@ -144,13 +156,13 @@ export function SlideActionButton({
         transition={{ duration: reduce ? 0 : 0.15, ease: EASE_OUT }}
         className="text-primary-foreground pointer-events-none absolute inset-0 grid place-items-center text-sm font-medium"
       >
-        {completed ? completeLabel : null}
+        {completed ? (completeLabel ?? t("complete")) : null}
       </motion.span>
 
       <motion.button
         ref={thumbRef}
         type="button"
-        aria-label={typeof children === "string" ? children : "Slide action"}
+        aria-label={typeof children === "string" ? children : t("thumbLabel")}
         drag={completed ? false : "x"}
         dragConstraints={{ left: 0, right: maxDistance }}
         dragElastic={0}

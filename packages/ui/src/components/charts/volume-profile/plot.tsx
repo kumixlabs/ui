@@ -41,6 +41,7 @@ export function VolumeProfilePlot({
     describe,
     reduce,
     canHover,
+    t,
   } = useVolumeProfile();
   const pointerDriven = useRef(false);
   const focused = useRef(false);
@@ -64,7 +65,7 @@ export function VolumeProfilePlot({
   if (!rows.length)
     return (
       <p className={cn("text-muted-foreground py-12 text-center text-sm", className)}>
-        No volume data
+        {t("empty")}
       </p>
     );
   return (
@@ -139,7 +140,7 @@ export function VolumeProfilePlot({
                     style={{ borderColor: pocColor }}
                   >
                     <span className="bg-background text-foreground absolute right-0 -translate-y-1/2 rounded px-1.5 py-0.5 font-mono text-[10px] font-medium">
-                      POC
+                      {t("pocBadge")}
                     </span>
                   </span>
                 ) : null}
@@ -152,7 +153,7 @@ export function VolumeProfilePlot({
             max={rows.length - 1}
             step={1}
             value={index}
-            aria-label={`${label}: inspect price level`}
+            aria-label={t("inspect", { label })}
             aria-orientation="vertical"
             aria-valuetext={describe(row)}
             aria-describedby={tooltipOpen && activeIndex >= 0 ? tooltipId : undefined}

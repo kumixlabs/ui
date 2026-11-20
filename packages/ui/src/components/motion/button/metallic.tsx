@@ -65,19 +65,19 @@ export const MetallicButton = forwardRef<HTMLButtonElement, MetallicButtonProps>
 
         <motion.span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-[-58%] z-1 w-[52%] -skew-x-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.5)_48%,transparent)] opacity-50 mix-blend-screen blur-[3px]"
+          className="pointer-events-none absolute inset-y-0 left-[-58%] z-[1] w-[52%] -skew-x-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.5)_48%,transparent)] opacity-50 mix-blend-screen blur-[3px]"
           animate={still ? undefined : { x: hovered ? "310%" : "0%" }}
           transition={still ? undefined : CHROME_SHIMMER}
         />
 
         <span
           aria-hidden="true"
-          className="bg-background group-hover:bg-muted/40 pointer-events-none absolute inset-[2px] z-2 rounded-[inherit] transition-colors"
+          className="bg-background group-hover:bg-muted/40 pointer-events-none absolute inset-[2px] z-[2] rounded-[inherit] transition-colors"
         />
 
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-[2px] z-3 rounded-[inherit] shadow-[inset_0_1px_0_rgba(255,255,255,0.28),inset_0_-1px_0_rgba(0,0,0,0.16)]"
+          className="pointer-events-none absolute inset-[2px] z-[3] rounded-[inherit] shadow-[inset_0_1px_0_rgba(255,255,255,0.28),inset_0_-1px_0_rgba(0,0,0,0.16)]"
         />
 
         <span className="relative z-10 inline-flex items-center justify-center gap-2">

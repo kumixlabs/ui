@@ -11,9 +11,19 @@ import {
 import { useReducedMotion } from "motion/react";
 
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
+import { useMessages } from "../../../lib/i18n";
+import { type XYChartMessages, xyChartMessages } from "../xy/messages";
 import { normalizeXY, type XYSeries } from "../xy/model";
 import { niceDomain } from "../xy/scale";
 import { useControllable, useInspection } from "../xy/use-inspection";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const barChartMessages = {
+  label: "Bar chart",
+  inspect: "{label}: inspect categories",
+};
+
+export type BarChartMessages = typeof barChartMessages;
 
 export interface BarChartProps extends Omit<ComponentProps<"section">, "children"> {
   /** Nonnegative values aligned with categories. Missing or negative values leave a gap. */
@@ -38,6 +48,8 @@ export interface BarChartProps extends Omit<ComponentProps<"section">, "children
   /** Axis tick labels. Defaults to compact notation (1.2K). */
   formatTick?: (value: number) => string;
   label?: string;
+  /** Override any built-in string, including the shared `xyChart` ones. */
+  labels?: Partial<BarChartMessages & XYChartMessages>;
   children?: ReactNode;
 }
 
@@ -60,8 +72,11 @@ export function useBarChartModel({
   onHiddenSeriesChange,
   formatValue = (value) => number.format(value),
   formatTick = (value) => compact.format(value),
-  label = "Bar chart",
+  label,
+  labels,
 }: Omit<BarChartProps, "children">) {
+  const t = useMessages<BarChartMessages>("barChart", barChartMessages, labels);
+  const xy = useMessages<XYChartMessages>("xyChart", xyChartMessages, labels);
   const data = useMemo(
     () => normalizeXY(series, categories, { nonnegative: true }),
     [series, categories],
@@ -111,7 +126,9 @@ export function useBarChartModel({
     orientation,
     formatValue,
     formatTick,
-    label,
+    label: label ?? t("label"),
+    t,
+    xy,
     reduce: useReducedMotion() ?? false,
     canHover: useHoverCapable(),
   };

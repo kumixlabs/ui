@@ -1,3 +1,5 @@
+"use client";
+
 export interface VolumeProfileBin {
   /** Stable identity for this price range across data updates. */
   id: string;

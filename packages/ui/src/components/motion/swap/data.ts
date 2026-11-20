@@ -1,3 +1,5 @@
+"use client";
+
 import type { Chain, Token } from "./types";
 
 export const CHAINS: Chain[] = [

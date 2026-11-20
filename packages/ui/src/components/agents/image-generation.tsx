@@ -8,6 +8,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../hooks/use-hover-capable";
 import { EASE_IN_OUT, EASE_OUT, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 
 export type ImageGenerationStatus = "queued" | "generating" | "refining" | "complete" | "error";
 
@@ -27,18 +28,26 @@ export interface ImageGenerationProps {
   statusText?: string;
   showStatus?: boolean;
   onRetry?: () => void;
+  /** Override any built-in string. `{status}` and `{prompt}` fill `labelWithPrompt`; `{prompt}` fills `quotedPrompt`. */
+  labels?: Partial<ImageGenerationMessages>;
   className?: string;
   mediaClassName?: string;
   statusClassName?: string;
 }
 
-const STATUS_TEXT: Record<ImageGenerationStatus, string> = {
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const imageGenerationMessages = {
   queued: "Waiting to generate",
   generating: "Generating image",
   refining: "Refining details",
   complete: "Image ready",
   error: "Generation failed",
+  labelWithPrompt: "{status}: {prompt}",
+  quotedPrompt: "“{prompt}”",
+  retry: "Try again",
 };
+
+export type ImageGenerationMessages = typeof imageGenerationMessages;
 
 const MEDIA_STATE: Record<
   ImageGenerationStatus,
@@ -134,6 +143,8 @@ function DitherField({
       pointer.y = height / 2;
       pointer.targetX = pointer.x;
       pointer.targetY = pointer.y;
+      // Sizing the canvas clears it, and reduced motion has no frame loop to repaint.
+      if (reduce) draw(0);
     };
 
     const draw = (time: number) => {
@@ -237,15 +248,19 @@ export function ImageGeneration({
   statusText,
   showStatus = true,
   onRetry,
+  labels,
   className,
   mediaClassName,
   statusClassName,
 }: ImageGenerationProps) {
   const reduce = useReducedMotion() ?? false;
+  const t = useMessages("imageGeneration", imageGenerationMessages, labels);
   const active = status === "queued" || status === "generating" || status === "refining";
   const mediaState = MEDIA_STATE[status];
-  const resolvedStatusText = statusText ?? STATUS_TEXT[status];
-  const resolvedLabel = label ?? (prompt ? `${resolvedStatusText}: ${prompt}` : resolvedStatusText);
+  const resolvedStatusText = statusText ?? t(status);
+  const resolvedLabel =
+    label ??
+    (prompt ? t("labelWithPrompt", { status: resolvedStatusText, prompt }) : resolvedStatusText);
 
   return (
     <div
@@ -333,7 +348,9 @@ export function ImageGeneration({
               </div>
             ) : null}
             {prompt ? (
-              <p className="text-muted-foreground mt-0.5 truncate text-xs">“{prompt}”</p>
+              <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                {t("quotedPrompt", { prompt })}
+              </p>
             ) : null}
           </div>
         ) : null}
@@ -347,7 +364,7 @@ export function ImageGeneration({
             className="text-foreground hover:bg-muted focus-visible:ring-ring mt-3 inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2"
           >
             <RotateCcw aria-hidden="true" className="size-4" />
-            Try again
+            {t("retry")}
           </motion.button>
         ) : null}
       </div>

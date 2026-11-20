@@ -4,6 +4,7 @@ import { MotionConfig } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { NumberTicker } from "../../motion/number-ticker";
+import type { XYChartT } from "./messages";
 
 export interface XYTooltipRow {
   id: string;
@@ -35,6 +36,7 @@ export function XYTooltipContent({
   formatValue,
   total,
   compact = false,
+  t,
   className,
 }: {
   title: string;
@@ -43,6 +45,7 @@ export function XYTooltipContent({
   total?: number | null;
   /** Size to the content instead of a fixed panel width, for pointer-following readouts. */
   compact?: boolean;
+  t: XYChartT;
   className?: string;
 }) {
   return (
@@ -58,13 +61,13 @@ export function XYTooltipContent({
             />
             <span className="text-muted-foreground min-w-0 flex-1 truncate pr-3">{row.name}</span>
             <span className="shrink-0 font-mono tabular-nums">
-              {row.value === null ? "No data" : <Value value={row.value} format={formatValue} />}
+              {row.value === null ? t("noData") : <Value value={row.value} format={formatValue} />}
             </span>
           </span>
         ))}
         {total !== undefined && total !== null ? (
           <span className="border-border mt-0.5 flex items-center gap-2 border-t pt-1.5 text-[11px]">
-            <span className="text-muted-foreground flex-1">Total</span>
+            <span className="text-muted-foreground flex-1">{t("total")}</span>
             <span className="font-mono font-medium tabular-nums">
               <Value value={total} format={formatValue} />
             </span>

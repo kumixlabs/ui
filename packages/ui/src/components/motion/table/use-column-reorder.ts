@@ -1,3 +1,5 @@
+"use client";
+
 import { type PointerEvent as ReactPointerEvent, useCallback, useMemo, useState } from "react";
 
 import { capturePointer, releasePointer } from "../../../lib/touch";

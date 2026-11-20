@@ -6,7 +6,9 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { SPRING_PRESS } from "../../../lib/ease";
+import { useMessages } from "../../../lib/i18n";
 import { EASE } from "./constants";
+import { type SwapMessages, swapMessages } from "./messages";
 import type { Token } from "./types";
 import { isValidAddress, truncateAddress } from "./utils";
 
@@ -14,17 +16,20 @@ export function FlipButton({
   rotation,
   reduce,
   onClick,
+  labels,
 }: {
   rotation: number;
   reduce: boolean;
   onClick: () => void;
+  labels?: Partial<SwapMessages>;
 }) {
+  const t = useMessages("swap", swapMessages, labels);
   return (
     <div className="relative -my-4 flex justify-center" style={{ zIndex: 1 }}>
       <motion.button
         type="button"
         onClick={onClick}
-        aria-label="Reverse direction"
+        aria-label={t("reverse")}
         whileTap={reduce ? undefined : { scale: 0.9 }}
         animate={reduce ? undefined : { rotate: rotation }}
         transition={{ type: "spring", stiffness: 380, damping: 26, mass: 0.6 }}
@@ -41,23 +46,26 @@ export function ActionButton({
   to,
   amount,
   destAddress,
+  labels,
 }: {
   from: Token;
   to: Token;
   amount: number;
   destAddress: string;
+  labels?: Partial<SwapMessages>;
 }) {
+  const t = useMessages("swap", swapMessages, labels);
   const reduce = useReducedMotion();
   const noAmount = amount <= 0;
   const overBalance = from.balance !== undefined && amount > from.balance;
   const validDest = destAddress && isValidAddress(destAddress);
   const label = noAmount
-    ? "Enter an amount"
+    ? t("enterAmount")
     : overBalance
-      ? `Insufficient ${from.symbol}`
+      ? t("insufficient", { symbol: from.symbol })
       : validDest
-        ? `Swap + Send to ${truncateAddress(destAddress)}`
-        : `Swap ${from.symbol} → ${to.symbol}`;
+        ? t("swapAndSend", { address: truncateAddress(destAddress) })
+        : t("swapTokens", { from: from.symbol, to: to.symbol });
   const disabled = noAmount || overBalance;
 
   return (
@@ -94,13 +102,16 @@ export function DestinationRow({
   address,
   onAddress,
   reduce,
+  labels,
 }: {
   show: boolean;
   onToggle: () => void;
   address: string;
   onAddress: (v: string) => void;
   reduce: boolean;
+  labels?: Partial<SwapMessages>;
 }) {
+  const t = useMessages("swap", swapMessages, labels);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasAddress = address.length > 0;
   const valid = isValidAddress(address);
@@ -115,14 +126,15 @@ export function DestinationRow({
       <button
         type="button"
         onClick={onToggle}
+        aria-expanded={show}
         className="text-muted-foreground hover:text-foreground flex w-full items-center justify-between gap-2 px-3.5 py-2.5 text-[12px]"
       >
         <span className="flex items-center gap-2">
           <Send className="h-3.5 w-3.5 shrink-0" />
           <span>
             {show && hasAddress && valid
-              ? `To: ${truncateAddress(address)}`
-              : "Send to different address"}
+              ? t("sendTo", { address: truncateAddress(address) })
+              : t("sendToOther")}
           </span>
         </span>
         <motion.span
@@ -155,7 +167,7 @@ export function DestinationRow({
                   ref={inputRef}
                   value={address}
                   onChange={(e) => onAddress(e.target.value.trim())}
-                  placeholder="0x... or name.eth"
+                  placeholder={t("addressPlaceholder")}
                   spellCheck={false}
                   className="text-foreground placeholder:text-muted-foreground/60 min-w-0 flex-1 bg-transparent font-mono text-[12px] outline-none"
                 />
@@ -176,7 +188,7 @@ export function DestinationRow({
                         key="clear"
                         type="button"
                         onClick={() => onAddress("")}
-                        aria-label="Clear address"
+                        aria-label={t("clearAddress")}
                         initial={{ opacity: 0, scale: 0.7 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.7 }}

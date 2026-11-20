@@ -9,7 +9,6 @@ import { EASE_OUT } from "../../lib/ease";
 /** Presentation only: the unanimated parent owns measurement and positioning. */
 export function TooltipSurface({
   children,
-  side: _side = "top",
   className,
   ref,
   ready = true,
@@ -19,7 +18,6 @@ export function TooltipSurface({
   children?: ReactNode;
   /** Start the entrance only after the positioning layer has been measured. */
   ready?: boolean;
-  side?: "top" | "right" | "bottom" | "left";
   ref?: Ref<HTMLSpanElement>;
 }) {
   const reduce = useReducedMotion();

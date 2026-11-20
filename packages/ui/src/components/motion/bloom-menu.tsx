@@ -17,6 +17,7 @@ import { cn } from "@kumix/utils";
 import { useOnOpen } from "../../hooks/use-on-open";
 import { useRowCursor } from "../../hooks/use-row-cursor";
 import { EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 
 type MenuItem = { label: string; icon: ComponentType<{ className?: string }> };
 
@@ -29,6 +30,31 @@ const ITEMS: MenuItem[] = [
   { label: "Link", icon: Link },
 ];
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const bloomMenuMessages = {
+  create: "Create",
+  close: "Close menu",
+  doc: "Doc",
+  board: "Board",
+  table: "Table",
+  folder: "Folder",
+  reminder: "Reminder",
+  link: "Link",
+};
+
+export type BloomMenuMessages = typeof bloomMenuMessages;
+
+// Default items keep their English label as the id and `onSelect` value;
+// only the visible text is translated.
+const ITEM_MESSAGE: Record<string, keyof BloomMenuMessages> = {
+  Doc: "doc",
+  Board: "board",
+  Table: "table",
+  Folder: "folder",
+  Reminder: "reminder",
+  Link: "link",
+};
+
 // Folder-open feel: a touch of overshoot as the panel expands, kept subtle.
 const SPRING_FOLDER = {
   type: "spring",
@@ -40,10 +66,13 @@ const SPRING_FOLDER = {
 export interface BloomMenuProps {
   items?: MenuItem[];
   onSelect?: (label: string) => void;
+  /** Override any built-in string. */
+  labels?: Partial<BloomMenuMessages>;
   className?: string;
 }
 
-export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps) {
+export function BloomMenu({ items = ITEMS, onSelect, labels, className }: BloomMenuProps) {
+  const t = useMessages("bloomMenu", bloomMenuMessages, labels);
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
   const layoutId = useId();
@@ -158,12 +187,12 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                     id={`${menuId}-label`}
                     className="text-muted-foreground text-sm font-medium"
                   >
-                    Create
+                    {t("create")}
                   </span>
                   <button
                     type="button"
                     onClick={() => close(true)}
-                    aria-label="Close menu"
+                    aria-label={t("close")}
                     className="text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-sm transition-colors outline-none focus-visible:ring-2"
                   >
                     <X className="h-4 w-4" />
@@ -217,8 +246,8 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                         // inner content animates.
                         className={cn(
                           "text-muted-foreground hover:text-foreground focus-visible:bg-muted/60 focus-visible:text-foreground flex items-center justify-center px-3 py-6 transition-colors outline-none",
-                          i % 3 !== 2 && "border-border border-r",
-                          i < 3 && "border-border border-b",
+                          col !== cols - 1 && "border-border border-r",
+                          row < rows - 1 && "border-border border-b",
                         )}
                       >
                         <motion.span
@@ -237,7 +266,9 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
                           className="flex flex-col items-center gap-2"
                         >
                           <item.icon className="h-5 w-5" />
-                          <span className="text-sm font-medium">{item.label}</span>
+                          <span className="text-sm font-medium">
+                            {items === ITEMS ? t(ITEM_MESSAGE[item.label]) : item.label}
+                          </span>
                         </motion.span>
                       </button>
                     );
@@ -268,7 +299,7 @@ export function BloomMenu({ items = ITEMS, onSelect, className }: BloomMenuProps
               {/* own `layout` counter-scales the label so it stays crisp while the
                   button box morphs, instead of stretching with it */}
               <motion.span layout className="inline-flex items-center gap-2 whitespace-nowrap">
-                Create
+                {t("create")}
                 <Plus className="h-4 w-4" />
               </motion.span>
             </motion.button>

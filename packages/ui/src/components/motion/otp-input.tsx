@@ -5,6 +5,22 @@ import { AnimatePresence, animate, motion, useReducedMotion } from "motion/react
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const otpInputMessages = {
+  label: "One-time passcode",
+  progress: "{entered} of {total} digits entered.",
+  entered: "{digit}. {progress}",
+  maskedDigit: "Digit",
+  deleted: "Deleted. {progress}",
+  position: "{slot}, digit {position} of {total}.",
+  filled: "Filled",
+  empty: "Empty",
+  verified: "Verified",
+};
+
+export type OTPInputMessages = typeof otpInputMessages;
 
 export type OTPStatus = "idle" | "error" | "success";
 
@@ -32,6 +48,8 @@ export interface OTPInputProps {
   autoFocus?: boolean;
   /** Accessible label for the underlying input. */
   "aria-label"?: string;
+  /** Override any built-in string. */
+  labels?: Partial<OTPInputMessages>;
   className?: string;
 }
 
@@ -49,9 +67,12 @@ export function OTPInput({
   mask = false,
   disabled = false,
   autoFocus = false,
-  "aria-label": ariaLabel = "One-time passcode",
+  "aria-label": ariaLabelProp,
+  labels,
   className,
 }: OTPInputProps) {
+  const t = useMessages("otpInput", otpInputMessages, labels);
+  const ariaLabel = ariaLabelProp ?? t("label");
   const uid = useId();
   const reduce = useReducedMotion();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -72,7 +93,7 @@ export function OTPInput({
   const [announcement, setAnnouncement] = useState("");
   const announce = (text: string) =>
     setAnnouncement((previous) => (previous === text ? `${text}\u00a0` : text));
-  const spokenSlot = (char: string) => (char ? (mask ? "Filled" : char) : "Empty");
+  const spokenSlot = (char: string) => (char ? (mask ? t("filled") : char) : t("empty"));
 
   const joined = slots.join("");
   const joinedRef = useRef(joined);
@@ -92,10 +113,17 @@ export function OTPInput({
   const commit = (next: string[]) => {
     const wasComplete = slots.every((c) => c !== "");
     const changed = next.flatMap((c, i) => (c !== slots[i] ? [i] : []));
-    const progress = `${next.filter(Boolean).length} of ${length} digits entered.`;
+    const progress = t("progress", {
+      entered: next.filter(Boolean).length,
+      total: length,
+    });
     if (changed.length === 1) {
       const char = next[changed[0]];
-      announce(char ? `${mask ? "Digit" : char}. ${progress}` : `Deleted. ${progress}`);
+      announce(
+        char
+          ? t("entered", { digit: mask ? t("maskedDigit") : char, progress })
+          : t("deleted", { progress }),
+      );
     } else if (changed.length > 1) {
       announce(progress);
     }
@@ -169,7 +197,13 @@ export function OTPInput({
               ? 0
               : length - 1;
       setActive(to);
-      announce(`${spokenSlot(slots[to] ?? "")}, digit ${to + 1} of ${length}.`);
+      announce(
+        t("position", {
+          slot: spokenSlot(slots[to] ?? ""),
+          position: to + 1,
+          total: length,
+        }),
+      );
     }
   };
 
@@ -326,7 +360,7 @@ export function OTPInput({
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <title>Verified</title>
+                <title>{t("verified")}</title>
                 <motion.path
                   d="M5 13l4 4L19 7"
                   initial={reduce ? { pathLength: 1 } : { pathLength: 0 }}

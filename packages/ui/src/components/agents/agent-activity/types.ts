@@ -1,4 +1,8 @@
+"use client";
+
 import type { ReactNode } from "react";
+
+import type { AgentActivityMessages } from "./messages";
 
 export type AgentActivityStatus = "working" | "complete";
 export type AgentStepStatus = "pending" | "active" | "complete";
@@ -89,6 +93,8 @@ export interface AgentActivityProps {
   renderCompletedStatus?: (context: { summary: ReactNode; duration: number }) => ReactNode;
   /** Maximum visible activity height before the stream begins gliding. */
   maxHeight?: number;
+  /** Override any built-in string. Pick `One`/`Other` keys by count; `{count}`, `{duration}`, `{seconds}` and `{minutes}` fill the matching messages. */
+  labels?: Partial<AgentActivityMessages>;
   className?: string;
   contentClassName?: string;
 }

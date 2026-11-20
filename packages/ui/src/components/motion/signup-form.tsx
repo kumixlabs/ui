@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { StatefulButton } from "./button";
 import { Checkbox } from "./checkbox";
 import { Input } from "./input";
@@ -21,6 +22,48 @@ export type SignUpValues = {
 };
 
 export type SignUpErrors = Partial<Record<keyof SignUpValues, string>>;
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const signUpFormMessages = {
+  title: "Create your account",
+  description: "Start building in under a minute.",
+  submit: "Create account",
+  submitting: "Creating account",
+  submitted: "Account created",
+  retry: "Try again",
+  nameLabel: "Name",
+  namePlaceholder: "Ada Lovelace",
+  emailLabel: "Email",
+  emailPlaceholder: "you@example.com",
+  passwordLabel: "Password",
+  passwordPlaceholder: "At least {count} characters",
+  showPassword: "Show password",
+  hidePassword: "Hide password",
+  confirmPasswordLabel: "Confirm password",
+  confirmPasswordPlaceholder: "Re-enter your password",
+  terms: "I agree to the Terms and Privacy Policy",
+  strength: "Password strength: {level}",
+  strengthTooShort: "Too short",
+  strengthWeak: "Weak",
+  strengthFair: "Fair",
+  strengthGood: "Good",
+  strengthStrong: "Strong",
+  nameRequired: "Enter your name.",
+  emailRequired: "Enter your email.",
+  emailInvalid: "That doesn't look like an email address.",
+  passwordRequired: "Choose a password.",
+  passwordTooShort: "Use at least {count} characters.",
+  confirmPasswordRequired: "Confirm your password.",
+  passwordMismatch: "Passwords don't match.",
+  termsRequired: "Accept the terms to continue.",
+};
+
+export type SignUpFormMessages = typeof signUpFormMessages;
+
+type Translate = (
+  key: keyof SignUpFormMessages,
+  values?: Record<string, string | number>,
+) => string;
 
 export type SignUpFormClassNames = {
   root?: string;
@@ -53,6 +96,8 @@ export interface SignUpFormProps {
   footer?: ReactNode;
   /** Show the password strength meter. */
   strengthMeter?: boolean;
+  /** Override any built-in string. */
+  labels?: Partial<SignUpFormMessages>;
   className?: string;
   classNames?: SignUpFormClassNames;
 }
@@ -71,7 +116,14 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const MIN_PASSWORD_LENGTH = 8;
 
-const STRENGTH_LABELS = ["Too short", "Weak", "Fair", "Good", "Strong"] as const;
+/** Message key per `passwordStrength` score. */
+const STRENGTH_LABELS = [
+  "strengthTooShort",
+  "strengthWeak",
+  "strengthFair",
+  "strengthGood",
+  "strengthStrong",
+] as const satisfies readonly (keyof SignUpFormMessages)[];
 
 const STRENGTH_COLORS = [
   "bg-destructive",
@@ -103,33 +155,33 @@ export function passwordStrength(password: string): number {
   return Math.min(score, 4);
 }
 
-function defaultValidate(values: SignUpValues): SignUpErrors {
+function defaultValidate(values: SignUpValues, t: Translate): SignUpErrors {
   const errors: SignUpErrors = {};
 
   if (!values.name.trim()) {
-    errors.name = "Enter your name.";
+    errors.name = t("nameRequired");
   }
 
   if (!values.email.trim()) {
-    errors.email = "Enter your email.";
+    errors.email = t("emailRequired");
   } else if (!EMAIL_PATTERN.test(values.email)) {
-    errors.email = "That doesn't look like an email address.";
+    errors.email = t("emailInvalid");
   }
 
   if (!values.password) {
-    errors.password = "Choose a password.";
+    errors.password = t("passwordRequired");
   } else if (values.password.length < MIN_PASSWORD_LENGTH) {
-    errors.password = `Use at least ${MIN_PASSWORD_LENGTH} characters.`;
+    errors.password = t("passwordTooShort", { count: MIN_PASSWORD_LENGTH });
   }
 
   if (!values.confirmPassword) {
-    errors.confirmPassword = "Confirm your password.";
+    errors.confirmPassword = t("confirmPasswordRequired");
   } else if (values.confirmPassword !== values.password) {
-    errors.confirmPassword = "Passwords don't match.";
+    errors.confirmPassword = t("passwordMismatch");
   }
 
   if (!values.terms) {
-    errors.terms = "Accept the terms to continue.";
+    errors.terms = t("termsRequired");
   }
 
   return errors;
@@ -143,14 +195,19 @@ export function SignUpForm({
   validate,
   status: statusProp,
   errorMessage,
-  title = "Create your account",
-  description = "Start building in under a minute.",
-  submitLabel = "Create account",
+  title: titleProp,
+  description: descriptionProp,
+  submitLabel,
   footer,
   strengthMeter = true,
   className,
   classNames,
+  labels,
 }: SignUpFormProps) {
+  const t = useMessages("signUpForm", signUpFormMessages, labels);
+  // `null` still hides the header text; only an omitted prop falls back.
+  const title = titleProp === undefined ? t("title") : titleProp;
+  const description = descriptionProp === undefined ? t("description") : descriptionProp;
   const reduce = useReducedMotion();
   const baseId = useId();
 
@@ -172,7 +229,10 @@ export function SignUpForm({
   // already in error clears the moment it becomes valid.
   const [touched, setTouched] = useState<Partial<Record<keyof SignUpValues, boolean>>>({});
 
-  const errors = useMemo(() => (validate ?? defaultValidate)(values), [values, validate]);
+  const errors = useMemo(
+    () => (validate ? validate(values) : defaultValidate(values, t)),
+    [values, validate, t],
+  );
 
   const setValue = useCallback(
     <K extends keyof SignUpValues>(key: K, next: SignUpValues[K]) => {
@@ -263,9 +323,9 @@ export function SignUpForm({
 
       <div className={cn("flex flex-col gap-1", classNames?.fields)}>
         <Input
-          label="Name"
+          label={t("nameLabel")}
           autoComplete="name"
-          placeholder="Ada Lovelace"
+          placeholder={t("namePlaceholder")}
           leftIcon={<User />}
           disabled={isSubmitting}
           value={values.name}
@@ -277,11 +337,11 @@ export function SignUpForm({
         />
 
         <Input
-          label="Email"
+          label={t("emailLabel")}
           type="email"
           inputMode="email"
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder={t("emailPlaceholder")}
           leftIcon={<Mail />}
           disabled={isSubmitting}
           value={values.email}
@@ -294,17 +354,17 @@ export function SignUpForm({
 
         <div className="flex flex-col gap-2">
           <Input
-            label="Password"
+            label={t("passwordLabel")}
             type={revealPassword ? "text" : "password"}
             autoComplete="new-password"
-            placeholder="At least 8 characters"
+            placeholder={t("passwordPlaceholder", { count: MIN_PASSWORD_LENGTH })}
             leftIcon={<Lock />}
             rightIcon={
               <button
                 type="button"
                 disabled={isSubmitting}
                 onClick={() => setRevealPassword((prev) => !prev)}
-                aria-label={revealPassword ? "Hide password" : "Show password"}
+                aria-label={t(revealPassword ? "hidePassword" : "showPassword")}
                 className="text-muted-foreground hover:text-foreground focus-visible:text-foreground transition-colors outline-none"
               >
                 {revealPassword ? <EyeOff /> : <Eye />}
@@ -348,7 +408,7 @@ export function SignUpForm({
                   ))}
                 </div>
                 <p aria-live="polite" className="text-muted-foreground text-xs">
-                  Password strength: {STRENGTH_LABELS[strength]}
+                  {t("strength", { level: t(STRENGTH_LABELS[strength]) })}
                 </p>
               </motion.div>
             ) : null}
@@ -356,10 +416,10 @@ export function SignUpForm({
         </div>
 
         <Input
-          label="Confirm password"
+          label={t("confirmPasswordLabel")}
           type={revealPassword ? "text" : "password"}
           autoComplete="new-password"
-          placeholder="Re-enter your password"
+          placeholder={t("confirmPasswordPlaceholder")}
           leftIcon={<Lock />}
           disabled={isSubmitting}
           value={values.confirmPassword}
@@ -379,7 +439,7 @@ export function SignUpForm({
             setValue("terms", next);
             touch("terms");
           }}
-          label="I agree to the Terms and Privacy Policy"
+          label={t("terms")}
           aria-describedby={shownError("terms") ? termsErrorId : undefined}
         />
         <AnimatePresence initial={false}>
@@ -419,13 +479,13 @@ export function SignUpForm({
         type="submit"
         size="lg"
         state={status}
-        loadingText="Creating account"
-        successText="Account created"
-        errorText="Try again"
+        loadingText={t("submitting")}
+        successText={t("submitted")}
+        errorText={t("retry")}
         aria-describedby={errorMessage ? formErrorId : undefined}
         className={cn("w-full", classNames?.submit)}
       >
-        {submitLabel}
+        {submitLabel ?? t("submit")}
       </StatefulButton>
 
       {footer ? (

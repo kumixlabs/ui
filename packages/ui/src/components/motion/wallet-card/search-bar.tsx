@@ -7,7 +7,9 @@ import { AnimatePresence, motion, type Transition, useReducedMotion } from "moti
 import { cn } from "@kumix/utils";
 import { useDismiss } from "../../../hooks/use-dismiss";
 import { EASE_OUT } from "../../../lib/ease";
+import { useMessages } from "../../../lib/i18n";
 import { ITEM, LIST, MORPH } from "./constants";
+import { type WalletCardMessages, walletCardMessages } from "./messages";
 
 /**
  * Search icon that morphs into a full-width search bar via a shared layoutId,
@@ -18,16 +20,19 @@ import { ITEM, LIST, MORPH } from "./constants";
  * whether open or closed so the header row (and card) never shifts.
  */
 export function SearchBar({
-  placeholder = "Search",
+  placeholder,
   recent = [],
   onChange,
   onSubmit,
+  labels,
 }: {
   placeholder?: string;
   recent?: string[];
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
+  labels?: Partial<WalletCardMessages>;
 }) {
+  const t = useMessages("walletCard", walletCardMessages, labels);
   const reduce = useReducedMotion() ?? false;
   const layoutId = `${useId()}-search`;
   const rootRef = useRef<HTMLDivElement>(null);
@@ -49,8 +54,8 @@ export function SearchBar({
       setArmed(false);
       return;
     }
-    const t = window.setTimeout(() => setArmed(true), reduce ? 0 : 260);
-    return () => window.clearTimeout(t);
+    const id = window.setTimeout(() => setArmed(true), reduce ? 0 : 260);
+    return () => window.clearTimeout(id);
   }, [open, reduce]);
 
   // The box keeps the bouncy morph (same feel as the account switcher)...
@@ -81,7 +86,7 @@ export function SearchBar({
             key="icon"
             layoutId={layoutId}
             type="button"
-            aria-label="Search"
+            aria-label={t("search")}
             onClick={() => setOpen(true)}
             transition={morph}
             style={{ borderRadius: 12 }}
@@ -126,7 +131,7 @@ export function SearchBar({
                   if (e.key === "Enter" && value.trim()) submit(value.trim());
                   if (e.key === "Escape") close();
                 }}
-                placeholder={placeholder}
+                placeholder={placeholder ?? t("searchPlaceholder")}
                 className="placeholder:text-muted-foreground min-w-0 flex-1 bg-transparent text-sm outline-none"
               />
             </div>
@@ -167,7 +172,7 @@ export function SearchBar({
               >
                 <Search className="text-muted-foreground/60 h-5 w-5" />
                 <p className="text-muted-foreground text-sm">
-                  {query ? "No matches" : "No recent searches"}
+                  {t(query ? "noMatches" : "noRecent")}
                 </p>
               </motion.div>
             )}

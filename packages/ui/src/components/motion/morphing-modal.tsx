@@ -6,7 +6,15 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { focusablesIn, useFocusTrap } from "../../hooks/use-focus-trap";
 import { EASE_OUT, SPRING_PANEL } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const morphingModalMessages = {
+  close: "Close modal",
+};
+
+export type MorphingModalMessages = typeof morphingModalMessages;
 
 export interface MorphingModalProps {
   /** Which view is currently shown. `null` closes the modal. */
@@ -21,6 +29,8 @@ export interface MorphingModalProps {
    */
   ariaLabel?: string;
   className?: string;
+  /** Override any built-in string. */
+  labels?: Partial<MorphingModalMessages>;
 }
 
 export function MorphingModal({
@@ -30,7 +40,9 @@ export function MorphingModal({
   placement = "bottom",
   ariaLabel,
   className,
+  labels,
 }: MorphingModalProps) {
+  const t = useMessages("morphingModal", morphingModalMessages, labels);
   const open = viewId !== null;
   const reduce = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -94,7 +106,7 @@ export function MorphingModal({
           {({ gate }) => (
             <motion.button
               type="button"
-              aria-label="Close modal"
+              aria-label={t("close")}
               // Outside the panel, so the focus trap never lands on it; it is
               // a pointer target, and Escape closes from the keyboard.
               tabIndex={-1}
@@ -123,7 +135,6 @@ export function MorphingModal({
               )}
             >
               <motion.div
-                key="panel"
                 ref={panelRef}
                 role="dialog"
                 aria-modal="true"

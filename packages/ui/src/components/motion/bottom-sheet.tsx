@@ -13,6 +13,7 @@ import { createPortal } from "react-dom";
 import { cn } from "@kumix/utils";
 import { useFocusTrap } from "../../hooks/use-focus-trap";
 import { EASE_DRAWER } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
 import { TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";
 
@@ -20,6 +21,14 @@ import { TOUCH_GESTURE_CONTENT_CLASS } from "../../lib/touch";
 // open — no settle/overshoot, just one clean decel. Same curve drives the
 // backdrop fade so the surface and scrim move as one.
 const DRAWER = { duration: 0.5, ease: EASE_DRAWER } as const;
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const bottomSheetMessages = {
+  label: "Bottom sheet",
+  close: "Close bottom sheet",
+};
+
+export type BottomSheetMessages = typeof bottomSheetMessages;
 
 export interface BottomSheetProps {
   open: boolean;
@@ -33,6 +42,8 @@ export interface BottomSheetProps {
   className?: string;
   /** Min drag distance (px) past current snap to dismiss. */
   dismissThreshold?: number;
+  /** Override any built-in string. */
+  labels?: Partial<BottomSheetMessages>;
 }
 
 export function BottomSheet({
@@ -45,13 +56,14 @@ export function BottomSheet({
   children,
   className,
   dismissThreshold = 120,
+  labels,
 }: BottomSheetProps) {
+  const t = useMessages("bottomSheet", bottomSheetMessages, labels);
   const [snap, setSnap] = useState(defaultSnap);
   const [mounted, setMounted] = useState(false);
   const dragControls = useDragControls();
   const sheetRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const heightRef = useRef(0);
   const uid = useId();
   const titleId = `${uid}-title`;
   const descriptionId = `${uid}-description`;
@@ -152,7 +164,7 @@ export function BottomSheet({
           {({ gate }) => (
             <motion.button
               type="button"
-              aria-label="Close bottom sheet"
+              aria-label={t("close")}
               // Outside the sheet, so the focus trap never lands on it; it is
               // a pointer target, and Escape closes from the keyboard.
               tabIndex={-1}
@@ -186,9 +198,6 @@ export function BottomSheet({
               animate={reduce ? { y: 0, opacity: 1 } : { y: 0 }}
               exit={reduce ? { y: 0, opacity: 0 } : { y: "100%" }}
               transition={reduce ? { duration: 0.18, ease: EASE_DRAWER } : DRAWER}
-              onAnimationComplete={() => {
-                if (sheetRef.current) heightRef.current = sheetRef.current.offsetHeight;
-              }}
               {...gate}
               style={{ ...heightStyle, ...gate.style }}
               className={cn(
@@ -201,7 +210,7 @@ export function BottomSheet({
               tabIndex={-1}
               aria-labelledby={title ? titleId : undefined}
               aria-describedby={description ? descriptionId : undefined}
-              aria-label={title ? undefined : "Bottom sheet"}
+              aria-label={title ? undefined : t("label")}
             >
               <div className="flex flex-col items-center px-4 pt-3 pb-2">
                 {/* Drag only the pill so the title and description stay selectable. */}

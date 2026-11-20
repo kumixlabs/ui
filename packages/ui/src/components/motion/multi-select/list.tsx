@@ -14,17 +14,13 @@ export interface MultiSelectListProps {
   className?: string;
 }
 
-export function MultiSelectList({
-  children,
-  ariaLabel = "Options",
-  className,
-}: MultiSelectListProps) {
+export function MultiSelectList({ children, ariaLabel, className }: MultiSelectListProps) {
   const context = useMultiSelectContext("MultiSelectList");
   return (
     <div
       id={context.listId}
       role="listbox"
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? context.t("listLabel")}
       aria-multiselectable="true"
       className={cn(
         "relative isolate max-h-64 scrollbar-none overflow-y-auto overscroll-contain p-1.5 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
@@ -181,10 +177,7 @@ export interface MultiSelectEmptyProps {
   className?: string;
 }
 
-export function MultiSelectEmpty({
-  children = "No options found.",
-  className,
-}: MultiSelectEmptyProps) {
+export function MultiSelectEmpty({ children, className }: MultiSelectEmptyProps) {
   const context = useMultiSelectContext("MultiSelectEmpty");
   if (context.visibleCount > 0) return null;
   return (
@@ -192,7 +185,7 @@ export function MultiSelectEmpty({
       role="status"
       className={cn("text-muted-foreground px-3 py-8 text-center text-sm", className)}
     >
-      {children}
+      {children ?? context.t("empty")}
     </div>
   );
 }

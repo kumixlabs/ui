@@ -27,5 +27,6 @@ export function BumpChart({ children, className, ...props }: BumpChartProps) {
 export type { BumpChartProps } from "./bump-chart/context";
 export { useBumpChart } from "./bump-chart/context";
 export { BumpChartLegend } from "./bump-chart/legend";
+export { type BumpChartMessages, bumpChartMessages } from "./bump-chart/messages";
 export { BumpChartPlot } from "./bump-chart/plot";
 export type BumpChartSeries = import("./bump-chart/model").BumpSeries;

@@ -15,9 +15,11 @@ import { EASE_OUT } from "../../../lib/ease";
 export function BalanceDelta({
   balance,
   initialChange,
+  prefix = "$",
 }: {
   balance: number;
   initialChange?: number;
+  prefix?: string;
 }) {
   const reduce = useReducedMotion();
   const prevRef = useRef(balance);
@@ -53,7 +55,8 @@ export function BalanceDelta({
             )}
           >
             {up ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
-            {up ? "+" : "-"}$
+            {up ? "+" : "-"}
+            {prefix}
             {Math.abs(delta.amount).toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,

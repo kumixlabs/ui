@@ -37,7 +37,9 @@ export function CandlestickChart({ className, children, ...props }: CandlestickC
 
 export {
   type Candle,
+  type CandlestickChartMessages,
   type CandlestickChartProps,
+  candlestickChartMessages,
   useCandlestickChart,
 } from "./candlestick-chart/context";
 export {

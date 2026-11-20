@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../../lib/ease";
 import { useHeatCalendar } from "./context";
-import { DAYS, fmtDay, GAP, LIFT, MONTH_ROW, PITCH } from "./utils";
+import { DAYS, GAP, LIFT, MONTH_ROW, PITCH } from "./utils";
 
 export function HeatCalendarGrid({
   children,
@@ -38,6 +38,8 @@ export function HeatCalendarGrid({
     gridRef,
     tooltipId,
     unit,
+    t,
+    formats,
   } = useHeatCalendar();
   return (
     <div
@@ -105,7 +107,11 @@ export function HeatCalendarGrid({
                     cannot steal a click either */}
               <motion.button
                 type="button"
-                aria-label={`${count(v)} ${unit}${date ? ` on ${fmtDay.format(date)}` : ""}`}
+                aria-label={
+                  date
+                    ? t("cell", { count: count(v), unit, date: formats.day.format(date) })
+                    : t("cellUndated", { count: count(v), unit })
+                }
                 data-heat-cell={`${w}-${d}`}
                 aria-pressed={isEnd}
                 aria-describedby={on ? tooltipId : undefined}

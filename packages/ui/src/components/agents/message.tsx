@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { MessageSideContext } from "./message-context";
 
 export {
@@ -17,6 +18,14 @@ export type { MessageScrollerProps } from "./message-scroller";
 export { MessageScroller } from "./message-scroller";
 
 export type MessageFrom = "user" | "assistant";
+
+export const messageMessages = {
+  user: "user message",
+  assistant: "assistant message",
+  typing: "Responding",
+};
+
+export type MessageMessages = typeof messageMessages;
 
 interface MessageContextValue {
   from: MessageFrom;
@@ -32,6 +41,8 @@ export interface MessageProps
   /** Plays a trailing-edge pop-up once when this message row mounts. */
   animateIn?: boolean;
   children: ReactNode;
+  /** Override any built-in string. */
+  labels?: Partial<MessageMessages>;
 }
 
 export interface MessageGroupProps extends ComponentPropsWithRef<"div"> {
@@ -71,9 +82,11 @@ export function Message({
   transition,
   exit,
   style,
+  labels,
   ...props
 }: MessageProps) {
   const reduce = useReducedMotion() ?? false;
+  const t = useMessages("message", messageMessages, labels);
 
   return (
     <MessageSideContext.Provider value={from === "user" ? "end" : "start"}>
@@ -81,7 +94,7 @@ export function Message({
         <motion.article
           data-slot="message"
           data-from={from}
-          aria-label={props["aria-label"] ?? `${from} message`}
+          aria-label={props["aria-label"] ?? t(from)}
           initial={
             initial ??
             (animateIn && !reduce
@@ -221,8 +234,9 @@ export function MessageMarker({ className, ...props }: MessageMarkerProps) {
   );
 }
 
-export function MessageTyping({ label = "Responding", className, ...props }: MessageTypingProps) {
+export function MessageTyping({ label, className, ...props }: MessageTypingProps) {
   const reduce = useReducedMotion() ?? false;
+  const t = useMessages("message", messageMessages);
 
   return (
     <span
@@ -230,7 +244,7 @@ export function MessageTyping({ label = "Responding", className, ...props }: Mes
       className={cn("inline-flex h-5 items-center gap-1", className)}
       {...props}
     >
-      <span className="sr-only">{label}</span>
+      <span className="sr-only">{label ?? t("typing")}</span>
       {[0, 1, 2].map((index) => (
         <motion.span
           key={index}

@@ -17,6 +17,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT } from "../../../lib/ease";
+import type { AgentActivityTranslate } from "./messages";
 import type {
   AgentActivityItem,
   AgentActivitySearch,
@@ -101,7 +102,7 @@ function SearchResultRow({ result }: { result: AgentSearchResult }) {
   );
 }
 
-function SearchRow({ item }: { item: AgentActivitySearch }) {
+function SearchRow({ item, t }: { item: AgentActivitySearch; t: AgentActivityTranslate }) {
   const reduce = useReducedMotion() ?? false;
   const enter = reduce ? { opacity: 1 } : { opacity: 0, y: 6 };
   const visible = { opacity: 1, y: 0 };
@@ -148,7 +149,7 @@ function SearchRow({ item }: { item: AgentActivitySearch }) {
             transition={transition}
             className="text-muted-foreground/55 px-1.5 py-1 pl-8"
           >
-            +{item.moreCount} more
+            {t("moreResults", { count: item.moreCount })}
           </motion.div>
         ) : null}
       </AnimatePresence>
@@ -165,8 +166,11 @@ function ActionIcon({ action }: { action: string }) {
   return <Wrench className="size-4" />;
 }
 
-function ToolRow({ item }: { item: AgentActivityTool }) {
-  const action = item.action.charAt(0).toUpperCase() + item.action.slice(1);
+const KNOWN_ACTIONS = ["read", "edit", "write", "run"] as const;
+
+function ToolRow({ item, t }: { item: AgentActivityTool; t: AgentActivityTranslate }) {
+  const known = KNOWN_ACTIONS.find((action) => action === item.action);
+  const action = known ? t(known) : item.action.charAt(0).toUpperCase() + item.action.slice(1);
 
   return (
     <div className="flex min-h-8 min-w-0 items-center gap-2.5 rounded-md px-1.5 py-0.5 leading-5">
@@ -221,10 +225,10 @@ function TraceRow({ item }: { item: AgentActivityTrace }) {
   );
 }
 
-export function ActivityRow({ item }: { item: AgentActivityItem }) {
+export function ActivityRow({ item, t }: { item: AgentActivityItem; t: AgentActivityTranslate }) {
   if (item.type === "text") return <TextRow item={item} />;
-  if (item.type === "search") return <SearchRow item={item} />;
-  if (item.type === "tool") return <ToolRow item={item} />;
+  if (item.type === "search") return <SearchRow item={item} t={t} />;
+  if (item.type === "tool") return <ToolRow item={item} t={t} />;
   if (item.type === "trace") return <TraceRow item={item} />;
   return <StepRow item={item} />;
 }

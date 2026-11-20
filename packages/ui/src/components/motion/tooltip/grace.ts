@@ -1,3 +1,5 @@
+"use client";
+
 type Point = { x: number; y: number };
 type Box = { left: number; top: number; right: number; bottom: number };
 

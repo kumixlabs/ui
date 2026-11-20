@@ -1,3 +1,5 @@
+"use client";
+
 export interface FunnelStage {
   /** Keep IDs stable when updating counts. */
   id: string;

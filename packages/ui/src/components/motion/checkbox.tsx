@@ -5,6 +5,15 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const checkboxMessages = {
+  checked: "Selected",
+  indeterminate: "Partially selected",
+};
+
+export type CheckboxMessages = typeof checkboxMessages;
 
 const CHECK_PATH = "M5 13l4 4L19 7";
 const INDETERMINATE_PATH = "M6 12h12";
@@ -22,6 +31,8 @@ export interface CheckboxProps {
   "aria-label"?: string;
   /** Associates an external message (e.g. a form error) with the control. */
   "aria-describedby"?: string;
+  /** Override any built-in string. */
+  labels?: Partial<CheckboxMessages>;
 }
 
 export function Checkbox({
@@ -35,7 +46,9 @@ export function Checkbox({
   id: idProp,
   "aria-label": ariaLabel,
   "aria-describedby": ariaDescribedBy,
+  labels,
 }: CheckboxProps) {
+  const t = useMessages("checkbox", checkboxMessages, labels);
   const autoId = useId();
   const id = idProp ?? autoId;
   const reduce = useReducedMotion();
@@ -96,7 +109,7 @@ export function Checkbox({
               transition={reduce ? { duration: 0 } : { duration: 0.16, ease: EASE_OUT }}
               aria-hidden
             >
-              <title>{indeterminate ? "Partially selected" : "Selected"}</title>
+              <title>{t(indeterminate ? "indeterminate" : "checked")}</title>
               <motion.path
                 d={path}
                 initial={reduce ? { pathLength: 1 } : { pathLength: 0 }}

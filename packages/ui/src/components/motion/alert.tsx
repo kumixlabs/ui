@@ -16,6 +16,7 @@ import { AnimatePresence, type HTMLMotionProps, motion, useReducedMotion } from 
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, EASE_OUT_CSS, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
 
 export type AlertVariant = "default" | "info" | "success" | "warning" | "destructive";
@@ -27,7 +28,18 @@ export type AlertState = {
   dismiss: () => void;
 };
 
-const AlertContext = createContext<(AlertState & { reduce: boolean }) | null>(null);
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const alertMessages = {
+  dismiss: "Dismiss alert",
+};
+
+export type AlertMessages = typeof alertMessages;
+
+type AlertTranslate = ReturnType<typeof useMessages<AlertMessages>>;
+
+const AlertContext = createContext<(AlertState & { reduce: boolean; t: AlertTranslate }) | null>(
+  null,
+);
 
 function useAlertContext(component: string) {
   const context = useContext(AlertContext);
@@ -71,6 +83,8 @@ export interface AlertProps
   contentClassName?: string;
   /** Defaults to alert for warning/destructive, and status for other variants. */
   role?: "alert" | "status";
+  /** Override any built-in string. */
+  labels?: Partial<AlertMessages>;
 }
 
 export function Alert({
@@ -85,8 +99,10 @@ export function Alert({
   role = variant === "warning" || variant === "destructive" ? "alert" : "status",
   style,
   ref,
+  labels,
   ...props
 }: AlertProps) {
+  const t = useMessages("alert", alertMessages, labels);
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const open = controlledOpen ?? internalOpen;
   const reduce = useReducedMotion() ?? false;
@@ -108,8 +124,8 @@ export function Alert({
   }, []);
   const dismiss = useCallback(() => setOpen(false), [setOpen]);
   const context = useMemo(
-    () => ({ open, variant, reduce, setOpen, dismiss }),
-    [open, variant, reduce, setOpen, dismiss],
+    () => ({ open, variant, reduce, setOpen, dismiss, t }),
+    [open, variant, reduce, setOpen, dismiss, t],
   );
 
   const setRef = useCallback(
@@ -281,11 +297,11 @@ export function AlertAction({ className, ...props }: AlertActionProps) {
 export interface AlertCloseProps extends Omit<HTMLMotionProps<"button">, "layout"> {}
 
 export function AlertClose({ className, children, onClick, ...props }: AlertCloseProps) {
-  const { dismiss, reduce } = useAlertContext("AlertClose");
+  const { dismiss, reduce, t } = useAlertContext("AlertClose");
   return (
     <motion.button
       type="button"
-      aria-label="Dismiss alert"
+      aria-label={t("dismiss")}
       {...props}
       tabIndex={props.tabIndex ?? 0}
       data-slot="alert-close"

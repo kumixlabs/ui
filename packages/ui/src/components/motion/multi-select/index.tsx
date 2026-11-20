@@ -24,6 +24,10 @@ export {
   type MultiSelectSeparatorProps,
 } from "./list";
 export {
+  type MultiSelectMessages,
+  multiSelectMessages,
+} from "./messages";
+export {
   MultiSelectInput,
   type MultiSelectInputProps,
   MultiSelectTrigger,

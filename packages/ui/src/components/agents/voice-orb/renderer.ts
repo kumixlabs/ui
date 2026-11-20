@@ -1,3 +1,5 @@
+"use client";
+
 export type OrbFrame = {
   activity: number;
   colors: readonly [string, string, string];

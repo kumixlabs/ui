@@ -26,12 +26,26 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { SPRING_PRESS, SPRING_SWAP } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { ActionSwapRollText } from "../motion/action-swap-roll";
 import { AgentCode, type AgentCodeLanguage } from "./agent-code";
 import { AgentDisclosure } from "./agent-disclosure";
 
 export type ToolResultStatus = "running" | "success" | "error" | "cancelled";
 export type ToolResultKind = "terminal" | "request" | "custom";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const toolResultMessages = {
+  running: "Running",
+  success: "Completed",
+  error: "Failed",
+  cancelled: "Cancelled",
+  copy: "Copy result",
+  copied: "Copied",
+  retry: "Run again",
+};
+
+export type ToolResultMessages = typeof toolResultMessages;
 
 export interface ToolResultProps {
   tool: ReactNode;
@@ -49,6 +63,8 @@ export interface ToolResultProps {
   copyText?: string;
   onCopy?: () => void | Promise<void>;
   onRetry?: () => void;
+  /** Override any built-in string. */
+  labels?: Partial<ToolResultMessages>;
   className?: string;
   contentClassName?: string;
 }
@@ -57,13 +73,6 @@ export interface ToolResultOutputProps {
   children: string;
   language?: AgentCodeLanguage;
   className?: string;
-}
-
-function getStatusLabel(status: ToolResultStatus) {
-  if (status === "running") return "Running";
-  if (status === "success") return "Completed";
-  if (status === "error") return "Failed";
-  return "Cancelled";
 }
 
 function getSwapKey(value: ReactNode, fallback: string) {
@@ -154,9 +163,11 @@ export function ToolResult({
   copyText,
   onCopy,
   onRetry,
+  labels,
   className,
   contentClassName,
 }: ToolResultProps) {
+  const t = useMessages("toolResult", toolResultMessages, labels);
   const reduce = useReducedMotion() ?? false;
   const baseId = useId();
   const triggerId = `${baseId}-trigger`;
@@ -172,7 +183,7 @@ export function ToolResult({
   const titleKey = getSwapKey(title, status);
   const metaKey = getSwapKey(meta, `${status}-meta`);
   const toolKey = getSwapKey(tool, `${status}-tool`);
-  const statusLabel = getStatusLabel(status);
+  const statusLabel = t(status);
 
   const setOpen = useCallback(
     (next: boolean) => {
@@ -289,12 +300,12 @@ export function ToolResult({
             {canCopy || onRetry ? (
               <div className="flex items-center gap-0.5 px-2 pb-1.5">
                 {canCopy ? (
-                  <ToolResultAction label={copied ? "Copied" : "Copy result"} onClick={handleCopy}>
+                  <ToolResultAction label={copied ? t("copied") : t("copy")} onClick={handleCopy}>
                     {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
                   </ToolResultAction>
                 ) : null}
                 {onRetry ? (
-                  <ToolResultAction label="Run again" onClick={onRetry}>
+                  <ToolResultAction label={t("retry")} onClick={onRetry}>
                     <RotateCcw className="size-3.5" />
                   </ToolResultAction>
                 ) : null}

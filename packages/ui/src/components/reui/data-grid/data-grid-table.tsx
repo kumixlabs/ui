@@ -1346,8 +1346,8 @@ function DataGridTableHeadRowCell<TData extends object>({
           cn(
             "data-pinned:bg-muted data-outer-pinned-col:bg-clip-padding data-pinned:isolate",
             /* No rule here may reach the resize handle: it sits outside the
-   handle's own cn(), so the onChange resize line could not undo
-   it. The handle decides its own line. */
+handle's own cn(), so the onChange resize line could not undo
+it. The handle decides its own line. */
             "[&[data-pinned=end][data-last-col=end]]:shadow-[inset_calc(1px*var(--data-grid-dir,1))_0_0_0_var(--border)] [&[data-pinned=start][data-last-col=start]]:shadow-[inset_calc(-1px*var(--data-grid-dir,1))_0_0_0_var(--border)]",
           ),
         header.column.columnDef.meta?.headerClassName,

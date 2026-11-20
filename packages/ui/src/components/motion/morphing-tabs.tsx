@@ -26,7 +26,16 @@ import { createPortal } from "react-dom";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_GLIDE, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { capturePointer, TOUCH_GESTURE_CLASS } from "../../lib/touch";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const morphingTabsMessages = {
+  label: "Tabs",
+  close: "Close {label}",
+};
+
+export type MorphingTabsMessages = typeof morphingTabsMessages;
 
 export type MorphingTabsItem = {
   id: string;
@@ -59,6 +68,8 @@ export interface MorphingTabsProps {
   ariaLabel?: string;
   className?: string;
   classNames?: MorphingTabsClassNames;
+  /** Override any built-in string. */
+  labels?: Partial<MorphingTabsMessages>;
 }
 
 type DragSession = {
@@ -268,20 +279,24 @@ export function MorphingTabs({
   onValueChange,
   onOrderChange,
   onClose,
-  ariaLabel = "Tabs",
+  ariaLabel,
   className,
   classNames,
+  labels,
 }: MorphingTabsProps) {
+  const t = useMessages("morphingTabs", morphingTabsMessages, labels);
   const reduce = Boolean(useReducedMotion());
   const uid = useId();
   const itemIds = useMemo(() => items.map((item) => item.id), [items]);
   const itemMap = useMemo(() => new Map(items.map((item) => [item.id, item])), [items]);
   const [order, setOrder] = useState(itemIds);
   const orderRef = useRef(order);
-  orderRef.current = order;
+  useLayoutEffect(() => {
+    orderRef.current = order;
+  }, [order]);
 
   const [internalValue, setInternalValue] = useState<string | null>(
-    defaultValue ?? itemIds[0] ?? null,
+    defaultValue ?? items.find((item) => !item.disabled)?.id ?? itemIds[0] ?? null,
   );
   const controlled = value !== undefined;
   const currentValue = controlled ? (value ?? null) : internalValue;
@@ -321,10 +336,8 @@ export function MorphingTabs({
   );
 
   const firstEnabledItem = orderedItems.find((item) => !item.disabled) ?? orderedItems[0] ?? null;
-  const activeItem =
-    currentValue && itemMap.has(currentValue)
-      ? (itemMap.get(currentValue) ?? null)
-      : firstEnabledItem;
+  const currentItem = currentValue ? itemMap.get(currentValue) : undefined;
+  const activeItem = currentItem && !currentItem.disabled ? currentItem : firstEnabledItem;
   const activeId = activeItem?.id ?? null;
 
   // The rail cannot scroll: the liquid surface is one continuous shape spanning
@@ -407,11 +420,11 @@ export function MorphingTabs({
   );
 
   useEffect(() => {
-    if (currentValue && itemMap.has(currentValue)) return;
+    if (currentItem && !currentItem.disabled) return;
     if (firstEnabledItem && firstEnabledItem.id !== currentValue) {
       setActive(firstEnabledItem.id);
     }
-  }, [currentValue, firstEnabledItem, itemMap, setActive]);
+  }, [currentItem, currentValue, firstEnabledItem, setActive]);
 
   const activeOrderIndex = activeId ? order.indexOf(activeId) : -1;
   const activeVisualIndex = activeOrderIndex < 0 ? -1 : visualIndexFor(activeOrderIndex);
@@ -630,12 +643,21 @@ export function MorphingTabs({
 
       event.preventDefault();
       const direction = event.key === "ArrowLeft" ? -1 : 1;
-      const nextIndex = (index + direction + orderRef.current.length) % orderRef.current.length;
+      const count = orderRef.current.length;
+      let nextIndex = index;
+      for (let step = 1; step < count; step++) {
+        const candidate = (index + direction * step + count * step) % count;
+        if (!itemMap.get(orderRef.current[candidate])?.disabled) {
+          nextIndex = candidate;
+          break;
+        }
+      }
+      if (nextIndex === index) return;
       const nextId = orderRef.current[nextIndex];
       setActive(nextId);
       requestAnimationFrame(() => tabButtonRefs.current[nextId]?.focus());
     },
-    [moveBy, setActive],
+    [itemMap, moveBy, setActive],
   );
 
   if (!orderedItems.length) return null;
@@ -653,7 +675,7 @@ export function MorphingTabs({
         <div
           ref={railRef}
           role="tablist"
-          aria-label={ariaLabel}
+          aria-label={ariaLabel ?? t("label")}
           aria-orientation="horizontal"
           className={cn("relative z-30 flex h-full gap-3 md:gap-4", classNames?.rail)}
         >
@@ -778,7 +800,7 @@ export function MorphingTabs({
                   {onClose ? (
                     <button
                       type="button"
-                      aria-label={`Close ${item.label}`}
+                      aria-label={t("close", { label: item.label })}
                       onPointerDown={(event) => event.stopPropagation()}
                       onClick={(event) => {
                         event.stopPropagation();

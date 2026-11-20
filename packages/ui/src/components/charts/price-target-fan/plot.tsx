@@ -15,6 +15,13 @@ import {
 import { PriceTargetFanTooltip } from "./tooltip";
 import { fmtAxisDate, H, PAD, W } from "./utils";
 
+/** Decimals the grid step needs, so 2.5 labels as "152.5" and 0.25 as "0.25". */
+function stepDecimals(step: number) {
+  let decimals = 0;
+  while (decimals < 8 && !Number.isInteger(Number((step * 10 ** decimals).toFixed(6)))) decimals++;
+  return decimals;
+}
+
 /** HTML positioning container. Place Tooltip beside SVG, never inside SVG. */
 export function PriceTargetFanPlot({
   children,
@@ -57,6 +64,7 @@ export function PriceTargetFanSvg({
     reduce,
     geo,
     drawn,
+    t,
   } = usePriceTargetFan();
   return (
     <svg
@@ -64,7 +72,7 @@ export function PriceTargetFanSvg({
       viewBox={`0 0 ${W} ${H}`}
       className={cn("block h-auto w-full cursor-crosshair **:cursor-crosshair", className)}
       role="group"
-      aria-label={`${label}: mean ${fmt(mean.price)}, now ${fmt(current)}`}
+      aria-label={t("chart", { label, mean: fmt(mean.price), current: fmt(current) })}
       onPointerMove={onMove}
       onPointerLeave={(event) => {
         if (event.pointerType !== "touch") setActive(null);
@@ -113,7 +121,7 @@ export function PriceTargetFanSvg({
 }
 
 export function PriceTargetFanAxes({ className }: { className?: string }) {
-  const { gridVals, y, geo, dates, history, fadeId } = usePriceTargetFan();
+  const { gridVals, y, geo, dates, history, fadeId, locale, t } = usePriceTargetFan();
   return (
     <g className={cn(className)}>
       {/* gridlines and the price axis */}
@@ -135,7 +143,7 @@ export function PriceTargetFanAxes({ className }: { className?: string }) {
             fill="var(--muted-foreground)"
             className="font-mono tabular-nums"
           >
-            {gridVals.step >= 1 ? Math.round(v) : v.toFixed(1)}
+            {v.toFixed(stepDecimals(gridVals.step))}
           </text>
         </g>
       ))}
@@ -143,19 +151,25 @@ export function PriceTargetFanAxes({ className }: { className?: string }) {
       {/* the date axis: history, now, horizon */}
       {[
         ...(history.length
-          ? [{ x: geo.hx(0), t: dates.start ?? fmtAxisDate(history[0].date), a: "start" as const }]
+          ? [
+              {
+                x: geo.hx(0),
+                t: dates.start ?? fmtAxisDate(history[0].date, locale),
+                a: "start" as const,
+              },
+            ]
           : []),
         ...(history.length > 2
           ? [
               {
                 x: geo.hx(Math.floor(history.length / 2)),
-                t: dates.mid ?? fmtAxisDate(history[Math.floor(history.length / 2)].date),
+                t: dates.mid ?? fmtAxisDate(history[Math.floor(history.length / 2)].date, locale),
                 a: "middle" as const,
               },
             ]
           : []),
-        { x: geo.nowX, t: "Now", a: "middle" as const },
-        { x: geo.endX, t: dates.horizon ?? "Target", a: "middle" as const },
+        { x: geo.nowX, t: t("now"), a: "middle" as const },
+        { x: geo.endX, t: dates.horizon ?? t("horizon"), a: "middle" as const },
       ].map((d) => (
         <text
           key={d.x}

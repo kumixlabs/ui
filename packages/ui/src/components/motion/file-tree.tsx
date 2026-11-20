@@ -16,6 +16,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { SharedLayoutBg } from "./shared-layout-bg";
 
 type FileTreeItem = {
@@ -52,6 +53,13 @@ export type FileTreeClassNames = {
   label?: string;
 };
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const fileTreeMessages = {
+  label: "Files",
+};
+
+export type FileTreeMessages = typeof fileTreeMessages;
+
 export interface FileTreeProps {
   children: ReactNode;
   value?: string | null;
@@ -61,6 +69,8 @@ export interface FileTreeProps {
   defaultExpandedIds?: string[];
   onExpandedChange?: (expandedIds: string[]) => void;
   ariaLabel?: string;
+  /** Override any built-in string. */
+  labels?: Partial<FileTreeMessages>;
   indent?: number;
   className?: string;
   classNames?: FileTreeClassNames;
@@ -190,12 +200,14 @@ export function FileTree({
   expandedIds,
   defaultExpandedIds = [],
   onExpandedChange,
-  ariaLabel = "Files",
+  ariaLabel,
+  labels,
   indent = 18,
   className,
   classNames,
 }: FileTreeProps) {
   const reduce = useReducedMotion() ?? false;
+  const t = useMessages("fileTree", fileTreeMessages, labels);
   const [internalValue, setInternalValue] = useState(defaultValue);
   const [internalExpandedIds, setInternalExpandedIds] = useState(defaultExpandedIds);
   const [focusedId, setFocusedId] = useState<string | null>(value ?? defaultValue);
@@ -289,7 +301,7 @@ export function FileTree({
   return (
     <SharedLayoutBg
       role="tree"
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? t("label")}
       aria-multiselectable="false"
       inset={0}
       pillClassName="rounded-xl bg-muted"
@@ -354,7 +366,6 @@ export function FileTree({
                   aria-hidden="true"
                   initial={reduce ? false : { opacity: 0, scaleY: 0 }}
                   animate={{ opacity: 1, scaleY: 1 }}
-                  exit={{ opacity: 0, scaleY: 0 }}
                   transition={reduce ? { duration: 0 } : BRANCH_DRAW}
                   className="bg-border/70 absolute top-0 bottom-0 w-px origin-top"
                   style={{ left: 16 + (row.depth - 1) * indent }}

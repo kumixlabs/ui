@@ -30,6 +30,7 @@ export function TreemapCell({
     reduce,
     canHover,
     registerButton,
+    t,
   } = useTreemap();
   const present = useIsPresent();
   const ref = useCallback(
@@ -55,7 +56,7 @@ export function TreemapCell({
       aria-label={[
         tile.path.join(" / "),
         formatValue(tile.value),
-        `${(tile.share * 100).toFixed(1)}% of total`,
+        t("ofTotal", { share: (tile.share * 100).toFixed(1) }),
         tile.description,
       ]
         .filter(Boolean)

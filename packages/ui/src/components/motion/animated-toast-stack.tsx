@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 
 export type ToastStatus = "neutral" | "info" | "loading" | "success" | "error";
 export type ToastPosition =
@@ -51,6 +52,13 @@ export type ToastClassNames = {
   progress?: string;
 };
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const animatedToastStackMessages = {
+  dismiss: "Dismiss toast",
+};
+
+export type AnimatedToastStackMessages = typeof animatedToastStackMessages;
+
 export interface AnimatedToastStackProps {
   toasts: AnimatedToast[];
   onDismiss?: (id: string) => void;
@@ -64,6 +72,8 @@ export interface AnimatedToastStackProps {
   classNames?: ToastClassNames;
   icons?: Partial<Record<ToastStatus, ReactNode>>;
   renderToast?: (toast: AnimatedToast) => ReactNode;
+  /** Override any built-in string. */
+  labels?: Partial<AnimatedToastStackMessages>;
 }
 
 export interface UseAnimatedToastStackOptions {
@@ -247,7 +257,9 @@ export function AnimatedToastStack({
   classNames,
   icons,
   renderToast,
+  labels,
 }: AnimatedToastStackProps) {
+  const t = useMessages("animatedToastStack", animatedToastStackMessages, labels);
   const [portalTarget, setPortalTarget] = useState<Element | null>(null);
   const visibleToasts = toasts.slice(-maxVisible);
   const isBottom = position.startsWith("bottom");
@@ -282,6 +294,7 @@ export function AnimatedToastStack({
             classNames={classNames}
             icons={icons}
             renderToast={renderToast}
+            dismissLabel={t("dismiss")}
           />
         ))}
       </AnimatePresence>
@@ -306,6 +319,7 @@ const ToastItem = memo(function ToastItem({
   classNames,
   icons,
   renderToast,
+  dismissLabel,
 }: {
   toast: AnimatedToast;
   index: number;
@@ -313,6 +327,7 @@ const ToastItem = memo(function ToastItem({
   classNames?: ToastClassNames;
   icons?: Partial<Record<ToastStatus, ReactNode>>;
   renderToast?: (toast: AnimatedToast) => ReactNode;
+  dismissLabel: string;
 }) {
   const reduce = useReducedMotion();
   const status = toast.status ?? "neutral";
@@ -441,7 +456,7 @@ const ToastItem = memo(function ToastItem({
               <button
                 type="button"
                 onClick={() => onDismiss?.(toast.id)}
-                aria-label="Dismiss toast"
+                aria-label={dismissLabel}
                 className={cn(
                   "text-muted-foreground hover:bg-muted/80 hover:text-foreground inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-colors",
                   classNames?.close,

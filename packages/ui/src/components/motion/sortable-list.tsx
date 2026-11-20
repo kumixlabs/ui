@@ -15,6 +15,20 @@ import { type HTMLMotionProps, Reorder, useDragControls, useReducedMotion } from
 
 import { cn } from "@kumix/utils";
 import { SPRING_LAYOUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const sortableListMessages = {
+  label: "Sortable items",
+  instructions:
+    "Drag a handle to reorder. With a handle focused, use Up and Down to move, Home and End to move to the edges.",
+  moved: "{item} moved to position {position} of {total}.",
+  restored: "Previous order restored.",
+  reorder: "Reorder {item}",
+  undo: "Undo reorder",
+};
+
+export type SortableListMessages = typeof sortableListMessages;
 
 type MoveDirection = -1 | 1 | "first" | "last";
 type ListContextValue = {
@@ -24,6 +38,7 @@ type ListContextValue = {
   disabled: boolean;
   instructions: string;
   itemClassName?: string;
+  t: (key: keyof SortableListMessages, values?: Record<string, string | number>) => string;
   canUndo: boolean;
   reorder: (ids: string[]) => void;
   move: (id: string, direction: MoveDirection) => void;
@@ -72,6 +87,8 @@ export interface SortableListProps<T extends { id: string }> {
   showUndo?: boolean;
   className?: string;
   itemClassName?: string;
+  /** Override any built-in string. */
+  labels?: Partial<SortableListMessages>;
 }
 
 /** Stable item ids keep focus and content attached to their row during sorting. */
@@ -82,12 +99,15 @@ export function SortableList<T extends { id: string }>({
   renderItem,
   getItemLabel,
   children,
-  label = "Sortable items",
+  label: labelProp,
   disabled = false,
   showUndo = true,
   className,
   itemClassName,
+  labels,
 }: SortableListProps<T>) {
+  const t = useMessages("sortableList", sortableListMessages, labels);
+  const label = labelProp ?? t("label");
   const [internalItems, setInternalItems] = useState(defaultItems);
   const items = controlledItems ?? internalItems;
   const ids = items.map((item) => item.id);
@@ -138,7 +158,13 @@ export function SortableList<T extends { id: string }>({
     next.splice(to, 0, item);
     setPrevious(current.map((item) => item.id));
     change(next);
-    setAnnouncement(`${getItemLabel(item)} moved to position ${to + 1} of ${current.length}.`);
+    setAnnouncement(
+      t("moved", {
+        item: getItemLabel(item),
+        position: to + 1,
+        total: current.length,
+      }),
+    );
   };
   if (
     previous !== null &&
@@ -155,7 +181,7 @@ export function SortableList<T extends { id: string }>({
     pendingFocus.current = previous.find((id, index) => id !== ids[index]) ?? previous[0];
     reorder(previous);
     setPrevious(null);
-    setAnnouncement("Previous order restored.");
+    setAnnouncement(t("restored"));
   };
   const context: ListContextValue = {
     ids,
@@ -164,6 +190,7 @@ export function SortableList<T extends { id: string }>({
     disabled,
     instructions,
     itemClassName,
+    t,
     canUndo,
     reorder,
     move,
@@ -180,7 +207,11 @@ export function SortableList<T extends { id: string }>({
       if (item && before?.some((oldId, at) => oldId !== current[at]?.id)) {
         setPrevious(before);
         setAnnouncement(
-          `${getItemLabel(item)} moved to position ${index + 1} of ${current.length}.`,
+          t("moved", {
+            item: getItemLabel(item),
+            position: index + 1,
+            total: current.length,
+          }),
         );
       }
     },
@@ -190,8 +221,7 @@ export function SortableList<T extends { id: string }>({
     <ListContext.Provider value={context}>
       <div ref={root} className={cn("w-full max-w-md", className)}>
         <p id={instructions} className="sr-only">
-          Drag a handle to reorder. With a handle focused, use Up and Down to move, Home and End to
-          move to the edges.
+          {t("instructions")}
         </p>
         {children === undefined ? (
           <>
@@ -315,7 +345,7 @@ export function SortableListHandle({
       type="button"
       disabled={unavailable}
       data-sortable-id={item.id}
-      aria-label={props["aria-label"] ?? `Reorder ${item.label}`}
+      aria-label={props["aria-label"] ?? context.t("reorder", { item: item.label })}
       aria-describedby={[context.instructions, props["aria-describedby"]].filter(Boolean).join(" ")}
       onPointerDown={(event) => {
         onPointerDown?.(event);
@@ -387,7 +417,7 @@ export function SortableListUndo({
     >
       {children ?? (
         <>
-          <Undo2 size={13} aria-hidden="true" /> Undo reorder
+          <Undo2 size={13} aria-hidden="true" /> {context.t("undo")}
         </>
       )}
     </button>

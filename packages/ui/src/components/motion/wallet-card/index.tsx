@@ -4,15 +4,23 @@ import { useState } from "react";
 import { Bell, Eye, EyeOff } from "lucide-react";
 
 import { cn } from "@kumix/utils";
+import { useMessages } from "../../../lib/i18n";
 import { ActionSwapText } from "../action-swap";
 import { Button } from "../button";
 import { AccountSwitcher } from "./account-switcher";
 import { WalletActions } from "./actions";
 import { BalanceDelta } from "./balance-delta";
+import { type WalletCardMessages, walletCardMessages } from "./messages";
 import { SearchBar } from "./search-bar";
-import type { WalletCardProps } from "./types";
+import type { WalletCardProps as WalletCardBaseProps } from "./types";
 
-export type { WalletAccount, WalletCardProps } from "./types";
+export { type WalletCardMessages, walletCardMessages } from "./messages";
+export type { WalletAccount } from "./types";
+
+export interface WalletCardProps extends WalletCardBaseProps {
+  /** Override any built-in string. */
+  labels?: Partial<WalletCardMessages>;
+}
 
 /**
  * Composed wallet overview card: an account switcher whose trigger morphs open
@@ -40,8 +48,10 @@ export function WalletCard({
   onSearchSubmit,
   hasNotifications = false,
   onNotifications,
+  labels,
   className,
 }: WalletCardProps) {
+  const t = useMessages("walletCard", walletCardMessages, labels);
   const accountControlled = accountId !== undefined;
   const [internalAccountId, setInternalAccountId] = useState(defaultAccountId ?? accounts[0]?.id);
   const [balanceHidden, setBalanceHidden] = useState(defaultBalanceHidden);
@@ -72,6 +82,7 @@ export function WalletCard({
           accounts={accounts}
           activeAccount={activeAccount}
           onSelect={handleAccountChange}
+          labels={labels}
         />
 
         <div className="flex shrink-0 items-center gap-1">
@@ -80,12 +91,13 @@ export function WalletCard({
             recent={searchRecent}
             onChange={onSearchChange}
             onSubmit={onSearchSubmit}
+            labels={labels}
           />
           <Button
             variant="ghost"
             size="icon"
             onClick={onNotifications}
-            aria-label="Notifications"
+            aria-label={t("notifications")}
             className="relative"
           >
             <Bell className="h-4 w-4" />
@@ -101,11 +113,11 @@ export function WalletCard({
 
       <div className="mt-8 flex flex-col items-center text-center">
         <div className="flex items-center gap-1.5">
-          <p className="text-muted-foreground text-xs">Balance</p>
+          <p className="text-muted-foreground text-xs">{t("balance")}</p>
           <button
             type="button"
             onClick={() => setBalanceHidden((h) => !h)}
-            aria-label={balanceHidden ? "Show balance" : "Hide balance"}
+            aria-label={t(balanceHidden ? "showBalance" : "hideBalance")}
             aria-pressed={balanceHidden}
             className="text-muted-foreground hover:text-foreground transition-colors outline-none"
           >
@@ -128,12 +140,18 @@ export function WalletCard({
             </span>
           </div>
         ) : (
-          <BalanceDelta balance={balance} initialChange={defaultChange} />
+          <BalanceDelta balance={balance} initialChange={defaultChange} prefix={balancePrefix} />
         )}
       </div>
 
       <div className="mt-8">
-        <WalletActions onSend={onSend} onDeposit={onDeposit} onSwap={onSwap} onBuy={onBuy} />
+        <WalletActions
+          onSend={onSend}
+          onDeposit={onDeposit}
+          onSwap={onSwap}
+          onBuy={onBuy}
+          labels={labels}
+        />
       </div>
     </div>
   );

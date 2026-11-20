@@ -5,8 +5,10 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { useMessages } from "../../../lib/i18n";
 import { Checkbox } from "../checkbox";
 import { EditableCell } from "./editable-cell";
+import { tableMessages } from "./messages";
 import { RowHandle } from "./row-handle";
 import { SkeletonRows } from "./skeleton-rows";
 import { TableHeader } from "./table-header";
@@ -17,6 +19,7 @@ import { useColumnSort } from "./use-column-sort";
 import { useRowSelection } from "./use-row-selection";
 import { alignText, CHECKBOX_PX, CHECKBOX_WIDTH, readCell } from "./utils";
 
+export { type TableMessages, tableMessages } from "./messages";
 export type {
   SortDirection,
   SortState,
@@ -92,9 +95,11 @@ export function Table<T>({
   onEndReached,
   loading = false,
   skeletonRows = 3,
-  emptyState = "No data",
+  emptyState,
+  labels,
   className,
 }: TableProps<T>) {
+  const t = useMessages("table", tableMessages, labels);
   const reduce = useReducedMotion();
   const scrollRef = useRef<HTMLDivElement>(null);
   const thRefs: HeaderCellRefs = useRef<Record<string, HTMLTableCellElement | null>>({});
@@ -220,6 +225,13 @@ export function Table<T>({
     if (rowTimer.current) clearTimeout(rowTimer.current);
     rowTimer.current = setTimeout(() => setActiveRow(null), 100);
   }, []);
+  useEffect(
+    () => () => {
+      if (deactivateTimer.current) clearTimeout(deactivateTimer.current);
+      if (rowTimer.current) clearTimeout(rowTimer.current);
+    },
+    [],
+  );
   const activeRowEl = activeRow ? rowRefs.current[activeRow.id] : null;
   // Real columns + checkbox; the trailing spacer adds one more in colSpans.
   const leadColumns = columns.length + (selectable ? 1 : 0);
@@ -274,6 +286,7 @@ export function Table<T>({
             activeColumn={hasColumnMenu ? activeColumn : null}
             onColumnActivate={hasColumnMenu ? activateColumn : undefined}
             onColumnDeactivate={hasColumnMenu ? deactivateColumn : undefined}
+            t={t}
           />
 
           <tbody>
@@ -288,7 +301,7 @@ export function Table<T>({
               ) : (
                 <tr>
                   <td colSpan={leadColumns + 1} className="text-muted-foreground p-10 text-center">
-                    {emptyState}
+                    {emptyState ?? t("empty")}
                   </td>
                 </tr>
               )
@@ -306,7 +319,8 @@ export function Table<T>({
                     <tr
                       key={entry.id}
                       ref={(el) => {
-                        rowRefs.current[entry.id] = el;
+                        if (el) rowRefs.current[entry.id] = el;
+                        else delete rowRefs.current[entry.id];
                       }}
                       data-selected={isSelected}
                       style={{ height: rowHeight }}
@@ -326,7 +340,7 @@ export function Table<T>({
                             <Checkbox
                               checked={isSelected}
                               onCheckedChange={() => toggleRow(entry.id)}
-                              aria-label={`Select row ${vItem.index + 1}`}
+                              aria-label={t("selectRow", { row: vItem.index + 1 })}
                             />
                           </div>
                         </td>
@@ -339,7 +353,11 @@ export function Table<T>({
                           {!column.cell && column.editable ? (
                             <EditableCell
                               value={String(readCell(entry.row, column) ?? "")}
-                              label={`${column.key} for row ${vItem.index + 1}`}
+                              label={t("cellLabel", {
+                                column: column.key,
+                                row: vItem.index + 1,
+                              })}
+                              placeholder={t("cellPlaceholder")}
                               onChange={(next) => onCellEdit?.(entry.id, column.key, next)}
                             />
                           ) : (
@@ -378,6 +396,7 @@ export function Table<T>({
           onDeleteRow={onDeleteRow}
           onEnter={() => activateRow(activeRow.id, activeRow.index)}
           onLeave={deactivateRow}
+          t={t}
         />
       ) : null}
     </div>

@@ -16,6 +16,7 @@ export function Treemap({
   activeId,
   defaultActiveId,
   onActiveChange,
+  labels,
   className,
   children,
   ...props
@@ -29,7 +30,9 @@ export function Treemap({
     activeId,
     defaultActiveId,
     onActiveChange,
+    labels,
   });
+  const { t } = model;
   return (
     <TreemapContext.Provider value={model}>
       <section
@@ -49,13 +52,13 @@ export function Treemap({
         )}
         <div className="sr-only">
           <table>
-            <caption>{model.label} data</caption>
+            <caption>{t("tableCaption", { label: model.label })}</caption>
             <thead>
               <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Value</th>
-                <th scope="col">Share of total</th>
-                <th scope="col">Details</th>
+                <th scope="col">{t("item")}</th>
+                <th scope="col">{t("value")}</th>
+                <th scope="col">{t("share")}</th>
+                <th scope="col">{t("details")}</th>
               </tr>
             </thead>
             <tbody>
@@ -79,6 +82,7 @@ export type { TreemapProps } from "./treemap/context";
 export { useTreemap } from "./treemap/context";
 export type { TreemapLegendProps } from "./treemap/legend";
 export { TreemapLegend } from "./treemap/legend";
+export { type TreemapMessages, treemapMessages } from "./treemap/messages";
 export type {
   TreemapGroup,
   TreemapItem,

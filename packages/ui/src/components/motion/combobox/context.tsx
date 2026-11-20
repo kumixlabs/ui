@@ -16,6 +16,8 @@ import {
 import { useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { useMessages } from "../../../lib/i18n";
+import { type ComboboxMessages, type ComboboxTranslate, comboboxMessages } from "./messages";
 import { useActiveOption } from "./use-active-option";
 
 export type RegisteredItem = {
@@ -76,6 +78,7 @@ export type ComboboxContextValue = {
   contentRef: MutableRefObject<HTMLDivElement | null>;
   inputRef: MutableRefObject<HTMLInputElement | null>;
   activeLayoutId: string;
+  t: ComboboxTranslate;
 };
 
 export const ComboboxContext = createContext<ComboboxContextValue | null>(null);
@@ -110,6 +113,8 @@ export interface ComboboxProps {
   filter?: ComboboxFilter;
   disabled?: boolean;
   className?: string;
+  /** Override any built-in string. */
+  labels?: Partial<ComboboxMessages>;
 }
 
 export function Combobox({
@@ -126,7 +131,9 @@ export function Combobox({
   filter = defaultFilter,
   disabled = false,
   className,
+  labels,
 }: ComboboxProps) {
+  const t = useMessages("combobox", comboboxMessages, labels);
   const reduce = useReducedMotion() ?? false;
   const baseId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
@@ -156,13 +163,15 @@ export function Combobox({
   const updateOpen = useCallback(
     (next: boolean, restoreFocus = false) => {
       if (disabled && next) return;
-      if (!openControlled) setInternalOpen(next);
-      onOpenChange?.(next);
+      if (next !== open) {
+        if (!openControlled) setInternalOpen(next);
+        onOpenChange?.(next);
+      }
       if (!next) updateQuery("");
       if (restoreFocus)
         requestAnimationFrame(() => inputRef.current?.focus({ preventScroll: true }));
     },
-    [disabled, onOpenChange, openControlled, updateQuery],
+    [disabled, onOpenChange, open, openControlled, updateQuery],
   );
 
   const registerItem = useCallback((item: RegisteredItem) => {
@@ -313,6 +322,7 @@ export function Combobox({
       contentRef,
       inputRef,
       activeLayoutId: `${baseId}-active`,
+      t,
     }),
     [
       activeItem?.id,
@@ -329,6 +339,7 @@ export function Combobox({
       select,
       selectActive,
       setActiveValue,
+      t,
       unregisterItem,
       updateOpen,
       updateQuery,

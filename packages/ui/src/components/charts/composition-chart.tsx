@@ -31,5 +31,9 @@ export function CompositionChart({ className, children, ...props }: CompositionC
 export type { CompositionChartProps } from "./composition-chart/context";
 export { useCompositionChart } from "./composition-chart/context";
 export { CompositionChartLegend } from "./composition-chart/legend";
+export {
+  type CompositionChartMessages,
+  compositionChartMessages,
+} from "./composition-chart/messages";
 export type { CompositionSeries as CompositionChartSeries } from "./composition-chart/model";
 export { CompositionChartPlot } from "./composition-chart/plot";

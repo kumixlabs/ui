@@ -1,3 +1,5 @@
+"use client";
+
 export interface XYSeries {
   /** Stable, unique identity. Keep it when updating values so marks morph in place. */
   id: string;

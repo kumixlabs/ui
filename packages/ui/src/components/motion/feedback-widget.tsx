@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { Button, StatefulButton } from "./button";
 
 type Status = "idle" | "open" | "sending" | "sent" | "error";
@@ -37,6 +38,23 @@ export interface FeedbackData {
   message: string;
 }
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const feedbackWidgetMessages = {
+  title: "Help us improve",
+  placeholder: "Share an idea or report a bug",
+  close: "Close",
+  cancel: "Cancel",
+  submit: "Submit",
+  sending: "Sending",
+  sentTitle: "Thanks!",
+  sentDescription: "Your feedback helps us build something better.",
+  errorTitle: "Something went wrong",
+  errorDescription: "We couldn't send your feedback. Please try again.",
+  retry: "Try again",
+};
+
+export type FeedbackWidgetMessages = typeof feedbackWidgetMessages;
+
 export interface FeedbackWidgetProps {
   /** Called on submit. May be async; the button shows a sending state until it resolves. */
   onSubmit?: (data: FeedbackData) => void | Promise<void>;
@@ -44,17 +62,23 @@ export interface FeedbackWidgetProps {
   title?: string;
   placeholder?: string;
   icon?: ReactNode;
+  /** Override any built-in string. */
+  labels?: Partial<FeedbackWidgetMessages>;
   className?: string;
 }
 
 export function FeedbackWidget({
   onSubmit,
   position = "bottom-right",
-  title = "Help us improve",
-  placeholder = "Share an idea or report a bug",
+  title: titleProp,
+  placeholder: placeholderProp,
   icon,
+  labels,
   className,
 }: FeedbackWidgetProps) {
+  const t = useMessages("feedbackWidget", feedbackWidgetMessages, labels);
+  const title = titleProp ?? t("title");
+  const placeholder = placeholderProp ?? t("placeholder");
   const reduce = useReducedMotion();
   const rootRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -314,9 +338,9 @@ export function FeedbackWidget({
                             </motion.svg>
                           </motion.div>
                         </div>
-                        <h3 className="text-foreground text-sm font-semibold">Thanks!</h3>
+                        <h3 className="text-foreground text-sm font-semibold">{t("sentTitle")}</h3>
                         <p className="text-muted-foreground text-xs leading-relaxed">
-                          Your feedback helps us build something better.
+                          {t("sentDescription")}
                         </p>
                       </div>
                     </motion.div>
@@ -335,13 +359,13 @@ export function FeedbackWidget({
                           <AlertCircle className="h-5 w-5" />
                         </div>
                         <h3 className="text-foreground mt-3 text-sm font-semibold">
-                          Something went wrong
+                          {t("errorTitle")}
                         </h3>
                         <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-                          We couldn&apos;t send your feedback. Please try again.
+                          {t("errorDescription")}
                         </p>
                         <Button size="sm" onClick={submit} className="mt-4">
-                          Try again
+                          {t("retry")}
                         </Button>
                       </div>
                     </motion.div>
@@ -360,7 +384,7 @@ export function FeedbackWidget({
                           <button
                             type="button"
                             onClick={close}
-                            aria-label="Close"
+                            aria-label={t("close")}
                             className="bg-foreground/[0.07] text-muted-foreground hover:text-foreground flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-colors"
                           >
                             <X className="h-3 w-3" />
@@ -386,17 +410,17 @@ export function FeedbackWidget({
                           disabled={busy}
                           className="bg-border text-muted-foreground hover:text-foreground flex-1"
                         >
-                          Cancel
+                          {t("cancel")}
                         </Button>
                         <StatefulButton
                           state={busy ? "loading" : "idle"}
-                          loadingText="Sending"
+                          loadingText={t("sending")}
                           size="md"
                           onClick={submit}
                           disabled={busy || message.trim().length === 0}
                           className="bg-foreground text-background hover:bg-foreground/90 flex-1"
                         >
-                          Submit
+                          {t("submit")}
                         </StatefulButton>
                       </div>
                     </motion.div>

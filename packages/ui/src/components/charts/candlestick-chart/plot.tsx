@@ -7,11 +7,12 @@
  * translateY and scaleY, so updates animate transforms only. Reduced motion:
  * no fade or spring; values update in place. */
 
-import { type KeyboardEvent, type PointerEvent, useLayoutEffect, useRef, useState } from "react";
+import { type KeyboardEvent, type PointerEvent, useState } from "react";
 import { motion, type Transition } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_LAYOUT } from "../../../lib/ease";
+import { useElementWidth } from "../xy/use-width";
 import { useCandlestickChart } from "./context";
 
 /** Right gutter reserved for price labels, in px. */
@@ -28,21 +29,12 @@ export type CandlestickChartPlotProps = {
 };
 
 export function CandlestickChartPlot({ height = 320, className }: CandlestickChartPlotProps) {
-  const { candles, lastPrice, active, setActive, scale, formatPrice, label, reduce } =
+  const { candles, lastPrice, active, setActive, scale, formatPrice, label, reduce, t } =
     useCandlestickChart();
-  const ref = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
+  const { ref, width } = useElementWidth<HTMLDivElement>();
   const [pointerY, setPointerY] = useState<number | null>(null);
-
-  useLayoutEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const update = () => setWidth(node.clientWidth);
-    update();
-    const observer = new ResizeObserver(update);
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
+  // Stagger candles only for the first draw, not when the hover dim changes.
+  const [entered, setEntered] = useState(false);
 
   const plotWidth = Math.max(0, width - AXIS);
   const priceHeight = height * (1 - VOLUME_SHARE) - GAP;
@@ -93,7 +85,13 @@ export function CandlestickChartPlot({ height = 320, className }: CandlestickCha
       aria-valuenow={active ?? Math.max(0, candles.length - 1)}
       aria-valuetext={
         focus
-          ? `${focus.label}: open ${formatPrice(focus.open)}, high ${formatPrice(focus.high)}, low ${formatPrice(focus.low)}, close ${formatPrice(focus.close)}`
+          ? t("valueText", {
+              label: focus.label,
+              open: formatPrice(focus.open),
+              high: formatPrice(focus.high),
+              low: formatPrice(focus.low),
+              close: formatPrice(focus.close),
+            })
           : undefined
       }
       onPointerMove={onPointerMove}
@@ -150,8 +148,9 @@ export function CandlestickChartPlot({ height = 320, className }: CandlestickCha
                 transition={{
                   duration: 0.3,
                   ease: EASE_OUT,
-                  delay: reduce ? 0 : Math.min(index * 0.012, 0.6),
+                  delay: reduce || entered ? 0 : Math.min(index * 0.012, 0.6),
                 }}
+                onAnimationComplete={() => setEntered(true)}
               >
                 <motion.line
                   x1={cx}

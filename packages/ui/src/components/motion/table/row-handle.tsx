@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { ArrowDownToLine, ArrowUpToLine, MoreVertical, Trash2 } from "lucide-react";
 import { createPortal } from "react-dom";
 
+import type { TableTranslate } from "./messages";
 import { TableMenu } from "./table-menu";
 
 /** The row handle, portaled so it can sit on the row's left border without the
@@ -16,6 +17,7 @@ export function RowHandle({
   onDeleteRow,
   onEnter,
   onLeave,
+  t,
 }: {
   rowEl: HTMLTableRowElement | null;
   id: string;
@@ -24,6 +26,7 @@ export function RowHandle({
   onDeleteRow?: (rowId: string, index: number) => void;
   onEnter: () => void;
   onLeave: () => void;
+  t: TableTranslate;
 }) {
   useEffect(() => {
     window.addEventListener("scroll", onLeave, true);
@@ -46,19 +49,19 @@ export function RowHandle({
       onPointerLeave={onLeave}
     >
       <TableMenu
-        ariaLabel={`Row ${index + 1} options`}
+        ariaLabel={t("rowOptions", { row: index + 1 })}
         triggerClassName="flex h-6 w-2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
         trigger={<MoreVertical className="h-3 w-3" />}
         items={[
           ...(onInsertRow
             ? [
                 {
-                  label: "Insert before",
+                  label: t("insertBefore"),
                   icon: <ArrowUpToLine />,
                   onSelect: () => onInsertRow(index, "before"),
                 },
                 {
-                  label: "Insert after",
+                  label: t("insertAfter"),
                   icon: <ArrowDownToLine />,
                   onSelect: () => onInsertRow(index, "after"),
                 },
@@ -67,7 +70,7 @@ export function RowHandle({
           ...(onDeleteRow
             ? [
                 {
-                  label: "Delete row",
+                  label: t("deleteRow"),
                   icon: <Trash2 />,
                   destructive: true,
                   onSelect: () => onDeleteRow(id, index),

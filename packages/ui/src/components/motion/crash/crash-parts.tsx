@@ -11,49 +11,34 @@ import {
   useRef,
   useState,
 } from "react";
-import { Check, History as HistoryIcon, Volume2, VolumeX, X } from "lucide-react";
+import { Check, History as HistoryIcon } from "lucide-react";
 import { AnimatePresence, motion, type Transition } from "motion/react";
 
 import { cn } from "@kumix/utils";
-import { EASE_IN_OUT, EASE_OUT, SPRING_LAYOUT } from "../../../lib/ease";
+import { EASE_IN_OUT, EASE_OUT } from "../../../lib/ease";
 import { PresenceGate, type PresenceGateRenderProps } from "../../../lib/presence-gate";
-import { ActionSwapCascadeIcon } from "../action-swap-cascade";
 import { Button } from "../button";
-import { NumberTicker } from "../number-ticker";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select";
-import { Tooltip } from "../tooltip";
 import {
-  type CrashGame,
   EXIT,
   formatMultiplier,
   formatShort,
-  growth,
+  GameEyebrow,
+  GameHistory,
+  HEAT_TEXT,
   heat,
+  PRIMARY_TEXT,
   PULSE,
   SHAKE,
+  SoundToggle,
   SWAP,
   useStable,
-} from "./use-crash-game";
+} from "../casino/game-parts";
+import { NumberTicker } from "../number-ticker";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select";
+import { type CrashGame, growth } from "./use-crash-game";
 
-/**
- * Primary for small text: a shade darker on light surfaces and lighter on
- * dark ones, so 10-12px labels keep 4.5:1. Large text and marks use plain
- * primary.
- */
-export const PRIMARY_TEXT =
-  "text-[color:color-mix(in_oklab,var(--color-primary)_75%,black)] dark:text-[color:color-mix(in_oklab,var(--color-primary)_80%,white)]";
-
-// Readout and history colours per heat: neutral, then primary, then amber.
-const HEAT_TEXT = {
-  cool: "text-foreground",
-  warm: "text-primary",
-  hot: "text-amber-700 dark:text-amber-400",
-} as const;
-const HEAT_PILL = {
-  cool: "bg-foreground/5 text-muted-foreground",
-  warm: `bg-primary/10 ${PRIMARY_TEXT}`,
-  hot: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
-} as const;
+// Re-exported for installs that import it from here.
+export { PRIMARY_TEXT };
 
 /** The width of the viewBox an SVG stage draws in. */
 export const STAGE_W = 400;
@@ -148,8 +133,14 @@ export function CrashShell({
             strokeWidth={2}
           />
           {/* The game changes every frame; these take only what they show, so they skip those renders. */}
-          <CrashHistory history={game.history} reduce={game.reduce} className="min-w-0 flex-1" />
-          <SoundToggle on={game.soundOn} onToggle={game.toggleSound} />
+          <GameHistory
+            history={game.history}
+            reduce={game.reduce}
+            aria-label={game.text("recentCrashes")}
+            emptyLabel={game.text("recentEmpty")}
+            className="min-w-0 flex-1"
+          />
+          <SoundToggle on={game.soundOn} onToggle={game.toggleSound} label={game.text("sound")} />
         </div>
         {/* A 10:7 stage in every design, so switching between them never
             jumps. A container: its width also fixes its height. */}
@@ -159,7 +150,19 @@ export function CrashShell({
         >
           {children}
           <div className="pointer-events-none absolute top-4 left-4">
-            <CrashEyebrow game={game} />
+            <GameEyebrow
+              label={game.eyebrow}
+              state={
+                game.crashed
+                  ? game.lost
+                    ? "lost"
+                    : "won"
+                  : game.running && game.cashed === null
+                    ? "live"
+                    : "idle"
+              }
+              reduce={game.reduce}
+            />
             {/* Smaller on narrow stages, so the readout leaves the design room. */}
             <CrashMultiplier
               game={game}
@@ -228,7 +231,7 @@ function ResultTicket({
     <>
       <motion.button
         type="button"
-        aria-label="Hide result and show the flight"
+        aria-label={game.text("hideResult")}
         onClick={onClose}
         {...gate}
         className="bg-background/55 focus-visible:ring-primary absolute inset-0 z-20 cursor-default backdrop-blur-[2px] outline-none focus-visible:ring-2 focus-visible:ring-inset"
@@ -243,7 +246,7 @@ function ResultTicket({
       >
         <motion.div
           role="group"
-          aria-label="Round result"
+          aria-label={game.text("result")}
           // Sized here: the ticket is a size container, so it can't take its
           // width from its contents.
           className={cn("w-full max-w-[17rem]", TICKET_SHADOW)}
@@ -293,7 +296,7 @@ function Ticket({
   game: CrashGame;
   miniature?: (props: CrashMiniatureProps) => ReactNode;
 }) {
-  const { cashed, multiplier: crash, roundAuto, reduce, t } = game;
+  const { cashed, multiplier: crash, roundAuto, reduce, t, text } = game;
   const won = cashed !== null;
   return (
     <div
@@ -321,7 +324,7 @@ function Ticket({
               won ? PRIMARY_TEXT : "text-rose-700 dark:text-rose-400",
             )}
           >
-            {won ? "Cashed out" : "Crashed"}
+            {text(won ? "stateCashedOut" : "stateCrashed")}
           </p>
         </Chunk>
         <Chunk delay={0.1} reduce={reduce}>
@@ -353,18 +356,21 @@ function Ticket({
       <div className="flex items-center gap-4 px-5 pt-4 pb-5">
         <Chunk delay={0.18} reduce={reduce} className="flex-1">
           <dl className="grid gap-1.5 text-xs">
-            <Row label="Crashed at" value={formatMultiplier(crash)} />
-            <Row label="Flight" value={`${t.toFixed(1)}s`} />
+            <Row label={text("crashedAt")} value={formatMultiplier(crash)} />
+            <Row label={text("flight")} value={text("seconds", { seconds: t.toFixed(1) })} />
             {won && game.fair ? (
               // The built-in round reaches m with a chance of 1 in m, as with
               // Mines' odds; a custom crash point makes no such promise.
-              <Row label="Odds beaten" value={`1 in ${formatMultiplier(cashed).slice(0, -1)}`} />
+              <Row
+                label={text("oddsBeaten")}
+                value={text("odds", { odds: formatMultiplier(cashed).slice(0, -1) })}
+              />
             ) : won ? (
-              <Row label="You left at" value={formatMultiplier(cashed)} />
+              <Row label={text("leftAt")} value={formatMultiplier(cashed)} />
             ) : (
               <Row
-                label="Auto target"
-                value={roundAuto === null ? "Off" : formatShort(roundAuto)}
+                label={text("autoTarget")}
+                value={roundAuto === null ? text("autoOff") : formatShort(roundAuto)}
               />
             )}
           </dl>
@@ -450,38 +456,6 @@ export const MINI = { width: 88, height: 48 } as const;
 // The replay starts once the ticket's figures are in, and draws over 0.6s.
 export const MINI_REPLAY = { delay: 0.3, duration: 0.6, ease: EASE_OUT } as const;
 
-/** The sound toggle: a quiet 32px icon button in the card's header. */
-const SoundToggle = memo(function SoundToggle({
-  on,
-  onToggle,
-}: {
-  on: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    // aria-label names the button; the tooltip shows the same label on hover
-    // and focus. Tooltip's asLabel would hydrate differently from the server.
-    <Tooltip content="Sound" side="top">
-      <Button
-        variant="ghost"
-        onClick={onToggle}
-        aria-label="Sound"
-        aria-pressed={on}
-        pressScale={0.96}
-        className={cn("size-8 shrink-0 rounded-xl px-0", on && "text-foreground")}
-      >
-        <ActionSwapCascadeIcon value={on ? "on" : "off"} className="size-4">
-          {on ? (
-            <Volume2 aria-hidden="true" className="size-4" />
-          ) : (
-            <VolumeX aria-hidden="true" className="size-4" />
-          )}
-        </ActionSwapCascadeIcon>
-      </Button>
-    </Tooltip>
-  );
-});
-
 /** The Auto menu and the main action, in one 40px row with 12px corners. */
 function CrashControls({ game, mainRef }: { game: CrashGame; mainRef: Ref<HTMLButtonElement> }) {
   return (
@@ -491,6 +465,8 @@ function CrashControls({ game, mainRef }: { game: CrashGame; mainRef: Ref<HTMLBu
         options={game.autoOptions}
         onChange={game.setAuto}
         disabled={game.running || game.starting}
+        label={game.text("auto")}
+        offLabel={game.text("autoOff")}
       />
 
       <Button
@@ -534,11 +510,15 @@ const AutoMenu = memo(function AutoMenu({
   options,
   onChange,
   disabled,
+  label,
+  offLabel,
 }: {
   auto: number | null;
   options: number[];
   onChange: (value: string) => void;
   disabled: boolean;
+  label: string;
+  offLabel: string;
 }) {
   return (
     <Select
@@ -549,13 +529,13 @@ const AutoMenu = memo(function AutoMenu({
     >
       <SelectTrigger className="h-10 tabular-nums">
         <span className="flex items-baseline gap-1.5">
-          <span className="text-muted-foreground text-xs">Auto</span>
+          <span className="text-muted-foreground text-xs">{label}</span>
           {/* Options register after mount; the placeholder covers the server render. */}
-          <SelectValue placeholder={auto === null ? "Off" : formatShort(auto)} />
+          <SelectValue placeholder={auto === null ? offLabel : formatShort(auto)} />
         </span>
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="off">Off</SelectItem>
+        <SelectItem value="off">{offLabel}</SelectItem>
         {options.map((step) => (
           <SelectItem key={step} value={String(step)}>
             {formatShort(step)}
@@ -563,58 +543,6 @@ const AutoMenu = memo(function AutoMenu({
         ))}
       </SelectContent>
     </Select>
-  );
-});
-
-/** Recent crash points, newest first, sliding in from the left. */
-const CrashHistory = memo(function CrashHistory({
-  history,
-  reduce,
-  className,
-}: {
-  history: CrashGame["history"];
-  reduce: boolean;
-  className?: string;
-}) {
-  return (
-    <ul
-      aria-label="Recent crashes"
-      className={cn(
-        "flex items-center gap-1.5 overflow-hidden [mask-image:linear-gradient(to_right,black_85%,transparent)]",
-        className,
-      )}
-    >
-      <AnimatePresence initial={false} mode="popLayout">
-        {history.length === 0 ? (
-          <motion.li
-            key="empty"
-            className="text-muted-foreground text-xs"
-            initial={false}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: EXIT }}
-          >
-            Recent rounds show here
-          </motion.li>
-        ) : (
-          history.map((entry) => (
-            <motion.li
-              key={entry.id}
-              layout={!reduce}
-              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.9, x: -8 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              exit={{ opacity: 0, transition: EXIT }}
-              transition={reduce ? { duration: 0.15 } : SPRING_LAYOUT}
-              className={cn(
-                "shrink-0 rounded-full px-2 py-0.5 text-xs font-medium tabular-nums",
-                HEAT_PILL[heat(entry.value)],
-              )}
-            >
-              {formatMultiplier(entry.value)}
-            </motion.li>
-          ))
-        )}
-      </AnimatePresence>
-    </ul>
   );
 });
 
@@ -686,7 +614,7 @@ function CrashStatus({ game, className }: { game: CrashGame; className?: string 
             transition={SWAP}
           >
             <Check aria-hidden="true" className="size-3.5" strokeWidth={2.5} />
-            Cashed out {formatMultiplier(cashed)}
+            {game.text("cashedBadge", { multiplier: formatMultiplier(cashed) })}
           </motion.p>
         ) : (
           <motion.p
@@ -702,51 +630,6 @@ function CrashStatus({ game, className }: { game: CrashGame; className?: string 
         )}
       </AnimatePresence>
     </div>
-  );
-}
-
-/**
- * The small uppercase state label: Ready, In flight, then the result:
- * Cashed out with a check, or Crashed with a cross.
- */
-function CrashEyebrow({ game, className }: { game: CrashGame; className?: string }) {
-  const { lost, crashed, running, cashed, reduce } = game;
-  const icon = crashed ? (lost ? "lost" : "won") : running && cashed === null ? "live" : null;
-  return (
-    <p
-      className={cn(
-        "flex h-4 items-center gap-1.5 text-[11px] font-medium tracking-[0.08em] uppercase transition-colors duration-150",
-        lost
-          ? "text-rose-700 dark:text-rose-400"
-          : crashed
-            ? PRIMARY_TEXT
-            : "text-muted-foreground",
-        className,
-      )}
-    >
-      <AnimatePresence initial={false} mode="popLayout">
-        {icon ? (
-          <motion.span
-            key={icon}
-            aria-hidden="true"
-            className="grid size-3.5 place-items-center"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.25, filter: "blur(4px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, transition: EXIT }}
-            transition={SWAP}
-          >
-            {icon === "live" ? (
-              <span className="bg-primary size-1.5 rounded-full" />
-            ) : icon === "won" ? (
-              <Check className="size-3.5" strokeWidth={3} />
-            ) : (
-              <X className="size-3.5" strokeWidth={3} />
-            )}
-          </motion.span>
-        ) : null}
-      </AnimatePresence>
-      {game.eyebrow}
-    </p>
   );
 }
 

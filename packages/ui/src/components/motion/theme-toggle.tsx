@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT_CSS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { ActionSwapIcon } from "./action-swap";
 
 export type ThemeVariant = "rectangle" | "circle" | "circle-blur" | "blinds";
@@ -19,6 +20,14 @@ export type RectStart =
   | "center"
   | "bottom-up";
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const themeToggleMessages = {
+  switchToLight: "Switch to light mode",
+  switchToDark: "Switch to dark mode",
+};
+
+export type ThemeToggleMessages = typeof themeToggleMessages;
+
 export interface ThemeToggleProps
   extends Omit<ComponentPropsWithoutRef<"button">, "children" | "onClick"> {
   /** Animation variant. Default: "rectangle". */
@@ -26,6 +35,8 @@ export interface ThemeToggleProps
   /** Origin direction for the reveal. Default: "bottom-up". */
   start?: RectStart;
   iconClassName?: string;
+  /** Override any built-in string. */
+  labels?: Partial<ThemeToggleMessages>;
 }
 
 const VT_STYLE_ID = "beui-theme-toggle-vt";
@@ -182,14 +193,16 @@ export function ThemeToggle({
   start = "bottom-up",
   className,
   iconClassName,
+  labels,
   ...rest
 }: ThemeToggleProps) {
+  const t = useMessages("themeToggle", themeToggleMessages, labels);
   const { isDark, mounted, toggle } = useThemeToggle({ variant, start });
 
   return (
     <button
       type="button"
-      aria-label={mounted && isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={t(mounted && isDark ? "switchToLight" : "switchToDark")}
       onClick={toggle}
       className={cn("flex items-center justify-center", className)}
       {...rest}

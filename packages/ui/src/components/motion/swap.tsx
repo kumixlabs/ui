@@ -5,15 +5,18 @@ import { Settings } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { useMessages } from "../../lib/i18n";
 import { ActionButton, DestinationRow, FlipButton } from "./swap/controls";
 import { CHAINS, TOKENS } from "./swap/data";
 import { Field } from "./swap/field";
+import { type SwapMessages, swapMessages } from "./swap/messages";
 import { QuoteRow } from "./swap/quote-row";
 import { TokenPicker } from "./swap/token-picker";
 import type { Chain, Token, TokenSide } from "./swap/types";
 import { formatAmount } from "./swap/utils";
 
 export { SWAP_DRAWER_EASE } from "./swap/constants";
+export { type SwapMessages, swapMessages } from "./swap/messages";
 export type { Chain, Token } from "./swap/types";
 
 export interface MultiChainSwapProps {
@@ -21,6 +24,8 @@ export interface MultiChainSwapProps {
   tokens?: Token[];
   defaultFromId?: string;
   defaultToId?: string;
+  /** Override any built-in string. */
+  labels?: Partial<SwapMessages>;
   className?: string;
 }
 
@@ -29,8 +34,10 @@ export function MultiChainSwap({
   tokens = TOKENS,
   defaultFromId = "eth-eth",
   defaultToId = "sol-sol",
+  labels,
   className,
 }: MultiChainSwapProps) {
+  const t = useMessages("swap", swapMessages, labels);
   const reduce = useReducedMotion();
   const [fromId, setFromId] = useState(defaultFromId);
   const [toId, setToId] = useState(defaultToId);
@@ -55,8 +62,13 @@ export function MultiChainSwap({
   const toAmount = numericAmount * rate;
 
   useEffect(() => {
+    // Never falsy. Reading it keeps the token pair a dependency, so a new
+    // pair requotes.
     if (!quoteKey) return;
-    if (numericAmount === 0) return;
+    if (numericAmount === 0) {
+      setQuoting(false);
+      return;
+    }
     setQuoting(true);
     const id = setTimeout(() => setQuoting(false), 450);
     return () => clearTimeout(id);
@@ -91,10 +103,12 @@ export function MultiChainSwap({
       )}
     >
       <div className="border-border/50 flex h-12 items-center justify-between border-b px-3">
-        <span className="text-foreground px-2 text-sm font-semibold tracking-tight">Swap</span>
+        <span className="text-foreground px-2 text-sm font-semibold tracking-tight">
+          {t("title")}
+        </span>
         <button
           type="button"
-          aria-label="Settings"
+          aria-label={t("settings")}
           className="text-muted-foreground hover:bg-muted/60 hover:text-foreground inline-flex h-8 w-8 items-center justify-center rounded-full transition-transform active:scale-[0.97]"
         >
           <Settings className="h-4 w-4" />
@@ -111,9 +125,10 @@ export function MultiChainSwap({
           editable
           quoting={false}
           onOpenPicker={() => setPicking("from")}
+          labels={labels}
         />
 
-        <FlipButton rotation={flipRot} reduce={!!reduce} onClick={flip} />
+        <FlipButton rotation={flipRot} reduce={!!reduce} onClick={flip} labels={labels} />
 
         <Field
           side="to"
@@ -123,6 +138,7 @@ export function MultiChainSwap({
           editable={false}
           quoting={quoting}
           onOpenPicker={() => setPicking("to")}
+          labels={labels}
         />
 
         <QuoteRow
@@ -133,6 +149,7 @@ export function MultiChainSwap({
           slippage={0.5}
           eta="≈ 24s"
           quoting={quoting}
+          labels={labels}
         />
 
         <DestinationRow
@@ -144,9 +161,16 @@ export function MultiChainSwap({
           address={destAddress}
           onAddress={setDestAddress}
           reduce={!!reduce}
+          labels={labels}
         />
 
-        <ActionButton from={from} to={to} amount={numericAmount} destAddress={destAddress} />
+        <ActionButton
+          from={from}
+          to={to}
+          amount={numericAmount}
+          destAddress={destAddress}
+          labels={labels}
+        />
       </div>
 
       <TokenPicker
@@ -158,6 +182,7 @@ export function MultiChainSwap({
         onPick={pickToken}
         onClose={() => setPicking(null)}
         reduce={!!reduce}
+        labels={labels}
       />
     </div>
   );

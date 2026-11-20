@@ -1,3 +1,5 @@
+"use client";
+
 export type XYCurve = "monotone" | "linear" | "step";
 export type XYPathPoint = { x: number; y: number } | null;
 

@@ -1,20 +1,28 @@
 "use client";
 
 import { TextReveal } from "../text-reveal";
-import { NOT_FOUND_DEFAULTS, NotFoundActions, type NotFoundProps, NotFoundStage } from "./shared";
+import {
+  NOT_FOUND_DEFAULTS,
+  NotFoundActions,
+  type NotFoundProps,
+  NotFoundStage,
+  useNotFoundMessages,
+} from "./shared";
 
 const TYPE_SPRING = { stiffness: 320, damping: 30, mass: 0.6 };
 
 export function NotFoundTerminal({
   className,
   code = NOT_FOUND_DEFAULTS.code,
-  title = NOT_FOUND_DEFAULTS.title,
-  description = NOT_FOUND_DEFAULTS.description,
+  title,
+  description,
   homeHref,
   homeLabel,
   browseHref,
   browseLabel,
+  labels,
 }: NotFoundProps) {
+  const t = useNotFoundMessages(labels);
   return (
     <NotFoundStage className={className}>
       <div className="border-border w-full max-w-md overflow-hidden rounded-xl border bg-neutral-950 text-left shadow-lg">
@@ -44,7 +52,7 @@ export function NotFoundTerminal({
             yOffset={0}
             spring={TYPE_SPRING}
             className="text-[#ff5f57]"
-            text="cd: no such file or directory: /page"
+            text={t("terminalError")}
           />
           <p className="flex items-center text-white/80">
             <TextReveal
@@ -63,8 +71,8 @@ export function NotFoundTerminal({
       </div>
 
       <div className="flex flex-col items-center gap-2">
-        <p className="text-foreground text-lg font-semibold">{title}</p>
-        <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
+        <p className="text-foreground text-lg font-semibold">{title ?? t("title")}</p>
+        <p className="text-muted-foreground max-w-sm text-sm">{description ?? t("description")}</p>
       </div>
 
       <NotFoundActions
@@ -72,6 +80,7 @@ export function NotFoundTerminal({
         homeLabel={homeLabel}
         browseHref={browseHref}
         browseLabel={browseLabel}
+        labels={labels}
       />
     </NotFoundStage>
   );

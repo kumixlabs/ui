@@ -1,3 +1,5 @@
+"use client";
+
 export interface LiquiditySnapshot {
   /** Stable identity, usually an ISO timestamp. */
   id: string;

@@ -11,6 +11,7 @@ import { useRowCursor } from "../../hooks/use-row-cursor";
 import { useTouchCapable } from "../../hooks/use-touch-capable";
 import { searchCommands } from "../../lib/command-search";
 import { EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
 
 export type CommandItem = {
@@ -24,6 +25,18 @@ export type CommandItem = {
   onSelect: () => void;
 };
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const commandPaletteMessages = {
+  placeholder: "Type a command or search…",
+  empty: "No results found.",
+  close: "Close command palette",
+  dialog: "Command palette",
+  list: "Commands",
+  results: "Results",
+};
+
+export type CommandPaletteMessages = typeof commandPaletteMessages;
+
 export interface CommandPaletteProps {
   items: CommandItem[];
   /** Opens with Cmd/Ctrl + this key. Default: "k" */
@@ -32,6 +45,8 @@ export interface CommandPaletteProps {
   emptyMessage?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Override any built-in string. `results` names items without a `group`. */
+  labels?: Partial<CommandPaletteMessages>;
 }
 
 // Opened via a keyboard shortcut many times a day — entrance must read as
@@ -46,11 +61,15 @@ const PANEL_SPRING = {
 export function CommandPalette({
   items,
   shortcut = "k",
-  placeholder = "Type a command or search…",
-  emptyMessage = "No results found.",
+  placeholder: placeholderProp,
+  emptyMessage: emptyMessageProp,
   open: controlledOpen,
   onOpenChange,
+  labels,
 }: CommandPaletteProps) {
+  const t = useMessages("commandPalette", commandPaletteMessages, labels);
+  const placeholder = placeholderProp ?? t("placeholder");
+  const emptyMessage = emptyMessageProp ?? t("empty");
   const [internalOpen, setInternalOpen] = useState(false);
   const controlled = controlledOpen !== undefined;
   const open = controlled ? controlledOpen : internalOpen;
@@ -107,16 +126,17 @@ export function CommandPalette({
   // icon-less lists don't render a dead gap before every label.
   const hasIcons = useMemo(() => items.some((it) => it.icon), [items]);
 
+  const fallbackGroup = t("results");
   const grouped = useMemo(() => {
     const map = new Map<string, CommandItem[]>();
     filtered.forEach((it) => {
-      const g = it.group ?? "Results";
+      const g = it.group ?? fallbackGroup;
       const groupItems = map.get(g) ?? [];
       groupItems.push(it);
       map.set(g, groupItems);
     });
     return Array.from(map.entries());
-  }, [filtered]);
+  }, [filtered, fallbackGroup]);
 
   // Grouping reorders the list, so the rendered order is not the filtered
   // order whenever two groups interleave. Everything that has to agree on
@@ -147,6 +167,7 @@ export function CommandPalette({
       e.preventDefault();
       moveActive(-1);
     } else if (e.key === "Enter") {
+      if (e.nativeEvent.isComposing || e.keyCode === 229) return;
       e.preventDefault();
       const it = rows[active];
       if (it) {
@@ -178,7 +199,7 @@ export function CommandPalette({
           {({ gate }) => (
             <motion.button
               type="button"
-              aria-label="Close command palette"
+              aria-label={t("close")}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{
@@ -206,7 +227,7 @@ export function CommandPalette({
               <motion.div
                 role="dialog"
                 aria-modal="true"
-                aria-label="Command palette"
+                aria-label={t("dialog")}
                 initial={{
                   opacity: 0,
                   y: reduce ? 0 : -8,
@@ -255,7 +276,7 @@ export function CommandPalette({
                   ref={listRef}
                   id={`${uid}-list`}
                   role="listbox"
-                  aria-label="Commands"
+                  aria-label={t("list")}
                   className="max-h-[60vh] [scrollbar-width:none] overflow-y-auto overscroll-contain p-2 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                 >
                   {rows.length === 0 ? (

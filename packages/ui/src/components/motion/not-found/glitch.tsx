@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
-import { NOT_FOUND_DEFAULTS, NotFoundActions, type NotFoundProps, NotFoundStage } from "./shared";
+import {
+  NOT_FOUND_DEFAULTS,
+  NotFoundActions,
+  type NotFoundProps,
+  NotFoundStage,
+  useNotFoundMessages,
+} from "./shared";
 
 const GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&@$?/\\";
 const SCRAMBLE_MS = 700;
@@ -57,13 +63,15 @@ function Scramble({ text }: { text: string }) {
 export function NotFoundGlitch({
   className,
   code = NOT_FOUND_DEFAULTS.code,
-  title = NOT_FOUND_DEFAULTS.title,
-  description = NOT_FOUND_DEFAULTS.description,
+  title,
+  description,
   homeHref,
   homeLabel,
   browseHref,
   browseLabel,
+  labels,
 }: NotFoundProps) {
+  const t = useNotFoundMessages(labels);
   return (
     <NotFoundStage className={className}>
       <div className="group text-foreground relative font-mono text-[clamp(5rem,18vw,11rem)] leading-none font-bold tracking-tighter select-none">
@@ -86,8 +94,8 @@ export function NotFoundGlitch({
       </div>
 
       <div className="flex flex-col items-center gap-2">
-        <p className="text-foreground text-lg font-semibold">{title}</p>
-        <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
+        <p className="text-foreground text-lg font-semibold">{title ?? t("title")}</p>
+        <p className="text-muted-foreground max-w-sm text-sm">{description ?? t("description")}</p>
       </div>
 
       <NotFoundActions
@@ -95,6 +103,7 @@ export function NotFoundGlitch({
         homeLabel={homeLabel}
         browseHref={browseHref}
         browseLabel={browseLabel}
+        labels={labels}
       />
     </NotFoundStage>
   );

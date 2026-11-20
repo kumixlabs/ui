@@ -6,12 +6,23 @@ import { AnimatePresence, motion, useAnimate, useReducedMotion } from "motion/re
 
 import { cn } from "@kumix/utils";
 import { EASE_IN, EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { createTickPlayer } from "../../lib/tick-sound";
 import { ActionSwapCascadeIcon } from "./action-swap-cascade";
 import { Button } from "./button";
 import { Tooltip } from "./tooltip";
 
 export type PlinkoValue = string | number;
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const plinkoMessages = {
+  board: "Plinko board",
+  drop: "Drop ball",
+  pegFlash: "Peg flash",
+  sound: "Sound",
+  landed: "Ball {ball} landed in slot {slot}: {value}",
+};
+export type PlinkoMessages = typeof plinkoMessages;
 
 export interface PlinkoProps {
   /** Rows of pegs when `slots` isn't passed. Default 12. */
@@ -46,6 +57,8 @@ export interface PlinkoProps {
   soundLabel?: string;
   /** Accessible name for the board. Default "Plinko board". */
   "aria-label"?: string;
+  /** Override built-in text for this instance. */
+  labels?: Partial<PlinkoMessages>;
   className?: string;
 }
 
@@ -128,18 +141,20 @@ export function Plinko({
   slots,
   onLand,
   maxBalls = 12,
-  dropLabel = "Drop ball",
+  dropLabel,
   pegFlash,
   defaultPegFlash = true,
   onPegFlashChange,
-  pegFlashLabel = "Peg flash",
+  pegFlashLabel,
   sound,
   defaultSound = false,
   onSoundChange,
-  soundLabel = "Sound",
-  "aria-label": ariaLabel = "Plinko board",
+  soundLabel,
+  "aria-label": ariaLabel,
+  labels,
   className,
 }: PlinkoProps) {
+  const t = useMessages("plinko", plinkoMessages, labels);
   const reduce = useReducedMotion() ?? false;
   const [scope, animate] = useAnimate();
   const [balls, setBalls] = useState<Ball[]>([]);
@@ -187,9 +202,9 @@ export function Plinko({
     onSoundChange?.(next);
   };
 
-  const labels = slots ?? plinkoSlots(rowsProp);
-  const rows = labels.length - 1;
-  const invalid = labels.length < 2;
+  const values = slots ?? plinkoSlots(rowsProp);
+  const rows = values.length - 1;
+  const invalid = values.length < 2;
   useEffect(() => {
     if (process.env.NODE_ENV !== "production" && invalid)
       console.warn("Plinko needs at least 2 slots; it renders nothing until it has them.");
@@ -228,8 +243,8 @@ export function Plinko({
       );
     setLastSlot(slot);
     landings.current++;
-    setAnnouncement(`Ball ${landings.current} landed in slot ${slot + 1}: ${labels[slot]}`);
-    onLand?.(slot, labels[slot]);
+    setAnnouncement(t("landed", { ball: landings.current, slot: slot + 1, value: values[slot] }));
+    onLand?.(slot, values[slot]);
   };
 
   // Flash and click a peg on the frame the ball turns back up off it. Reading
@@ -275,7 +290,7 @@ export function Plinko({
 
   return (
     <section
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? t("board")}
       className={cn("flex w-full flex-col items-center gap-4", className)}
     >
       <svg
@@ -298,7 +313,7 @@ export function Plinko({
           />
         ))}
 
-        {labels.map((label, slot) => {
+        {values.map((label, slot) => {
           const x = width / 2 + (slot - rows / 2) * GAP - GAP / 2;
           const y = TOP + rows * ROW;
           return (
@@ -396,14 +411,14 @@ export function Plinko({
           pressScale={0.96}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
         >
-          {dropLabel}
+          {dropLabel ?? t("drop")}
         </Button>
         {/* With reduced motion balls land at once and hit no pegs. */}
         {reduce ? null : (
           <ToggleButton
             on={flashOn}
             onToggle={togglePegFlash}
-            label={pegFlashLabel}
+            label={pegFlashLabel ?? t("pegFlash")}
             onIcon={Zap}
             offIcon={ZapOff}
           />
@@ -411,7 +426,7 @@ export function Plinko({
         <ToggleButton
           on={soundOn}
           onToggle={toggleSound}
-          label={soundLabel}
+          label={soundLabel ?? t("sound")}
           onIcon={Volume2}
           offIcon={VolumeX}
         />

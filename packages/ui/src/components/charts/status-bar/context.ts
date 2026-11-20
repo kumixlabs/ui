@@ -14,6 +14,8 @@ import {
 import { useReducedMotion } from "motion/react";
 
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
+import { useMessages } from "../../../lib/i18n";
+import { type StatusBarMessages, statusBarMessages } from "./messages";
 
 export interface StatusBarDatum {
   /** Stable, unique identity. Keep it when updating a period's status. */
@@ -49,16 +51,32 @@ export interface StatusBarProps extends ComponentProps<"section"> {
   activeId?: string | null;
   defaultActiveId?: string | null;
   onActiveChange?: (id: string | null) => void;
+  /** Override any built-in string, including the default status labels. */
+  labels?: Partial<StatusBarMessages>;
 }
 
 export function useStatusBarModel({
   data,
-  statuses = STATUS_BAR_STATUSES,
-  label = "Status history",
+  statuses: customStatuses,
+  label: customLabel,
   activeId,
   defaultActiveId = null,
   onActiveChange,
+  labels,
 }: StatusBarProps) {
+  const t = useMessages("statusBar", statusBarMessages, labels);
+  const label = customLabel ?? t("label");
+  // Only the built-in states translate; consumer-defined statuses keep their own labels.
+  const statuses = useMemo(
+    () =>
+      customStatuses ??
+      STATUS_BAR_STATUSES.map((status) => ({
+        ...status,
+        // Built-in status ids double as message keys.
+        label: t(status.id as keyof StatusBarMessages),
+      })),
+    [customStatuses, t],
+  );
   const rows = useMemo(() => {
     const states = new Map<string, StatusBarStatus>();
     for (const status of statuses) {
@@ -97,6 +115,7 @@ export function useStatusBarModel({
     rows,
     statuses,
     label,
+    t,
     active,
     activeIndex,
     setActive,

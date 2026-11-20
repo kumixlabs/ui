@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useAnimate, useReducedMotion } from "motion/re
 import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
 import { createGameSounds, type GameSounds } from "../../lib/game-sounds";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate, type PresenceGateRenderProps } from "../../lib/presence-gate";
 import { ActionSwapCascadeIcon } from "./action-swap-cascade";
 import {
@@ -16,10 +17,53 @@ import {
   AdaptiveStepperValue,
 } from "./adaptive-stepper";
 import { Button } from "./button";
+import { formatMultiplier, formatOdds } from "./casino/game-parts";
 import { NumberTicker } from "./number-ticker";
 import { Tooltip } from "./tooltip";
 
+export { formatMultiplier } from "./casino/game-parts";
+
 export type MinesTile = "gem" | "mine";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const minesMessages = {
+  label: "Mines",
+  mineCount: "Mine count",
+  mineOne: "{count} mine",
+  mineMany: "{count} mines",
+  multiplier: "Multiplier",
+  multiplierLost: "Multiplier lost",
+  oddsNext: "{percent}% safe · next {multiplier}",
+  oddsFirst: "First pick {percent}% safe",
+  tiles: "Tiles",
+  tile: "Row {row}, column {column}, {state}",
+  tileHidden: "hidden",
+  tileGemNotPicked: "gem, not picked",
+  tileMineNotPicked: "mine, not picked",
+  tileGemPicked: "gem, pick {pick}",
+  tileMineHit: "mine, hit",
+  start: "Start",
+  cashOut: "Cash out {multiplier}",
+  playAgain: "Play again",
+  sound: "Sound",
+  roundStarted: "Round started with {mines}.",
+  gemFound: "Gem. {multiplier}.",
+  mineFound: "Mine. The round is over.",
+  cashedOutAt: "Cashed out at {multiplier}.",
+  hideResult: "Hide result and show the board",
+  roundResult: "Round result",
+  cashedOut: "Cashed out",
+  mineHit: "Mine hit",
+  gems: "Gems",
+  gemsOf: "{gems} of {total}",
+  mines: "Mines",
+  oddsBeaten: "Odds beaten",
+  oddsBeatenValue: "1 in {odds}",
+  lostOnPick: "Lost on pick",
+};
+
+export type MinesMessages = typeof minesMessages;
+type Translate = (key: keyof MinesMessages, values?: Record<string, string | number>) => string;
 
 export interface MinesProps {
   /** Tiles per side, rounded, at least 2. Default 5 (a 5 × 5 board). Changing it ends the round. */
@@ -44,6 +88,8 @@ export interface MinesProps {
   showResult?: boolean;
   /** Accessible name for the game. Default "Mines". */
   "aria-label"?: string;
+  /** Override built-in text for this instance. */
+  labels?: Partial<MinesMessages>;
   className?: string;
 }
 
@@ -94,9 +140,12 @@ export function Mines({
   defaultSound = false,
   onSoundChange,
   showResult = true,
-  "aria-label": ariaLabel = "Mines",
+  "aria-label": ariaLabel,
+  labels,
   className,
 }: MinesProps) {
+  const t = useMessages("mines", minesMessages, labels);
+  const mineCount = (count: number) => t(count === 1 ? "mineOne" : "mineMany", { count });
   const reduce = useReducedMotion() ?? false;
   const size = Math.max(2, Math.round(sizeProp) || 2);
   useEffect(() => {
@@ -195,7 +244,7 @@ export function Mines({
         );
       });
     }
-    setAnnouncement(`Round started with ${chosenMines} ${chosenMines === 1 ? "mine" : "mines"}.`);
+    setAnnouncement(t("roundStarted", { mines: mineCount(chosenMines) }));
     if (soundOn) getPlayer().prepare();
   };
 
@@ -203,7 +252,7 @@ export function Mines({
     if (phase !== "playing" || finalGems === 0) return;
     const value = minesMultiplier(tiles, mines, finalGems);
     setPhase("cashed");
-    setAnnouncement(`Cashed out at ${formatMultiplier(value)}.`);
+    setAnnouncement(t("cashedOutAt", { multiplier: formatMultiplier(value) }));
     if (soundOn) getPlayer().cashOut();
     onCashOut?.(value, finalGems);
   };
@@ -213,7 +262,7 @@ export function Mines({
     setPicked((current) => [...current, tile]);
     if (mineSet.has(tile)) {
       setPhase("busted");
-      setAnnouncement("Mine. The round is over.");
+      setAnnouncement(t("mineFound"));
       if (soundOn) getPlayer().mine();
       onReveal?.(tile, "mine", 0);
       return;
@@ -228,7 +277,7 @@ export function Mines({
       cashOut(found);
       return;
     }
-    setAnnouncement(`Gem. ${formatMultiplier(value)}.`);
+    setAnnouncement(t("gemFound", { multiplier: formatMultiplier(value) }));
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>, tile: number) => {
@@ -289,7 +338,7 @@ export function Mines({
   return (
     <section
       ref={sectionRef}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? t("label")}
       className={cn("flex w-full max-w-md flex-col gap-4", className)}
       onKeyDown={(event) => {
         if (event.key !== "Escape" || !resultShown) return;
@@ -305,8 +354,8 @@ export function Mines({
           min={1}
           max={tiles - 1}
           disabled={phase === "playing"}
-          formatValueText={(value) => `${value} ${value === 1 ? "mine" : "mines"}`}
-          aria-label="Mine count"
+          formatValueText={mineCount}
+          aria-label={t("mineCount")}
         >
           <AdaptiveStepperDecrement />
           <AdaptiveStepperValue>
@@ -332,7 +381,7 @@ export function Mines({
               <NumberTicker
                 value={multiplier}
                 decimals={2}
-                format={compact}
+                format={formatOdds}
                 suffix="×"
                 startOnView={false}
                 duration={0.35}
@@ -341,17 +390,16 @@ export function Mines({
           </div>
           <p className="text-muted-foreground flex items-center justify-end gap-1.5 text-xs tabular-nums">
             {over ? (
-              phase === "busted" ? (
-                "Multiplier lost"
-              ) : (
-                "Multiplier"
-              )
+              t(phase === "busted" ? "multiplierLost" : "multiplier")
             ) : (
               <>
                 <OddsRing safe={safe} reduce={reduce} />
                 {phase === "playing"
-                  ? `${Math.round(safe * 100)}% safe · next ${formatMultiplier(next)}`
-                  : `First pick ${Math.round(safe * 100)}% safe`}
+                  ? t("oddsNext", {
+                      percent: Math.round(safe * 100),
+                      multiplier: formatMultiplier(next),
+                    })
+                  : t("oddsFirst", { percent: Math.round(safe * 100) })}
               </>
             )}
           </p>
@@ -366,7 +414,7 @@ export function Mines({
           className="m-0 grid min-w-0 gap-2 border-0 p-0"
           style={{ gridTemplateColumns: `repeat(${size}, minmax(0, 1fr))` }}
         >
-          <legend className="sr-only">Tiles</legend>
+          <legend className="sr-only">{t("tiles")}</legend>
           {Array.from({ length: tiles }, (_, tile) => {
             const isPicked = picked.includes(tile);
             const isMine = mineSet.has(tile);
@@ -388,7 +436,11 @@ export function Mines({
                 type="button"
                 tabIndex={tile === cursor ? 0 : -1}
                 aria-disabled={!interactive}
-                aria-label={`Row ${row + 1}, column ${col + 1}, ${tileState(content, isPicked, order)}`}
+                aria-label={t("tile", {
+                  row: row + 1,
+                  column: col + 1,
+                  state: tileState(t, content, isPicked, order),
+                })}
                 onFocus={() => setCursor(tile)}
                 onClick={() => pick(tile)}
                 onKeyDown={(event) => onKeyDown(event, tile)}
@@ -485,6 +537,7 @@ export function Mines({
                   mineSet={mineSet}
                   reduce={reduce}
                   onClose={closeResult}
+                  t={t}
                 />
               )}
             </PresenceGate>
@@ -503,18 +556,16 @@ export function Mines({
           onClick={() => (phase === "playing" ? cashOut() : start())}
         >
           {phase === "playing"
-            ? `Cash out ${formatMultiplier(multiplier)}`
-            : over
-              ? "Play again"
-              : "Start"}
+            ? t("cashOut", { multiplier: formatMultiplier(multiplier) })
+            : t(over ? "playAgain" : "start")}
         </Button>
         {/* aria-label names the button; the tooltip shows the same label on hover
             and focus. Tooltip's asLabel would hydrate differently from the server. */}
-        <Tooltip content="Sound" side="top">
+        <Tooltip content={t("sound")} side="top">
           <Button
             variant="secondary"
             onClick={toggleSound}
-            aria-label="Sound"
+            aria-label={t("sound")}
             aria-pressed={soundOn}
             pressScale={0.96}
             className={cn("w-10 px-0", soundOn ? "text-foreground" : "text-muted-foreground")}
@@ -556,6 +607,7 @@ interface ResultProps {
   mineSet: ReadonlySet<number>;
   reduce: boolean;
   onClose: () => void;
+  t: Translate;
 }
 
 /**
@@ -564,12 +616,12 @@ interface ResultProps {
  * the board (or Escape) puts the card away to study the board.
  */
 function ResultCard(props: ResultProps) {
-  const { gate, reduce, onClose } = props;
+  const { gate, reduce, onClose, t } = props;
   return (
     <>
       <motion.button
         type="button"
-        aria-label="Hide result and show the board"
+        aria-label={t("hideResult")}
         onClick={onClose}
         {...gate}
         className="bg-background/55 focus-visible:ring-ring absolute inset-0 z-20 cursor-default rounded-3xl backdrop-blur-[2px] outline-none focus-visible:ring-2"
@@ -584,7 +636,7 @@ function ResultCard(props: ResultProps) {
       >
         <motion.div
           role="group"
-          aria-label="Round result"
+          aria-label={t("roundResult")}
           // Sized here: the ticket is a size container, so it can't take its
           // width from its contents.
           className={cn("w-full max-w-[17rem]", TICKET_SHADOW)}
@@ -695,6 +747,7 @@ function Ticket({
   picked,
   mineSet,
   reduce,
+  t,
 }: ResultProps) {
   const cashed = outcome === "cashed";
   return (
@@ -721,7 +774,7 @@ function Ticket({
               cashed ? "text-primary" : "text-rose-600 dark:text-rose-400",
             )}
           >
-            {cashed ? "Cashed out" : "Mine hit"}
+            {t(cashed ? "cashedOut" : "mineHit")}
           </p>
         </Stage>
         <Stage delay={0.1} reduce={reduce}>
@@ -735,7 +788,7 @@ function Ticket({
               <NumberTicker
                 value={multiplier}
                 decimals={2}
-                format={compact}
+                format={formatOdds}
                 suffix="×"
                 startOnView={false}
                 duration={0.6}
@@ -751,11 +804,13 @@ function Ticket({
       <div className="flex items-center gap-4 px-5 pt-4 pb-5">
         <Stage delay={0.18} reduce={reduce} className="flex-1">
           <dl className="grid gap-1.5 text-xs">
-            <Row label="Gems" value={`${gems} of ${safeTiles}`} />
-            <Row label="Mines" value={mines} />
+            <Row label={t("gems")} value={t("gemsOf", { gems, total: safeTiles })} />
+            <Row label={t("mines")} value={mines} />
             <Row
-              label={cashed ? "Odds beaten" : "Lost on pick"}
-              value={cashed ? `1 in ${compact(multiplier)}` : picked.length}
+              label={t(cashed ? "oddsBeaten" : "lostOnPick")}
+              value={
+                cashed ? t("oddsBeatenValue", { odds: formatOdds(multiplier) }) : picked.length
+              }
             />
           </dl>
         </Stage>
@@ -837,10 +892,10 @@ function OddsRing({ safe, reduce }: { safe: number; reduce: boolean }) {
 }
 
 /** What a tile shows, and for revealed tiles whether the player picked it. */
-function tileState(content: MinesTile | null, isPicked: boolean, order: number) {
-  if (!content) return "hidden";
-  if (!isPicked) return `${content}, not picked`;
-  return content === "mine" ? "mine, hit" : `gem, pick ${order + 1}`;
+function tileState(t: Translate, content: MinesTile | null, isPicked: boolean, order: number) {
+  if (!content) return t("tileHidden");
+  if (!isPicked) return t(content === "mine" ? "tileMineNotPicked" : "tileGemNotPicked");
+  return content === "mine" ? t("tileMineHit") : t("tileGemPicked", { pick: order + 1 });
 }
 
 /** Rings between two tiles: 0 for the same tile, 1 for its neighbours. */
@@ -849,22 +904,4 @@ function ringFrom(from: number, tile: number, size: number) {
     Math.abs(Math.floor(tile / size) - Math.floor(from / size)),
     Math.abs((tile % size) - (from % size)),
   );
-}
-
-// Payouts grow without limit (a cleared 5 × 5 board with 12 mines pays over
-// five million), so big ones are shortened to fit: 5.2M, then 1.3E29.
-const SHORT = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
-const SCIENTIFIC = new Intl.NumberFormat("en", {
-  notation: "scientific",
-  maximumFractionDigits: 1,
-});
-
-function compact(multiplier: number) {
-  if (multiplier < 10_000) return multiplier.toFixed(2);
-  return (multiplier < 1e15 ? SHORT : SCIENTIFIC).format(multiplier);
-}
-
-/** A multiplier as Mines shows it: 2.50×, or shortened when large (5.2M×). */
-export function formatMultiplier(multiplier: number) {
-  return `${compact(multiplier)}×`;
 }

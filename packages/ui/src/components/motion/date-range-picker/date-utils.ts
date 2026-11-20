@@ -1,3 +1,5 @@
+"use client";
+
 import type { DateRange } from "./types";
 
 export const DAY = 86_400_000;

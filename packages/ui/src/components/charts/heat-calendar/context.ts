@@ -4,12 +4,14 @@ import { createContext, useContext, useEffect, useId, useMemo, useRef, useState 
 import { useReducedMotion } from "motion/react";
 
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
+import { useLocale, useMessages } from "../../../lib/i18n";
+import { heatCalendarMessages } from "./messages";
 import type { HeatCalendarCell, HeatCalendarProps, HeatCalendarSelection } from "./types";
 import {
   addDays,
   CELL,
+  dateFormats,
   EMPTY,
-  fmtMonth,
   GAP,
   MONTH_ROW,
   mondayOf,
@@ -31,7 +33,7 @@ import {
  * reduced motion keeps the fades only.
  */
 export function useHeatCalendarModel({
-  unit = "commits",
+  unit,
   weeks = 16,
   maxCount = 14,
   values,
@@ -40,7 +42,11 @@ export function useHeatCalendarModel({
   selection: controlledSelection,
   defaultSelection = null,
   onSelectionChange,
+  labels,
 }: HeatCalendarProps) {
+  const t = useMessages("heatCalendar", heatCalendarMessages, labels);
+  const { locale } = useLocale();
+  const formats = useMemo(() => dateFormats(locale), [locale]);
   const reduce = useReducedMotion();
   const canHover = useHoverCapable();
   const [storedHover, setHover] = useState<HeatCalendarCell | null>(null);
@@ -114,11 +120,11 @@ export function useHeatCalendarModel({
         start !== null &&
         date !== null &&
         (w === 0 || addDays(start, (w - 1) * 7).getUTCMonth() !== m);
-      return { id: `w${w}`, w, m, label: fresh && date ? fmtMonth.format(date) : null };
+      return { id: `w${w}`, w, m, label: fresh && date ? formats.month.format(date) : null };
     });
     if (list[1]?.label || list[2]?.label) list[0].label = null;
     return list;
-  }, [start, weeks]);
+  }, [start, weeks, formats]);
 
   // one click anchors a span and dims everything else; hovering then previews
   // the run from the anchor to the pointer and totals it live, and a second
@@ -172,7 +178,9 @@ export function useHeatCalendarModel({
       : null;
 
   return {
-    unit,
+    unit: unit ?? t("unit"),
+    t,
+    formats,
     weeks,
     reduce,
     canHover,

@@ -20,7 +20,22 @@ import { createPortal } from "react-dom";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const centerMorphModalMessages = {
+  close: "Close modal",
+  dismiss: "Dismiss modal",
+};
+
+export type CenterMorphModalMessages = typeof centerMorphModalMessages;
+
+// Kept apart from the state context, whose identity drives the focus effect,
+// so inline `labels` never re-run focus handling.
+const CenterMorphModalLabelsContext = createContext<Partial<CenterMorphModalMessages> | undefined>(
+  undefined,
+);
 
 type CenterMorphModalContextValue = {
   open: boolean;
@@ -46,6 +61,8 @@ export interface CenterMorphModalProps {
   /** Initial state when used uncontrolled. */
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Override any built-in string. */
+  labels?: Partial<CenterMorphModalMessages>;
 }
 
 /**
@@ -57,6 +74,7 @@ export function CenterMorphModal({
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
+  labels,
 }: CenterMorphModalProps) {
   const id = useId();
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
@@ -82,7 +100,11 @@ export function CenterMorphModal({
   );
 
   return (
-    <CenterMorphModalContext.Provider value={value}>{children}</CenterMorphModalContext.Provider>
+    <CenterMorphModalContext.Provider value={value}>
+      <CenterMorphModalLabelsContext.Provider value={labels}>
+        {children}
+      </CenterMorphModalLabelsContext.Provider>
+    </CenterMorphModalContext.Provider>
   );
 }
 
@@ -183,11 +205,16 @@ export function CenterMorphModalContent({
   ariaDescribedBy,
   dismissible = true,
   showCloseButton = true,
-  closeButtonLabel = "Close modal",
+  closeButtonLabel,
   className,
   backdropClassName,
 }: CenterMorphModalContentProps) {
   const context = useCenterMorphModalContext("CenterMorphModalContent");
+  const t = useMessages(
+    "centerMorphModal",
+    centerMorphModalMessages,
+    useContext(CenterMorphModalLabelsContext),
+  );
   const reduce = useReducedMotion() ?? false;
   const [mounted, setMounted] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -250,7 +277,7 @@ export function CenterMorphModalContent({
             <>
               <motion.button
                 type="button"
-                aria-label="Dismiss modal"
+                aria-label={t("dismiss")}
                 tabIndex={-1}
                 disabled={!dismissible}
                 initial={{ opacity: 0 }}
@@ -320,7 +347,7 @@ export function CenterMorphModalContent({
                     {showCloseButton ? (
                       <motion.button
                         type="button"
-                        aria-label={closeButtonLabel}
+                        aria-label={closeButtonLabel ?? t("close")}
                         onClick={() => context.setOpen(false)}
                         initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}

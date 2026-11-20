@@ -1,3 +1,5 @@
+"use client";
+
 export interface XYDomain {
   min: number;
   max: number;

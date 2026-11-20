@@ -6,7 +6,6 @@ import { cn } from "@kumix/utils";
 import { NumberTicker } from "../../motion/number-ticker";
 import { Tooltip } from "../../motion/tooltip";
 import { useHeatCalendar } from "./context";
-import { fmtDay, fmtRange } from "./utils";
 
 export function HeatCalendarTooltip({
   children,
@@ -17,7 +16,7 @@ export function HeatCalendarTooltip({
     | ((data: NonNullable<ReturnType<typeof useHeatCalendar>["tooltip"]>) => ReactNode);
   className?: string;
 }) {
-  const { gridRef, tooltipId, tip, tooltip, unit } = useHeatCalendar();
+  const { gridRef, tooltipId, tip, tooltip, unit, t, formats } = useHeatCalendar();
   const [dismissed, setDismissed] = useState<typeof tip>(null);
   const anchorRef = useMemo(
     () => ({
@@ -56,11 +55,14 @@ export function HeatCalendarTooltip({
                 </span>
                 <span className="text-muted-foreground">
                   {tooltip.days > 1 && tooltip.startDate && tooltip.endDate
-                    ? `${fmtRange.format(tooltip.startDate)} – ${fmtRange.format(tooltip.endDate)}`
-                    : fmtDay.format(tooltip.date)}
+                    ? t("range", {
+                        start: formats.range.format(tooltip.startDate),
+                        end: formats.range.format(tooltip.endDate),
+                      })
+                    : formats.day.format(tooltip.date)}
                 </span>
                 {tooltip.days > 1 ? (
-                  <span className="text-muted-foreground">{tooltip.days} days</span>
+                  <span className="text-muted-foreground">{t("days", { days: tooltip.days })}</span>
                 ) : null}
               </>
             )))

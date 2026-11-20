@@ -14,6 +14,7 @@ export function StatusBar({
   activeId,
   defaultActiveId,
   onActiveChange,
+  labels,
   children,
   className,
   ...props
@@ -25,7 +26,9 @@ export function StatusBar({
     activeId,
     defaultActiveId,
     onActiveChange,
+    labels,
   });
+  const { t } = model;
   return (
     <StatusBarContext.Provider value={model}>
       <section
@@ -47,12 +50,12 @@ export function StatusBar({
             stays available to screen readers without dozens of tab stops. */}
         <div className="sr-only">
           <table>
-            <caption>{model.label} data</caption>
+            <caption>{t("tableCaption", { label: model.label })}</caption>
             <thead>
               <tr>
-                <th scope="col">Period</th>
-                <th scope="col">Status</th>
-                <th scope="col">Details</th>
+                <th scope="col">{t("period")}</th>
+                <th scope="col">{t("status")}</th>
+                <th scope="col">{t("details")}</th>
               </tr>
             </thead>
             <tbody>
@@ -75,6 +78,7 @@ export type { StatusBarDatum, StatusBarProps, StatusBarStatus } from "./status-b
 export { STATUS_BAR_STATUSES, useStatusBar } from "./status-bar/context";
 export type { StatusBarLegendProps } from "./status-bar/legend";
 export { StatusBarLegend } from "./status-bar/legend";
+export { type StatusBarMessages, statusBarMessages } from "./status-bar/messages";
 export type { StatusBarPlotProps } from "./status-bar/plot";
 export { StatusBarPlot } from "./status-bar/plot";
 export type { StatusBarTooltipData, StatusBarTooltipProps } from "./status-bar/tooltip";

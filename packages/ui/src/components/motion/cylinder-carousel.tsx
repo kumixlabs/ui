@@ -21,7 +21,15 @@ import {
 } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { useMessages } from "../../lib/i18n";
 import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "../../lib/touch";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const cylinderCarouselMessages = {
+  roleDescription: "carousel",
+};
+
+export type CylinderCarouselMessages = typeof cylinderCarouselMessages;
 
 // Carousel-specific: a soft spring that receives the release velocity, so a
 // flick keeps rolling freely, drifts past the snap point and eases back.
@@ -63,6 +71,8 @@ export interface CylinderCarouselProps {
   onIndexChange?: (index: number) => void;
   /** Stage height in px. Defaults to `itemSize`. */
   height?: number;
+  /** Override any built-in string. */
+  labels?: Partial<CylinderCarouselMessages>;
   className?: string;
 }
 
@@ -185,9 +195,11 @@ export function CylinderCarousel({
   defaultIndex = 0,
   onIndexChange,
   height,
+  labels,
   className,
 }: CylinderCarouselProps) {
   const reduce = useReducedMotion() ?? false;
+  const t = useMessages("cylinderCarousel", cylinderCarouselMessages, labels);
   const items = Children.toArray(children);
   const count = items.length;
 
@@ -235,7 +247,6 @@ export function CylinderCarousel({
   // pointer velocity to a soft spring so the roll glides on and settles free.
   const scroll = useMotionValue(defaultIndex);
   const indexRef = useRef(defaultIndex);
-  const [, setActiveIndex] = useState(defaultIndex);
   const glideRef = useRef<AnimationPlaybackControls | null>(null);
   const draggingRef = useRef(false);
   const hoverRef = useRef(false);
@@ -246,7 +257,6 @@ export function CylinderCarousel({
       const idx = ((Math.round(v) % count) + count) % count;
       if (idx !== indexRef.current) {
         indexRef.current = idx;
-        setActiveIndex(idx);
         onIndexChange?.(idx);
       }
     });
@@ -361,6 +371,14 @@ export function CylinderCarousel({
     [scroll, gap, settle, stopGlide],
   );
 
+  useEffect(
+    () => () => {
+      window.clearTimeout(wheelSettleRef.current);
+      stopGlide();
+    },
+    [stopGlide],
+  );
+
   useEffect(() => {
     if (!autoRotate || reduce || count === 0) return;
     let raf = 0;
@@ -383,7 +401,7 @@ export function CylinderCarousel({
     <div
       ref={stageRef}
       role="application"
-      aria-roledescription="carousel"
+      aria-roledescription={t("roleDescription")}
       // biome-ignore lint/a11y/noNoninteractiveTabindex: focusable custom carousel widget
       tabIndex={0}
       onKeyDown={(e) => {

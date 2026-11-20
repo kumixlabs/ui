@@ -28,7 +28,38 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { useTouchCapable } from "../../hooks/use-touch-capable";
 import { EASE_OUT, SPRING_LAYOUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { MorphPopover, MorphPopoverContent, MorphPopoverTrigger } from "../motion/popover-morph";
+
+export const aiSidebarMessages = {
+  label: "Resources",
+  rename: "Rename",
+  renameItem: "Rename {item}",
+  actions: "Actions for {item}",
+  moveUp: "Move up",
+  moveDown: "Move down",
+  moveInto: "Move into {target}",
+  moveOut: "Move out",
+  moveToTop: "Move to top level",
+  movePending: "Wait for the current move to finish.",
+  movedBefore: "Moved {item} before {target}.",
+  movedInside: "Moved {item} inside {target}.",
+  movedAfter: "Moved {item} after {target}.",
+  movedToTop: "Moved {item} to the top level.",
+  moveFailed: "Move failed. {item} was restored.",
+  renameFailed: "Rename failed. {item} was restored.",
+  unnamedItem: "item",
+};
+
+export type AISidebarMessages = typeof aiSidebarMessages;
+
+type Translate = (key: keyof AISidebarMessages, values?: Record<string, string | number>) => string;
+
+const MOVED_MESSAGE = {
+  before: "movedBefore",
+  inside: "movedInside",
+  after: "movedAfter",
+} as const satisfies Record<SidebarResourceDropPosition, keyof AISidebarMessages>;
 
 export type SidebarResourceKind = "folder" | "project" | "file" | "bookmark";
 
@@ -83,6 +114,8 @@ export interface AISidebarProps {
   renderMenu?: (item: SidebarResource, controls: SidebarResourceMenuControls) => ReactNode;
   ariaLabel?: string;
   className?: string;
+  /** Override any built-in string. */
+  labels?: Partial<AISidebarMessages>;
 }
 
 interface FlatResource {
@@ -315,6 +348,7 @@ interface ResourceRowProps {
   renderIcon?: (item: SidebarResource) => ReactNode;
   renderMenu?: AISidebarProps["renderMenu"];
   setRef: (node: HTMLDivElement | null) => void;
+  t: Translate;
 }
 
 function ResourceRow({
@@ -342,6 +376,7 @@ function ResourceRow({
   renderIcon,
   renderMenu,
   setRef,
+  t,
 }: ResourceRowProps) {
   const reduce = useReducedMotion() ?? false;
   const canTouch = useTouchCapable();
@@ -379,29 +414,29 @@ function ResourceRow({
   }) ?? (
     <>
       <ResourceMenuAction icon={Pencil} onSelect={runFromMenu(onRenameStart)}>
-        Rename
+        {t("rename")}
       </ResourceMenuAction>
       {moves.up || moves.down || moves.into || moves.out ? (
         <div aria-hidden="true" className="bg-border my-1 h-px" />
       ) : null}
       {moves.up ? (
         <ResourceMenuAction icon={ArrowUp} onSelect={runFromMenu(moves.up)}>
-          Move up
+          {t("moveUp")}
         </ResourceMenuAction>
       ) : null}
       {moves.down ? (
         <ResourceMenuAction icon={ArrowDown} onSelect={runFromMenu(moves.down)}>
-          Move down
+          {t("moveDown")}
         </ResourceMenuAction>
       ) : null}
       {moves.into ? (
         <ResourceMenuAction icon={FolderInput} onSelect={runFromMenu(moves.into.run)}>
-          Move into {moves.into.label}
+          {t("moveInto", { target: moves.into.label })}
         </ResourceMenuAction>
       ) : null}
       {moves.out ? (
         <ResourceMenuAction icon={Undo2} onSelect={runFromMenu(moves.out)}>
-          Move out
+          {t("moveOut")}
         </ResourceMenuAction>
       ) : null}
     </>
@@ -470,7 +505,7 @@ function ResourceRow({
         <input
           ref={inputRef}
           value={draft}
-          aria-label={`Rename ${row.item.label}`}
+          aria-label={t("renameItem", { item: row.item.label })}
           onChange={(event) => setDraft(event.target.value)}
           draggable={false}
           onClick={(event) => event.stopPropagation()}
@@ -502,7 +537,7 @@ function ResourceRow({
               type="button"
               draggable={false}
               tabIndex={-1}
-              aria-label={`Actions for ${row.item.label}`}
+              aria-label={t("actions", { item: row.item.label })}
               onClick={(event) => event.stopPropagation()}
               className={cn(
                 "hover:bg-foreground/5 focus-visible:ring-ring grid size-7 shrink-0 place-items-center rounded-lg transition-opacity outline-none group-hover/resource:opacity-100 group-data-[menu-open=true]/resource:opacity-100 focus-visible:opacity-100 focus-visible:ring-2",
@@ -542,9 +577,11 @@ export function AISidebar({
   defaultExpandedIds = [],
   renderIcon,
   renderMenu,
-  ariaLabel = "Resources",
+  ariaLabel,
   className,
+  labels,
 }: AISidebarProps) {
+  const t = useMessages("aiSidebar", aiSidebarMessages, labels);
   const [internalItems, setInternalItems] = useState(items ?? defaultItems);
   const [internalActiveId, setInternalActiveId] = useState(defaultActiveId);
   const [expandedIds, setExpandedIds] = useState(() => new Set(defaultExpandedIds));
@@ -604,7 +641,7 @@ export function AISidebar({
   const performMove = useCallback(
     async (move: SidebarResourceMove) => {
       if (movePendingRef.current) {
-        setAnnouncement("Wait for the current move to finish.");
+        setAnnouncement(t("movePending"));
         return;
       }
       const before = renderedItems;
@@ -617,23 +654,24 @@ export function AISidebar({
       setDraggingId(null);
       const moved = findResource(before, move.itemId);
       const target = move.targetId ? findResource(before, move.targetId) : null;
+      const item = moved?.label ?? t("unnamedItem");
       setAnnouncement(
         target
-          ? `Moved ${moved?.label ?? "item"} ${move.position} ${target.label}.`
-          : `Moved ${moved?.label ?? "item"} to the top level.`,
+          ? t(MOVED_MESSAGE[move.position], { item, target: target.label })
+          : t("movedToTop", { item }),
       );
 
       try {
         await onMove?.(move);
       } catch (error) {
         updateItems(before);
-        setAnnouncement(`Move failed. ${moved?.label ?? "Item"} was restored.`);
+        setAnnouncement(t("moveFailed", { item }));
         onMoveError?.(error, move);
       } finally {
         movePendingRef.current = false;
       }
     },
-    [onMove, onMoveError, renderedItems, updateItems],
+    [onMove, onMoveError, renderedItems, t, updateItems],
   );
 
   const focusRow = useCallback((id: string) => {
@@ -805,7 +843,7 @@ export function AISidebar({
     <>
       <div
         role="tree"
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? t("label")}
         aria-multiselectable="false"
         onDragOver={(event) => {
           if (!draggingId || event.target !== event.currentTarget) return;
@@ -855,7 +893,7 @@ export function AISidebar({
                 updateItems(renameResource(before, row.item.id, trimmed));
                 void Promise.resolve(onRename?.(row.item, trimmed)).catch(() => {
                   updateItems(before);
-                  setAnnouncement(`Rename failed. ${row.item.label} was restored.`);
+                  setAnnouncement(t("renameFailed", { item: row.item.label }));
                 });
               }}
               onMenuOpenChange={(open) => {
@@ -903,6 +941,7 @@ export function AISidebar({
               }}
               renderIcon={renderIcon}
               renderMenu={renderMenu}
+              t={t}
               setRef={(node) => {
                 if (node) rowRefs.current.set(row.item.id, node);
                 else rowRefs.current.delete(row.item.id);
@@ -917,7 +956,7 @@ export function AISidebar({
             data-active={dropTarget?.id === null || undefined}
             className="border-border text-muted-foreground data-[active=true]:border-primary/50 data-[active=true]:bg-muted data-[active=true]:text-foreground absolute inset-x-1 bottom-0 flex h-8 items-center justify-center rounded-lg border border-dashed text-[10px]"
           >
-            Move to top level
+            {t("moveToTop")}
           </div>
         ) : null}
       </div>

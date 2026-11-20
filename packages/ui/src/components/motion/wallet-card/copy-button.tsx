@@ -1,18 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, Copy } from "lucide-react";
 
 import { cn } from "@kumix/utils";
+import { useMessages } from "../../../lib/i18n";
 import { ActionSwapIcon } from "../action-swap";
+import { type WalletCardMessages, walletCardMessages } from "./messages";
 
 /**
  * Copies `value` to the clipboard and swaps the copy icon for a check via the
  * library's ActionSwapIcon. Stops click propagation so it can sit inside a
  * selectable row.
  */
-export function CopyButton({ value, className }: { value: string; className?: string }) {
+export function CopyButton({
+  value,
+  className,
+  labels,
+}: {
+  value: string;
+  className?: string;
+  labels?: Partial<WalletCardMessages>;
+}) {
+  const t = useMessages("walletCard", walletCardMessages, labels);
   const [copied, setCopied] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   const copy = async () => {
     try {
@@ -21,13 +35,14 @@ export function CopyButton({ value, className }: { value: string; className?: st
       // clipboard may be unavailable (insecure context) — swap anyway
     }
     setCopied(true);
-    window.setTimeout(() => setCopied(false), 1400);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setCopied(false), 1400);
   };
 
   return (
     <button
       type="button"
-      aria-label={copied ? "Copied" : "Copy address"}
+      aria-label={copied ? t("copied") : t("copyAddress")}
       onClick={(e) => {
         e.stopPropagation();
         copy();

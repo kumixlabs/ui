@@ -1,3 +1,5 @@
+"use client";
+
 export type Chain = {
   id: string;
   name: string;

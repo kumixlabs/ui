@@ -20,6 +20,7 @@ import { useDismiss } from "../../hooks/use-dismiss";
 import { useOnOpen } from "../../hooks/use-on-open";
 import { useRowCursor } from "../../hooks/use-row-cursor";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
 
 // The panel's glass grows out of the bar on a spring with a little give: the
@@ -60,6 +61,27 @@ const CHIP_EXIT: Transition = { duration: 0.16, ease: EASE_OUT };
 const SURFACE_RADIUS = 28;
 // Room the panel wants above the bar before "auto" sends it below instead.
 const PANEL_ROOM = 320;
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const morphingSearchChipsMessages = {
+  placeholder: "Search",
+  label: "Search",
+  suggestions: "Suggestions",
+  recent: "Recent",
+  recentSearches: "Recent searches",
+  clear: "Clear",
+  searching: "Searching…",
+  removeFilter: "Remove filter {term}",
+  hint: "Enter adds a filter. Backspace at the start of the field selects the last filter, and again removes it. Delete removes the highlighted recent search.",
+  filterLimit: "Up to {max} filters",
+  filterAdded: "Added filter {term}",
+  filterRemoved: "Removed filter {term}",
+  recentRemoved: "Removed {term} from recent searches",
+  recentsCleared: "Cleared recent searches",
+  filterMarked: "{term} selected. Press Backspace again to remove it.",
+};
+
+export type MorphingSearchChipsMessages = typeof morphingSearchChipsMessages;
 
 type Row = { id: string; label: string; kind: "query" | "recent" | "suggestion" };
 type Side = "top" | "bottom";
@@ -112,6 +134,8 @@ export interface MorphingSearchChipsProps {
   /** Trailing controls inside the bar, such as filter buttons. */
   actions?: ReactNode;
   className?: string;
+  /** Override any built-in string. */
+  labels?: Partial<MorphingSearchChipsMessages>;
 }
 
 function useControllable<T>(value: T | undefined, initial: T, onChange?: (next: T) => void) {
@@ -167,11 +191,15 @@ export function MorphingSearchChips({
   onOpenChange,
   disabled = false,
   name,
-  placeholder = "Search",
-  label = "Search",
+  placeholder: placeholderProp,
+  label: labelProp,
   actions,
   className,
+  labels,
 }: MorphingSearchChipsProps) {
+  const t = useMessages("morphingSearchChips", morphingSearchChipsMessages, labels);
+  const placeholder = placeholderProp ?? t("placeholder");
+  const label = labelProp ?? t("label");
   const reduce = useReducedMotion();
   const [chips, setChips] = useControllable(chipsProp, defaultChips, onChipsChange);
   const [query, setQuery] = useControllable(queryProp, defaultQuery, onQueryChange);
@@ -349,12 +377,12 @@ export function MorphingSearchChips({
     if (!value) return;
     const exists = chips.some((chip) => sameTerm(chip, value));
     if (!exists && full) {
-      announce(`Up to ${maxChips} filters`);
+      announce(t("filterLimit", { max: maxChips ?? 0 }));
       return;
     }
     if (!exists) {
       setChips([...chips, value]);
-      announce(`Added filter ${value}`);
+      announce(t("filterAdded", { term: value }));
     }
     setRecents(
       [value, ...recents.filter((recent) => !sameTerm(recent, value))].slice(0, maxRecents),
@@ -364,13 +392,13 @@ export function MorphingSearchChips({
 
   const removeChip = (term: string) => {
     setChips(chips.filter((chip) => chip !== term));
-    announce(`Removed filter ${term}`);
+    announce(t("filterRemoved", { term }));
     inputRef.current?.focus();
   };
 
   const removeRecent = (term: string) => {
     setRecents(recents.filter((recent) => recent !== term));
-    announce(`Removed ${term} from recent searches`);
+    announce(t("recentRemoved", { term }));
   };
 
   // Steps the marked chip from the one it is on now, inside the update, so two
@@ -443,7 +471,7 @@ export function MorphingSearchChips({
       event.preventDefault();
       const last = chips[chips.length - 1];
       setMarkedChip(last);
-      announce(`${last} selected. Press Backspace again to remove it.`);
+      announce(t("filterMarked", { term: last }));
       return;
     }
     if (event.key === back && atStart && chips.length > 0) {
@@ -468,19 +496,19 @@ export function MorphingSearchChips({
     <>
       <div className="flex h-9 items-center justify-between px-3">
         <span className="text-muted-foreground text-xs font-medium">
-          {trimmed ? "Suggestions" : "Recent"}
+          {trimmed ? t("suggestions") : t("recent")}
         </span>
         {!trimmed && recents.length > 0 ? (
           <button
             type="button"
             onClick={() => {
               setRecents([]);
-              announce("Cleared recent searches");
+              announce(t("recentsCleared"));
               inputRef.current?.focus();
             }}
             className="text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-md px-1.5 py-0.5 text-xs transition-colors outline-none focus-visible:ring-2"
           >
-            Clear
+            {t("clear")}
           </button>
         ) : null}
       </div>
@@ -488,7 +516,7 @@ export function MorphingSearchChips({
         <div
           id={listId}
           role="listbox"
-          aria-label={trimmed ? "Suggestions" : "Recent searches"}
+          aria-label={trimmed ? t("suggestions") : t("recentSearches")}
           aria-busy={loading || undefined}
           className="max-h-[min(20rem,45vh)] [scrollbar-width:thin] overflow-y-auto overscroll-contain"
         >
@@ -556,7 +584,7 @@ export function MorphingSearchChips({
       {loading ? (
         <div className="text-muted-foreground flex h-11 items-center gap-3 px-3 text-sm">
           <LoaderCircle aria-hidden="true" className="size-4 motion-safe:animate-spin" />
-          Searching…
+          {t("searching")}
         </div>
       ) : null}
     </>
@@ -691,7 +719,7 @@ export function MorphingSearchChips({
                 <button
                   type="button"
                   disabled={disabled}
-                  aria-label={`Remove filter ${chip}`}
+                  aria-label={t("removeFilter", { term: chip })}
                   onClick={() => removeChip(chip)}
                   className="text-muted-foreground hover:bg-foreground/10 hover:text-foreground focus-visible:ring-ring grid size-7 shrink-0 place-items-center rounded-full transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none"
                 >
@@ -743,8 +771,7 @@ export function MorphingSearchChips({
         ? chips.map((chip) => <input key={chip} type="hidden" name={name} value={chip} />)
         : null}
       <span id={hintId} className="sr-only">
-        Enter adds a filter. Backspace at the start of the field selects the last filter, and again
-        removes it. Delete removes the highlighted recent search.
+        {t("hint")}
       </span>
       <span aria-live="polite" className="sr-only">
         {announcement.text}

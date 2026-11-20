@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_IN_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 
 export type LoaderVariant =
   | "spinner"
@@ -34,6 +35,15 @@ const ASCII_SETS: Record<string, string[]> = {
   "ascii-bounce": ["⠁", "⠂", "⠄", "⡀", "⢀", "⠠", "⠐", "⠈"],
 };
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const loaderMessages = {
+  label: "Loading",
+  /** The word the `scramble` variant resolves to. */
+  scramble: "LOADING",
+};
+
+export type LoaderMessages = typeof loaderMessages;
+
 export interface LoaderProps {
   /** Which animation to render. */
   variant?: LoaderVariant;
@@ -43,6 +53,8 @@ export interface LoaderProps {
   speed?: number;
   /** Accessible label announced to screen readers. */
   label?: string;
+  /** Override any built-in string. */
+  labels?: Partial<LoaderMessages>;
   className?: string;
 }
 
@@ -56,9 +68,12 @@ export function Loader({
   variant = "spinner",
   size = 32,
   speed = 1,
-  label = "Loading",
+  label: labelProp,
+  labels,
   className,
 }: LoaderProps) {
+  const t = useMessages("loader", loaderMessages, labels);
+  const label = labelProp ?? t("label");
   const reduce = useReducedMotion() ?? false;
 
   return (
@@ -75,10 +90,14 @@ export function Loader({
       {ASCII_SETS[variant] && (
         <Ascii frames={ASCII_SETS[variant]} size={size} speed={speed} reduce={reduce} />
       )}
-      {variant === "morph" && <Morph size={size} speed={speed} reduce={reduce} />}
+      {variant === "morph" && <Morph size={size} speed={speed} reduce={reduce} label={label} />}
       {variant === "comet" && <Comet size={size} speed={speed} reduce={reduce} />}
-      {variant === "scramble" && <Scramble size={size} speed={speed} reduce={reduce} />}
-      {variant === "metaballs" && <Metaballs size={size} speed={speed} reduce={reduce} />}
+      {variant === "scramble" && (
+        <Scramble size={size} speed={speed} reduce={reduce} target={t("scramble")} />
+      )}
+      {variant === "metaballs" && (
+        <Metaballs size={size} speed={speed} reduce={reduce} label={label} />
+      )}
       {variant === "newton" && <Newton size={size} speed={speed} reduce={reduce} />}
       {variant === "helix" && <Helix size={size} speed={speed} reduce={reduce} />}
       {variant === "percent" && <Percent size={size} speed={speed} reduce={reduce} />}
@@ -208,7 +227,7 @@ const MORPH_SEQ = [...MORPH_PATHS.flatMap((p) => [p, p]), MORPH_PATHS[0]];
 const MORPH_ROT = [0, 0, 72, 72, 144, 144, 216, 216, 288, 288, 360];
 const MORPH_SCALE = [1, 1, 0.88, 0.88, 1, 1, 0.88, 0.88, 1, 1, 1];
 
-function Morph({ size, speed, reduce }: PartProps) {
+function Morph({ size, speed, reduce, label }: PartProps & { label: string }) {
   return (
     <motion.svg
       width={size}
@@ -222,7 +241,7 @@ function Morph({ size, speed, reduce }: PartProps) {
           : { duration: speed * 5, ease: EASE_IN_OUT, repeat: Infinity }
       }
     >
-      <title>Loading</title>
+      <title>{label}</title>
       <motion.path
         fill="currentColor"
         d={MORPH_PATHS[0]}
@@ -275,35 +294,34 @@ function Comet({ size, speed, reduce }: PartProps) {
   );
 }
 
-const SCRAMBLE_TARGET = "LOADING";
 const SCRAMBLE_GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/*#@";
 
-function Scramble({ size, speed, reduce }: PartProps) {
-  const [text, setText] = useState(SCRAMBLE_TARGET);
+function Scramble({ size, speed, reduce, target }: PartProps & { target: string }) {
+  const [text, setText] = useState(target);
   useEffect(() => {
     if (reduce) {
-      setText(SCRAMBLE_TARGET);
+      setText(target);
       return;
     }
     let tick = 0;
-    const total = SCRAMBLE_TARGET.length + 4;
+    const total = target.length + 4;
     const id = setInterval(
       () => {
         const reveal = tick % total;
         let s = "";
-        for (let i = 0; i < SCRAMBLE_TARGET.length; i++) {
+        for (let i = 0; i < target.length; i++) {
           s +=
             i < reveal
-              ? SCRAMBLE_TARGET[i]
+              ? target[i]
               : SCRAMBLE_GLYPHS[Math.floor(Math.random() * SCRAMBLE_GLYPHS.length)];
         }
         setText(s);
         tick++;
       },
-      (speed / SCRAMBLE_TARGET.length) * 1000 * 0.55,
+      (speed / target.length) * 1000 * 0.55,
     );
     return () => clearInterval(id);
-  }, [speed, reduce]);
+  }, [speed, reduce, target]);
 
   return (
     <span
@@ -315,11 +333,11 @@ function Scramble({ size, speed, reduce }: PartProps) {
   );
 }
 
-function Metaballs({ size, speed, reduce }: PartProps) {
+function Metaballs({ size, speed, reduce, label }: PartProps & { label: string }) {
   const id = useId().replace(/:/g, "");
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" role="img">
-      <title>Loading</title>
+      <title>{label}</title>
       <defs>
         <filter id={id}>
           <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b" />

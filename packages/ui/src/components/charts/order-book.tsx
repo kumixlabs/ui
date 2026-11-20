@@ -13,6 +13,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { SPRING_PANEL } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { OrderBookDepthRow } from "./order-book/depth-row";
 import { buildOrderBook, type DepthLevel, summarizeDepth } from "./order-book/model";
 
@@ -24,6 +25,30 @@ export type {
 
 /** A level identified by its side and price, so it survives snapshot updates. */
 export type OrderBookActiveLevel = { side: "bid" | "ask"; price: number } | null;
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const orderBookMessages = {
+  label: "Order book",
+  price: "Price",
+  size: "Size",
+  total: "Total",
+  cumulativeTotal: "Cumulative total",
+  asksTable: "Asks · sell orders",
+  bidsTable: "Bids · buy orders",
+  noAsks: "No asks",
+  noBids: "No bids",
+  referencePrice: "Reference price:",
+  spreadUnavailable: "Spread unavailable",
+  crossedBook: "Crossed book",
+  spread: "Spread {spread} · {percent}%",
+  bids: "Bids",
+  asks: "Asks",
+  visibleDepth: "Visible depth",
+  depthPlaceholder: "Hover a level to see the cost of filling up to it",
+  average: "Avg",
+};
+
+export type OrderBookMessages = typeof orderBookMessages;
 
 export interface OrderBookProps {
   /** Snapshot of buy levels. Equal prices are combined; invalid and zero sizes are omitted. */
@@ -48,6 +73,8 @@ export interface OrderBookProps {
   onActiveLevelChange?: (level: OrderBookActiveLevel) => void;
   /** Makes each price a button, for example to fill an order ticket. */
   onLevelSelect?: (level: DepthLevel, side: "bid" | "ask") => void;
+  /** Override any built-in string. */
+  labels?: Partial<OrderBookMessages>;
   children?: ReactNode;
   className?: string;
 }
@@ -76,7 +103,9 @@ function useOrderBookModel({
   defaultActiveLevel = null,
   onActiveLevelChange,
   onLevelSelect,
+  labels,
 }: OrderBookProps) {
+  const t = useMessages("orderBook", orderBookMessages, labels);
   const book = buildOrderBook(bids, asks, levels);
   const [internalActive, setInternalActive] = useState(defaultActiveLevel);
   const rawActive = activeLevel === undefined ? internalActive : activeLevel;
@@ -117,6 +146,7 @@ function useOrderBookModel({
     quoteSymbol,
     formatPrice,
     formatSize,
+    t,
     reduce: useReducedMotion(),
   };
 }
@@ -129,12 +159,12 @@ export function useOrderBook() {
 }
 
 /** A snapshot-driven depth ladder. No timers or invented market data live in the chart. */
-export function OrderBook({ children, className, label = "Order book", ...props }: OrderBookProps) {
+export function OrderBook({ children, className, label, ...props }: OrderBookProps) {
   const model = useOrderBookModel(props);
   return (
     <OrderBookContext.Provider value={model}>
       <section
-        aria-label={label}
+        aria-label={label ?? model.t("label")}
         className={cn(
           "border-border bg-background w-full max-w-[560px] overflow-hidden rounded-2xl border font-mono text-xs tabular-nums",
           className,
@@ -157,7 +187,7 @@ export function OrderBook({ children, className, label = "Order book", ...props 
 }
 
 export function OrderBookHeader({ className }: { className?: string }) {
-  const { baseSymbol, quoteSymbol } = useOrderBook();
+  const { baseSymbol, quoteSymbol, t } = useOrderBook();
   return (
     <div
       aria-hidden="true"
@@ -166,9 +196,15 @@ export function OrderBookHeader({ className }: { className?: string }) {
         className,
       )}
     >
-      <span className="px-4">Price{quoteSymbol && ` (${quoteSymbol})`}</span>
-      <span className="px-4 text-right">Size{baseSymbol && ` (${baseSymbol})`}</span>
-      <span className="px-4 text-right">Total</span>
+      <span className="px-4">
+        {t("price")}
+        {quoteSymbol && ` (${quoteSymbol})`}
+      </span>
+      <span className="px-4 text-right">
+        {t("size")}
+        {baseSymbol && ` (${baseSymbol})`}
+      </span>
+      <span className="px-4 text-right">{t("total")}</span>
     </div>
   );
 }
@@ -186,27 +222,34 @@ export function OrderBookSide({ side, className }: { side: "bid" | "ask"; classN
     active,
     setActiveLevel,
     onLevelSelect,
+    t,
   } = useOrderBook();
   const rows = side === "ask" ? [...asks].reverse() : bids;
   const color =
     side === "ask" ? "text-rose-600 dark:text-rose-400" : "text-emerald-700 dark:text-emerald-400";
   return (
     <table
-      aria-label={side === "ask" ? "Asks · sell orders" : "Bids · buy orders"}
+      aria-label={side === "ask" ? t("asksTable") : t("bidsTable")}
       className={cn("w-full table-fixed border-separate border-spacing-0", className)}
     >
       <thead className="sr-only">
         <tr>
-          <th scope="col">Price {quoteSymbol}</th>
-          <th scope="col">Size {baseSymbol}</th>
-          <th scope="col">Cumulative total {baseSymbol}</th>
+          <th scope="col">
+            {t("price")} {quoteSymbol}
+          </th>
+          <th scope="col">
+            {t("size")} {baseSymbol}
+          </th>
+          <th scope="col">
+            {t("cumulativeTotal")} {baseSymbol}
+          </th>
         </tr>
       </thead>
       <tbody onPointerLeave={() => setActiveLevel(null)}>
         {rows.length === 0 ? (
           <tr>
             <td colSpan={3} className="text-muted-foreground px-4 py-6 text-center">
-              No {side === "ask" ? "asks" : "bids"}
+              {side === "ask" ? t("noAsks") : t("noBids")}
             </td>
           </tr>
         ) : (
@@ -235,7 +278,7 @@ export function OrderBookSide({ side, className }: { side: "bid" | "ask"; classN
 }
 
 export function OrderBookSpread({ className }: { className?: string }) {
-  const { price, spread, midpoint, formatPrice } = useOrderBook();
+  const { price, spread, midpoint, formatPrice, t } = useOrderBook();
   return (
     <div
       className={cn(
@@ -244,15 +287,18 @@ export function OrderBookSpread({ className }: { className?: string }) {
       )}
     >
       <span className="text-base font-medium tracking-tight">
-        <span className="sr-only">Reference price: </span>
+        <span className="sr-only">{t("referencePrice")} </span>
         {price == null ? "—" : formatPrice(price)}
       </span>
       <span className="text-muted-foreground text-[10px]">
         {spread == null || midpoint == null
-          ? "Spread unavailable"
+          ? t("spreadUnavailable")
           : spread < 0
-            ? "Crossed book"
-            : `Spread ${formatPrice(spread)} · ${((spread / midpoint) * 100).toFixed(3)}%`}
+            ? t("crossedBook")
+            : t("spread", {
+                spread: formatPrice(spread),
+                percent: ((spread / midpoint) * 100).toFixed(3),
+              })}
       </span>
     </div>
   );
@@ -260,18 +306,18 @@ export function OrderBookSpread({ className }: { className?: string }) {
 
 /** Balance of the displayed depth, not the entire exchange order book. */
 export function OrderBookBalance({ className }: { className?: string }) {
-  const { bidTotal, askTotal, reduce } = useOrderBook();
+  const { bidTotal, askTotal, reduce, t } = useOrderBook();
   const total = bidTotal + askTotal;
   const ratio = total ? bidTotal / total : 0.5;
   return (
     <div className={cn("border-border space-y-2 border-t px-4 pt-3 pb-3", className)}>
       <div className="flex justify-between text-[10px]">
         <span className="text-emerald-700 dark:text-emerald-400">
-          Bids {total ? `${(ratio * 100).toFixed(1)}%` : "—"}
+          {t("bids")} {total ? `${(ratio * 100).toFixed(1)}%` : "—"}
         </span>
-        <span className="text-muted-foreground">Visible depth</span>
+        <span className="text-muted-foreground">{t("visibleDepth")}</span>
         <span className="text-rose-600 dark:text-rose-400">
-          Asks {total ? `${((1 - ratio) * 100).toFixed(1)}%` : "—"}
+          {t("asks")} {total ? `${((1 - ratio) * 100).toFixed(1)}%` : "—"}
         </span>
       </div>
       <div aria-hidden="true" className="relative h-1 overflow-hidden rounded-full bg-rose-500/25">
@@ -291,7 +337,7 @@ export function OrderBookBalance({ className }: { className?: string }) {
  * level on its side, as the cost of filling an order up to that price.
  */
 export function OrderBookDepthSummary({
-  placeholder = "Hover a level to see the cost of filling up to it",
+  placeholder,
   children,
   className,
 }: {
@@ -300,7 +346,7 @@ export function OrderBookDepthSummary({
   children?: (summary: NonNullable<ReturnType<typeof useOrderBook>["summary"]>) => ReactNode;
   className?: string;
 }) {
-  const { summary, formatPrice, formatSize, baseSymbol, quoteSymbol } = useOrderBook();
+  const { summary, formatPrice, formatSize, baseSymbol, quoteSymbol, t } = useOrderBook();
   return (
     <p
       aria-live="polite"
@@ -310,13 +356,16 @@ export function OrderBookDepthSummary({
       )}
     >
       {!summary ? (
-        <span className="font-sans">{placeholder}</span>
+        <span className="font-sans">
+          {placeholder === undefined ? t("depthPlaceholder") : placeholder}
+        </span>
       ) : children ? (
         children(summary)
       ) : (
         <>
           <span>
-            Avg <span className="text-foreground">{formatPrice(summary.averagePrice)}</span>
+            {t("average")}{" "}
+            <span className="text-foreground">{formatPrice(summary.averagePrice)}</span>
           </span>
           <span>
             <span className="text-foreground">

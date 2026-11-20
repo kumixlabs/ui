@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../../lib/ease";
 import { useReturnsCalendar } from "./context";
-import { COLS, DOWN, ink, MONTHS, RING, same, signed, tint, UP, YEAR } from "./utils";
+import { DOWN, ink, RING, same, signed, tint, UP, YEAR } from "./utils";
 
 export function ReturnsCalendarGrid({
   children,
@@ -17,6 +17,9 @@ export function ReturnsCalendarGrid({
 }) {
   const {
     years,
+    months,
+    cols,
+    t,
     reduce,
     canHover,
     pinned,
@@ -43,7 +46,7 @@ export function ReturnsCalendarGrid({
       onPointerLeave={() => setHover(null)}
     >
       <span />
-      {COLS.map((c) => (
+      {cols.map((c) => (
         <span
           key={c.name}
           className={cn(
@@ -60,7 +63,7 @@ export function ReturnsCalendarGrid({
           hot?.m === YEAR ? "text-foreground" : "text-muted-foreground",
         )}
       >
-        Year
+        {t("year")}
       </span>
 
       {years.map((year, y) => (
@@ -74,7 +77,7 @@ export function ReturnsCalendarGrid({
             {`’${String(year).slice(2)}`}
           </span>
 
-          {COLS.map(({ name, m }) => {
+          {cols.map(({ name, m }) => {
             const v = valueAt(y, m);
             const i = y * 12 + m;
             const on = same(hot, y, m);
@@ -99,7 +102,11 @@ export function ReturnsCalendarGrid({
                   type="button"
                   data-return-cell={`${y}-${m}`}
                   aria-describedby={on ? tooltipId : undefined}
-                  aria-label={`${MONTHS[m]} ${year} ${signed(v, 1)}%`}
+                  aria-label={t("monthCell", {
+                    month: months[m],
+                    year: String(year),
+                    value: signed(v, 1),
+                  })}
                   aria-pressed={isEnd}
                   onPointerEnter={enter(y, m)}
                   onFocus={enter(y, m)}
@@ -181,7 +188,7 @@ export function ReturnsCalendarGrid({
               type="button"
               data-return-cell={`${y}-${YEAR}`}
               aria-describedby={same(hot, y, YEAR) ? tooltipId : undefined}
-              aria-label={`${year} ${signed(totals[y], 1)}% for the year`}
+              aria-label={t("yearCell", { year: String(year), value: signed(totals[y], 1) })}
               aria-pressed={
                 yearSpan ? y === yearSpan.lo || y === yearSpan.hi : same(pinned, y, YEAR)
               }

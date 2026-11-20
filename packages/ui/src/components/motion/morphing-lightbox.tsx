@@ -27,7 +27,25 @@ import { createPortal } from "react-dom";
 import { cn } from "@kumix/utils";
 import { useModalScope } from "../../hooks/use-modal-scope";
 import { EASE_DRAWER, EASE_OUT, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const imageViewerMessages = {
+  label: "Image gallery",
+  open: "Open {alt}",
+  counter: "{current} / {total}",
+  close: "Close viewer",
+  previous: "Previous image",
+  next: "Next image",
+  loadError: "Unable to load this image.",
+  zoomIn: "Zoom in",
+  zoomOut: "Zoom out",
+  panHelp:
+    "When zoomed in, drag the image to pan, or keep this control focused and use the arrow keys.",
+};
+
+export type ImageViewerMessages = typeof imageViewerMessages;
 
 export interface LightboxImage {
   id: string;
@@ -50,6 +68,8 @@ export interface MorphingLightboxProps {
   renderCaption?: (image: LightboxImage) => ReactNode;
   /** Compose gallery and viewer parts instead of the default layout. */
   children?: ReactNode;
+  /** Override any built-in string. */
+  labels?: Partial<ImageViewerMessages>;
 }
 
 type ImageSwap = { direction: -1 | 1; reduce: boolean };
@@ -92,6 +112,7 @@ type ViewerContextValue = {
   image: LightboxImage | undefined;
   index: number;
   label: string;
+  t: ReturnType<typeof useMessages<ImageViewerMessages>>;
   groupId: string;
   reduce: boolean;
   renderCaption?: (image: LightboxImage) => ReactNode;
@@ -129,12 +150,15 @@ export function ImageViewer({
   value: controlledValue,
   defaultValue = null,
   onValueChange,
-  label = "Image gallery",
+  label: labelProp,
   className,
   thumbnailClassName,
   renderCaption,
   children,
+  labels,
 }: ImageViewerProps) {
+  const t = useMessages("imageViewer", imageViewerMessages, labels);
+  const label = labelProp ?? t("label");
   const [internalValue, setInternalValue] = useState(defaultValue);
   const value = controlledValue === undefined ? internalValue : controlledValue;
   const index = images.findIndex((image) => image.id === value);
@@ -171,6 +195,7 @@ export function ImageViewer({
         image,
         index,
         label,
+        t,
         groupId,
         reduce,
         renderCaption,
@@ -230,13 +255,13 @@ export function ImageViewerThumbnail({
   disabled,
   ...props
 }: ImageViewerThumbnailProps) {
-  const { images, value, groupId, reduce, select } = useViewerContext("ImageViewerThumbnail");
+  const { images, value, t, groupId, reduce, select } = useViewerContext("ImageViewerThumbnail");
   const image = images.find((item) => item.id === imageId);
   if (!image) throw new Error(`ImageViewerThumbnail: unknown image id "${imageId}".`);
   return (
     <motion.button
       type="button"
-      aria-label={`Open ${image.alt}`}
+      aria-label={t("open", { alt: image.alt })}
       whileTap={reduce ? undefined : { scale: 0.98 }}
       transition={SPRING_PRESS}
       {...props}
@@ -269,10 +294,10 @@ export function ImageViewerThumbnail({
 }
 
 export function ImageViewerCounter({ className, ...props }: ComponentPropsWithRef<"span">) {
-  const { index, images } = useViewerContext("ImageViewerCounter");
+  const { index, images, t } = useViewerContext("ImageViewerCounter");
   return (
     <span aria-live="polite" {...props} className={cn("text-xs tabular-nums", className)}>
-      {index + 1} / {images.length}
+      {t("counter", { current: index + 1, total: images.length })}
     </span>
   );
 }
@@ -304,7 +329,7 @@ function ViewerButton({
   onClick,
   ...props
 }: ViewerButtonProps & { action: "close" | "previous" | "next" }) {
-  const { index, images, select, move } = useViewerContext("ImageViewer controls");
+  const { index, images, t, select, move } = useViewerContext("ImageViewer controls");
   const unavailable =
     action === "previous"
       ? index <= 0
@@ -316,11 +341,7 @@ function ViewerButton({
     <button
       type="button"
       aria-label={
-        action === "close"
-          ? "Close viewer"
-          : action === "previous"
-            ? "Previous image"
-            : "Next image"
+        action === "close" ? t("close") : action === "previous" ? t("previous") : t("next")
       }
       {...props}
       disabled={disabled || unavailable}
@@ -504,6 +525,7 @@ function LightboxFrame({
   reduce: boolean;
   onSwipe: (direction: -1 | 1) => void;
 }) {
+  const { t } = useViewerContext("ImageViewerContent");
   const [zoom, setZoom] = useState(false);
   const [failed, setFailed] = useState(false);
   const session = `${image.id}-${image.src}`;
@@ -647,14 +669,14 @@ function LightboxFrame({
               role="status"
               className="absolute inset-0 flex items-center justify-center bg-neutral-900 p-4 text-center text-sm text-white"
             >
-              Unable to load this image.
+              {t("loadError")}
             </p>
           )}
         </motion.div>
       </div>
       <button
         type="button"
-        aria-label={zoom ? "Zoom out" : "Zoom in"}
+        aria-label={zoom ? t("zoomOut") : t("zoomIn")}
         aria-pressed={zoom}
         aria-describedby={panHelp}
         onKeyDown={(event) => {
@@ -677,7 +699,7 @@ function LightboxFrame({
         {zoom ? <Minus size={18} aria-hidden="true" /> : <Plus size={18} aria-hidden="true" />}
       </button>
       <span id={panHelp} className="sr-only">
-        When zoomed in, drag the image to pan, or keep this control focused and use the arrow keys.
+        {t("panHelp")}
       </span>
     </div>
   );

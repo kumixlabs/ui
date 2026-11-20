@@ -20,8 +20,18 @@ export function BumpChartPoint({
   seriesIndex: number;
   position: BumpPosition | undefined;
 }) {
-  const { rows, periods, highlighted, pinned, select, setHovered, setFocused, canHover, reduce } =
-    useBumpChart();
+  const {
+    rows,
+    periods,
+    highlighted,
+    pinned,
+    select,
+    setHovered,
+    setFocused,
+    canHover,
+    reduce,
+    t,
+  } = useBumpChart();
   const row = rows.find((item) => item.id === seriesId);
   const index = periods.indexOf(period);
   const rank = row?.ranks[index];
@@ -32,10 +42,12 @@ export function BumpChartPoint({
   const dimmed = highlighted !== null && !active;
   const changeLabel =
     change == null
-      ? "No previous rank"
+      ? t("noPrevious")
       : change === 0
-        ? "No change"
-        : `${change > 0 ? "Up" : "Down"} ${Math.abs(change)} ${Math.abs(change) === 1 ? "place" : "places"}`;
+        ? t("noChange")
+        : Math.abs(change) === 1
+          ? t(change > 0 ? "upOne" : "downOne")
+          : t(change > 0 ? "up" : "down", { count: Math.abs(change) });
 
   return (
     <MovingPoint position={position}>
@@ -63,7 +75,7 @@ export function BumpChartPoint({
               </span>
               {previous != null && (
                 <span className="text-muted-foreground mt-1 block text-[10px]">
-                  Previously #{previous} in {periods[index - 1]}
+                  {t("previously", { rank: previous, period: periods[index - 1] })}
                 </span>
               )}
             </>
@@ -71,7 +83,7 @@ export function BumpChartPoint({
         >
           <motion.button
             type="button"
-            aria-label={`${row.name}, ${period}: rank ${rank}`}
+            aria-label={t("point", { name: row.name, period, rank })}
             aria-pressed={pinned === row.id}
             onFocus={() => setFocused(row.id)}
             onBlur={() => setFocused(null)}

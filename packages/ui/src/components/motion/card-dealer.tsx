@@ -12,6 +12,14 @@ import {
 
 import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../hooks/use-hover-capable";
+import { useMessages } from "../../lib/i18n";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const cardDealerMessages = {
+  label: "Card table",
+};
+
+export type CardDealerMessages = typeof cardDealerMessages;
 
 export type CardDealerZone = "deck" | "hand" | "pile";
 
@@ -40,6 +48,8 @@ export interface CardDealerProps<T extends CardDealerCard> {
   angle?: number;
   /** Accessible name for the table. Default "Card table". */
   "aria-label"?: string;
+  /** Override any built-in string. */
+  labels?: Partial<CardDealerMessages>;
   className?: string;
 }
 
@@ -91,9 +101,11 @@ export function CardDealer<T extends CardDealerCard>({
   cardHeight = 120,
   spread = 46,
   angle = 5,
-  "aria-label": ariaLabel = "Card table",
+  "aria-label": ariaLabel,
+  labels,
   className,
 }: CardDealerProps<T>) {
+  const t = useMessages("cardDealer", cardDealerMessages, labels);
   const reduce = useReducedMotion();
   const canHover = useHoverCapable();
   const stageRef = useRef<HTMLElement>(null);
@@ -198,15 +210,15 @@ export function CardDealer<T extends CardDealerCard>({
     const faces = (
       <motion.span
         aria-hidden="true"
-        className="relative block size-full [transform-style:preserve-3d]"
+        className="relative block size-full transform-3d"
         initial={false}
         animate={{ rotateY: pose.faceDown ? 180 : 0 }}
         transition={reduce ? { duration: 0 } : FLIGHT}
       >
-        <span className="absolute inset-0 overflow-hidden rounded-xl [backface-visibility:hidden]">
+        <span className="absolute inset-0 overflow-hidden rounded-xl backface-hidden">
           {renderFace(card)}
         </span>
-        <span className="absolute inset-0 [transform:rotateY(180deg)] overflow-hidden rounded-xl [backface-visibility:hidden]">
+        <span className="absolute inset-0 transform-[rotateY(180deg)] overflow-hidden rounded-xl backface-hidden">
           {renderBack ? renderBack(card) : <DefaultBack />}
         </span>
       </motion.span>
@@ -222,7 +234,7 @@ export function CardDealer<T extends CardDealerCard>({
       >
         {/* The faces never change element, so a card flips in flight instead
             of remounting face up; the button lies over them only in the hand. */}
-        <div className="size-full [perspective:800px]">{faces}</div>
+        <div className="size-full perspective-[800px]">{faces}</div>
         {interactive ? (
           <button
             type="button"
@@ -244,7 +256,7 @@ export function CardDealer<T extends CardDealerCard>({
   return (
     <section
       ref={stageRef}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? t("label")}
       // isolate: card z-indices only order cards against each other, so the
       // table never draws over sticky page chrome such as a header.
       className={cn("relative isolate h-80 w-full touch-manipulation select-none", className)}

@@ -13,7 +13,14 @@ import {
 
 import { cn } from "@kumix/utils";
 import { SPRING_GLIDE } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { createOrbRenderer } from "./voice-orb/renderer";
+
+export const voiceOrbMessages = {
+  unavailable: "Orb rendering unavailable",
+};
+
+export type VoiceOrbMessages = typeof voiceOrbMessages;
 
 export type VoiceOrbProps = Omit<ComponentProps<"div">, "children" | "onError"> & {
   /** Normalized activity, from 0 to 1. A MotionValue avoids React render loops. */
@@ -26,6 +33,8 @@ export type VoiceOrbProps = Omit<ComponentProps<"div">, "children" | "onError"> 
   active?: boolean;
   speed?: number;
   onError?: (error: Error) => void;
+  /** Override any built-in string. */
+  labels?: Partial<VoiceOrbMessages>;
 };
 
 const DEFAULT_COLORS = ["#e8754d", "#ffe0ac", "#346b52"] as const;
@@ -42,8 +51,10 @@ export function VoiceOrb({
   className,
   style,
   "aria-label": label,
+  labels,
   ...props
 }: VoiceOrbProps) {
+  const t = useMessages("voiceOrb", voiceOrbMessages, labels);
   const reducedMotion = useReducedMotion();
   const canvas = useRef<HTMLCanvasElement>(null);
   const renderer = useRef<ReturnType<typeof createOrbRenderer> | null>(null);
@@ -151,7 +162,7 @@ export function VoiceOrb({
     >
       {error ? (
         <div className="border-border bg-card text-muted-foreground flex size-full items-center justify-center rounded-full border p-8 text-center text-xs">
-          Orb rendering unavailable
+          {t("unavailable")}
         </div>
       ) : (
         <motion.div className="size-full" style={{ transform: reducedMotion ? "none" : transform }}>

@@ -1,3 +1,5 @@
+"use client";
+
 interface TreemapBase {
   /** Unique across the whole tree. Retain IDs when updating values. */
   id: string;

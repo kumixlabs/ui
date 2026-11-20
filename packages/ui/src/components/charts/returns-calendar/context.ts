@@ -4,8 +4,10 @@ import { createContext, useContext, useEffect, useId, useMemo, useRef, useState 
 import { useReducedMotion } from "motion/react";
 
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
+import { useLocale, useMessages } from "../../../lib/i18n";
+import { returnsCalendarMessages } from "./messages";
 import type { ReturnsCalendarCell, ReturnsCalendarProps, ReturnsCalendarSelection } from "./types";
-import { compound, MONTHS, same, YEAR } from "./utils";
+import { compound, MONTHS, monthColumns, same, YEAR } from "./utils";
 
 /**
  * Monthly returns as a years by months grid. Each cell tints toward the up or
@@ -25,7 +27,11 @@ export function useReturnsCalendarModel({
   selection: controlledSelection,
   defaultSelection = null,
   onSelectionChange,
+  labels,
 }: ReturnsCalendarProps) {
+  const t = useMessages("returnsCalendar", returnsCalendarMessages, labels);
+  const { locale } = useLocale();
+  const { months, cols } = useMemo(() => monthColumns(locale), [locale]);
   const reduce = useReducedMotion();
   const canHover = useHoverCapable();
   const [storedHover, setHover] = useState<ReturnsCalendarCell | null>(null);
@@ -62,8 +68,8 @@ export function useReturnsCalendarModel({
   // the entrance wave owns the cells until it has landed; hover lifts take over after
   const [settled, setSettled] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setSettled(true), reduce ? 0 : (years.length + 13) * 20 + 500);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setSettled(true), reduce ? 0 : (years.length + 13) * 20 + 500);
+    return () => clearTimeout(timer);
   }, [years.length, reduce]);
 
   // Normalize each displayed row to twelve months so missing values never
@@ -143,19 +149,19 @@ export function useReturnsCalendarModel({
     showYearSpan && yearSpan
       ? `${years[yearSpan.lo]} – ${years[yearSpan.hi]}`
       : showSpan && span
-        ? `${MONTHS[span.lo % 12]} ${years[Math.floor(span.lo / 12)]} – ${MONTHS[span.hi % 12]} ${years[Math.floor(span.hi / 12)]}`
+        ? `${months[span.lo % 12]} ${years[Math.floor(span.lo / 12)]} – ${months[span.hi % 12]} ${years[Math.floor(span.hi / 12)]}`
         : tip
           ? tip.m === YEAR
             ? `${years[tip.y]}`
-            : `${MONTHS[tip.m]} ${years[tip.y]}`
+            : `${months[tip.m]} ${years[tip.y]}`
           : "";
   const tipNote =
     showYearSpan && yearSpan
-      ? `${yearSpan.hi - yearSpan.lo + 1} years`
+      ? t("years", { count: yearSpan.hi - yearSpan.lo + 1 })
       : showSpan && span
-        ? `${span.hi - span.lo + 1} months`
+        ? t("months", { count: span.hi - span.lo + 1 })
         : tip?.m === YEAR
-          ? "for the year"
+          ? t("forYear")
           : null;
   const enter = (y: number, m: number) => () => setHover({ y, m });
   const press = (y: number, m: number) => () => select({ y, m });
@@ -165,6 +171,9 @@ export function useReturnsCalendarModel({
 
   return {
     years,
+    months,
+    cols,
+    t,
     reduce,
     canHover,
     hover,

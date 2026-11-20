@@ -5,13 +5,13 @@
 ### Minor Changes
 
 - [`2f7a690`](https://github.com/kumixlabs/ui/commit/2f7a69066ccf6f1f5630f0eeaf8244f266d7c5cd) Thanks [@kumixio](https://github.com/kumixio)! - New game components: `crash` (multiplier-climb game with balloon + tower stage designs, shared `use-crash-game` model, exported `crashPoint`/`growth`/`timeAt`/`milestone` helpers), `mines` (gem/mine grid with cash-out, exported `minesMultiplier`/`formatMultiplier`), `plinko` (ball drop through peg rows, `plinkoSlots(rows)` generator, `onLand` callback).
-  
+
   New shared audio libs: `lib/audio-context` (page-wide ref-counted Web Audio context, closes after last player disposes) and `lib/game-sounds` (synthesized pentatonic gem chimes, blast, cash-out arpeggio). `tick-sound` now builds on `audio-context` and `play(rate?)` pitch-bends the tick; `ease` exports `EASE_IN` for falling/thrown motion.
-  
+
   `bouncy-accordion` simplification: row and content springs are local (no shared layout projection on text content); gap spring no longer overshoots, so adjacent rows never briefly overlap.
-  
+
   `fix-imports.mjs` now also processes `.ts` files in `components/**` (previously `@/` aliases in game/model `.ts` files were skipped) and no longer duplicates the `"use client"` directive when it follows a `biome-ignore` comment.
-  
+
   Dependency bumps: `motion` 14.10.1, `lucide-react` 1.70.0, `react-resizable-panels` 4.21.0, `shiki` 4.6.0, `@tanstack/react-virtual` 3.14.26, `tsdown` 0.23.7, Biome 2.6.6, `glob` 14.0.4, `rimraf` 6.1.4.
 
 ## 0.4.4
@@ -19,13 +19,13 @@
 ### Patch Changes
 
 - [`0eb221c`](https://github.com/kumixlabs/ui/commit/0eb221cadfaa1c3febf3d144363468a3ef107b42) Thanks [@kumixio](https://github.com/kumixio)! - New charts: `bar-chart` (grouped/stacked layouts, vertical/horizontal orientation), `line-chart` (line/area variants, curve options), `sankey-chart` (flow diagram), `sparkline` (inline mini-trend with gap handling for missing values), plus shared `xy/` model/scale/axis/tooltip/inspection infrastructure consumed by them (no public entry).
-  
+
   New motion components: `avatar-group` (stack + overflow count, initials fallback), `card-dealer` (deck→hand→pile draggable card zones), `pagination` (page window with ellipses, controlled/uncontrolled, exported `paginationRange` helper).
-  
+
   New `lib/focusable` shared `FOCUSABLE_SELECTOR` (adds `input[type=hidden]` exclusion) — `use-modal-scope` focus trap now uses it.
-  
+
   Fixes: `morphing-modal` view transitions lift the outgoing view out of flow (popLayout takes the motion ref directly) so the panel no longer grows to combined view heights; `popover-morph` keyboard open path moves focus to the first item itself and seeds `d`/`cx` motion values before keyframes; `loader` seeds `d`/`cx` to avoid `undefined` attribute writes; `composition-chart` crosshair tracks touch directly with spring layout disabled while touching.
-  
+
   Dependency bumps: `motion` 14.9.0, `lucide-react` 1.66.0, `react-resizable-panels` 4.16.0, `@tanstack/react-virtual` 3.14.24, `tsdown` 0.23.4, Biome 2.6.4, bun 1.4.4.
 
 ## 0.4.3

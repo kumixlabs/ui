@@ -7,8 +7,24 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../hooks/use-hover-capable";
 import { EASE_OUT, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { ActionSwapText } from "./action-swap";
 import { Tooltip } from "./tooltip";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const predictionMarketCardMessages = {
+  payoutHint:
+    "Potential payout per $1 if this outcome wins, including your stake. Before fees; based on the displayed price.",
+  payoutFor: "Potential payout for {outcome}",
+  volume: "{volume} vol.",
+  bookmark: "Bookmark {title}",
+  trade: "Trade {outcome} at {percent}%",
+  percent: "{percent}%",
+  yes: "Yes",
+  no: "No",
+};
+
+export type PredictionMarketCardMessages = typeof predictionMarketCardMessages;
 
 export interface PredictionMarketCardOutcome {
   id: string;
@@ -41,6 +57,8 @@ export interface PredictionMarketCardProps {
   bookmarked?: boolean;
   defaultBookmarked?: boolean;
   onBookmarkChange?: (bookmarked: boolean) => void;
+  /** Override any built-in string. */
+  labels?: Partial<PredictionMarketCardMessages>;
   className?: string;
 }
 
@@ -62,8 +80,10 @@ export function PredictionMarketCard({
   bookmarked,
   defaultBookmarked = false,
   onBookmarkChange,
+  labels,
   className,
 }: PredictionMarketCardProps) {
+  const t = useMessages("predictionMarketCard", predictionMarketCardMessages, labels);
   const titleId = useId();
   const chartId = useId();
   const samples = volumeHistory?.filter(Number.isFinite) ?? [];
@@ -136,12 +156,12 @@ export function PredictionMarketCard({
                   {outcome.label}
                 </span>
                 <Tooltip
-                  content="Potential payout per $1 if this outcome wins, including your stake. Before fees; based on the displayed price."
+                  content={t("payoutHint")}
                   className="w-44 text-center leading-relaxed whitespace-normal"
                 >
                   <button
                     type="button"
-                    aria-label={`Potential payout for ${outcome.label}`}
+                    aria-label={t("payoutFor", { outcome: outcome.label })}
                     className="text-muted-foreground focus-visible:outline-ring shrink-0 rounded-md py-2 text-sm tabular-nums focus-visible:outline-2"
                   >
                     {probability(outcome.probability) > 0
@@ -152,6 +172,7 @@ export function PredictionMarketCard({
                 <MarketOddsButton
                   positive={index % 2 === 0}
                   outcome={outcome}
+                  t={t}
                   onClick={() => onOutcomeClick?.({ outcomeId: outcome.id, side: "yes" })}
                 />
               </div>
@@ -192,10 +213,10 @@ export function PredictionMarketCard({
               />
             </svg>
           )}
-          <span className="shrink-0">{volume} vol.</span>
+          <span className="shrink-0">{t("volume", { volume })}</span>
           <motion.button
             type="button"
-            aria-label={`Bookmark ${title}`}
+            aria-label={t("bookmark", { title })}
             aria-pressed={saved}
             onClick={() => {
               if (bookmarked === undefined) setInternalBookmark(!saved);
@@ -224,10 +245,12 @@ export function PredictionMarketCard({
 function MarketOddsButton({
   positive,
   outcome,
+  t,
   onClick,
 }: {
   outcome: PredictionMarketCardOutcome;
   positive: boolean;
+  t: (key: keyof PredictionMarketCardMessages, values?: Record<string, string | number>) => string;
   onClick: () => void;
 }) {
   const reduce = useReducedMotion();
@@ -239,7 +262,7 @@ function MarketOddsButton({
   return (
     <motion.button
       type="button"
-      aria-label={`Trade ${outcome.label} at ${cents}%`}
+      aria-label={t("trade", { outcome: outcome.label, percent: cents })}
       onClick={onClick}
       onPointerEnter={(event) => {
         if (event.pointerType !== "touch") setHovered(true);
@@ -258,7 +281,7 @@ function MarketOddsButton({
       )}
     >
       <ActionSwapText value={showAction ? "action" : String(cents)} animation="roll">
-        {showAction ? (positive ? "Yes" : "No") : `${cents}%`}
+        {showAction ? (positive ? t("yes") : t("no")) : t("percent", { percent: cents })}
       </ActionSwapText>
     </motion.button>
   );

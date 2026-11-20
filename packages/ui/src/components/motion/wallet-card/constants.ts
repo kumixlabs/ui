@@ -1,3 +1,5 @@
+"use client";
+
 import type { Transition, Variants } from "motion/react";
 
 // Trigger box grows into the full-width panel and back — one shared surface.

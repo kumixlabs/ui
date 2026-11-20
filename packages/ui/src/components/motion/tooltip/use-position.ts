@@ -1,6 +1,6 @@
 "use client";
 
-import { type RefObject, useCallback, useLayoutEffect, useRef } from "react";
+import { type RefObject, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import {
   arrow as arrowMiddleware,
   autoUpdate,
@@ -231,5 +231,5 @@ export function useTooltipPointer(anchor: TooltipAnchor | null, followCursor: bo
     };
   }, [anchor, followCursor]);
 
-  return { cursor, onMove };
+  return useMemo(() => ({ cursor, onMove }), []);
 }

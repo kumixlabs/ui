@@ -51,17 +51,13 @@ export interface ComboboxValueProps {
   className?: string;
 }
 
-export function ComboboxValue({
-  placeholder = "Select an option",
-  children,
-  className,
-}: ComboboxValueProps) {
+export function ComboboxValue({ placeholder, children, className }: ComboboxValueProps) {
   const context = useComboboxContext("ComboboxValue");
   const label = context.labelFor(context.value);
   const content =
     typeof children === "function"
       ? children(context.value, label)
-      : (children ?? label ?? placeholder);
+      : (children ?? label ?? placeholder ?? context.t("valuePlaceholder"));
 
   return (
     <span
@@ -86,13 +82,13 @@ export function ComboboxInput({
   ref,
   className,
   wrapperClassName,
-  "aria-label": ariaLabel = "Search options",
+  "aria-label": ariaLabel,
   onChange,
   onClick,
   onFocus,
   onKeyDown,
   onPointerDown,
-  placeholder = "Search…",
+  placeholder,
   ...props
 }: ComboboxInputProps) {
   const context = useComboboxContext("ComboboxInput");
@@ -121,6 +117,7 @@ export function ComboboxInput({
       event.preventDefault();
       context.moveActive("last");
     } else if (event.key === "Enter") {
+      if (event.nativeEvent.isComposing || event.keyCode === 229) return;
       event.preventDefault();
       if (context.open) context.selectActive();
       else context.setOpen(true);
@@ -138,7 +135,7 @@ export function ComboboxInput({
         ref={mergeRefs(ref, context.inputRef)}
         id={context.inputId}
         role="combobox"
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? context.t("inputLabel")}
         aria-autocomplete="list"
         aria-expanded={context.open}
         aria-controls={context.listId}
@@ -146,7 +143,7 @@ export function ComboboxInput({
         autoComplete="off"
         disabled={context.disabled}
         value={context.open ? context.query : (selectedLabel ?? "")}
-        placeholder={placeholder}
+        placeholder={placeholder ?? context.t("inputPlaceholder")}
         onPointerDown={(event) => {
           onPointerDown?.(event);
           if (event.defaultPrevented || context.open) return;

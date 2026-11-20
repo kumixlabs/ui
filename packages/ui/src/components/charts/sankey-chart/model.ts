@@ -1,3 +1,5 @@
+"use client";
+
 export interface SankeyNode {
   id: string;
   label: string;

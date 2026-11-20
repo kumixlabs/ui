@@ -9,6 +9,7 @@ import {
   type PointerEvent,
   type ReactNode,
   type RefObject,
+  useCallback,
   useContext,
   useEffect,
   useId,
@@ -34,6 +35,7 @@ import {
 import { cn } from "@kumix/utils";
 import { useDismiss } from "../../hooks/use-dismiss";
 import { EASE_OUT, SPRING_GLIDE, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { PresenceGate } from "../../lib/presence-gate";
 import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "../../lib/touch";
 
@@ -120,8 +122,31 @@ const BLACK: Rgba = { r: 0, g: 0, b: 0, a: 1 };
 // Root
 // ---------------------------------------------------------------------------
 
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const colorPickerMessages = {
+  dialog: "Color picker",
+  area: "Saturation and brightness",
+  areaRole: "2D slider",
+  areaValue: "Saturation {saturation}%, brightness {brightness}%",
+  hue: "Hue",
+  hueValue: "{value} degrees",
+  opacity: "Opacity",
+  opacityValue: "{value}%",
+  hex: "Hex color",
+  saturation: "Saturation",
+  lightness: "Lightness",
+  red: "Red",
+  green: "Green",
+  blue: "Blue",
+  opacityPercent: "Opacity percent",
+  eyeDropper: "Pick a color from the screen",
+};
+
+export type ColorPickerMessages = typeof colorPickerMessages;
+
 type ColorPickerContextValue = {
   id: string;
+  t: ReturnType<typeof useMessages<ColorPickerMessages>>;
   hsva: Hsva;
   rgba: Rgba;
   hex: string;
@@ -178,6 +203,8 @@ export interface ColorPickerProps
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Override any built-in string. */
+  labels?: Partial<ColorPickerMessages>;
 }
 
 /** Give it an aria-label, or a legend through children. */
@@ -193,10 +220,12 @@ export function ColorPicker({
   defaultOpen = false,
   onOpenChange,
   form,
+  labels,
   className,
   children,
   ...props
 }: ColorPickerProps) {
+  const t = useMessages("colorPicker", colorPickerMessages, labels);
   const id = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [openInternal, setOpenInternal] = useState(defaultOpen);
@@ -249,6 +278,7 @@ export function ColorPicker({
     <ColorPickerContext.Provider
       value={{
         id,
+        t,
         hsva,
         rgba,
         hex,
@@ -464,13 +494,8 @@ const CHIP_RADIUS = 6;
 /** True inside ColorPickerContent, where the area morphs out of the trigger chip. */
 const MorphContext = createContext(false);
 
-export function ColorPickerArea({
-  label = "Saturation and brightness",
-  className,
-  style,
-  ...props
-}: ColorPickerAreaProps) {
-  const { id, hsva, rgba, hex, disabled, update, commit, open } =
+export function ColorPickerArea({ label, className, style, ...props }: ColorPickerAreaProps) {
+  const { id, t, hsva, rgba, hex, disabled, update, commit, open } =
     usePickerContext("ColorPickerArea");
   const morph = useContext(MorphContext);
   const reduce = useReducedMotion();
@@ -539,12 +564,12 @@ export function ColorPickerArea({
           y={y.offset}
           role="slider"
           tabIndex={disabled ? -1 : 0}
-          aria-label={label}
-          aria-roledescription="2D slider"
+          aria-label={label ?? t("area")}
+          aria-roledescription={t("areaRole")}
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={s}
-          aria-valuetext={`Saturation ${s}%, brightness ${v}%`}
+          aria-valuetext={t("areaValue", { saturation: s, brightness: v })}
           aria-disabled={disabled || undefined}
           onKeyDown={(event) => {
             if (disabled) return;
@@ -647,8 +672,8 @@ export interface ColorPickerHueProps extends Omit<ComponentPropsWithRef<"div">, 
   label?: string;
 }
 
-export function ColorPickerHue({ label = "Hue", ...props }: ColorPickerHueProps) {
-  const { hsva, update } = usePickerContext("ColorPickerHue");
+export function ColorPickerHue({ label, ...props }: ColorPickerHueProps) {
+  const { t, hsva, update } = usePickerContext("ColorPickerHue");
   const h = Math.round(hsva.h);
   return (
     <ChannelSlider
@@ -656,8 +681,8 @@ export function ColorPickerHue({ label = "Hue", ...props }: ColorPickerHueProps)
       value={hsva.h}
       max={360}
       onValue={(next) => update({ ...hsva, h: next })}
-      label={label}
-      valueText={`${h} degrees`}
+      label={label ?? t("hue")}
+      valueText={t("hueValue", { value: h })}
       background="linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%)"
       thumbColor={`hsl(${hsva.h} 100% 50%)`}
     />
@@ -669,8 +694,8 @@ export interface ColorPickerAlphaProps extends Omit<ComponentPropsWithRef<"div">
 }
 
 /** Renders nothing when the picker has `alpha={false}`. */
-export function ColorPickerAlpha({ label = "Opacity", ...props }: ColorPickerAlphaProps) {
-  const { hsva, rgba, alpha, update } = usePickerContext("ColorPickerAlpha");
+export function ColorPickerAlpha({ label, ...props }: ColorPickerAlphaProps) {
+  const { t, hsva, rgba, alpha, update } = usePickerContext("ColorPickerAlpha");
   if (!alpha) return null;
   const rgb = `${rgba.r} ${rgba.g} ${rgba.b}`;
   const percent = Math.round(hsva.a * 100);
@@ -680,8 +705,8 @@ export function ColorPickerAlpha({ label = "Opacity", ...props }: ColorPickerAlp
       value={hsva.a * 100}
       max={100}
       onValue={(next) => update({ ...hsva, a: Math.round(next) / 100 })}
-      label={label}
-      valueText={`${percent}%`}
+      label={label ?? t("opacity")}
+      valueText={t("opacityValue", { value: percent })}
       background={`linear-gradient(to right, rgb(${rgb} / 0), rgb(${rgb})), ${CHECKERBOARD}`}
       thumbColor={`rgb(${rgb} / ${hsva.a})`}
     />
@@ -741,10 +766,10 @@ export function ColorPickerHexInput({
   onChange,
   onBlur,
   onKeyDown,
-  "aria-label": ariaLabel = "Hex color",
+  "aria-label": ariaLabel,
   ...props
 }: ColorPickerHexInputProps) {
-  const { hsva, hex, update, commit, disabled } = usePickerContext("ColorPickerHexInput");
+  const { t, hsva, hex, update, commit, disabled } = usePickerContext("ColorPickerHexInput");
   const [draft, setDraft] = useState<string | null>(null);
   const { scope, shake } = useRejectShake();
 
@@ -774,7 +799,7 @@ export function ColorPickerHexInput({
         spellCheck={false}
         maxLength={9}
         disabled={disabled}
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? t("hex")}
         value={draft ?? hex.slice(1).toUpperCase()}
         onChange={(event) => {
           onChange?.(event);
@@ -869,7 +894,7 @@ export function ColorPickerChannels({
   className,
   ...props
 }: ColorPickerChannelsProps) {
-  const { hsva, rgba, alpha } = usePickerContext("ColorPickerChannels");
+  const { t, hsva, rgba, alpha } = usePickerContext("ColorPickerChannels");
   const fromRgb = (patch: Partial<Rgba>) => rgbaToHsva({ ...rgba, ...patch }, hsva);
   let specs: ChannelSpec[];
   if (format === "hsl") {
@@ -878,7 +903,7 @@ export function ColorPickerChannels({
       {
         key: "h",
         short: "H",
-        name: "Hue",
+        name: t("hue"),
         max: 360,
         value: hsl.h,
         set: (n) => hslToHsv(n, hsl.s, hsl.l, hsva, hsva.a),
@@ -886,7 +911,7 @@ export function ColorPickerChannels({
       {
         key: "s",
         short: "S",
-        name: "Saturation",
+        name: t("saturation"),
         max: 100,
         value: hsl.s,
         set: (n) => hslToHsv(hsl.h, n, hsl.l, hsva, hsva.a),
@@ -894,7 +919,7 @@ export function ColorPickerChannels({
       {
         key: "l",
         short: "L",
-        name: "Lightness",
+        name: t("lightness"),
         max: 100,
         value: hsl.l,
         set: (n) => hslToHsv(hsl.h, hsl.s, n, hsva, hsva.a),
@@ -902,11 +927,18 @@ export function ColorPickerChannels({
     ];
   } else {
     specs = [
-      { key: "r", short: "R", name: "Red", max: 255, value: rgba.r, set: (n) => fromRgb({ r: n }) },
+      {
+        key: "r",
+        short: "R",
+        name: t("red"),
+        max: 255,
+        value: rgba.r,
+        set: (n) => fromRgb({ r: n }),
+      },
       {
         key: "g",
         short: "G",
-        name: "Green",
+        name: t("green"),
         max: 255,
         value: rgba.g,
         set: (n) => fromRgb({ g: n }),
@@ -914,7 +946,7 @@ export function ColorPickerChannels({
       {
         key: "b",
         short: "B",
-        name: "Blue",
+        name: t("blue"),
         max: 255,
         value: rgba.b,
         set: (n) => fromRgb({ b: n }),
@@ -925,7 +957,7 @@ export function ColorPickerChannels({
     specs.push({
       key: "a",
       short: "A",
-      name: "Opacity percent",
+      name: t("opacityPercent"),
       max: 100,
       value: hsva.a * 100,
       set: (n) => ({ ...hsva, a: n / 100 }),
@@ -955,10 +987,10 @@ export function ColorPickerEyeDropper({
   className,
   children,
   onClick,
-  "aria-label": ariaLabel = "Pick a color from the screen",
+  "aria-label": ariaLabel,
   ...props
 }: ColorPickerEyeDropperProps) {
-  const { hsva, update, commit, disabled } = usePickerContext("ColorPickerEyeDropper");
+  const { t, hsva, update, commit, disabled } = usePickerContext("ColorPickerEyeDropper");
   const reduce = useReducedMotion();
   const [EyeDropper, setEyeDropper] = useState<EyeDropperConstructor | null>(null);
   useEffect(() => {
@@ -972,7 +1004,7 @@ export function ColorPickerEyeDropper({
       {...(props as React.ComponentProps<typeof motion.button>)}
       type="button"
       disabled={disabled}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? t("eyeDropper")}
       whileTap={reduce || disabled ? undefined : { scale: 0.92 }}
       transition={SPRING_PRESS}
       onClick={async (event) => {
@@ -1242,7 +1274,7 @@ export function ColorPickerContent({
   children,
   ...props
 }: ColorPickerContentProps) {
-  const { id, open, setOpen, triggerRef } = usePickerContext("ColorPickerContent");
+  const { id, t, open, setOpen, triggerRef } = usePickerContext("ColorPickerContent");
   const reduce = useReducedMotion() ?? false;
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -1259,9 +1291,18 @@ export function ColorPickerContent({
     if (rect.left + shift < VIEWPORT_GUTTER) shift = VIEWPORT_GUTTER - rect.left;
     panel.style.marginLeft = `${shift}px`;
   }, [open]);
-  useDismiss(open, () => setOpen(false), panelRef, {
-    ignore: (target) => Boolean(triggerRef.current?.contains(target)),
+  // Stable callbacks: the panel re-renders on every drag frame, and useDismiss
+  // re-binds its listeners whenever either identity changes.
+  const setOpenRef = useRef(setOpen);
+  useLayoutEffect(() => {
+    setOpenRef.current = setOpen;
   });
+  const dismiss = useCallback(() => setOpenRef.current(false), []);
+  const ignoreTrigger = useCallback(
+    (target: Element) => Boolean(triggerRef.current?.contains(target)),
+    [triggerRef],
+  );
+  useDismiss(open, dismiss, panelRef, { ignore: ignoreTrigger });
 
   // Hand focus in on open, and back to the trigger when it closes from inside.
   // Skipped on mount, so a picker that starts open does not steal page focus.
@@ -1294,10 +1335,11 @@ export function ColorPickerContent({
               <motion.div
                 {...(props as React.ComponentProps<typeof motion.div>)}
                 {...gate}
+                style={{ ...props.style, ...gate.style }}
                 ref={panelRef}
                 id={`${id}-content`}
                 role="dialog"
-                aria-label={props["aria-label"] ?? "Color picker"}
+                aria-label={props["aria-label"] ?? t("dialog")}
                 className={cn(
                   "absolute top-full z-50 mt-2 flex w-72 flex-col gap-3 p-3",
                   align === "end" ? "right-0" : "left-0",

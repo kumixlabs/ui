@@ -36,6 +36,7 @@ export function StatusBarPlot({
     setTooltipOpen,
     reduce,
     canHover,
+    t,
   } = useStatusBar();
   const pointerDriven = useRef(false);
   const focused = useRef(false);
@@ -52,7 +53,7 @@ export function StatusBarPlot({
     lastPointerId.current = id;
   };
   if (!rows.length)
-    return <p className={cn("text-muted-foreground py-4 text-sm", className)}>No status data</p>;
+    return <p className={cn("text-muted-foreground py-4 text-sm", className)}>{t("empty")}</p>;
   return (
     <div data-slot="status-bar-plot" className={cn("min-w-0 space-y-1.5", className)}>
       <div
@@ -104,7 +105,7 @@ export function StatusBarPlot({
         </div>
         <input
           type="range"
-          aria-label={`${label}: inspect period`}
+          aria-label={t("inspect", { label })}
           min={0}
           max={rows.length - 1}
           step={1}

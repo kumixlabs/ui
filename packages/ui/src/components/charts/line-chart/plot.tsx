@@ -92,6 +92,8 @@ export function LineChartPlot({
     tooltipId,
     reduce,
     canHover,
+    t,
+    xy,
   } = useLineChart();
   const { ref, width } = useElementWidth<HTMLDivElement>();
   const inView = useInView(ref, { once: true, amount: 0.3 });
@@ -142,13 +144,16 @@ export function LineChartPlot({
   }
 
   if ((!n || !rows.length) && !loading)
+    // Same wrapper shape as the plot below, so the measured node survives
+    // until data arrives; the width and in-view hooks attach only once.
     return (
-      <p
-        className={cn("text-muted-foreground flex items-center justify-center text-sm", className)}
-        style={{ height }}
-      >
-        No data
-      </p>
+      <div className={cn("min-w-0 select-none", className)}>
+        <div ref={ref} className="relative w-full" style={{ height }}>
+          <p className="text-muted-foreground flex h-full items-center justify-center text-sm">
+            {xy("noData")}
+          </p>
+        </div>
+      </div>
     );
 
   const activeValues =
@@ -365,7 +370,7 @@ export function LineChartPlot({
               {loadingLabel ? (
                 <TextShimmer>{loadingLabel}</TextShimmer>
               ) : (
-                <span className="sr-only">Loading</span>
+                <span className="sr-only">{t("loadingStatus")}</span>
               )}
             </motion.output>
           ) : null}
@@ -380,13 +385,16 @@ export function LineChartPlot({
               count={n}
               activeIndex={activeIndex}
               onActive={(i) => setActive(categories[i])}
-              label={`${label}: inspect values`}
+              label={t("inspect", { label })}
               valueText={(i) =>
                 [
                   categories[i],
                   ...visibleRows.map((row) => {
                     const value = row.values[i];
-                    return `${row.name} ${value === null ? "no data" : formatValue(value)}`;
+                    return xy("seriesValue", {
+                      name: row.name,
+                      value: value === null ? xy("missing") : formatValue(value),
+                    });
                   }),
                 ].join(". ")
               }

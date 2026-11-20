@@ -2,22 +2,24 @@
 
 import { cn } from "@kumix/utils";
 import { useHeatCalendar } from "./context";
-import { fmtRange, STEPS } from "./utils";
+import { STEPS } from "./utils";
 
 export function HeatCalendarLegend({ className }: { className?: string }) {
-  const { start, end, step, setStep, fill, canHover, reduce } = useHeatCalendar();
+  const { start, end, step, setStep, fill, canHover, reduce, t, formats } = useHeatCalendar();
   return (
     <div className={cn("mt-3 flex flex-wrap items-center justify-between gap-3", className)}>
       <span className="text-muted-foreground text-xs">
-        {start && end ? `${fmtRange.format(start)} – ${fmtRange.format(end)}` : "\u00a0"}
+        {start && end
+          ? t("range", { start: formats.range.format(start), end: formats.range.format(end) })
+          : "\u00a0"}
       </span>
       {/* hovering a step keeps only cells of that level lit, so the legend doubles as a filter */}
       <span className="flex items-center gap-1" onPointerLeave={() => setStep(null)}>
-        <span className="text-muted-foreground mr-0.5 text-xs">less</span>
+        <span className="text-muted-foreground mr-0.5 text-xs">{t("less")}</span>
         {STEPS.map((s, i) => (
           <button
             type="button"
-            aria-label={`Show activity level ${i}`}
+            aria-label={t("level", { level: i })}
             aria-pressed={step === i}
             key={s}
             onPointerEnter={() => {
@@ -33,7 +35,7 @@ export function HeatCalendarLegend({ className }: { className?: string }) {
             }}
           />
         ))}
-        <span className="text-muted-foreground ml-0.5 text-xs">more</span>
+        <span className="text-muted-foreground ml-0.5 text-xs">{t("more")}</span>
       </span>
     </div>
   );

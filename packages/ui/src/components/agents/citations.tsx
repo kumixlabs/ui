@@ -7,7 +7,15 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { useFavicon } from "../../hooks/use-favicon";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_SWAP } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { AgentDisclosure } from "./agent-disclosure";
+
+export const citationsMessages = {
+  title: "Sources",
+  viewCitation: "View citation {index}",
+};
+
+export type CitationsMessages = typeof citationsMessages;
 
 export interface CitationItem {
   id: string;
@@ -29,6 +37,8 @@ export interface CitationsProps {
   onOpenChange?: (open: boolean) => void;
   idPrefix?: string;
   className?: string;
+  /** Override any built-in string. */
+  labels?: Partial<CitationsMessages>;
 }
 
 export interface CitationProps {
@@ -61,10 +71,11 @@ function citationTargetId(prefix: string, citationId: string) {
 }
 
 export function Citation({ citationId, index, idPrefix, label, className }: CitationProps) {
+  const t = useMessages("citations", citationsMessages);
   return (
     <a
       href={`#${citationTargetId(idPrefix, citationId)}`}
-      aria-label={label ?? `View citation ${index}`}
+      aria-label={label ?? t("viewCitation", { index })}
       className={cn(
         "bg-muted/60 text-muted-foreground hover:text-foreground focus-visible:ring-ring mx-0.5 inline-flex min-w-4 -translate-y-0.5 items-center justify-center rounded-md px-1 py-0.5 text-[10px] leading-none font-semibold no-underline transition-colors outline-none focus-visible:ring-2",
         className,
@@ -211,13 +222,15 @@ export function CitationList({ citations, idPrefix, className }: CitationListPro
 
 export function Citations({
   citations,
-  title = "Sources",
+  title,
   open,
   defaultOpen = false,
   onOpenChange,
   idPrefix,
   className,
+  labels,
 }: CitationsProps) {
+  const t = useMessages("citations", citationsMessages, labels);
   const reduce = useReducedMotion() ?? false;
   const baseId = useId();
   const contentId = `${baseId}-content`;
@@ -242,7 +255,7 @@ export function Citations({
         className="group text-muted-foreground hover:text-foreground focus-visible:ring-ring -ml-1 flex min-h-8 items-center gap-2 rounded-lg px-1 text-left transition-colors outline-none focus-visible:ring-2"
       >
         <BookOpenText className="size-4" />
-        <span className="font-medium">{title}</span>
+        <span className="font-medium">{title ?? t("title")}</span>
         <span className="bg-muted rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums">
           {citations.length}
         </span>

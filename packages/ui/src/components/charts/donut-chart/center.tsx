@@ -25,12 +25,8 @@ export type DonutChartCenterProps = {
   className?: string;
 };
 
-export function DonutChartCenter({
-  children,
-  totalLabel = "Total",
-  className,
-}: DonutChartCenterProps) {
-  const { placed, active, total, formatValue, reduce } = useDonutChart();
+export function DonutChartCenter({ children, totalLabel, className }: DonutChartCenterProps) {
+  const { placed, active, total, formatValue, reduce, t } = useDonutChart();
   const segment = placed.find((item) => item.id === active) ?? null;
   const value = segment?.value ?? total;
   // Roll digits in the direction the value moved, adjusted during render so
@@ -76,6 +72,8 @@ export function DonutChartCenter({
                   {segment.name} · {(segment.share * 100).toFixed(1)}%
                 </span>
               </>
+            ) : totalLabel === undefined ? (
+              t("total")
             ) : (
               totalLabel
             )}

@@ -1,3 +1,5 @@
+"use client";
+
 export interface DonutSegment {
   id: string;
   name: string;

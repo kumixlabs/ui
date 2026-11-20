@@ -6,9 +6,11 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { useDismiss } from "../../../hooks/use-dismiss";
+import { useMessages } from "../../../lib/i18n";
 import { AccountAvatar } from "./account-avatar";
 import { HEAD, ITEM, LIST, MORPH } from "./constants";
 import { CopyButton } from "./copy-button";
+import { type WalletCardMessages, walletCardMessages } from "./messages";
 import type { WalletAccount } from "./types";
 import { truncateAddress } from "./utils";
 
@@ -21,11 +23,14 @@ export function AccountSwitcher({
   accounts,
   activeAccount,
   onSelect,
+  labels,
 }: {
   accounts: WalletAccount[];
   activeAccount: WalletAccount | undefined;
   onSelect: (id: string) => void;
+  labels?: Partial<WalletCardMessages>;
 }) {
+  const t = useMessages("walletCard", walletCardMessages, labels);
   const reduce = useReducedMotion() ?? false;
   const layoutId = `${useId()}-account`;
   const rootRef = useRef<HTMLDivElement>(null);
@@ -47,6 +52,7 @@ export function AccountSwitcher({
   }, [open, reduce]);
 
   const morph = reduce ? { duration: 0 } : MORPH;
+  const sizerAccount = activeAccount ?? accounts[0];
 
   return (
     // static (not relative) so the absolute trigger + panel anchor to the
@@ -57,7 +63,7 @@ export function AccountSwitcher({
           changes — neither when the trigger leaves the flow nor when a shorter
           account name is selected. */}
       <div aria-hidden className={cn(HEAD, "pointer-events-none opacity-0")}>
-        <AccountAvatar account={activeAccount ?? accounts[0]} />
+        {sizerAccount ? <AccountAvatar account={sizerAccount} /> : null}
         <span className="grid">
           {accounts.map((account) => (
             <span
@@ -127,7 +133,7 @@ export function AccountSwitcher({
                 layout="position"
                 className="text-foreground min-w-0 flex-1 truncate text-sm font-medium"
               >
-                {activeAccount?.name ?? "Select account"}
+                {activeAccount?.name ?? t("selectAccount")}
               </motion.span>
               <motion.span
                 layout="position"
@@ -180,7 +186,7 @@ export function AccountSwitcher({
                       </span>
                       {selected ? <Check className="text-foreground h-4 w-4 shrink-0" /> : null}
                     </button>
-                    <CopyButton value={account.address} />
+                    <CopyButton value={account.address} labels={labels} />
                   </motion.li>
                 );
               })}

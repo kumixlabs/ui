@@ -6,7 +6,9 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { SPRING_PANEL } from "../../../lib/ease";
+import { useMessages } from "../../../lib/i18n";
 import { EASE } from "./constants";
+import { type SwapMessages, swapMessages } from "./messages";
 import { ChainChip, TokenDot } from "./token-badges";
 import type { Chain, Token, TokenSide } from "./types";
 import { formatAmount } from "./utils";
@@ -20,6 +22,7 @@ export function TokenPicker({
   onPick,
   onClose,
   reduce,
+  labels,
 }: {
   open: boolean;
   side: TokenSide | null;
@@ -29,7 +32,9 @@ export function TokenPicker({
   onPick: (id: string) => void;
   onClose: () => void;
   reduce: boolean;
+  labels?: Partial<SwapMessages>;
 }) {
+  const t = useMessages("swap", swapMessages, labels);
   const [chainFilter, setChainFilter] = useState("all");
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -49,20 +54,20 @@ export function TokenPicker({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  const popular = useMemo(() => tokens.filter((t) => t.popular).slice(0, 6), [tokens]);
+  const popular = useMemo(() => tokens.filter((token) => token.popular).slice(0, 6), [tokens]);
   const chainById = useMemo(() => new Map(chains.map((chain) => [chain.id, chain])), [chains]);
 
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return tokens.filter((t) => {
-      if (chainFilter !== "all" && t.chainId !== chainFilter) return false;
+    return tokens.filter((token) => {
+      if (chainFilter !== "all" && token.chainId !== chainFilter) return false;
       if (!needle) return true;
-      const chain = chains.find((c) => c.id === t.chainId);
-      return [t.symbol, t.name, chain?.name, t.address].some((h) =>
+      const chain = chainById.get(token.chainId);
+      return [token.symbol, token.name, chain?.name, token.address].some((h) =>
         h?.toLowerCase().includes(needle),
       );
     });
-  }, [q, chainFilter, tokens, chains]);
+  }, [q, chainFilter, tokens, chainById]);
 
   return (
     <AnimatePresence>
@@ -71,7 +76,7 @@ export function TokenPicker({
           <motion.button
             key="backdrop"
             type="button"
-            aria-label="Close"
+            aria-label={t("close")}
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -89,7 +94,7 @@ export function TokenPicker({
             className="border-border bg-card absolute inset-x-0 bottom-0 z-20 flex max-h-[92%] flex-col rounded-t-3xl border-t shadow-2xl"
             role="dialog"
             aria-modal="true"
-            aria-label={`Select ${side === "from" ? "from" : "to"} token`}
+            aria-label={t(side === "from" ? "selectFromToken" : "selectToToken")}
           >
             <div className="flex justify-center pt-2.5 pb-1">
               <span className="bg-muted h-1 w-9 rounded-full" />
@@ -101,13 +106,13 @@ export function TokenPicker({
                 ref={inputRef}
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search name or paste address"
+                placeholder={t("searchPlaceholder")}
                 className="text-foreground placeholder:text-muted-foreground/70 w-full bg-transparent text-sm outline-none"
               />
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Close"
+                aria-label={t("close")}
                 className="text-muted-foreground hover:bg-muted/60 hover:text-foreground inline-flex h-7 w-7 items-center justify-center rounded-full"
               >
                 <X className="h-3.5 w-3.5" />
@@ -118,7 +123,7 @@ export function TokenPicker({
               <ChainChip
                 active={chainFilter === "all"}
                 onClick={() => setChainFilter("all")}
-                label="All"
+                label={t("allChains")}
               />
               {chains.map((c) => (
                 <ChainChip
@@ -134,21 +139,21 @@ export function TokenPicker({
               {!q && chainFilter === "all" ? (
                 <>
                   <p className="text-muted-foreground px-1 pb-2 text-[11px] font-semibold tracking-wider uppercase">
-                    Most popular
+                    {t("popular")}
                   </p>
                   <div className="flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden">
-                    {popular.map((t) => {
-                      const chain = chainById.get(t.chainId);
+                    {popular.map((token) => {
+                      const chain = chainById.get(token.chainId);
                       if (!chain) return null;
                       return (
                         <button
-                          key={t.id}
+                          key={token.id}
                           type="button"
-                          onClick={() => onPick(t.id)}
+                          onClick={() => onPick(token.id)}
                           className="border-border bg-background/50 text-foreground hover:border-border inline-flex shrink-0 items-center gap-2 rounded-full border py-1 pr-3 pl-1 text-sm font-semibold transition-transform active:scale-[0.97]"
                         >
-                          <TokenDot token={t} chain={chain} size={22} />
-                          {t.symbol}
+                          <TokenDot token={token} chain={chain} size={22} />
+                          {token.symbol}
                         </button>
                       );
                     })}
@@ -157,41 +162,39 @@ export function TokenPicker({
               ) : null}
 
               <p className="text-muted-foreground px-1 pb-1.5 text-[11px] font-semibold tracking-wider uppercase">
-                {q ? "Results" : chainFilter === "all" ? "Trending" : "Tokens"}
+                {q ? t("results") : chainFilter === "all" ? t("trending") : t("tokens")}
               </p>
               <ul className="flex flex-col gap-0.5">
                 {filtered.length === 0 ? (
-                  <li className="text-muted-foreground py-8 text-center text-xs">
-                    No tokens found
-                  </li>
+                  <li className="text-muted-foreground py-8 text-center text-xs">{t("empty")}</li>
                 ) : null}
-                {filtered.map((t) => {
-                  const chain = chainById.get(t.chainId);
+                {filtered.map((token) => {
+                  const chain = chainById.get(token.chainId);
                   if (!chain) return null;
-                  const active = t.id === selectedId;
+                  const active = token.id === selectedId;
                   return (
-                    <li key={t.id}>
+                    <li key={token.id}>
                       <button
                         type="button"
-                        onClick={() => onPick(t.id)}
+                        onClick={() => onPick(token.id)}
                         className={cn(
                           "flex w-full items-center justify-between rounded-xl px-2 py-2 text-left transition-colors active:scale-[0.97]",
                           active ? "bg-muted/60" : "hover:bg-muted/60",
                         )}
                       >
                         <span className="flex min-w-0 items-center gap-2.5">
-                          <TokenDot token={t} chain={chain} size={32} />
+                          <TokenDot token={token} chain={chain} size={32} />
                           <span className="flex min-w-0 flex-col">
                             <span className="text-foreground truncate text-sm font-semibold">
-                              {t.name}
+                              {token.name}
                             </span>
                             <span className="text-muted-foreground truncate text-[11px]">
-                              {t.symbol}
+                              {token.symbol}
                             </span>
                           </span>
                         </span>
                         <span className="text-muted-foreground shrink-0 text-right text-[11px] tabular-nums">
-                          {t.address ?? (t.balance ? formatAmount(t.balance) : "")}
+                          {token.address ?? (token.balance ? formatAmount(token.balance) : "")}
                         </span>
                       </button>
                     </li>

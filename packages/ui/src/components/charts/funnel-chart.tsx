@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
 import { NumberTicker } from "../motion/number-ticker";
 import { Tooltip } from "../motion/tooltip";
 import { buildFunnel, type FunnelStage, funnelPath } from "./funnel-chart/model";
@@ -13,6 +14,22 @@ const defaultFormat = (value: number) =>
   value.toLocaleString("en-US", { maximumFractionDigits: 2 });
 const percentage = (value: number | null) => (value === null ? "—" : `${value.toFixed(1)}%`);
 const colors = ["#8b5cf6", "#7774ef", "#548ee4", "#2ca6bc", "#14b8a6"];
+
+export const funnelChartMessages = {
+  label: "Conversion funnel",
+  unit: "people",
+  empty: "No funnel data",
+  stages: "Funnel stages",
+  fromPrevious: "{percent} from previous stage",
+  gained: "{value} gained",
+  dropped: "{value} dropped",
+  ofStart: "{percent} of starting total",
+  stage: "{stage}: {value} {unit}, {percent} of starting total",
+  range: "{first} → {last} {unit}",
+  overall: "Overall conversion",
+};
+export type FunnelChartMessages = typeof funnelChartMessages;
+
 export interface FunnelChartProps {
   /** Ordered stages with finite, nonnegative counts; duplicate IDs are omitted. */
   stages: readonly FunnelStage[];
@@ -20,6 +37,8 @@ export interface FunnelChartProps {
   unit?: string;
   label?: string;
   formatValue?: (value: number) => string;
+  /** Override any built-in string. */
+  labels?: Partial<FunnelChartMessages>;
   className?: string;
   children?: ReactNode;
 }
@@ -28,6 +47,7 @@ const Context = createContext<
       direction: "vertical" | "horizontal";
       unit: string;
       formatValue: (value: number) => string;
+      t: ReturnType<typeof useMessages<FunnelChartMessages>>;
     })
   | null
 >(null);
@@ -39,16 +59,18 @@ export function useFunnelChart() {
 export function FunnelChart({
   stages,
   direction = "vertical",
-  unit = "people",
-  label = "Conversion funnel",
+  unit,
+  label,
   formatValue = defaultFormat,
+  labels,
   className,
   children,
 }: FunnelChartProps) {
+  const t = useMessages("funnelChart", funnelChartMessages, labels);
   const model = useMemo(() => buildFunnel(stages), [stages]);
   return (
-    <Context.Provider value={{ ...model, direction, unit, formatValue }}>
-      <section aria-label={label} className={cn("w-full space-y-6", className)}>
+    <Context.Provider value={{ ...model, direction, unit: unit ?? t("unit"), formatValue, t }}>
+      <section aria-label={label ?? t("label")} className={cn("w-full space-y-6", className)}>
         {children === undefined ? (
           <>
             <FunnelChartPlot />
@@ -62,12 +84,12 @@ export function FunnelChart({
   );
 }
 export function FunnelChartPlot({ className }: { className?: string }) {
-  const { rows, direction, unit, formatValue } = useFunnelChart();
+  const { rows, direction, unit, formatValue, t } = useFunnelChart();
   const reduced = useReducedMotion();
   if (!rows.length)
     return (
       <p className={cn("text-muted-foreground py-16 text-center text-sm", className)}>
-        No funnel data
+        {t("empty")}
       </p>
     );
   const horizontal = direction === "horizontal";
@@ -100,7 +122,7 @@ export function FunnelChartPlot({ className }: { className?: string }) {
             ))}
           </svg>
           <ol
-            aria-label="Funnel stages"
+            aria-label={t("stages")}
             className="absolute inset-0 grid"
             style={
               horizontal
@@ -124,15 +146,18 @@ export function FunnelChartPlot({ className }: { className?: string }) {
                       />
                       {index > 0 && (
                         <>
-                          <span>{percentage(stage.stepConversion)} from previous stage</span>
+                          <span>
+                            {t("fromPrevious", { percent: percentage(stage.stepConversion) })}
+                          </span>
                           <span className="text-muted-foreground">
-                            {formatValue(Math.abs(stage.change ?? 0))}{" "}
-                            {(stage.change ?? 0) > 0 ? "gained" : "dropped"}
+                            {t((stage.change ?? 0) > 0 ? "gained" : "dropped", {
+                              value: formatValue(Math.abs(stage.change ?? 0)),
+                            })}
                           </span>
                         </>
                       )}
                       <span className="text-muted-foreground">
-                        {percentage(stage.conversion)} of starting total
+                        {t("ofStart", { percent: percentage(stage.conversion) })}
                       </span>
                     </span>
                   }
@@ -140,7 +165,12 @@ export function FunnelChartPlot({ className }: { className?: string }) {
                   <button
                     type="button"
                     className="hover:bg-foreground/5 focus-visible:ring-ring flex h-full w-full items-center justify-center transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset"
-                    aria-label={`${stage.label}: ${formatValue(stage.value)} ${unit}, ${percentage(stage.conversion)} of starting total`}
+                    aria-label={t("stage", {
+                      stage: stage.label,
+                      value: formatValue(stage.value),
+                      unit,
+                      percent: percentage(stage.conversion),
+                    })}
                   >
                     <span className="bg-background/85 rounded px-2 py-1 font-mono text-xs font-medium tabular-nums">
                       {formatValue(stage.value)}
@@ -171,7 +201,7 @@ export function FunnelChartPlot({ className }: { className?: string }) {
   );
 }
 export function FunnelChartSummary({ className }: { className?: string }) {
-  const { rows, first, last, conversion, formatValue, unit } = useFunnelChart();
+  const { rows, first, last, conversion, formatValue, unit, t } = useFunnelChart();
   if (!rows.length) return null;
   return (
     <div
@@ -181,10 +211,10 @@ export function FunnelChartSummary({ className }: { className?: string }) {
       )}
     >
       <span className="text-muted-foreground">
-        {formatValue(first)} → {formatValue(last)} {unit}
+        {t("range", { first: formatValue(first), last: formatValue(last), unit })}
       </span>
       <span className="flex items-center gap-2">
-        <span className="text-muted-foreground">Overall conversion</span>
+        <span className="text-muted-foreground">{t("overall")}</span>
         <span className="font-mono font-medium tabular-nums">{percentage(conversion)}</span>
       </span>
     </div>

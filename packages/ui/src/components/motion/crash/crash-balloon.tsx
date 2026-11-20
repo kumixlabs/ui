@@ -5,6 +5,7 @@ import { AnimatePresence, cubicBezier, motion, type Transition } from "motion/re
 
 import { cn } from "@kumix/utils";
 import { EASE_IN, EASE_IN_OUT, EASE_OUT } from "../../../lib/ease";
+import { EXIT, formatShort, PRIMARY_TEXT, PULSE, SWAP } from "../casino/game-parts";
 import {
   CHUTE,
   type CrashMiniatureProps,
@@ -14,19 +15,15 @@ import {
   MINI_REPLAY,
   niceAtLeast,
   Parachute,
-  PRIMARY_TEXT,
   STAGE_LABEL,
   STAGE_W,
   wrap,
 } from "./crash-parts";
 import {
   BURST,
+  type CrashGame,
   type CrashProps,
-  EXIT,
-  formatShort,
   growth,
-  PULSE,
-  SWAP,
   timeAt,
   useCrashGame,
 } from "./use-crash-game";
@@ -59,16 +56,12 @@ const rise = cubicBezier(...EASE_IN_OUT);
  * altitude. The balloon lifts off and holds while the tape and clouds scroll
  * past; cash out to bail before the envelope pops.
  */
-export function CrashBalloon({
-  "aria-label": ariaLabel = "Crash",
-  className,
-  ...options
-}: CrashProps) {
+export function CrashBalloon({ "aria-label": ariaLabel, className, ...options }: CrashProps) {
   const game = useCrashGame(options);
   return (
     <CrashShell
       game={game}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? game.text("region")}
       className={className}
       miniature={(props) => <MiniAltitude {...props} />}
     >
@@ -83,6 +76,7 @@ export function CrashBalloon({
         ghost={game.ghost}
         reduce={game.reduce}
         skipping={game.skipping}
+        text={game.text}
       />
     </CrashShell>
   );
@@ -99,6 +93,7 @@ interface StageProps {
   ghost: number | null;
   reduce: boolean;
   skipping: boolean;
+  text: CrashGame["text"];
 }
 
 function Stage({
@@ -112,6 +107,7 @@ function Stage({
   ghost,
   reduce,
   skipping,
+  text,
 }: StageProps) {
   const id = `crash-balloon-${useId().replace(/:/g, "")}`;
   const m = growth(t);
@@ -173,7 +169,7 @@ function Stage({
             reduce && t > 0 ? "opacity-0" : "opacity-100",
           )}
         >
-          <rect y={GROUND_Y} width={W} height={H - GROUND_Y} className="fill-foreground/[0.05]" />
+          <rect y={GROUND_Y} width={W} height={H - GROUND_Y} className="fill-foreground/5" />
           <line x1={0} x2={W} y1={GROUND_Y} y2={GROUND_Y} className="stroke-border" />
           <ellipse
             cx={BX}
@@ -267,7 +263,9 @@ function Stage({
                 textAnchor="end"
                 className={cn("fill-current", STAGE_LABEL, PRIMARY_TEXT)}
               >
-                {at(target) < TARGET_PIN ? `target ${formatShort(target)} ↑` : "target"}
+                {at(target) < TARGET_PIN
+                  ? `${text("targetMarkValue", { multiplier: formatShort(target) })} ↑`
+                  : text("targetMark")}
               </text>
             </g>
           </motion.g>
@@ -421,7 +419,7 @@ function Tape({ m, mask }: { m: number; mask: string }) {
 
   return (
     <g mask={mask} className={cn(STAGE_LABEL, "text-muted-foreground tabular-nums")}>
-      <rect x={TAPE_X} width={W - TAPE_X} height={H} className="fill-foreground/[0.03]" />
+      <rect x={TAPE_X} width={W - TAPE_X} height={H} className="fill-foreground/3" />
       <line x1={TAPE_X} x2={TAPE_X} y1={0} y2={H} className="stroke-border" />
       {ticks.map(({ value, y, tick, label }) => (
         <g key={value} transform={`translate(${TAPE_X},${y.toFixed(2)})`}>

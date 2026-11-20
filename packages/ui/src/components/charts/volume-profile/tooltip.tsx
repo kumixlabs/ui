@@ -50,6 +50,7 @@ export function VolumeProfileTooltip({
     formatPrice,
     formatVolume,
     unit,
+    t,
   } = useVolumeProfile();
   // Mount the shared pointer tracker only once the plot's anchor exists,
   // including when an initially empty profile receives its first data.
@@ -87,7 +88,7 @@ export function VolumeProfileTooltip({
                   </span>
                   {active.isPoc || active.inValueArea ? (
                     <span className="text-muted-foreground">
-                      {active.isPoc ? "Point of control" : "Inside value area"}
+                      {active.isPoc ? t("poc") : t("inside")}
                     </span>
                   ) : null}
                 </span>

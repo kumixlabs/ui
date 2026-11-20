@@ -26,6 +26,10 @@ import {
   MorphPopoverTrigger,
 } from "./popover-morph";
 
+export {
+  type DateRangePickerMessages,
+  dateRangePickerMessages,
+} from "./date-range-picker/messages";
 export type {
   DateRange,
   DateRangePickerProps,
@@ -123,10 +127,7 @@ export function DateRangePickerCalendar({
         children
       )}
       <p id={ctx.help} className="sr-only">
-        Use arrow keys to navigate dates, Home and End for the week, Page Up and Page Down for
-        months, Shift with Page Up or Page Down for years. Enter or Space selects a date. Use the
-        month and year buttons to jump directly. In the month or year choices, use arrow keys to
-        move and Escape to return.
+        {ctx.t("help")}
       </p>
       <span role="status" className="sr-only">
         {ctx.announcement}
@@ -137,7 +138,7 @@ export function DateRangePickerCalendar({
 
 export type DateRangePickerSummaryProps = Omit<ComponentPropsWithoutRef<"div">, "children">;
 export function DateRangePickerSummary({ className, ...props }: DateRangePickerSummaryProps) {
-  const { value, shortFormat } = useDateRangePickerContext("DateRangePickerSummary");
+  const { value, shortFormat, t } = useDateRangePickerContext("DateRangePickerSummary");
   return (
     <div
       {...props}
@@ -148,16 +149,16 @@ export function DateRangePickerSummary({ className, ...props }: DateRangePickerS
     >
       <div className="min-w-0">
         <p className="text-muted-foreground mb-1 text-[10px] font-medium tracking-wider uppercase">
-          Start date
+          {t("startDate")}
         </p>
         <p className="text-[13px] font-medium tabular-nums">
-          {value ? shortFormat.format(parse(value.from)) : "Select date"}
+          {value ? shortFormat.format(parse(value.from)) : t("selectDate")}
         </p>
       </div>
       <ArrowRight size={14} className="text-muted-foreground/60" aria-hidden="true" />
       <div className="min-w-0">
         <p className="text-muted-foreground mb-1 text-[10px] font-medium tracking-wider uppercase">
-          End date
+          {t("endDate")}
         </p>
         <p
           className={cn(
@@ -165,7 +166,7 @@ export function DateRangePickerSummary({ className, ...props }: DateRangePickerS
             !value?.to && "text-muted-foreground",
           )}
         >
-          {value?.to ? shortFormat.format(parse(value.to)) : "Select date"}
+          {value?.to ? shortFormat.format(parse(value.to)) : t("selectDate")}
         </p>
       </div>
     </div>
@@ -189,6 +190,7 @@ export function DateRangePickerHeader({ className, ...props }: DateRangePickerHe
     previousDisabled,
     nextDisabled,
     page,
+    t,
   } = useDateRangePickerContext("DateRangePickerHeader");
   return (
     <div {...props} className={cn("mb-2 flex items-center justify-between gap-1", className)}>
@@ -196,7 +198,7 @@ export function DateRangePickerHeader({ className, ...props }: DateRangePickerHe
         <button
           ref={monthTrigger}
           type="button"
-          aria-label="Choose month"
+          aria-label={t("chooseMonth")}
           aria-expanded={view === "months"}
           aria-controls={view === "months" ? choicesId : undefined}
           disabled={disabled}
@@ -216,7 +218,7 @@ export function DateRangePickerHeader({ className, ...props }: DateRangePickerHe
         <button
           ref={yearTrigger}
           type="button"
-          aria-label="Choose year"
+          aria-label={t("chooseYear")}
           aria-expanded={view === "years"}
           aria-controls={view === "years" ? choicesId : undefined}
           disabled={disabled}
@@ -234,13 +236,13 @@ export function DateRangePickerHeader({ className, ...props }: DateRangePickerHe
       <div className="flex shrink-0 gap-0.5">
         <button
           type="button"
-          aria-label={
+          aria-label={t(
             view === "years"
-              ? "Previous years"
+              ? "previousYears"
               : view === "months"
-                ? "Previous year"
-                : "Previous month"
-          }
+                ? "previousYear"
+                : "previousMonth",
+          )}
           disabled={previousDisabled}
           className={iconClass}
           onClick={() => page(-1)}
@@ -249,9 +251,9 @@ export function DateRangePickerHeader({ className, ...props }: DateRangePickerHe
         </button>
         <button
           type="button"
-          aria-label={
-            view === "years" ? "Next years" : view === "months" ? "Next year" : "Next month"
-          }
+          aria-label={t(
+            view === "years" ? "nextYears" : view === "months" ? "nextYear" : "nextMonth",
+          )}
           disabled={nextDisabled}
           hidden={view === "years" && nextDisabled}
           className={cn(iconClass, view === "years" && nextDisabled && "hidden")}
@@ -299,6 +301,7 @@ export function DateRangePickerGrid({
     select,
     setCursor,
     onKey,
+    t,
   } = useDateRangePickerContext("DateRangePickerGrid");
   return (
     <div
@@ -324,9 +327,13 @@ export function DateRangePickerGrid({
               <CalendarChoices
                 id={choicesId}
                 label={
+                  // Years as strings, so a locale never groups them ("2,026").
                   view === "months"
-                    ? `Choose a month in ${year}`
-                    : `Choose a year from ${yearPage} to ${yearPageEnd}`
+                    ? t("monthChoices", { year: String(year) })
+                    : t("yearChoices", {
+                        start: String(yearPage),
+                        end: String(yearPageEnd),
+                      })
                 }
                 choices={choices}
                 selected={view === "months" ? month : String(year)}
@@ -500,22 +507,24 @@ export function DateRangePickerSelection({
   className,
   ...props
 }: DateRangePickerSelectionProps) {
-  const { value, dayCount } = useDateRangePickerContext("DateRangePickerSelection");
+  const { value, dayCount, t } = useDateRangePickerContext("DateRangePickerSelection");
   return (
     <p {...props} className={cn("text-muted-foreground text-xs", className)}>
       {children ??
         (dayCount
-          ? `${dayCount} ${dayCount === 1 ? "day" : "days"} selected`
+          ? t(dayCount === 1 ? "daySelected" : "daysSelected", {
+              count: dayCount,
+            })
           : value
-            ? "Choose an end date"
-            : "Choose a start date")}
+            ? t("chooseEndDate")
+            : t("chooseStartDate"))}
     </p>
   );
 }
 
 export type DateRangePickerClearProps = ComponentPropsWithRef<"button">;
 export function DateRangePickerClear({
-  children = "Clear",
+  children,
   className,
   onClick,
   disabled,
@@ -526,7 +535,7 @@ export function DateRangePickerClear({
     <button
       {...props}
       type="button"
-      aria-label={props["aria-label"] ?? "Clear date range"}
+      aria-label={props["aria-label"] ?? ctx.t("clearLabel")}
       disabled={disabled || ctx.disabled || !ctx.value}
       className={cn(
         "text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded-md px-1.5 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-30",
@@ -537,7 +546,7 @@ export function DateRangePickerClear({
         if (!event.defaultPrevented) ctx.clear();
       }}
     >
-      {children}
+      {children === undefined ? ctx.t("clear") : children}
     </button>
   );
 }
@@ -631,13 +640,14 @@ export interface DateRangePickerTriggerProps extends HTMLMotionProps<"button"> {
 }
 export function DateRangePickerTrigger({
   children,
-  placeholder = "Select dates",
+  placeholder: placeholderProp,
   className,
   disabled,
   ref,
   ...props
 }: DateRangePickerTriggerProps) {
   const ctx = useDateRangePickerContext("DateRangePickerTrigger");
+  const placeholder = placeholderProp ?? ctx.t("placeholder");
   const mergedRef = useCallback(
     (node: HTMLButtonElement | null) => {
       ctx.trigger.current = node;
@@ -653,7 +663,7 @@ export function DateRangePickerTrigger({
   });
   const sameYear = ctx.value?.to && ctx.value.from.slice(0, 4) === ctx.value.to.slice(0, 4);
   const summary = ctx.value
-    ? `${(sameYear ? format : ctx.shortFormat).format(parse(ctx.value.from))} – ${ctx.value.to ? ctx.shortFormat.format(parse(ctx.value.to)) : "Select end"}`
+    ? `${(sameYear ? format : ctx.shortFormat).format(parse(ctx.value.from))} – ${ctx.value.to ? ctx.shortFormat.format(parse(ctx.value.to)) : ctx.t("selectEnd")}`
     : placeholder;
   return (
     <MorphPopoverTrigger>
@@ -665,7 +675,7 @@ export function DateRangePickerTrigger({
         style={{ borderRadius: 12, ...props.style }}
         type="button"
         disabled={disabled || ctx.disabled}
-        aria-label={props["aria-label"] ?? `${ctx.label}: ${summary}`}
+        aria-label={props["aria-label"] ?? ctx.t("triggerLabel", { label: ctx.label, summary })}
         className={cn(
           "border-border bg-background text-foreground hover:bg-muted/40 focus-visible:ring-ring inline-flex h-9 w-fit max-w-full items-center gap-2 rounded-xl border px-3 text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40",
           className,

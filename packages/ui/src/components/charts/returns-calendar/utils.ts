@@ -1,3 +1,5 @@
+"use client";
+
 import type { ReturnsCalendarCell } from "./types";
 
 export const UP = "var(--success)";
@@ -20,6 +22,18 @@ export const MONTHS = [
 ];
 
 export const COLS = MONTHS.map((name, m) => ({ name, initial: name[0], m }));
+
+/** Month names and column initials; without a locale they stay English so server and client match. */
+export const monthColumns = (locale?: string) => {
+  if (!locale) return { months: MONTHS, cols: COLS };
+  const short = new Intl.DateTimeFormat(locale, { timeZone: "UTC", month: "short" });
+  const narrow = new Intl.DateTimeFormat(locale, { timeZone: "UTC", month: "narrow" });
+  const dates = MONTHS.map((_, m) => new Date(Date.UTC(2000, m, 1)));
+  return {
+    months: dates.map((date) => short.format(date)),
+    cols: dates.map((date, m) => ({ name: short.format(date), initial: narrow.format(date), m })),
+  };
+};
 
 /** The compounded column, addressed like a thirteenth month. */
 export const YEAR = 12;

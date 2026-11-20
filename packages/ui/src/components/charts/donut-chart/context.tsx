@@ -12,7 +12,16 @@ import {
 import { useReducedMotion } from "motion/react";
 
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
+import { useMessages } from "../../../lib/i18n";
 import { buildDonut, type DonutSegment } from "./model";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const donutChartMessages = {
+  label: "Donut chart",
+  total: "Total",
+};
+
+export type DonutChartMessages = typeof donutChartMessages;
 
 export interface DonutChartProps {
   segments: readonly DonutSegment[];
@@ -31,6 +40,8 @@ export interface DonutChartProps {
   formatValue?: (value: number) => string;
   /** Accessible name for the chart. */
   label?: string;
+  /** Override any built-in string. */
+  labels?: Partial<DonutChartMessages>;
   className?: string;
   children?: ReactNode;
 }
@@ -47,8 +58,10 @@ export function useDonutModel({
   onSelect,
   selectedId = null,
   formatValue = defaultFormat,
-  label = "Donut chart",
+  label,
+  labels,
 }: DonutChartProps) {
+  const t = useMessages("donutChart", donutChartMessages, labels);
   const reduce = useReducedMotion() ?? false;
   const canHover = useHoverCapable();
   const radius = 100 - thickness / 2 - 8;
@@ -78,7 +91,8 @@ export function useDonutModel({
     onSelect,
     selectedId,
     formatValue,
-    label,
+    label: label ?? t("label"),
+    t,
     reduce,
     canHover,
   };

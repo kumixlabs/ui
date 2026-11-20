@@ -1,3 +1,5 @@
+"use client";
+
 export interface CompositionSeries {
   id: string;
   name: string;

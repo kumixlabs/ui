@@ -4,6 +4,8 @@ import { createContext, type ReactNode, useContext, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
+import { useMessages } from "../../../lib/i18n";
+import { type BumpChartMessages, bumpChartMessages } from "./messages";
 import { type BumpSeries, buildBumpChart } from "./model";
 
 export interface BumpChartProps {
@@ -15,6 +17,8 @@ export interface BumpChartProps {
   defaultActive?: string | null;
   onActiveChange?: (id: string | null) => void;
   label?: string;
+  /** Override any built-in string. */
+  labels?: Partial<BumpChartMessages>;
   children?: ReactNode;
   className?: string;
 }
@@ -25,8 +29,10 @@ export function useBumpChartModel({
   active,
   defaultActive = null,
   onActiveChange,
-  label = "Rankings over time",
+  label,
+  labels,
 }: BumpChartProps) {
+  const t = useMessages("bumpChart", bumpChartMessages, labels);
   const model = buildBumpChart(series, periods.length);
   const [internal, setInternal] = useState(defaultActive);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -46,7 +52,8 @@ export function useBumpChartModel({
   return {
     ...model,
     periods,
-    label,
+    label: label ?? t("label"),
+    t,
     pinned,
     highlighted,
     select,

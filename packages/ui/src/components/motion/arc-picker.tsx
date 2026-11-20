@@ -24,6 +24,8 @@ import {
 
 import { cn } from "@kumix/utils";
 import { SPRING_GLIDE, SPRING_LAYOUT } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
+import { capturePointer } from "../../lib/touch";
 
 export type ArcPickerOption = {
   value: string;
@@ -32,6 +34,18 @@ export type ArcPickerOption = {
 };
 
 export type ArcPickerSide = "top" | "bottom" | "left" | "right";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const arcPickerMessages = {
+  label: "Choose an option",
+  instructionsHorizontal:
+    "Drag horizontally or scroll to choose. Use arrow keys to move, Home and End to jump.",
+  instructionsVertical:
+    "Drag vertically or scroll to choose. Use arrow keys to move, Home and End to jump.",
+  empty: "No options",
+};
+
+export type ArcPickerMessages = typeof arcPickerMessages;
 
 export type ArcPickerProps = Omit<
   ComponentProps<"div">,
@@ -51,6 +65,8 @@ export type ArcPickerProps = Omit<
   visibleCount?: number;
   disabled?: boolean;
   name?: string;
+  /** Override any built-in string. */
+  labels?: Partial<ArcPickerMessages>;
 };
 
 // A short velocity projection lets a flick coast through several detents
@@ -230,10 +246,13 @@ export function ArcPicker({
   onFocusCapture,
   onBlurCapture,
   onClickCapture,
-  "aria-label": label = "Choose an option",
+  "aria-label": ariaLabel,
   "aria-describedby": describedBy,
+  labels,
   ...props
 }: ArcPickerProps) {
+  const t = useMessages("arcPicker", arcPickerMessages, labels);
+  const label = ariaLabel ?? t("label");
   const reducedMotion = useReducedMotion();
   const horizontal = side === "top" || side === "bottom";
   const instructionsId = useId();
@@ -711,7 +730,8 @@ export function ArcPicker({
         tracking.current = true;
         instant.current = false;
         activity.set(reducedMotion ? 0 : 1);
-        root.current?.setPointerCapture(event.pointerId);
+        if (root.current && !root.current.hasPointerCapture(event.pointerId))
+          capturePointer(root.current, event.pointerId);
         const now = performance.now();
         const elapsed = Math.max(8, now - current.time);
         current.velocity =
@@ -744,8 +764,7 @@ export function ArcPicker({
       }}
     >
       <span id={instructionsId} className="sr-only">
-        Drag {horizontal ? "horizontally" : "vertically"} or scroll to choose. Use arrow keys to
-        move, Home and End to jump.
+        {t(horizontal ? "instructionsHorizontal" : "instructionsVertical")}
       </span>
       {name && <input type="hidden" name={name} value={selectedValue ?? ""} disabled={disabled} />}
       {options.map((option, index) => (
@@ -777,7 +796,7 @@ export function ArcPicker({
       />
       {!options.length && (
         <span className="text-muted-foreground absolute inset-0 flex items-center justify-center text-sm">
-          No options
+          {t("empty")}
         </span>
       )}
     </div>

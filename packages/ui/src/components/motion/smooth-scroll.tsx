@@ -232,6 +232,7 @@ export function SmoothScroll({
  */
 export function useSmoothScroll(): SmoothScrollApi {
   const ctx = useContext(SmoothScrollContext);
+  const reduce = useReducedMotion();
   const scrollY = useMotionValue(0);
   const progress = useMotionValue(0);
   const velocity = useMotionValue(0);
@@ -239,12 +240,15 @@ export function useSmoothScroll(): SmoothScrollApi {
   const windowSource = useCallback((): ScrollSource => window, []);
   useNativeScrollSync(ctx === null, windowSource, scrollY, progress, velocity);
 
-  const scrollTo = useCallback((target: ScrollTarget, options?: ScrollToOptions) => {
-    window.scrollTo({
-      top: resolveTop(target, window, options?.offset),
-      behavior: options?.immediate ? "auto" : "smooth",
-    });
-  }, []);
+  const scrollTo = useCallback(
+    (target: ScrollTarget, options?: ScrollToOptions) => {
+      window.scrollTo({
+        top: resolveTop(target, window, options?.offset),
+        behavior: reduce || options?.immediate ? "auto" : "smooth",
+      });
+    },
+    [reduce],
+  );
 
   const fallback = useMemo<SmoothScrollApi>(
     () => ({ lenis: null, scrollY, progress, velocity, scrollTo }),

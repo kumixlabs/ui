@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../hooks/use-hover-capable";
 import { EASE_OUT, SPRING_LAYOUT, SPRING_PRESS } from "../../lib/ease";
+import { formatNumber, useLocale, useMessages } from "../../lib/i18n";
 import { Tooltip, TooltipProvider } from "./tooltip";
 
 export interface AvatarGroupMember {
@@ -22,6 +23,15 @@ const SIZES = {
 } as const;
 
 type AvatarSize = keyof typeof SIZES;
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const avatarGroupMessages = {
+  label: "Members",
+  showFewer: "Show fewer members",
+  showMore: "Show {count} more members",
+};
+
+export type AvatarGroupMessages = typeof avatarGroupMessages;
 
 function initials(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -78,6 +88,8 @@ export interface AvatarGroupProps extends Omit<ComponentPropsWithRef<"div">, "ch
   onExpandedChange?: (expanded: boolean) => void;
   /** Accessible name for the list, such as "Project members". */
   label?: string;
+  /** Override any built-in string. `{count}` fills `showMore`. */
+  labels?: Partial<AvatarGroupMessages>;
 }
 
 /**
@@ -91,10 +103,13 @@ export function AvatarGroup({
   expanded,
   defaultExpanded = false,
   onExpandedChange,
-  label = "Members",
+  label,
+  labels,
   className,
   ...props
 }: AvatarGroupProps) {
+  const t = useMessages("avatarGroup", avatarGroupMessages, labels);
+  const { locale } = useLocale();
   const reduce = useReducedMotion();
   const canHover = useHoverCapable();
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
@@ -137,7 +152,7 @@ export function AvatarGroup({
         }}
         className={cn("inline-flex items-center", className)}
       >
-        <ul aria-label={label} className="relative flex items-center">
+        <ul aria-label={label ?? t("label")} className="relative flex items-center">
           <AnimatePresence initial={false} mode="popLayout">
             {visible.map((member, index) => (
               <motion.li
@@ -194,7 +209,7 @@ export function AvatarGroup({
                   <motion.button
                     type="button"
                     aria-expanded={isExpanded}
-                    aria-label={isExpanded ? "Show fewer members" : `Show ${overflow} more members`}
+                    aria-label={isExpanded ? t("showFewer") : t("showMore", { count: overflow })}
                     onClick={toggle}
                     whileTap={reduce ? undefined : { scale: 0.92 }}
                     transition={SPRING_PRESS}
@@ -212,7 +227,7 @@ export function AvatarGroup({
                         exit={{ opacity: 0, y: reduce ? 0 : isExpanded ? -8 : 8 }}
                         transition={{ duration: 0.16, ease: EASE_OUT }}
                       >
-                        {isExpanded ? "−" : `+${overflow}`}
+                        {isExpanded ? "−" : `+${formatNumber(overflow, locale)}`}
                       </motion.span>
                     </AnimatePresence>
                   </motion.button>

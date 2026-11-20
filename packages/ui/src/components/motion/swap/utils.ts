@@ -1,3 +1,5 @@
+"use client";
+
 export function isValidAddress(v: string) {
   if (/^0x[0-9a-fA-F]{40}$/.test(v)) return true;
   if (/\.(eth|sol|bnb)$/.test(v) && v.length > 5) return true;

@@ -7,7 +7,6 @@ import {
   type Ref,
   useCallback,
   useContext,
-  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -18,7 +17,18 @@ import { AnimatePresence, type HTMLMotionProps, motion, useReducedMotion } from 
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_PRESS } from "../../lib/ease";
+import { formatNumber, useLocale, useMessages } from "../../lib/i18n";
 import { Liquid, LiquidItem, type LiquidTransition } from "./liquid";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const adaptiveStepperMessages = {
+  label: "Quantity",
+  summary: "{label}. Current value: {value}",
+  decrease: "Decrease value",
+  increase: "Increase value",
+};
+
+export type AdaptiveStepperMessages = typeof adaptiveStepperMessages;
 
 // The deliberately elastic separation curve from the liquid email reference.
 const STEPPER_LIQUID_TRANSITION = {
@@ -36,6 +46,7 @@ type AdaptiveStepperContextValue = {
   atMax: boolean;
   disabled: boolean;
   reduce: boolean;
+  t: (key: keyof AdaptiveStepperMessages & string) => string;
   decrement: (restoreFocus: boolean) => void;
   increment: (restoreFocus: boolean) => void;
   decrementRef: React.MutableRefObject<HTMLButtonElement | null>;
@@ -94,6 +105,8 @@ export interface AdaptiveStepperProps {
   formatValueText?: (value: number) => string;
   className?: string;
   "aria-label"?: string;
+  /** Override any built-in string. `{label}` and `{value}` fill `summary`. */
+  labels?: Partial<AdaptiveStepperMessages>;
 }
 
 export function AdaptiveStepper({
@@ -108,10 +121,13 @@ export function AdaptiveStepper({
   name,
   formatValueText,
   className,
-  "aria-label": ariaLabel = "Quantity",
+  "aria-label": ariaLabelProp,
+  labels,
 }: AdaptiveStepperProps) {
+  const t = useMessages("adaptiveStepper", adaptiveStepperMessages, labels);
+  const { locale } = useLocale();
+  const ariaLabel = ariaLabelProp ?? t("label");
   const reduce = useReducedMotion() ?? false;
-  const labelId = useId();
   const decrementRef = useRef<HTMLButtonElement>(null);
   const incrementRef = useRef<HTMLButtonElement>(null);
   const lower = Number.isFinite(min) ? min : 0;
@@ -173,7 +189,7 @@ export function AdaptiveStepper({
     [commit, currentValue, disabled, lower, stride, upper],
   );
 
-  const valueText = formatValueText?.(currentValue) ?? String(currentValue);
+  const valueText = formatValueText?.(currentValue) ?? formatNumber(currentValue, locale);
   const context = useMemo<AdaptiveStepperContextValue>(
     () => ({
       value: currentValue,
@@ -183,12 +199,13 @@ export function AdaptiveStepper({
       atMax: currentValue >= upper,
       disabled,
       reduce,
+      t,
       decrement,
       increment,
       decrementRef,
       incrementRef,
     }),
-    [currentValue, decrement, direction, disabled, increment, lower, reduce, upper, valueText],
+    [currentValue, decrement, direction, disabled, increment, lower, reduce, t, upper, valueText],
   );
 
   return (
@@ -197,9 +214,7 @@ export function AdaptiveStepper({
         disabled={disabled}
         className={cn("relative isolate m-0 inline-block h-12 w-[13.5rem] border-0 p-0", className)}
       >
-        <legend id={labelId} className="sr-only">
-          {ariaLabel}. Current value: {valueText}
-        </legend>
+        <legend className="sr-only">{t("summary", { label: ariaLabel, value: valueText })}</legend>
         <Liquid blur={8} contrast={22} fill="var(--background)" className="size-full">
           {children}
         </Liquid>
@@ -230,7 +245,7 @@ function StepperAction({
   const context = useAdaptiveStepperContext("AdaptiveStepper action");
   const hidden = direction === -1 ? context.atMin : context.atMax;
   const actionRef = direction === -1 ? context.decrementRef : context.incrementRef;
-  const label = ariaLabel ?? (direction === -1 ? "Decrease value" : "Increase value");
+  const label = ariaLabel ?? context.t(direction === -1 ? "decrease" : "increase");
   const action = direction === -1 ? context.decrement : context.increment;
   const x = direction === -1 ? (hidden ? 32 : 0) : hidden ? 136 : 168;
 

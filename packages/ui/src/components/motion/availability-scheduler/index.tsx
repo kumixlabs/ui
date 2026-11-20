@@ -4,7 +4,9 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { LayoutGroup, useReducedMotion } from "motion/react";
 
 import { cn } from "@kumix/utils";
+import { useLocale, useMessages } from "../../../lib/i18n";
 import { DayRow } from "./day-row";
+import { type AvailabilitySchedulerMessages, availabilitySchedulerMessages } from "./messages";
 import {
   buildOptions,
   type DayAvailability,
@@ -13,8 +15,13 @@ import {
   panelKey,
   WEEKDAYS,
   type WeekAvailability,
+  weekdayLabel,
 } from "./types";
 
+export {
+  type AvailabilitySchedulerMessages,
+  availabilitySchedulerMessages,
+} from "./messages";
 export type {
   DayAvailability,
   DayKey,
@@ -30,6 +37,8 @@ export interface AvailabilitySchedulerProps {
   /** Minutes between selectable times. Default 30. */
   step?: number;
   className?: string;
+  /** Override any built-in string. */
+  labels?: Partial<AvailabilitySchedulerMessages>;
 }
 
 export function AvailabilityScheduler({
@@ -38,10 +47,13 @@ export function AvailabilityScheduler({
   onChange,
   step = 30,
   className,
+  labels,
 }: AvailabilitySchedulerProps) {
   const reduce = useReducedMotion() ?? false;
   const groupId = useId();
-  const options = useMemo(() => buildOptions(step), [step]);
+  const { locale } = useLocale();
+  const t = useMessages("availabilityScheduler", availabilitySchedulerMessages, labels);
+  const options = useMemo(() => buildOptions(step, locale), [step, locale]);
   const idRef = useRef(0);
 
   const [internal, setInternal] = useState<WeekAvailability>(() => defaultValue ?? defaultWeek());
@@ -120,11 +132,12 @@ export function AvailabilityScheduler({
   return (
     <LayoutGroup id={groupId}>
       <div className={cn("divide-border w-full max-w-xl divide-y", className)}>
-        {WEEKDAYS.map(({ key, label }) => (
+        {WEEKDAYS.map(({ key }, index) => (
           <DayRow
             key={key}
             day={key}
-            label={label}
+            label={weekdayLabel(index, locale)}
+            t={t}
             state={week[key]}
             options={options}
             reduce={reduce}

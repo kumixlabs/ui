@@ -28,6 +28,15 @@ import {
 
 import { cn } from "@kumix/utils";
 import { EASE_OUT, SPRING_SWAP } from "../../lib/ease";
+import { useMessages } from "../../lib/i18n";
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const tabsMessages = {
+  scrollLeft: "Scroll tabs left",
+  scrollRight: "Scroll tabs right",
+};
+
+export type TabsMessages = typeof tabsMessages;
 
 type Variant = "pill" | "underline" | "segment";
 /** Whether trigger icons show on every tab or only on the selected one. */
@@ -58,6 +67,7 @@ type Ctx = {
   unregisterPanel: (value: string) => void;
   tabId: (value: string) => string;
   panelId: (value: string) => string;
+  t: (key: keyof TabsMessages) => string;
 };
 
 type Track = Record<"x" | "y" | "width" | "height", MotionValue<number>>;
@@ -86,6 +96,7 @@ export function Tabs({
   onValueChange,
   variant = "pill",
   icons = "always",
+  labels,
   children,
   className,
 }: {
@@ -98,9 +109,12 @@ export function Tabs({
    * and folds away when another is chosen. Defaults to "always".
    */
   icons?: IconDisplay;
+  /** Override any built-in string. */
+  labels?: Partial<TabsMessages>;
   children: ReactNode;
   className?: string;
 }) {
+  const t = useMessages("tabs", tabsMessages, labels);
   const [internal, setInternal] = useState(defaultValue ?? "");
   const layoutId = useId();
   const reduce = useReducedMotion();
@@ -177,6 +191,7 @@ export function Tabs({
       unregisterPanel,
       tabId,
       panelId,
+      t,
     }),
     [
       current,
@@ -194,6 +209,7 @@ export function Tabs({
       unregisterPanel,
       tabId,
       panelId,
+      t,
     ],
   );
   return (
@@ -226,7 +242,7 @@ export function TabsList({
 }: {
   wrapperClassName?: string;
 } & HTMLAttributes<HTMLDivElement>) {
-  const { variant, value, icons, track, placed, setPlaced } = useTabs();
+  const { variant, value, icons, track, placed, setPlaced, t } = useTabs();
   const reduce = useReducedMotion();
   const tracked = icons === "selected" && variant !== "underline";
   const rootRef = useRef<HTMLDivElement>(null);
@@ -483,7 +499,7 @@ export function TabsList({
       {edges.overflow && (
         <button
           type="button"
-          aria-label="Scroll tabs left"
+          aria-label={t("scrollLeft")}
           aria-controls={viewportId}
           disabled={!edges.left}
           onClick={() => scroll(-1)}
@@ -537,7 +553,7 @@ export function TabsList({
       {edges.overflow && (
         <button
           type="button"
-          aria-label="Scroll tabs right"
+          aria-label={t("scrollRight")}
           aria-controls={viewportId}
           disabled={!edges.right}
           onClick={() => scroll(1)}

@@ -5,7 +5,7 @@ import { NumberTicker } from "../../motion/number-ticker";
 import { useCompositionChart } from "./context";
 
 export function CompositionTooltipContent({ className }: { className?: string }) {
-  const { column, formatValue } = useCompositionChart();
+  const { column, formatValue, t } = useCompositionChart();
   if (!column) return null;
   return (
     <span className={cn("block w-72 max-w-full min-w-0", className)}>
@@ -48,9 +48,7 @@ export function CompositionTooltipContent({ className }: { className?: string })
           ))}
         </span>
       ) : (
-        <span className="text-muted-foreground block text-xs">
-          No complete data for this period.
-        </span>
+        <span className="text-muted-foreground block text-xs">{t("incomplete")}</span>
       )}
     </span>
   );

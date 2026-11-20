@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@kumix/utils";
 import { useHoverCapable } from "../../../hooks/use-hover-capable";
 import { SPRING_PRESS } from "../../../lib/ease";
+import { useMessages } from "../../../lib/i18n";
 
 export interface NotFoundProps {
   className?: string;
@@ -16,31 +17,48 @@ export interface NotFoundProps {
   homeLabel?: string;
   browseHref?: string;
   browseLabel?: string;
+  /** Override any built-in string. Explicit `title`, `description`, `homeLabel` and `browseLabel` props still win. */
+  labels?: Partial<NotFoundMessages>;
 }
 
 export const NOT_FOUND_DEFAULTS = {
   code: "404",
+  homeHref: "/",
+  browseHref: "/components/motion",
+} as const;
+
+/** English defaults. Override per instance with `labels`, or app-wide with `LocaleProvider`. */
+export const notFoundMessages = {
   title: "Page not found",
   description: "The page you are looking for moved, vanished, or never existed.",
-  homeHref: "/",
   homeLabel: "Back home",
-  browseHref: "/components/motion",
   browseLabel: "Browse components",
-} as const;
+  stackedCaption: "out of the deck",
+  terminalError: "cd: no such file or directory: /page",
+};
+
+export type NotFoundMessages = typeof notFoundMessages;
+
+/** Resolves a variant's strings: explicit props, then `labels`, the provider and English. */
+export function useNotFoundMessages(labels?: Partial<NotFoundMessages>) {
+  return useMessages("notFound", notFoundMessages, labels);
+}
 
 type ActionsProps = Pick<
   NotFoundProps,
-  "homeHref" | "homeLabel" | "browseHref" | "browseLabel" | "className"
+  "homeHref" | "homeLabel" | "browseHref" | "browseLabel" | "labels" | "className"
 >;
 
 /** The shared dual CTA: a primary "Back home" and a secondary "Browse". */
 export function NotFoundActions({
   homeHref = NOT_FOUND_DEFAULTS.homeHref,
-  homeLabel = NOT_FOUND_DEFAULTS.homeLabel,
+  homeLabel,
   browseHref = NOT_FOUND_DEFAULTS.browseHref,
-  browseLabel = NOT_FOUND_DEFAULTS.browseLabel,
+  browseLabel,
+  labels,
   className,
 }: ActionsProps) {
+  const t = useNotFoundMessages(labels);
   const reduce = useReducedMotion();
   const canHover = useHoverCapable();
   const whileTap = reduce ? undefined : { scale: 0.96 };
@@ -55,7 +73,7 @@ export function NotFoundActions({
         transition={SPRING_PRESS}
         className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-medium transition-colors select-none"
       >
-        {homeLabel}
+        {homeLabel ?? t("homeLabel")}
       </motion.a>
       <motion.a
         href={browseHref}
@@ -64,7 +82,7 @@ export function NotFoundActions({
         transition={SPRING_PRESS}
         className="border-border bg-card text-foreground hover:bg-muted/60 inline-flex h-11 items-center justify-center rounded-full border px-6 text-sm font-medium transition-colors select-none"
       >
-        {browseLabel}
+        {browseLabel ?? t("browseLabel")}
       </motion.a>
     </div>
   );
