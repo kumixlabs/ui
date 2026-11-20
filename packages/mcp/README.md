@@ -35,6 +35,7 @@ Scans `packages/**/package.json` at runtime (skips `@kumix/mcp`, `node_modules`,
 @kumix/ui/custom/confirm-dialog
 @kumix/ui/hooks/use-mobile
 @kumix/ui/lib/ease
+@kumix/ui/lib/i18n
 @kumix/ui/css
 @kumix/ui/theme
 ```
@@ -93,6 +94,13 @@ find_component  component_name=color-selector  package_filter=motion
 find_component  component_name=color-picker  package_filter=motion
 find_component  component_name=color-picker  package_filter=reui
 find_component  component_name=morphing-search-chips  package_filter=motion
+find_component  component_name=slide-game  package_filter=motion
+find_component  component_name=bookshelf  package_filter=motion
+find_component  component_name=before-after-slider  package_filter=motion
+find_component  component_name=dropdown-menu  package_filter=motion
+find_component  component_name=crash  package_filter=motion
+find_component  component_name=i18n  package_filter=lib
+find_component  component_name=book-sounds  package_filter=lib
 find_component  component_name=card  package_filter=motion
 find_component  component_name=emoji-picker  package_filter=reui
 find_component  component_name=file-type  package_filter=reui

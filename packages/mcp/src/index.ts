@@ -256,7 +256,7 @@ class KumixUiMCPServer {
                   charts:
                     "Charts & visual representations — bump, treemap, heatmap, orderbook, etc.",
                   imports:
-                    "Per-file: @kumix/ui/ui/button, @kumix/ui/reui/kanban, @kumix/ui/motion/tilt-card, @kumix/ui/charts/treemap, @kumix/ui/agents/prompt-input, @kumix/ui/hooks/use-mobile, @kumix/ui/lib/ease",
+                    "Per-file: @kumix/ui/ui/button, @kumix/ui/reui/kanban, @kumix/ui/motion/tilt-card, @kumix/ui/charts/treemap, @kumix/ui/agents/prompt-input, @kumix/ui/hooks/use-mobile, @kumix/ui/lib/ease, @kumix/ui/lib/i18n",
                   css: ["@kumix/ui/css", "@kumix/ui/theme"],
                 },
               },
@@ -309,7 +309,7 @@ class KumixUiMCPServer {
             agents: 'import { PromptInput } from "@kumix/ui/agents/prompt-input"',
             dataGrid: 'import { DataGrid } from "@kumix/ui/reui/data-grid/data-grid"',
             hooks: 'import { useIsMobile } from "@kumix/ui/hooks/use-mobile"',
-            lib: 'import { ease } from "@kumix/ui/lib/ease"',
+            lib: 'import { ease } from "@kumix/ui/lib/ease"; import { LocaleProvider } from "@kumix/ui/lib/i18n"',
             css: 'import "@kumix/ui/css";\nimport "@kumix/ui/theme";',
             docs: {
               shadcn: "https://ui.shadcn.com/docs/components",
