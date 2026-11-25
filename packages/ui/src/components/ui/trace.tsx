@@ -129,7 +129,7 @@ function TraceCollapsibleContent({
       <div
         data-slot="trace-collapsible-content-inner"
         className={cn(
-          "text-muted-foreground mt-2 mb-1 ml-[calc(--spacing(2)-1px)] min-w-0 border-l pr-1 pl-4 leading-relaxed wrap-break-word",
+          "text-muted-foreground ml-[calc(--spacing(2)-1px)] mt-2 mb-1 min-w-0 border-l pr-1 pl-4 leading-relaxed wrap-break-word",
           className,
         )}
       >
